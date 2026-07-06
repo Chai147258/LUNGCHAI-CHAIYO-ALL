@@ -1,392 +1,531 @@
-<!DOCTYPE HTML>
-<!--
-	Dopetrope by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
-	<head>
-		<title>Dopetrope by HTML5 UP</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-	</head>
-	<body class="homepage is-preload">
-		<div id="page-wrapper">
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LUNGCHAI CHAIYO | Lungchai Industrial Supply &amp; Service — One Stop Industrial Supply</title>
+<meta name="description" content="ลุงชัยไชโย (Lungchai Chaiyo) — Lungchai Industrial Supply & Service. One Stop Industrial Supply ครบ จบ ทุกความต้องการของโรงงาน PPE · IT · Electrical · Maintenance · Consumables · Service">
 
-			<!-- Header -->
-				<section id="header">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-					<!-- Logo -->
-						<h1><a href="index.html">Dopetrope</a></h1>
+<style>
+  :root{
+    --bg: #090c11;
+    --bg-panel: #12161e;
+    --bg-panel-2: #1a1f2a;
+    --hairline: rgba(255,255,255,0.08);
+    --text: #eef2f7;
+    --text-dim: #8b93a3;
+    --text-faint: #565e6e;
 
-					<!-- Nav -->
-						<nav id="nav">
-							<ul>
-								<li class="current"><a href="index.html">Home</a></li>
-								<li>
-									<a href="#">Dropdown</a>
-									<ul>
-										<li><a href="#">Lorem ipsum dolor</a></li>
-										<li><a href="#">Magna phasellus</a></li>
-										<li><a href="#">Etiam dolore nisl</a></li>
-										<li>
-											<a href="#">Phasellus consequat</a>
-											<ul>
-												<li><a href="#">Magna phasellus</a></li>
-												<li><a href="#">Etiam dolore nisl</a></li>
-												<li><a href="#">Veroeros feugiat</a></li>
-												<li><a href="#">Nisl sed aliquam</a></li>
-												<li><a href="#">Dolore adipiscing</a></li>
-											</ul>
-										</li>
-										<li><a href="#">Veroeros feugiat</a></li>
-									</ul>
-								</li>
-								<li><a href="left-sidebar.html">Left Sidebar</a></li>
-								<li><a href="right-sidebar.html">Right Sidebar</a></li>
-								<li><a href="no-sidebar.html">No Sidebar</a></li>
-							</ul>
-						</nav>
+    /* three service pillars — carries real structural meaning throughout the page */
+    --u1: #ffb627; /* Service & Maintenance — amber, hands-on care */
+    --u1-glow: rgba(255,182,39,0.35);
+    --u2: #39ff9d; /* Electrical & Factory Supply — emerald, industrial output */
+    --u2-glow: rgba(57,255,157,0.32);
+    --u3: #4cc9f0; /* IT & Network Solutions — cyan, signal */
+    --u3-glow: rgba(76,201,240,0.32);
 
-					<!-- Banner -->
-						<section id="banner">
-							<header>
-								<h2>Howdy. This is Dopetrope.</h2>
-								<p>A responsive template by HTML5 UP</p>
-							</header>
-						</section>
+    --radius: 14px;
+    --maxw: 1180px;
+  }
 
-					<!-- Intro -->
-						<section id="intro" class="container">
-							<div class="row">
-								<div class="col-4 col-12-medium">
-									<section class="first">
-										<i class="icon solid featured fa-cog"></i>
-										<header>
-											<h2>Ipsum consequat</h2>
-										</header>
-										<p>Nisl amet dolor sit ipsum veroeros sed blandit consequat veroeros et magna tempus.</p>
-									</section>
-								</div>
-								<div class="col-4 col-12-medium">
-									<section class="middle">
-										<i class="icon solid featured alt fa-bolt"></i>
-										<header>
-											<h2>Magna etiam dolor</h2>
-										</header>
-										<p>Nisl amet dolor sit ipsum veroeros sed blandit consequat veroeros et magna tempus.</p>
-									</section>
-								</div>
-								<div class="col-4 col-12-medium">
-									<section class="last">
-										<i class="icon solid featured alt2 fa-star"></i>
-										<header>
-											<h2>Tempus adipiscing</h2>
-										</header>
-										<p>Nisl amet dolor sit ipsum veroeros sed blandit consequat veroeros et magna tempus.</p>
-									</section>
-								</div>
-							</div>
-							<footer>
-								<ul class="actions">
-									<li><a href="#" class="button large">Get Started</a></li>
-									<li><a href="#" class="button alt large">Learn More</a></li>
-								</ul>
-							</footer>
-						</section>
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', 'Noto Sans Thai', sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  h1,h2,h3,.display{
+    font-family: 'Space Grotesk', 'Noto Sans Thai', sans-serif;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .mono{ font-family: 'JetBrains Mono', monospace; }
+  a{ color: inherit; text-decoration: none; }
+  img{ max-width: 100%; display:block; }
 
-				</section>
+  ::selection{ background: var(--u3); color: #05070a; }
+  :focus-visible{ outline: 2px solid var(--u3); outline-offset: 3px; }
 
-			<!-- Main -->
-				<section id="main">
-					<div class="container">
-						<div class="row">
-							<div class="col-12">
+  .wrap{ max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
 
-								<!-- Portfolio -->
-									<section>
-										<header class="major">
-											<h2>My Portfolio</h2>
-										</header>
-										<div class="row">
-											<div class="col-4 col-6-medium col-12-small">
-												<section class="box">
-													<a href="#" class="image featured"><img src="images/pic02.jpg" alt="" /></a>
-													<header>
-														<h3>Ipsum feugiat et dolor</h3>
-													</header>
-													<p>Lorem ipsum dolor sit amet sit veroeros sed amet blandit consequat veroeros lorem blandit adipiscing et feugiat phasellus tempus dolore ipsum lorem dolore.</p>
-													<footer>
-														<ul class="actions">
-															<li><a href="#" class="button alt">Find out more</a></li>
-														</ul>
-													</footer>
-												</section>
-											</div>
-											<div class="col-4 col-6-medium col-12-small">
-												<section class="box">
-													<a href="#" class="image featured"><img src="images/pic03.jpg" alt="" /></a>
-													<header>
-														<h3>Sed etiam lorem nulla</h3>
-													</header>
-													<p>Lorem ipsum dolor sit amet sit veroeros sed amet blandit consequat veroeros lorem blandit adipiscing et feugiat phasellus tempus dolore ipsum lorem dolore.</p>
-													<footer>
-														<ul class="actions">
-															<li><a href="#" class="button alt">Find out more</a></li>
-														</ul>
-													</footer>
-												</section>
-											</div>
-											<div class="col-4 col-6-medium col-12-small">
-												<section class="box">
-													<a href="#" class="image featured"><img src="images/pic04.jpg" alt="" /></a>
-													<header>
-														<h3>Consequat et tempus</h3>
-													</header>
-													<p>Lorem ipsum dolor sit amet sit veroeros sed amet blandit consequat veroeros lorem blandit adipiscing et feugiat phasellus tempus dolore ipsum lorem dolore.</p>
-													<footer>
-														<ul class="actions">
-															<li><a href="#" class="button alt">Find out more</a></li>
-														</ul>
-													</footer>
-												</section>
-											</div>
-											<div class="col-4 col-6-medium col-12-small">
-												<section class="box">
-													<a href="#" class="image featured"><img src="images/pic05.jpg" alt="" /></a>
-													<header>
-														<h3>Blandit sed adipiscing</h3>
-													</header>
-													<p>Lorem ipsum dolor sit amet sit veroeros sed amet blandit consequat veroeros lorem blandit adipiscing et feugiat phasellus tempus dolore ipsum lorem dolore.</p>
-													<footer>
-														<ul class="actions">
-															<li><a href="#" class="button alt">Find out more</a></li>
-														</ul>
-													</footer>
-												</section>
-											</div>
-											<div class="col-4 col-6-medium col-12-small">
-												<section class="box">
-													<a href="#" class="image featured"><img src="images/pic06.jpg" alt="" /></a>
-													<header>
-														<h3>Etiam nisl consequat</h3>
-													</header>
-													<p>Lorem ipsum dolor sit amet sit veroeros sed amet blandit consequat veroeros lorem blandit adipiscing et feugiat phasellus tempus dolore ipsum lorem dolore.</p>
-													<footer>
-														<ul class="actions">
-															<li><a href="#" class="button alt">Find out more</a></li>
-														</ul>
-													</footer>
-												</section>
-											</div>
-											<div class="col-4 col-6-medium col-12-small">
-												<section class="box">
-													<a href="#" class="image featured"><img src="images/pic07.jpg" alt="" /></a>
-													<header>
-														<h3>Dolore nisl feugiat</h3>
-													</header>
-													<p>Lorem ipsum dolor sit amet sit veroeros sed amet blandit consequat veroeros lorem blandit adipiscing et feugiat phasellus tempus dolore ipsum lorem dolore.</p>
-													<footer>
-														<ul class="actions">
-															<li><a href="#" class="button alt">Find out more</a></li>
-														</ul>
-													</footer>
-												</section>
-											</div>
-										</div>
-									</section>
+  .grid-bg{
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+  }
 
-							</div>
-							<div class="col-12">
+  header{
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(9,12,17,0.75); backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--hairline);
+  }
+  nav{
+    display: flex; align-items: center; justify-content: space-between;
+    max-width: var(--maxw); margin: 0 auto; padding: 16px 24px;
+  }
+  .logo{
+    font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.05rem;
+    letter-spacing: 0.02em; display: flex; align-items: center; gap: 10px;
+  }
+  .logo .dot-cluster{ display:flex; gap:4px; }
+  .logo .dot-cluster span{ width: 6px; height: 6px; border-radius: 50%; animation: blink 2.4s ease-in-out infinite; }
+  .logo .dot-cluster span:nth-child(1){ background: var(--u1); }
+  .logo .dot-cluster span:nth-child(2){ background: var(--u2); animation-delay: .25s; }
+  .logo .dot-cluster span:nth-child(3){ background: var(--u3); animation-delay: .5s; }
+  @keyframes blink{ 0%,100%{ opacity:.35 } 50%{ opacity:1 } }
 
-								<!-- Blog -->
-									<section>
-										<header class="major">
-											<h2>The Blog</h2>
-										</header>
-										<div class="row">
-											<div class="col-6 col-12-small">
-												<section class="box">
-													<a href="#" class="image featured"><img src="images/pic08.jpg" alt="" /></a>
-													<header>
-														<h3>Magna tempus consequat</h3>
-														<p>Posted 45 minutes ago</p>
-													</header>
-													<p>Lorem ipsum dolor sit amet sit veroeros sed et blandit consequat sed veroeros lorem et blandit adipiscing feugiat phasellus tempus hendrerit, tortor vitae mattis tempor, sapien sem feugiat sapien, id suscipit magna felis nec elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos lorem ipsum dolor sit amet.</p>
-													<footer>
-														<ul class="actions">
-															<li><a href="#" class="button icon solid fa-file-alt">Continue Reading</a></li>
-															<li><a href="#" class="button alt icon solid fa-comment">33 comments</a></li>
-														</ul>
-													</footer>
-												</section>
-											</div>
-											<div class="col-6 col-12-small">
-												<section class="box">
-													<a href="#" class="image featured"><img src="images/pic09.jpg" alt="" /></a>
-													<header>
-														<h3>Aptent veroeros aliquam</h3>
-														<p>Posted 45 minutes ago</p>
-													</header>
-													<p>Lorem ipsum dolor sit amet sit veroeros sed et blandit consequat sed veroeros lorem et blandit adipiscing feugiat phasellus tempus hendrerit, tortor vitae mattis tempor, sapien sem feugiat sapien, id suscipit magna felis nec elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos lorem ipsum dolor sit amet.</p>
-													<footer>
-														<ul class="actions">
-															<li><a href="#" class="button icon solid fa-file-alt">Continue Reading</a></li>
-															<li><a href="#" class="button alt icon solid fa-comment">33 comments</a></li>
-														</ul>
-													</footer>
-												</section>
-											</div>
-										</div>
-									</section>
+  .nav-links{ display: flex; gap: 28px; font-size: 0.88rem; color: var(--text-dim); }
+  .nav-links a{ transition: color .2s; }
+  .nav-links a:hover{ color: var(--text); }
+  .nav-cta{
+    font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; padding: 9px 16px;
+    border: 1px solid var(--hairline); border-radius: 999px; color: var(--text);
+    white-space: nowrap; transition: border-color .2s, background .2s;
+  }
+  .nav-cta:hover{ border-color: var(--u3); background: rgba(76,201,240,0.08); }
+  @media (max-width: 760px){ .nav-links{ display:none; } }
 
-							</div>
-						</div>
-					</div>
-				</section>
+  .hero{ position: relative; padding: 88px 0 60px; z-index: 1; }
+  .hero-grid{ display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 40px; align-items: center; }
+  @media (max-width: 900px){ .hero-grid{ grid-template-columns: 1fr; } }
+  .eyebrow{
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; letter-spacing: 0.08em;
+    color: var(--text-dim); border: 1px solid var(--hairline); padding: 6px 12px;
+    border-radius: 999px; margin-bottom: 22px;
+  }
+  .eyebrow .pulse-sm{
+    width: 6px; height: 6px; border-radius: 50%; background: var(--u2);
+    box-shadow: 0 0 8px var(--u2-glow); animation: pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes pulse{ 0%,100%{ transform: scale(1); opacity: 1 } 50%{ transform: scale(1.6); opacity: .5 } }
 
-			<!-- Footer -->
-				<section id="footer">
-					<div class="container">
-						<div class="row">
-							<div class="col-8 col-12-medium">
-								<section>
-									<header>
-										<h2>Blandit nisl adipiscing</h2>
-									</header>
-									<ul class="dates">
-										<li>
-											<span class="date">Jan <strong>27</strong></span>
-											<h3><a href="#">Lorem dolor sit amet veroeros</a></h3>
-											<p>Ipsum dolor sit amet veroeros consequat blandit ipsum phasellus lorem consequat etiam.</p>
-										</li>
-										<li>
-											<span class="date">Jan <strong>23</strong></span>
-											<h3><a href="#">Ipsum sed blandit nisl consequat</a></h3>
-											<p>Blandit phasellus lorem ipsum dolor tempor sapien tortor hendrerit adipiscing feugiat lorem.</p>
-										</li>
-										<li>
-											<span class="date">Jan <strong>15</strong></span>
-											<h3><a href="#">Magna tempus lorem feugiat</a></h3>
-											<p>Dolore consequat sed phasellus lorem sed etiam nullam dolor etiam sed amet sit consequat.</p>
-										</li>
-										<li>
-											<span class="date">Jan <strong>12</strong></span>
-											<h3><a href="#">Dolore tempus ipsum feugiat nulla</a></h3>
-											<p>Feugiat lorem dolor sed nullam tempus lorem ipsum dolor sit amet nullam consequat.</p>
-										</li>
-										<li>
-											<span class="date">Jan <strong>10</strong></span>
-											<h3><a href="#">Blandit tempus aliquam?</a></h3>
-											<p>Feugiat sed tempus blandit tempus adipiscing nisl lorem ipsum dolor sit amet dolore.</p>
-										</li>
-									</ul>
-								</section>
-							</div>
-							<div class="col-4 col-12-medium">
-								<section>
-									<header>
-										<h2>What's this all about?</h2>
-									</header>
-									<a href="#" class="image featured"><img src="images/pic10.jpg" alt="" /></a>
-									<p>
-										This is <strong>Dopetrope</strong> a free, fully responsive HTML5 site template by
-										<a href="http://twitter.com/ajlkn">AJ</a> for <a href="http://html5up.net/">HTML5 UP</a> It's released for free under
-										the <a href="http://html5up.net/license/">Creative Commons Attribution</a> license so feel free to use it for any personal or commercial project &ndash; just don't forget to credit us!
-									</p>
-									<footer>
-										<ul class="actions">
-											<li><a href="#" class="button">Find out more</a></li>
-										</ul>
-									</footer>
-								</section>
-							</div>
-							<div class="col-4 col-6-medium col-12-small">
-								<section>
-									<header>
-										<h2>Tempus consequat</h2>
-									</header>
-									<ul class="divided">
-										<li><a href="#">Lorem ipsum dolor sit amet sit veroeros</a></li>
-										<li><a href="#">Sed et blandit consequat sed tlorem blandit</a></li>
-										<li><a href="#">Adipiscing feugiat phasellus sed tempus</a></li>
-										<li><a href="#">Hendrerit tortor vitae mattis tempor sapien</a></li>
-										<li><a href="#">Sem feugiat sapien id suscipit magna felis nec</a></li>
-										<li><a href="#">Elit class aptent taciti sociosqu ad litora</a></li>
-									</ul>
-								</section>
-							</div>
-							<div class="col-4 col-6-medium col-12-small">
-								<section>
-									<header>
-										<h2>Ipsum et phasellus</h2>
-									</header>
-									<ul class="divided">
-										<li><a href="#">Lorem ipsum dolor sit amet sit veroeros</a></li>
-										<li><a href="#">Sed et blandit consequat sed tlorem blandit</a></li>
-										<li><a href="#">Adipiscing feugiat phasellus sed tempus</a></li>
-										<li><a href="#">Hendrerit tortor vitae mattis tempor sapien</a></li>
-										<li><a href="#">Sem feugiat sapien id suscipit magna felis nec</a></li>
-										<li><a href="#">Elit class aptent taciti sociosqu ad litora</a></li>
-									</ul>
-								</section>
-							</div>
-							<div class="col-4 col-12-medium">
-								<section>
-									<header>
-										<h2>Vitae tempor lorem</h2>
-									</header>
-									<ul class="social">
-										<li><a class="icon brands fa-facebook-f" href="#"><span class="label">Facebook</span></a></li>
-										<li><a class="icon brands fa-twitter" href="#"><span class="label">Twitter</span></a></li>
-										<li><a class="icon brands fa-dribbble" href="#"><span class="label">Dribbble</span></a></li>
-										<li><a class="icon brands fa-tumblr" href="#"><span class="label">Tumblr</span></a></li>
-										<li><a class="icon brands fa-linkedin-in" href="#"><span class="label">LinkedIn</span></a></li>
-									</ul>
-									<ul class="contact">
-										<li>
-											<h3>Address</h3>
-											<p>
-												Untitled Incorporated<br />
-												1234 Somewhere Road Suite<br />
-												Nashville, TN 00000-0000
-											</p>
-										</li>
-										<li>
-											<h3>Mail</h3>
-											<p><a href="#">someone@untitled.tld</a></p>
-										</li>
-										<li>
-											<h3>Phone</h3>
-											<p>(800) 000-0000</p>
-										</li>
-									</ul>
-								</section>
-							</div>
-							<div class="col-12">
+  .hero h1{ font-size: clamp(2.2rem, 5.2vw, 3.7rem); font-weight: 700; line-height: 1.06; }
+  .hero h1 .accent{
+    background: linear-gradient(100deg, var(--u1), var(--u2) 50%, var(--u3));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero .sub-brand{
+    font-family: 'JetBrains Mono', monospace; font-size: 0.86rem; color: var(--text-dim);
+    margin-top: 14px; letter-spacing: 0.02em;
+  }
+  .hero p.lede{ margin-top: 18px; font-size: 1.02rem; color: var(--text-dim); max-width: 48ch; }
 
-								<!-- Copyright -->
-									<div id="copyright">
-										<ul class="links">
-											<li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-										</ul>
-									</div>
+  .tagline-row{
+    display:flex; flex-wrap:wrap; gap:8px; margin-top: 22px;
+  }
+  .tag-pill{
+    font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+    padding: 6px 12px; border-radius: 999px; border: 1px solid var(--hairline);
+    color: var(--text-dim);
+  }
 
-							</div>
-						</div>
-					</div>
-				</section>
+  .hero-ctas{ display: flex; gap: 14px; margin-top: 32px; flex-wrap: wrap; }
+  .btn{
+    display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 0.92rem;
+    padding: 13px 22px; border-radius: 10px; transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+  }
+  .btn-primary{ background: var(--u3); color: #04141c; }
+  .btn-primary:hover{ transform: translateY(-2px); box-shadow: 0 10px 30px -6px var(--u3-glow); }
+  .btn-ghost{ border: 1px solid var(--hairline); color: var(--text); }
+  .btn-ghost:hover{ border-color: var(--text-faint); background: rgba(255,255,255,0.03); }
 
-		</div>
+  .network-stage{ position: relative; aspect-ratio: 1 / 1; max-width: 460px; margin: 0 auto; }
+  #netCanvas{ width: 100%; height: 100%; display: block; }
 
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.dropotron.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
+  section{ position: relative; z-index: 1; padding: 90px 0; }
+  .section-head{ max-width: 640px; margin-bottom: 48px; }
+  .section-head .eyebrow{ margin-bottom: 16px; }
+  .section-head h2{ font-size: clamp(1.7rem, 3.4vw, 2.4rem); font-weight: 600; }
+  .section-head p{ color: var(--text-dim); margin-top: 14px; }
 
-	</body>
+  .units{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  @media (max-width: 900px){ .units{ grid-template-columns: 1fr; } }
+
+  .unit-card{
+    background: var(--bg-panel); border: 1px solid var(--hairline); border-radius: var(--radius);
+    padding: 30px 26px; position: relative; overflow: hidden;
+    transition: transform .25s ease, border-color .25s ease;
+  }
+  .unit-card::before{
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at 50% -10%, var(--accent-glow), transparent 60%);
+    opacity: 0; transition: opacity .3s ease;
+  }
+  .unit-card:hover{ transform: translateY(-4px); border-color: var(--accent-border); }
+  .unit-card:hover::before{ opacity: 1; }
+  .unit-card[data-unit="1"]{ --accent-glow: var(--u1-glow); --accent-border: rgba(255,182,39,0.4); }
+  .unit-card[data-unit="2"]{ --accent-glow: var(--u2-glow); --accent-border: rgba(57,255,157,0.4); }
+  .unit-card[data-unit="3"]{ --accent-glow: var(--u3-glow); --accent-border: rgba(76,201,240,0.4); }
+
+  .unit-status{
+    display: inline-flex; align-items: center; gap: 7px;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.06em;
+    color: var(--text-dim); margin-bottom: 18px;
+  }
+  .unit-status .dot{ width: 6px; height: 6px; border-radius: 50%; }
+  .unit-card[data-unit="1"] .unit-status .dot{ background: var(--u1); box-shadow: 0 0 8px var(--u1-glow); }
+  .unit-card[data-unit="2"] .unit-status .dot{ background: var(--u2); box-shadow: 0 0 8px var(--u2-glow); }
+  .unit-card[data-unit="3"] .unit-status .dot{ background: var(--u3); box-shadow: 0 0 8px var(--u3-glow); }
+
+  .unit-card h3{ font-size: 1.2rem; font-weight: 600; margin-bottom: 10px; position: relative; z-index:1;}
+  .unit-card p{ color: var(--text-dim); font-size: 0.9rem; position: relative; z-index:1; }
+
+  /* ---------- business categories (from Google Business profile) ---------- */
+  .cat-list{
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+  }
+  @media (max-width: 700px){ .cat-list{ grid-template-columns: 1fr; } }
+  .cat-item{
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    background: var(--bg-panel); border: 1px solid var(--hairline); border-radius: 10px;
+    padding: 14px 18px; font-size: 0.92rem;
+  }
+  .cat-item .badge{
+    font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; letter-spacing: 0.04em;
+    padding: 4px 10px; border-radius: 999px; border: 1px solid var(--u1); color: var(--u1);
+    white-space: nowrap;
+  }
+
+  .stats-bar{
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: var(--hairline); border: 1px solid var(--hairline); border-radius: var(--radius);
+    overflow: hidden;
+  }
+  @media (max-width: 760px){ .stats-bar{ grid-template-columns: repeat(2, 1fr); } }
+  .stat{ background: var(--bg-panel); padding: 30px 22px; text-align: center; }
+  .stat .num{ font-family: 'JetBrains Mono', monospace; font-size: clamp(1.8rem, 3.4vw, 2.4rem); font-weight: 600; color: var(--u3); }
+  .stat .label{ font-size: 0.8rem; color: var(--text-dim); margin-top: 6px; }
+
+  .capgrid{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 900px){ .capgrid{ grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px){ .capgrid{ grid-template-columns: 1fr; } }
+  .cap{ border: 1px solid var(--hairline); border-radius: 12px; padding: 22px; background: var(--bg-panel); transition: border-color .2s ease, transform .2s ease; }
+  .cap:hover{ border-color: var(--text-faint); transform: translateY(-2px); }
+  .cap .tag{ font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--text-faint); }
+  .cap h4{ font-size: 1rem; font-weight: 600; margin: 10px 0 8px; }
+  .cap p{ font-size: 0.85rem; color: var(--text-dim); margin: 0; }
+
+  .cta-band{
+    border-radius: 20px; background: linear-gradient(135deg, var(--bg-panel), var(--bg-panel-2));
+    border: 1px solid var(--hairline); padding: 56px 44px; text-align: center; position: relative; overflow: hidden;
+  }
+  .cta-band::before{
+    content:''; position: absolute; width: 480px; height: 480px;
+    background: radial-gradient(circle, rgba(76,201,240,0.16), transparent 70%);
+    top: -220px; left: 50%; transform: translateX(-50%);
+  }
+  .cta-band h2{ font-size: clamp(1.5rem, 3vw, 2.1rem); position: relative; }
+  .cta-band p{ color: var(--text-dim); margin-top: 12px; position: relative; }
+  .cta-band .hero-ctas{ justify-content: center; position: relative; }
+
+  footer{ border-top: 1px solid var(--hairline); padding: 40px 0; position: relative; z-index: 1; }
+  .foot-row{ display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; font-size: 0.82rem; color: var(--text-faint); }
+  .foot-links{ display:flex; gap:18px; flex-wrap:wrap; }
+  .foot-links a{ transition: color .2s; }
+  .foot-links a:hover{ color: var(--text); }
+  .foot-dots{ display:flex; gap:6px; }
+  .foot-dots span{ width:6px; height:6px; border-radius:50%; }
+  .foot-dots span:nth-child(1){ background: var(--u1); }
+  .foot-dots span:nth-child(2){ background: var(--u2); }
+  .foot-dots span:nth-child(3){ background: var(--u3); }
+
+  .reveal{ opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.in{ opacity: 1; transform: none; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<header>
+  <nav>
+    <div class="logo">
+      <div class="dot-cluster"><span></span><span></span><span></span></div>
+      LUNGCHAI CHAIYO
+    </div>
+    <div class="nav-links">
+      <a href="#scopes">ธุรกิจของเรา</a>
+      <a href="#categories">หมวดหมู่ธุรกิจ</a>
+      <a href="#capabilities">ความสามารถ</a>
+      <a href="#contact">ติดต่อ</a>
+    </div>
+    <a href="#contact" class="nav-cta">TALK_TO_US →</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow"><span class="pulse-sm"></span> STATUS: OPERATIONAL / ONE STOP SUPPLY</div>
+        <h1>
+          One Stop<br>
+          <span class="accent">Industrial Supply</span>
+        </h1>
+        <div class="sub-brand">ลุงชัยไชโย (Lungchai Chaiyo) — Lungchai Industrial Supply &amp; Service</div>
+        <p class="lede">
+          ครบ จบ ทุกความต้องการของโรงงาน ตั้งแต่คอมพิวเตอร์และระบบเครือข่าย ไปจนถึงอุปกรณ์ไฟฟ้าโรงงาน
+          เครื่องมือช่าง และงานซ่อมบำรุง ในที่เดียว
+        </p>
+        <div class="tagline-row">
+          <span class="tag-pill">PPE</span>
+          <span class="tag-pill">IT</span>
+          <span class="tag-pill">Electrical</span>
+          <span class="tag-pill">Maintenance</span>
+          <span class="tag-pill">Consumables</span>
+          <span class="tag-pill">Service</span>
+        </div>
+        <div class="hero-ctas">
+          <a href="#scopes" class="btn btn-primary">ดูขอบเขตธุรกิจ</a>
+          <a href="#contact" class="btn btn-ghost">นัดคุยกับทีมงาน</a>
+        </div>
+      </div>
+
+      <div class="network-stage">
+        <canvas id="netCanvas"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <section id="scopes">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">CORE_SCOPE // 2 BUSINESS LINES</div>
+        <h2>สองขอบเขตธุรกิจหลัก หนึ่งมาตรฐานเดียวกัน</h2>
+        <p>จำหน่ายและให้บริการครบวงจร ทั้งค้าส่ง ค้าปลีก และออนไลน์ พร้อมทีมติดตั้งและซ่อมบำรุง</p>
+      </div>
+
+      <div class="units">
+        <article class="unit-card reveal" data-unit="3">
+          <div class="unit-status"><span class="dot"></span> SCOPE_01 // IT &amp; NETWORK</div>
+          <h3>IT &amp; Network Solutions</h3>
+          <p>ประกอบกิจการจำหน่ายคอมพิวเตอร์ เครื่องพิมพ์ อุปกรณ์ต่อพ่วง อุปกรณ์เครือข่าย และระบบเทคโนโลยีสารสนเทศ
+          รวมถึงเครื่องใช้ไฟฟ้าและอุปกรณ์อิเล็กทรอนิกส์ที่เกี่ยวข้อง ทั้งค้าส่ง ค้าปลีก และออนไลน์
+          พร้อมให้บริการติดตั้ง ซ่อมบำรุง และให้คำปรึกษาด้านระบบคอมพิวเตอร์และเครือข่าย</p>
+        </article>
+
+        <article class="unit-card reveal" data-unit="2">
+          <div class="unit-status"><span class="dot"></span> SCOPE_02 // ELECTRICAL &amp; FACTORY SUPPLY</div>
+          <h3>Electrical &amp; Factory Supply</h3>
+          <p>ประกอบกิจการจำหน่ายพัดลม อุปกรณ์ไฟฟ้าโรงงาน อุปกรณ์อิเล็กทรอนิกส์ เครื่องมือช่าง
+          วัสดุก่อสร้าง และวัสดุสิ้นเปลืองที่เกี่ยวข้อง ทั้งค้าส่ง ค้าปลีก และออนไลน์</p>
+        </article>
+
+        <article class="unit-card reveal" data-unit="1">
+          <div class="unit-status"><span class="dot"></span> SCOPE_03 // SERVICE &amp; MAINTENANCE</div>
+          <h3>Service &amp; Maintenance</h3>
+          <p>ทีมช่างซ่อมและบำรุงรักษาครอบคลุมทุกงาน ตั้งแต่ซ่อมคอมพิวเตอร์ ซ่อมเครื่องพิมพ์
+          ซ่อมมอเตอร์ไฟฟ้า ไปจนถึงงานตัดเย็บเครื่องแบบ พร้อมให้คำปรึกษาหน้างานจริง</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="categories">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">BUSINESS_CATEGORIES // GOOGLE BUSINESS PROFILE</div>
+        <h2>หมวดหมู่ธุรกิจที่จดทะเบียน</h2>
+        <p>ครอบคลุมทุกหมวดหมู่ที่ลูกค้าค้นหาเจอเราได้จริง ตั้งแต่สำนักงานหลักไปจนถึงบริการซ่อมเฉพาะทาง</p>
+      </div>
+      <div class="cat-list reveal">
+        <div class="cat-item"><span>สำนักงานของบริษัท</span><span class="badge">หลัก</span></div>
+        <div class="cat-item"><span>ช่างตัดเสื้อผ้า</span><span class="badge">TAILOR</span></div>
+        <div class="cat-item"><span>ช่างซ่อม</span><span class="badge">REPAIR</span></div>
+        <div class="cat-item"><span>ร้านขายสินค้าจากโรงงาน</span><span class="badge">FACTORY</span></div>
+        <div class="cat-item"><span>ร้านคอมพิวเตอร์</span><span class="badge">IT</span></div>
+        <div class="cat-item"><span>ร้านคอมพิวเตอร์มือสอง</span><span class="badge">IT</span></div>
+        <div class="cat-item"><span>บริการซ่อมเครื่องพิมพ์</span><span class="badge">SERVICE</span></div>
+        <div class="cat-item"><span>บริการซ่อมคอมพิวเตอร์</span><span class="badge">SERVICE</span></div>
+        <div class="cat-item"><span>ร้านซ่อมมอเตอร์ไฟฟ้า</span><span class="badge">ELECTRICAL</span></div>
+        <div class="cat-item"><span>ผู้จำหน่ายอุปกรณ์ไฟฟ้า</span><span class="badge">ELECTRICAL</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="stats-bar reveal">
+        <div class="stat"><div class="num" data-count="10">0</div><div class="label">หมวดหมู่ธุรกิจ</div></div>
+        <div class="stat"><div class="num" data-count="3">0</div><div class="label">ช่องทางขาย: ค้าส่ง/ค้าปลีก/ออนไลน์</div></div>
+        <div class="stat"><div class="num" data-count="2">0</div><div class="label">ขอบเขตธุรกิจหลัก</div></div>
+        <div class="stat"><div class="num" data-count="24" data-suffix="/7">0</div><div class="label">พร้อมให้คำปรึกษา</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="capabilities">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">CAPABILITIES</div>
+        <h2>ครบ จบ ทุกความต้องการของโรงงาน</h2>
+        <p>PPE · IT · Electrical · Maintenance · Consumables · Service — ในผู้จำหน่ายรายเดียว</p>
+      </div>
+      <div class="capgrid">
+        <div class="cap reveal"><div class="tag">PPE</div><h4>อุปกรณ์ป้องกันภัย</h4><p>อุปกรณ์เซฟตี้และ PPE สำหรับหน้างานโรงงาน</p></div>
+        <div class="cap reveal"><div class="tag">IT</div><h4>คอมพิวเตอร์ &amp; เครือข่าย</h4><p>คอมพิวเตอร์ เครื่องพิมพ์ อุปกรณ์เครือข่าย ทั้งใหม่และมือสอง</p></div>
+        <div class="cap reveal"><div class="tag">ELECTRICAL</div><h4>อุปกรณ์ไฟฟ้าโรงงาน</h4><p>พัดลม อุปกรณ์ไฟฟ้า และอุปกรณ์อิเล็กทรอนิกส์สำหรับโรงงาน</p></div>
+        <div class="cap reveal"><div class="tag">MAINTENANCE</div><h4>ซ่อมบำรุง</h4><p>ซ่อมคอมพิวเตอร์ เครื่องพิมพ์ มอเตอร์ไฟฟ้า โดยทีมช่างมืออาชีพ</p></div>
+        <div class="cap reveal"><div class="tag">CONSUMABLES</div><h4>วัสดุสิ้นเปลือง</h4><p>เครื่องมือช่าง วัสดุก่อสร้าง และวัสดุสิ้นเปลืองที่ใช้ในโรงงาน</p></div>
+        <div class="cap reveal"><div class="tag">SERVICE</div><h4>บริการหน้างาน</h4><p>ติดตั้ง ให้คำปรึกษา และตัดเย็บเครื่องแบบตามความต้องการ</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <div class="cta-band reveal">
+        <h2>ให้ลุงชัยไชโยดูแลทุกความต้องการของโรงงานคุณ</h2>
+        <p>ไม่ว่าจะเรื่อง IT อุปกรณ์ไฟฟ้า หรืองานซ่อมบำรุง ทีมงานของเราพร้อมคุยรายละเอียดกับคุณ</p>
+        <div class="hero-ctas">
+          <a href="#" class="btn btn-primary">ติดต่อทีมงาน</a>
+          <a href="lungchai-shops.html" class="btn btn-ghost">ดูร้านค้าในเครือ</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot-row">
+    <div>© 2026 LUNGCHAI CHAIYO — Lungchai Industrial Supply &amp; Service.</div>
+    <div class="foot-links mono">
+      <a href="lungchai-shops.html">ร้านค้าในเครือ →</a>
+      <a href="pk-plus.html">P&amp;K Plus (HR &amp; Payroll) →</a>
+    </div>
+    <div class="foot-dots"><span></span><span></span><span></span></div>
+  </div>
+</footer>
+
+<script>
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  const nums = document.querySelectorAll('.num');
+  const countIO = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(!entry.isIntersecting) return;
+      const el = entry.target;
+      const target = parseInt(el.dataset.count, 10);
+      const suffix = el.dataset.suffix || '';
+      const dur = 1200;
+      const start = performance.now();
+      function tick(now){
+        const p = Math.min((now - start) / dur, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(eased * target) + suffix;
+        if(p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+      countIO.unobserve(el);
+    });
+  }, { threshold: 0.6 });
+  nums.forEach(n => countIO.observe(n));
+
+  const canvas = document.getElementById('netCanvas');
+  const ctx = canvas.getContext('2d');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let W, H, DPR;
+
+  function resize(){
+    const rect = canvas.parentElement.getBoundingClientRect();
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W = rect.width; H = rect.height;
+    canvas.width = W * DPR; canvas.height = H * DPR;
+    canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  const colors = ['#ffb627', '#39ff9d', '#4cc9f0'];
+  function getNodes(){
+    const cx = W/2, cy = H/2;
+    const r = Math.min(W,H) * 0.34;
+    return [
+      { x: cx, y: cy, r: 13, color: '#eef2f7', hub: true },
+      { x: cx + r*Math.cos(-Math.PI/2), y: cy + r*Math.sin(-Math.PI/2), r: 9, color: colors[0] },
+      { x: cx + r*Math.cos(Math.PI/6),  y: cy + r*Math.sin(Math.PI/6),  r: 9, color: colors[1] },
+      { x: cx + r*Math.cos(5*Math.PI/6),y: cy + r*Math.sin(5*Math.PI/6),r: 9, color: colors[2] },
+    ];
+  }
+
+  let t = 0;
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    const nodes = getNodes();
+    const hub = nodes[0];
+
+    for(let i=1;i<nodes.length;i++){
+      const n = nodes[i];
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(hub.x, hub.y);
+      ctx.lineTo(n.x, n.y);
+      ctx.stroke();
+
+      if(!reduceMotion){
+        const phase = (t * 0.006 + i * 0.33) % 1;
+        const px = hub.x + (n.x - hub.x) * phase;
+        const py = hub.y + (n.y - hub.y) * phase;
+        ctx.beginPath();
+        ctx.arc(px, py, 2.6, 0, Math.PI*2);
+        ctx.fillStyle = n.color;
+        ctx.shadowColor = n.color;
+        ctx.shadowBlur = 12;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+    }
+
+    nodes.forEach((n, i) => {
+      const pulse = reduceMotion ? 0 : Math.sin(t*0.02 + i) * 1.5;
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r + pulse + 6, 0, Math.PI*2);
+      const grad = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r + 14);
+      grad.addColorStop(0, n.color + '55');
+      grad.addColorStop(1, 'transparent');
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
+      ctx.fillStyle = n.color;
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
+      ctx.strokeStyle = 'rgba(9,12,17,0.5)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    });
+
+    t++;
+    if(!reduceMotion) requestAnimationFrame(draw);
+  }
+  draw();
+</script>
+
+</body>
 </html>
