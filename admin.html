@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>Admin Panel</title>
+<style>
+body{font-family:sans-serif;background:#111;color:#fff;padding:20px}
+input,select,button{padding:8px;margin:5px;width:100%}
+button{background:#8b0000;color:#fff;border:none}
+.menu{background:#222;padding:10px;margin:10px 0}
+.hidden{display:none}
+</style>
+</head>
+
+<body>
+
+<!-- 🔐 LOGIN -->
+<div id="login">
+  <h2>🔐 Admin Login</h2>
+  <input type="password" id="pass" placeholder="ใส่รหัสผ่าน">
+  <button onclick="login()">เข้าสู่ระบบ</button>
+  <p id="msg"></p>
+</div>
+
+<!-- 🛠 ADMIN -->
+<div id="admin" class="hidden">
+  <h2>🛠 จัดการเมนู</h2>
+
+  <input id="name" placeholder="ชื่อเมนู">
+  <input id="price" placeholder="ราคา">
+  <input id="image" placeholder="path รูป เช่น images/a.jpg">
+
+  <select id="category">
+    <option value="food">อาหาร</option>
+    <option value="drink">เครื่องดื่ม</option>
+    <option value="fruit">ผลไม้</option>
+  </select>
+
+  <button onclick="addMenu()">➕ บันทึกเมนู</button>
+
+  <div id="list"></div>
+</div>
+
+<script>
+const ADMIN_PASSWORD = "1234";
+
+let menus = JSON.parse(localStorage.getItem("menus") || "[]");
+let editIndex = -1;
+
+function login(){
+  if(pass.value === ADMIN_PASSWORD){
+    loginBox.style.display="none";
+    admin.classList.remove("hidden");
+  }else{
+    msg.innerText = "❌ รหัสไม่ถูกต้อง";
+  }
+}
+
+function addMenu(){
+  const m = {
+    name:name.value,
+    price:price.value,
+    image:image.value,
+    category:category.value
+  };
+
+  if(editIndex==-1) menus.push(m);
+  else menus[editIndex]=m;
+
+  localStorage.setItem("menus",JSON.stringify(menus));
+  clear();
+  render();
+}
+
+function render(){
+  list.innerHTML="";
+  menus.forEach((m,i)=>{
+    list.innerHTML+=`
+    <div class="menu">
+      <b>${m.name}</b> ${m.price} บาท<br>
+      <small>${m.category}</small><br>
+      <button onclick="edit(${i})">✏️ แก้ไข</button>
+      <button onclick="del(${i})">🗑 ลบ</button>
+    </div>`;
+  });
+}
+
+function edit(i){
+  const m=menus[i];
+  name.value=m.name;
+  price.value=m.price;
+  image.value=m.image;
+  category.value=m.category;
+  editIndex=i;
+}
+
+function del(i){
+  if(confirm("ลบเมนูนี้?")){
+    menus.splice(i,1);
+    localStorage.setItem("menus",JSON.stringify(menus));
+    render();
+  }
+}
+
+function clear(){
+  name.value="";
+  price.value="";
+  image.value="";
+  editIndex=-1;
+}
+
+const loginBox=document.getElementById("login");
+const admin=document.getElementById("admin");
+const list=document.getElementById("list");
+
+render();
+</script>
+
+</body>
+</html>
