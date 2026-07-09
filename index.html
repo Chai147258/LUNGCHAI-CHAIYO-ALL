@@ -7,558 +7,326 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Sarabun:wght@300;400;600;700&family=Noto+Serif+Thai:wght@700;900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --sky1:#020818;--sky2:#061540;--sky3:#0d2a70;--sky4:#2563c8;--sky5:#60a5fa;
+  --gold:#f0c040;--gold2:#fde68a;--white:#ffffff;
+  --glass:rgba(255,255,255,0.07);--glass2:rgba(255,255,255,0.13);
+  --neon:#4AE3F8;--green:#6EF76E;
+  --font-d:'Playfair Display','Noto Serif Thai',serif;
+  --font-b:'Sarabun',sans-serif;
+}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font-b);background:var(--sky1);color:var(--white);overflow-x:hidden;}
+#sky-canvas{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;}
 
-:root {
-  --sky1: #0a0e2e;
-  --sky2: #0d1f5c;
-  --sky3: #1a3a8f;
-  --sky4: #2563c8;
-  --sky5: #60a5fa;
-  --gold: #f0c040;
-  --gold2: #fde68a;
-  --white: #ffffff;
-  --cloud: rgba(255,255,255,0.12);
-  --glass: rgba(255,255,255,0.08);
-  --glass2: rgba(255,255,255,0.15);
-  --neon-blue: #4AE3F8;
-  --neon-green: #6EF76E;
-  --font-display: 'Playfair Display','Noto Serif Thai',serif;
-  --font-body: 'Sarabun',sans-serif;
-}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:12px 28px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(2,8,24,0.75);backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(255,255,255,0.07);}
+.nav-brand{display:flex;align-items:center;gap:10px;}
+.nav-brand img{width:38px;height:38px;border-radius:50%;object-fit:cover;
+  border:2px solid var(--gold);box-shadow:0 0 10px rgba(240,192,64,.5);}
+.nav-brand-text .en{font-family:var(--font-d);font-size:.9rem;letter-spacing:.1em;
+  color:#fff;text-shadow:0 0 10px var(--neon);}
+.nav-brand-text .th{font-size:.6rem;letter-spacing:.2em;color:var(--sky5);text-transform:uppercase;}
+.nav-menu{display:flex;align-items:center;gap:6px;list-style:none;}
+.nav-menu a{color:rgba(255,255,255,.7);text-decoration:none;font-size:.78rem;
+  padding:6px 14px;border-radius:20px;transition:all .2s;letter-spacing:.05em;}
+.nav-menu a:hover{background:var(--glass2);color:#fff;}
+.nav-btn{background:linear-gradient(135deg,var(--gold),#d08000)!important;
+  color:#050d1e!important;font-weight:700!important;
+  box-shadow:0 0 14px rgba(240,192,64,.4);}
+.nav-btn:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(240,192,64,.6)!important;}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px;}
+.hamburger span{width:24px;height:2px;background:var(--gold2);display:block;border-radius:2px;}
+.mobile-menu{display:none;position:fixed;top:64px;left:0;right:0;z-index:190;
+  background:rgba(2,8,24,.97);backdrop-filter:blur(20px);padding:20px;
+  border-bottom:1px solid rgba(255,255,255,.08);}
+.mobile-menu.open{display:flex;flex-direction:column;gap:4px;}
+.mobile-menu a{color:rgba(255,255,255,.8);text-decoration:none;font-size:.9rem;
+  padding:12px 16px;border-radius:12px;transition:background .2s;}
+.mobile-menu a:hover{background:var(--glass2);}
 
-html { scroll-behavior: smooth; }
+/* HERO */
+#hero{position:relative;z-index:1;min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:100px 20px 60px;text-align:center;}
+.cloud-layer{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+.cloud{position:absolute;background:radial-gradient(ellipse,rgba(255,255,255,.07) 0%,transparent 70%);
+  border-radius:50%;animation:floatCloud linear infinite;}
+@keyframes floatCloud{
+  0%{transform:translateX(-120%) translateY(0);opacity:0;}
+  10%{opacity:1;}90%{opacity:1;}
+  100%{transform:translateX(120vw) translateY(-20px);opacity:0;}}
 
-body {
-  font-family: var(--font-body);
-  background: var(--sky1);
-  color: var(--white);
-  overflow-x: hidden;
-  min-height: 100vh;
-}
+/* ORBIT */
+.logos-orbit{position:relative;width:260px;height:260px;margin:0 auto 36px;}
+.logo-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:90px;height:90px;border-radius:50%;border:2.5px solid var(--gold);
+  background:rgba(10,20,60,.8);overflow:hidden;
+  box-shadow:0 0 0 10px rgba(240,192,64,.06),0 0 40px rgba(74,227,248,.3);
+  animation:cPulse 3s ease-in-out infinite;z-index:5;}
+.logo-center img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+@keyframes cPulse{
+  0%,100%{box-shadow:0 0 0 10px rgba(240,192,64,.06),0 0 40px rgba(74,227,248,.3);}
+  50%{box-shadow:0 0 0 16px rgba(240,192,64,.1),0 0 60px rgba(74,227,248,.5);}}
+.orbit-ring{position:absolute;top:50%;left:50%;border-radius:50%;
+  border:1px dashed rgba(255,255,255,.07);animation:spinRing linear infinite;}
+.r1{width:180px;height:180px;margin:-90px 0 0 -90px;animation-duration:14s;}
+.r2{width:260px;height:260px;margin:-130px 0 0 -130px;animation-duration:22s;animation-direction:reverse;}
+@keyframes spinRing{to{transform:rotate(360deg);}}
+.ol{position:absolute;width:48px;height:48px;border-radius:50%;
+  background:rgba(5,12,40,.85);border:1.5px solid rgba(255,255,255,.2);
+  display:flex;align-items:center;justify-content:center;font-size:1.3rem;
+  cursor:pointer;transition:all .3s;backdrop-filter:blur(8px);}
+.ol:hover{transform:scale(1.2);border-color:var(--gold);box-shadow:0 0 16px var(--gold);}
+.ol .tip{position:absolute;bottom:110%;left:50%;transform:translateX(-50%);
+  background:rgba(2,8,24,.95);border:1px solid var(--gold);border-radius:8px;
+  padding:4px 10px;font-size:.65rem;white-space:nowrap;color:var(--gold2);
+  opacity:0;pointer-events:none;transition:opacity .2s;}
+.ol:hover .tip{opacity:1;}
+/* positions r=90 */
+.p1{top:calc(50% - 90px - 24px);left:calc(50% - 24px);}
+.p2{top:calc(50% - 24px);left:calc(50% + 90px - 24px);}
+.p3{top:calc(50% + 90px - 24px);left:calc(50% - 24px);}
+.p4{top:calc(50% - 24px);left:calc(50% - 90px - 24px);}
+/* positions r=130 */
+.p5{top:calc(50% - 130px - 24px);left:calc(50% + 65px - 24px);}
+.p6{top:calc(50% + 65px - 24px);left:calc(50% + 130px - 24px);}
+.p7{top:calc(50% + 130px - 24px);left:calc(50% - 65px - 24px);}
+.p8{top:calc(50% - 65px - 24px);left:calc(50% - 130px - 24px);}
 
-/* ──────── CANVAS SKY ──────── */
-#sky-canvas {
-  position: fixed;
-  inset: 0; width: 100%; height: 100%;
-  z-index: 0; pointer-events: none;
-}
+/* HERO TEXT */
+.hero-eye{font-size:.68rem;letter-spacing:.4em;text-transform:uppercase;color:var(--sky5);
+  margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:12px;}
+.hero-eye::before,.hero-eye::after{content:'';width:36px;height:1px;background:var(--sky5);opacity:.5;}
+h1.htitle{font-family:var(--font-d);font-size:clamp(2.2rem,7vw,5rem);font-weight:900;line-height:1;
+  color:#fff;text-shadow:0 0 8px #fff,0 0 20px var(--neon),0 0 50px var(--neon);
+  margin-bottom:6px;animation:glow 4s ease-in-out infinite;}
+@keyframes glow{
+  0%,100%{text-shadow:0 0 8px #fff,0 0 20px var(--neon),0 0 50px var(--neon);}
+  50%{text-shadow:0 0 4px #fff,0 0 10px var(--neon),0 0 25px var(--neon);}}
+h1.htitle .sub{display:block;font-size:42%;color:var(--gold2);
+  text-shadow:0 0 10px var(--gold);letter-spacing:.2em;font-weight:700;margin-top:6px;}
+.hero-desc{font-size:.95rem;color:rgba(255,255,255,.55);max-width:460px;margin:18px auto 30px;line-height:1.7;}
+.ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:50px;}
+.btn-p{padding:13px 32px;border-radius:40px;
+  background:linear-gradient(135deg,var(--gold),#d08000);
+  color:#050d1e;font-weight:700;font-size:.95rem;border:none;cursor:pointer;
+  box-shadow:0 0 18px rgba(240,192,64,.5);transition:all .3s;text-decoration:none;
+  display:inline-flex;align-items:center;gap:7px;font-family:var(--font-b);}
+.btn-p:hover{transform:translateY(-3px);box-shadow:0 0 36px rgba(240,192,64,.7);}
+.btn-s{padding:13px 32px;border-radius:40px;background:transparent;
+  color:#fff;font-size:.95rem;border:1.5px solid rgba(255,255,255,.25);cursor:pointer;
+  backdrop-filter:blur(8px);transition:all .3s;text-decoration:none;
+  display:inline-flex;align-items:center;gap:7px;font-family:var(--font-b);}
+.btn-s:hover{background:rgba(255,255,255,.09);border-color:var(--neon);
+  box-shadow:0 0 18px rgba(74,227,248,.25);transform:translateY(-2px);}
+.scroll-hint{display:flex;flex-direction:column;align-items:center;gap:5px;
+  color:rgba(255,255,255,.25);font-size:.68rem;letter-spacing:.2em;}
+.sarr{width:18px;height:18px;border-right:1.5px solid rgba(255,255,255,.25);
+  border-bottom:1.5px solid rgba(255,255,255,.25);transform:rotate(45deg);
+  animation:sb 1.6s ease-in-out infinite;}
+@keyframes sb{0%,100%{transform:rotate(45deg) translateY(0);opacity:.3;}
+  50%{transform:rotate(45deg) translateY(6px);opacity:.8;}}
 
-/* ──────── NAV ──────── */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-  padding: 14px 32px;
-  display: flex; align-items: center; justify-content: space-between;
-  background: rgba(10,14,46,0.6);
-  backdrop-filter: blur(18px);
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-}
-.nav-brand {
-  display: flex; align-items: center; gap: 10px;
-}
-.nav-brand img {
-  width: 40px; height: 40px; border-radius: 50%; object-fit: cover;
-  border: 2px solid var(--gold);
-  box-shadow: 0 0 12px rgba(240,192,64,0.5);
-}
-.nav-brand-text {
-  display: flex; flex-direction: column; line-height: 1.1;
-}
-.nav-brand-text .en {
-  font-family: var(--font-display);
-  font-size: .95rem; letter-spacing: .1em;
-  color: var(--white);
-  text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
-}
-.nav-brand-text .th {
-  font-size: .65rem; letter-spacing: .2em;
-  color: var(--sky5); text-transform: uppercase;
-}
-.nav-menu {
-  display: flex; align-items: center; gap: 8px; list-style: none;
-}
-.nav-menu a {
-  color: rgba(255,255,255,0.75);
-  text-decoration: none; font-size: .8rem; letter-spacing: .08em;
-  padding: 6px 14px; border-radius: 20px;
-  transition: all .25s;
-}
-.nav-menu a:hover { background: var(--glass2); color: var(--white); }
-.nav-btn {
-  padding: 8px 22px; border-radius: 24px;
-  background: linear-gradient(135deg, var(--gold), #e08c00);
-  color: #0a0e2e !important;
-  font-weight: 700; font-size: .8rem !important;
-  box-shadow: 0 0 16px rgba(240,192,64,0.4);
-  transition: all .25s !important;
-}
-.nav-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 24px rgba(240,192,64,0.6) !important; background: #0a0e2e !important; color: var(--gold) !important; border: 1px solid var(--gold); }
+/* SECTIONS */
+.sections{position:relative;z-index:2;}
+.section{padding:70px 20px;max-width:1080px;margin:0 auto;}
+.stitle{font-family:var(--font-d);font-size:clamp(1.6rem,3.5vw,2.5rem);font-weight:900;margin-bottom:6px;}
+.stitle .ac{color:var(--gold2);}
+.ssub{color:rgba(255,255,255,.4);font-size:.85rem;margin-bottom:36px;}
+.divider{max-width:1080px;margin:0 auto;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);}
 
-/* ──────── HERO ──────── */
-#hero {
-  position: relative; z-index: 1;
-  min-height: 100vh;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  padding: 100px 24px 60px;
-  text-align: center;
-}
+/* USER BAR */
+.user-bar{display:flex;align-items:center;gap:10px;margin-bottom:20px;
+  background:var(--glass);border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;padding:12px 18px;backdrop-filter:blur(12px);}
+.user-bar .uname{font-weight:600;font-size:.9rem;}
+.user-bar .utype{font-size:.72rem;color:rgba(255,255,255,.4);}
+.btn-logout{margin-left:auto;padding:6px 14px;border-radius:10px;
+  background:transparent;border:1px solid rgba(255,255,255,.15);
+  color:rgba(255,255,255,.5);font-size:.75rem;cursor:pointer;font-family:var(--font-b);transition:all .2s;}
+.btn-logout:hover{background:rgba(255,50,50,.1);border-color:rgba(255,50,50,.3);color:#ff6b6b;}
 
-/* floating clouds */
-.cloud-layer {
-  position: absolute; inset: 0; pointer-events: none; overflow: hidden;
-}
-.cloud {
-  position: absolute;
-  background: radial-gradient(ellipse, rgba(255,255,255,0.08) 0%, transparent 70%);
-  border-radius: 50%;
-  animation: floatCloud linear infinite;
-}
-@keyframes floatCloud {
-  0%   { transform: translateX(-120%) translateY(0); opacity: 0; }
-  10%  { opacity: 1; }
-  90%  { opacity: 1; }
-  100% { transform: translateX(120vw) translateY(-30px); opacity: 0; }
-}
+/* AUTH TABS */
+.auth-tabs{display:flex;gap:0;margin-bottom:24px;border-radius:14px;overflow:hidden;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);}
+.auth-tab{flex:1;padding:11px;background:transparent;border:none;color:rgba(255,255,255,.4);
+  font-family:var(--font-b);font-size:.88rem;cursor:pointer;transition:all .2s;}
+.auth-tab.active{background:rgba(255,255,255,.1);color:#fff;font-weight:600;}
 
-/* hero logos grid */
-.logos-orbit {
-  position: relative;
-  width: 280px; height: 280px;
-  margin: 0 auto 40px;
-}
-.logo-center {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100px; height: 100px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, rgba(74,227,248,0.15), rgba(110,247,110,0.1));
-  border: 2px solid var(--gold);
-  display: flex; align-items: center; justify-content: center;
-  box-shadow:
-    0 0 0 12px rgba(240,192,64,0.06),
-    0 0 40px rgba(74,227,248,0.3),
-    0 0 80px rgba(74,227,248,0.15);
-  animation: centerPulse 3s ease-in-out infinite;
-  z-index: 5;
-  overflow: hidden;
-}
-.logo-center img {
-  width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
-}
-@keyframes centerPulse {
-  0%,100% { box-shadow: 0 0 0 12px rgba(240,192,64,0.06), 0 0 40px rgba(74,227,248,0.3), 0 0 80px rgba(74,227,248,0.15); }
-  50%      { box-shadow: 0 0 0 18px rgba(240,192,64,0.1), 0 0 60px rgba(74,227,248,0.5), 0 0 120px rgba(74,227,248,0.25); }
-}
+/* FEATURES */
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;}
+.fc{background:var(--glass);border:1px solid rgba(255,255,255,.09);border-radius:18px;
+  padding:26px 22px;backdrop-filter:blur(14px);transition:all .3s;cursor:pointer;}
+.fc:hover{background:var(--glass2);border-color:rgba(74,227,248,.25);
+  transform:translateY(-4px);box-shadow:0 10px 36px rgba(0,0,0,.3);}
+.fi{font-size:2rem;margin-bottom:14px;display:block;}
+.ft{font-size:.98rem;font-weight:700;margin-bottom:7px;color:var(--gold2);}
+.fd{font-size:.82rem;color:rgba(255,255,255,.5);line-height:1.6;}
 
-.orbit-ring {
-  position: absolute; top: 50%; left: 50%;
-  border-radius: 50%; border: 1px dashed rgba(255,255,255,0.08);
-  animation: spinRing linear infinite;
-}
-.orbit-ring-1 {
-  width: 200px; height: 200px;
-  margin: -100px 0 0 -100px;
-  animation-duration: 14s;
-}
-.orbit-ring-2 {
-  width: 280px; height: 280px;
-  margin: -140px 0 0 -140px;
-  animation-duration: 22s;
-  animation-direction: reverse;
-}
-@keyframes spinRing { to { transform: rotate(360deg); } }
+/* SHOP */
+.shop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;}
+.pc{background:var(--glass);border:1px solid rgba(255,255,255,.07);
+  border-radius:14px;overflow:hidden;transition:all .3s;cursor:pointer;}
+.pc:hover{transform:translateY(-4px);border-color:var(--gold);
+  box-shadow:0 8px 28px rgba(240,192,64,.12);}
+.pt{height:120px;background:linear-gradient(135deg,rgba(74,227,248,.07),rgba(110,247,110,.05));
+  display:flex;align-items:center;justify-content:center;font-size:2.8rem;}
+.pi{padding:12px;}
+.pn{font-size:.85rem;font-weight:600;margin-bottom:4px;}
+.pp{font-size:.82rem;color:var(--gold2);font-weight:700;}
+.pr{font-size:.7rem;color:rgba(255,255,255,.35);margin-top:3px;}
+.btn-add{width:100%;margin-top:8px;padding:7px;border-radius:9px;
+  border:1px solid rgba(240,192,64,.35);background:transparent;color:var(--gold2);
+  font-size:.75rem;cursor:pointer;font-family:var(--font-b);transition:all .2s;}
+.btn-add:hover{background:var(--gold);color:#050d1e;font-weight:700;}
+.loading-grid{text-align:center;padding:40px;color:rgba(255,255,255,.3);font-size:.9rem;}
 
-.orbit-logo {
-  position: absolute; width: 52px; height: 52px;
-  border-radius: 50%; overflow: hidden;
-  border: 2px solid rgba(255,255,255,0.25);
-  background: rgba(10,14,46,0.8);
-  display: flex; align-items: center; justify-content: center;
-  backdrop-filter: blur(8px);
-  cursor: pointer;
-  transition: transform .3s, box-shadow .3s;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-}
-.orbit-logo:hover {
-  transform: scale(1.2);
-  box-shadow: 0 0 20px var(--gold);
-  border-color: var(--gold);
-}
-.orbit-logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-.orbit-logo .emoji { font-size: 1.4rem; line-height: 1; }
+/* REVIEWS */
+.rv-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;}
+.rv{background:var(--glass);border:1px solid rgba(255,255,255,.07);
+  border-radius:14px;padding:20px;backdrop-filter:blur(10px);}
+.rv-stars{color:var(--gold);font-size:.95rem;margin-bottom:9px;}
+.rv-text{font-size:.85rem;color:rgba(255,255,255,.65);line-height:1.6;margin-bottom:12px;}
+.rv-author{display:flex;align-items:center;gap:9px;}
+.rv-av{width:34px;height:34px;border-radius:50%;
+  background:linear-gradient(135deg,var(--sky4),var(--neon));
+  display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:700;}
+.rv-name{font-size:.78rem;color:rgba(255,255,255,.5);}
+/* review form */
+.rv-form{background:var(--glass);border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;padding:24px;margin-top:24px;backdrop-filter:blur(12px);}
+.rv-form-title{font-size:1rem;font-weight:700;margin-bottom:16px;color:var(--gold2);}
+.star-pick{display:flex;gap:6px;margin-bottom:14px;}
+.star-pick span{font-size:1.6rem;cursor:pointer;opacity:.4;transition:all .2s;}
+.star-pick span.on{opacity:1;}
+.rv-form textarea{width:100%;padding:10px 14px;background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#fff;
+  font-family:var(--font-b);font-size:.85rem;resize:none;outline:none;
+  height:80px;transition:border .2s;}
+.rv-form textarea:focus{border-color:var(--neon);}
+.btn-review{margin-top:10px;padding:9px 24px;border-radius:10px;
+  background:linear-gradient(135deg,var(--sky4),var(--neon));
+  border:none;color:#fff;font-family:var(--font-b);font-size:.85rem;
+  cursor:pointer;font-weight:600;transition:all .3s;}
+.btn-review:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(74,227,248,.3);}
 
-/* positions on ring 1 (r=100px) */
-.ol-1 { top: calc(50% - 100px - 26px); left: calc(50% - 26px); }
-.ol-2 { top: calc(50% - 26px); left: calc(50% + 100px - 26px); }
-.ol-3 { top: calc(50% + 100px - 26px); left: calc(50% - 26px); }
-.ol-4 { top: calc(50% - 26px); left: calc(50% - 100px - 26px); }
+/* BIZ */
+.biz-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;}
+.bz{background:var(--glass);border:1px solid rgba(255,255,255,.07);
+  border-radius:14px;padding:18px 14px;text-align:center;cursor:pointer;
+  transition:all .3s;backdrop-filter:blur(10px);}
+.bz:hover{background:var(--glass2);border-color:var(--gold);
+  transform:translateY(-4px);box-shadow:0 8px 22px rgba(240,192,64,.12);}
+.bz-i{font-size:2.2rem;margin-bottom:8px;display:block;}
+.bz-n{font-size:.78rem;font-weight:600;color:var(--gold2);margin-bottom:3px;}
+.bz-c{font-size:.68rem;color:rgba(255,255,255,.3);}
 
-/* positions on ring 2 (r=140px) */
-.ol-5 { top: calc(50% - 140px - 26px); left: calc(50% + 70px - 26px); }
-.ol-6 { top: calc(50% + 70px - 26px); left: calc(50% + 140px - 26px); }
-.ol-7 { top: calc(50% + 140px - 26px); left: calc(50% - 70px - 26px); }
-.ol-8 { top: calc(50% - 70px - 26px); left: calc(50% - 140px - 26px); }
+/* AUTH / REGISTER */
+.auth-wrap{max-width:460px;margin:0 auto;background:var(--glass);
+  border:1px solid rgba(255,255,255,.09);border-radius:22px;
+  padding:36px 32px;backdrop-filter:blur(20px);}
+.auth-title{font-family:var(--font-d);font-size:1.5rem;font-weight:900;margin-bottom:5px;}
+.auth-sub{font-size:.82rem;color:rgba(255,255,255,.35);margin-bottom:24px;}
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:.76rem;color:rgba(255,255,255,.45);margin-bottom:5px;letter-spacing:.04em;}
+.field input,.field select{width:100%;padding:11px 15px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  border-radius:11px;color:#fff;font-family:var(--font-b);font-size:.87rem;
+  outline:none;transition:border .2s;}
+.field input:focus,.field select:focus{border-color:var(--neon);
+  box-shadow:0 0 0 3px rgba(74,227,248,.08);}
+.field input::placeholder{color:rgba(255,255,255,.18);}
+.field select option{background:#0a0e2e;}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.btn-reg{width:100%;padding:13px;border-radius:13px;border:none;
+  background:linear-gradient(135deg,var(--sky4),var(--neon));
+  color:#fff;font-size:.95rem;font-weight:700;font-family:var(--font-b);
+  cursor:pointer;box-shadow:0 4px 22px rgba(74,227,248,.25);transition:all .3s;}
+.btn-reg:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(74,227,248,.45);}
+.flink{text-align:center;margin-top:14px;font-size:.78rem;color:rgba(255,255,255,.35);}
+.flink a{color:var(--neon);text-decoration:none;cursor:pointer;}
+.err-msg{color:#ff6b6b;font-size:.8rem;margin-top:10px;text-align:center;}
+.ok-msg{color:var(--green);font-size:.8rem;margin-top:10px;text-align:center;}
 
-/* tooltip */
-.orbit-logo .tip {
-  position: absolute; bottom: 110%; left: 50%;
-  transform: translateX(-50%);
-  background: rgba(10,14,46,0.95);
-  border: 1px solid var(--gold);
-  border-radius: 8px; padding: 4px 10px;
-  font-size: .7rem; white-space: nowrap;
-  color: var(--gold2);
-  opacity: 0; pointer-events: none;
-  transition: opacity .2s;
-}
-.orbit-logo:hover .tip { opacity: 1; }
+/* MODAL */
+.modal-ov{position:fixed;inset:0;z-index:500;background:rgba(2,8,24,.88);
+  backdrop-filter:blur(14px);display:none;align-items:center;justify-content:center;padding:20px;}
+.modal-ov.show{display:flex;}
+.modal-box{background:linear-gradient(135deg,#0d1f5c,#020818);
+  border:1px solid rgba(255,255,255,.11);border-radius:22px;padding:32px;
+  max-width:400px;width:100%;text-align:center;
+  box-shadow:0 24px 80px rgba(0,0,0,.6);}
+.modal-icon{font-size:2.8rem;margin-bottom:14px;display:block;}
+.modal-title{font-family:var(--font-d);font-size:1.4rem;margin-bottom:7px;color:var(--gold2);}
+.modal-desc{font-size:.85rem;color:rgba(255,255,255,.5);margin-bottom:20px;line-height:1.6;}
+.modal-links{display:flex;flex-direction:column;gap:8px;margin-bottom:20px;}
+.modal-link{padding:9px 16px;border-radius:10px;text-decoration:none;
+  font-size:.8rem;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.7);
+  transition:all .2s;display:flex;align-items:center;gap:8px;}
+.modal-link:hover{background:var(--glass2);color:#fff;}
+.modal-close{padding:9px 26px;border-radius:18px;background:transparent;
+  border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);
+  font-family:var(--font-b);font-size:.85rem;cursor:pointer;transition:all .2s;}
+.modal-close:hover{background:rgba(255,255,255,.07);}
 
-/* hero text */
-.hero-eyebrow {
-  font-size: .7rem; letter-spacing: .4em; text-transform: uppercase;
-  color: var(--sky5); margin-bottom: 12px;
-  display: flex; align-items: center; justify-content: center; gap: 12px;
-}
-.hero-eyebrow::before,.hero-eyebrow::after {
-  content:''; width: 40px; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--sky5));
-}
-.hero-eyebrow::after { background: linear-gradient(90deg, var(--sky5), transparent); }
+/* CART */
+.cart-btn{position:fixed;bottom:24px;right:24px;z-index:300;
+  width:56px;height:56px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),#d08000);
+  border:none;cursor:pointer;font-size:1.4rem;
+  box-shadow:0 4px 24px rgba(240,192,64,.5);transition:all .3s;}
+.cart-btn:hover{transform:scale(1.1);}
+.cart-count{position:absolute;top:-4px;right:-4px;
+  background:#e53935;color:#fff;border-radius:50%;
+  width:20px;height:20px;font-size:.65rem;font-weight:700;
+  display:flex;align-items:center;justify-content:center;}
 
-h1.hero-title {
-  font-family: var(--font-display);
-  font-size: clamp(2.4rem, 7vw, 5.5rem);
-  font-weight: 900; line-height: 1;
-  color: var(--white);
-  text-shadow:
-    0 0 8px #fff,
-    0 0 20px var(--neon-blue),
-    0 0 50px var(--neon-blue),
-    0 0 100px #1A9FFF;
-  margin-bottom: 8px;
-  animation: titleGlow 4s ease-in-out infinite;
-}
-@keyframes titleGlow {
-  0%,100% { text-shadow: 0 0 8px #fff, 0 0 20px var(--neon-blue), 0 0 50px var(--neon-blue), 0 0 100px #1A9FFF; }
-  50%      { text-shadow: 0 0 4px #fff, 0 0 10px var(--neon-blue), 0 0 25px var(--neon-blue), 0 0 50px #1A9FFF; }
-}
-h1.hero-title .sub {
-  display: block; font-size: 45%;
-  color: var(--gold2);
-  text-shadow: 0 0 10px var(--gold), 0 0 30px var(--gold);
-  letter-spacing: .2em; font-weight: 700; margin-top: 6px;
-}
+/* TOAST */
+#toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:linear-gradient(135deg,#0d1f5c,#1a3a8f);
+  border:1px solid rgba(74,227,248,.3);color:#fff;
+  padding:11px 26px;border-radius:28px;font-size:.85rem;z-index:999;
+  opacity:0;transition:all .3s;pointer-events:none;
+  box-shadow:0 8px 30px rgba(0,0,0,.4);}
 
-.hero-desc {
-  font-size: 1rem; color: rgba(255,255,255,0.6);
-  max-width: 480px; margin: 20px auto 36px;
-  line-height: 1.7;
-}
+/* FOOTER */
+footer{position:relative;z-index:2;text-align:center;padding:36px 20px;
+  border-top:1px solid rgba(255,255,255,.05);color:rgba(255,255,255,.25);font-size:.75rem;}
+.fl{font-family:var(--font-d);font-size:1.1rem;color:var(--gold2);
+  margin-bottom:6px;text-shadow:0 0 8px var(--gold);}
+.social-links{display:flex;gap:12px;justify-content:center;margin:14px 0;flex-wrap:wrap;}
+.social-links a{color:rgba(255,255,255,.4);text-decoration:none;font-size:.75rem;
+  padding:5px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.08);
+  transition:all .2s;}
+.social-links a:hover{background:var(--glass2);color:#fff;}
 
-/* CTA buttons */
-.cta-group {
-  display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
-  margin-bottom: 60px;
-}
-.btn-primary {
-  padding: 14px 36px; border-radius: 40px;
-  background: linear-gradient(135deg, var(--gold), #e08c00);
-  color: #0a0e2e; font-weight: 700; font-size: 1rem;
-  border: none; cursor: pointer;
-  box-shadow: 0 0 20px rgba(240,192,64,0.5), 0 4px 32px rgba(0,0,0,0.3);
-  transition: all .3s; letter-spacing: .05em;
-  text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
-}
-.btn-primary:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 0 40px rgba(240,192,64,0.7), 0 8px 40px rgba(0,0,0,0.4);
-}
-.btn-secondary {
-  padding: 14px 36px; border-radius: 40px;
-  background: transparent;
-  color: var(--white); font-weight: 600; font-size: 1rem;
-  border: 1.5px solid rgba(255,255,255,0.3); cursor: pointer;
-  backdrop-filter: blur(8px);
-  transition: all .3s; letter-spacing: .05em;
-  text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
-}
-.btn-secondary:hover {
-  background: rgba(255,255,255,0.1);
-  border-color: var(--neon-blue);
-  box-shadow: 0 0 20px rgba(74,227,248,0.3);
-  transform: translateY(-2px);
-}
-
-/* scroll indicator */
-.scroll-hint {
-  display: flex; flex-direction: column; align-items: center; gap: 6px;
-  color: rgba(255,255,255,0.3); font-size: .72rem; letter-spacing: .2em;
-}
-.scroll-arrow {
-  width: 20px; height: 20px;
-  border-right: 1.5px solid rgba(255,255,255,0.3);
-  border-bottom: 1.5px solid rgba(255,255,255,0.3);
-  transform: rotate(45deg);
-  animation: scrollBounce 1.6s ease-in-out infinite;
-}
-@keyframes scrollBounce {
-  0%,100% { transform: rotate(45deg) translateY(0); opacity: .3; }
-  50%      { transform: rotate(45deg) translateY(6px); opacity: .8; }
-}
-
-/* ──────── SECTIONS WRAPPER ──────── */
-.sections { position: relative; z-index: 2; }
-
-/* ──────── GLASS CARD SECTION ──────── */
-.section {
-  padding: 80px 24px;
-  max-width: 1100px;
-  margin: 0 auto;
-}
-.section-title {
-  font-family: var(--font-display);
-  font-size: clamp(1.8rem, 4vw, 2.8rem);
-  font-weight: 900; margin-bottom: 8px;
-  color: var(--white);
-}
-.section-title .accent { color: var(--gold2); }
-.section-sub {
-  color: rgba(255,255,255,0.5); font-size: .9rem; margin-bottom: 40px;
-}
-
-/* ──────── FEATURE CARDS ──────── */
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 20px;
-}
-.feat-card {
-  background: var(--glass);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 20px;
-  padding: 28px 24px;
-  backdrop-filter: blur(16px);
-  transition: all .3s;
-  cursor: pointer;
-}
-.feat-card:hover {
-  background: var(--glass2);
-  border-color: rgba(74,227,248,0.3);
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.3), 0 0 20px rgba(74,227,248,0.1);
-}
-.feat-icon {
-  font-size: 2.2rem; margin-bottom: 16px;
-  display: block;
-}
-.feat-title {
-  font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; color: var(--gold2);
-}
-.feat-desc {
-  font-size: .85rem; color: rgba(255,255,255,0.55); line-height: 1.6;
-}
-
-/* ──────── SHOP PREVIEW ──────── */
-.shop-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 18px;
-}
-.product-card {
-  background: var(--glass);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 16px; overflow: hidden;
-  transition: all .3s; cursor: pointer;
-}
-.product-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--gold);
-  box-shadow: 0 8px 32px rgba(240,192,64,0.15);
-}
-.product-thumb {
-  height: 140px;
-  background: linear-gradient(135deg, rgba(74,227,248,0.08), rgba(110,247,110,0.06));
-  display: flex; align-items: center; justify-content: center;
-  font-size: 3rem;
-}
-.product-info { padding: 14px; }
-.product-name { font-size: .9rem; font-weight: 600; margin-bottom: 4px; }
-.product-price { font-size: .85rem; color: var(--gold2); font-weight: 700; }
-.product-rating { font-size: .75rem; color: rgba(255,255,255,0.4); margin-top: 4px; }
-.btn-add {
-  width: 100%; margin-top: 10px; padding: 8px;
-  border-radius: 10px; border: 1px solid rgba(240,192,64,0.4);
-  background: transparent; color: var(--gold2);
-  font-size: .8rem; cursor: pointer; font-family: var(--font-body);
-  transition: all .2s;
-}
-.btn-add:hover { background: var(--gold); color: #0a0e2e; font-weight: 700; }
-
-/* ──────── REVIEW ──────── */
-.reviews-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-}
-.review-card {
-  background: var(--glass);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 16px; padding: 22px;
-  backdrop-filter: blur(12px);
-}
-.review-stars { color: var(--gold); font-size: 1rem; margin-bottom: 10px; }
-.review-text { font-size: .88rem; color: rgba(255,255,255,0.7); line-height: 1.6; margin-bottom: 14px; }
-.review-author { display: flex; align-items: center; gap: 10px; }
-.review-avatar {
-  width: 36px; height: 36px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--sky4), var(--neon-blue));
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1rem; font-weight: 700;
-}
-.review-name { font-size: .82rem; color: rgba(255,255,255,0.6); }
-
-/* ──────── REGISTER FORM ──────── */
-.register-wrap {
-  max-width: 500px; margin: 0 auto;
-  background: var(--glass);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 24px; padding: 40px 36px;
-  backdrop-filter: blur(20px);
-}
-.form-title {
-  font-family: var(--font-display);
-  font-size: 1.6rem; font-weight: 900;
-  margin-bottom: 6px; color: var(--white);
-}
-.form-sub { font-size: .85rem; color: rgba(255,255,255,0.4); margin-bottom: 28px; }
-.field { margin-bottom: 18px; }
-.field label { display: block; font-size: .8rem; color: rgba(255,255,255,0.5); margin-bottom: 6px; letter-spacing: .05em; }
-.field input, .field select {
-  width: 100%; padding: 12px 16px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 12px; color: var(--white);
-  font-family: var(--font-body); font-size: .9rem;
-  outline: none; transition: border .2s;
-}
-.field input:focus, .field select:focus {
-  border-color: var(--neon-blue);
-  box-shadow: 0 0 0 3px rgba(74,227,248,0.1);
-}
-.field input::placeholder { color: rgba(255,255,255,0.2); }
-.field select option { background: #0a0e2e; }
-.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.btn-register {
-  width: 100%; padding: 14px;
-  border-radius: 14px; border: none;
-  background: linear-gradient(135deg, var(--sky4), var(--neon-blue));
-  color: var(--white); font-size: 1rem; font-weight: 700;
-  font-family: var(--font-body); cursor: pointer;
-  box-shadow: 0 4px 24px rgba(74,227,248,0.3);
-  transition: all .3s;
-}
-.btn-register:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 40px rgba(74,227,248,0.5);
-}
-.form-login-link {
-  text-align: center; margin-top: 16px;
-  font-size: .82rem; color: rgba(255,255,255,0.4);
-}
-.form-login-link a { color: var(--neon-blue); text-decoration: none; }
-
-/* ──────── BUSINESS LOGOS SECTION ──────── */
-.biz-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 16px;
-}
-.biz-card {
-  background: var(--glass);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 16px; padding: 20px 16px;
-  text-align: center; cursor: pointer;
-  transition: all .3s; backdrop-filter: blur(10px);
-}
-.biz-card:hover {
-  background: var(--glass2);
-  border-color: var(--gold);
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(240,192,64,0.15);
-}
-.biz-icon { font-size: 2.4rem; margin-bottom: 10px; display: block; }
-.biz-name { font-size: .82rem; font-weight: 600; color: var(--gold2); margin-bottom: 4px; }
-.biz-cat  { font-size: .72rem; color: rgba(255,255,255,0.35); }
-
-/* ──────── DIVIDER ──────── */
-.divider {
-  max-width: 1100px; margin: 0 auto;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-}
-
-/* ──────── FOOTER ──────── */
-footer {
-  position: relative; z-index: 2;
-  text-align: center; padding: 40px 24px;
-  border-top: 1px solid rgba(255,255,255,0.06);
-  color: rgba(255,255,255,0.3); font-size: .8rem;
-}
-footer .footer-logo {
-  font-family: var(--font-display); font-size: 1.2rem;
-  color: var(--gold2); margin-bottom: 8px;
-  text-shadow: 0 0 10px var(--gold);
-}
-
-/* ──────── MODAL ──────── */
-.modal-overlay {
-  position: fixed; inset: 0; z-index: 500;
-  background: rgba(5,8,30,0.85);
-  backdrop-filter: blur(12px);
-  display: none; align-items: center; justify-content: center; padding: 24px;
-}
-.modal-overlay.show { display: flex; }
-.modal-box {
-  background: linear-gradient(135deg, #0d1f5c, #0a0e2e);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 24px; padding: 36px;
-  max-width: 420px; width: 100%;
-  text-align: center;
-  box-shadow: 0 24px 80px rgba(0,0,0,0.6);
-}
-.modal-icon { font-size: 3rem; margin-bottom: 16px; display: block; }
-.modal-title { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 8px; color: var(--gold2); }
-.modal-desc { font-size: .88rem; color: rgba(255,255,255,0.55); margin-bottom: 24px; line-height: 1.6; }
-.modal-close {
-  padding: 10px 28px; border-radius: 20px;
-  background: transparent; border: 1px solid rgba(255,255,255,0.2);
-  color: var(--white); font-family: var(--font-body); font-size: .9rem;
-  cursor: pointer; transition: all .2s;
-}
-.modal-close:hover { background: rgba(255,255,255,0.08); }
-
-/* ──────── RESPONSIVE ──────── */
-@media (max-width: 640px) {
-  nav { padding: 12px 16px; }
-  .nav-menu { display: none; }
-  .logos-orbit { width: 220px; height: 220px; }
-  .logo-center { width: 80px; height: 80px; }
-  .orbit-ring-1 { width: 160px; height: 160px; margin: -80px 0 0 -80px; }
-  .orbit-ring-2 { width: 220px; height: 220px; margin: -110px 0 0 -110px; }
-  .ol-1 { top: calc(50% - 80px - 22px); left: calc(50% - 22px); }
-  .ol-2 { top: calc(50% - 22px); left: calc(50% + 80px - 22px); }
-  .ol-3 { top: calc(50% + 80px - 22px); left: calc(50% - 22px); }
-  .ol-4 { top: calc(50% - 22px); left: calc(50% - 80px - 22px); }
-  .ol-5 { top: calc(50% - 110px - 22px); left: calc(50% + 55px - 22px); }
-  .ol-6 { top: calc(50% + 55px - 22px); left: calc(50% + 110px - 22px); }
-  .ol-7 { top: calc(50% + 110px - 22px); left: calc(50% - 55px - 22px); }
-  .ol-8 { top: calc(50% - 55px - 22px); left: calc(50% - 110px - 22px); }
-  .orbit-logo { width: 44px; height: 44px; }
-  .register-wrap { padding: 28px 20px; }
-  .field-row { grid-template-columns: 1fr; }
+/* RESPONSIVE */
+@media(max-width:640px){
+  nav{padding:10px 16px;}
+  .nav-menu{display:none;}
+  .hamburger{display:flex;}
+  .logos-orbit{width:200px;height:200px;}
+  .logo-center{width:70px;height:70px;}
+  .r1{width:140px;height:140px;margin:-70px 0 0 -70px;}
+  .r2{width:200px;height:200px;margin:-100px 0 0 -100px;}
+  .p1{top:calc(50% - 70px - 24px);left:calc(50% - 24px);}
+  .p2{top:calc(50% - 24px);left:calc(50% + 70px - 24px);}
+  .p3{top:calc(50% + 70px - 24px);left:calc(50% - 24px);}
+  .p4{top:calc(50% - 24px);left:calc(50% - 70px - 24px);}
+  .p5{top:calc(50% - 100px - 24px);left:calc(50% + 50px - 24px);}
+  .p6{top:calc(50% + 50px - 24px);left:calc(50% + 100px - 24px);}
+  .p7{top:calc(50% + 100px - 24px);left:calc(50% - 50px - 24px);}
+  .p8{top:calc(50% - 50px - 24px);left:calc(50% - 100px - 24px);}
+  .auth-wrap{padding:24px 18px;}
+  .frow{grid-template-columns:1fr;}
 }
 </style>
 </head>
@@ -569,120 +337,68 @@ footer .footer-logo {
 <!-- NAV -->
 <nav>
   <div class="nav-brand">
-    <img src="images/logo-all.jpg" alt="LungChai Chaiyo" onerror="this.style.display='none'"/>
+    <img src="images/logo-all.jpg" alt="logo" onerror="this.style.display='none'"/>
     <div class="nav-brand-text">
       <span class="en">LungChai Chaiyo</span>
       <span class="th">กลุ่มธุรกิจลุงชัยไชโย</span>
     </div>
   </div>
   <ul class="nav-menu">
-    <li><a href="#shop">ร้านค้า</a></li>
-    <li><a href="#reviews">รีวิว</a></li>
-    <li><a href="#business">ธุรกิจ</a></li>
-    <li><a href="#register" class="nav-btn">สมัครสมาชิก</a></li>
+    <li><a href="#shop">🛒 ร้านค้า</a></li>
+    <li><a href="#reviews">⭐ รีวิว</a></li>
+    <li><a href="#business">🏢 ธุรกิจ</a></li>
+    <li><a href="#auth" class="nav-btn" id="nav-auth-btn">สมัครสมาชิก</a></li>
   </ul>
+  <button class="hamburger" onclick="toggleMobile()">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#shop" onclick="toggleMobile()">🛒 ร้านค้า</a>
+  <a href="#reviews" onclick="toggleMobile()">⭐ รีวิว</a>
+  <a href="#business" onclick="toggleMobile()">🏢 ธุรกิจ</a>
+  <a href="#auth" onclick="toggleMobile()">👤 สมัคร / เข้าสู่ระบบ</a>
+</div>
 
 <!-- HERO -->
 <section id="hero">
-  <!-- Floating clouds -->
-  <div class="cloud-layer" id="cloud-layer"></div>
-
-  <!-- Orbit logos -->
+  <div class="cloud-layer" id="clouds"></div>
   <div class="logos-orbit">
-    <div class="orbit-ring orbit-ring-1"></div>
-    <div class="orbit-ring orbit-ring-2"></div>
-
+    <div class="orbit-ring r1"></div>
+    <div class="orbit-ring r2"></div>
     <div class="logo-center">
-      <img src="images/logo-all.jpg" alt="LungChai Chaiyo"
-           onerror="this.parentElement.innerHTML='<span style=\'font-size:2.5rem\'>🏢</span>'"/>
+      <img src="images/logo-all.jpg" alt="LungChai" onerror="this.parentElement.innerHTML='<span style=\'font-size:2.4rem\'>🏢</span>'"/>
     </div>
-
-    <!-- Ring 1 logos -->
-    <div class="orbit-logo ol-1" onclick="openModal('P&K Plus Thailand','🏭','บริษัทจัดหาแรงงาน HR & Payroll ครบวงจร')">
-      <span class="emoji">🏭</span>
-      <div class="tip">P&K Plus Thailand</div>
-    </div>
-    <div class="orbit-logo ol-2" onclick="openModal('Network Farm IT','💻','IT Infrastructure & Network Solutions')">
-      <span class="emoji">💻</span>
-      <div class="tip">Network Farm IT</div>
-    </div>
-    <div class="orbit-logo ol-3" onclick="openModal('ร้านค้าลุงชัย','🏪','ร้านค้าปลีก 6 สาขา')">
-      <span class="emoji">🏪</span>
-      <div class="tip">ร้านค้าลุงชัย</div>
-    </div>
-    <div class="orbit-logo ol-4" onclick="openModal('Electrical Supply','⚡','อุปกรณ์ไฟฟ้าและโรงงาน')">
-      <span class="emoji">⚡</span>
-      <div class="tip">Electrical Supply</div>
-    </div>
-
-    <!-- Ring 2 logos -->
-    <div class="orbit-logo ol-5" onclick="openModal('Service & Maintenance','🔧','ซ่อมบำรุงและบริการหลังการขาย')">
-      <span class="emoji">🔧</span>
-      <div class="tip">Service & Maintenance</div>
-    </div>
-    <div class="orbit-logo ol-6" onclick="openModal('HR Payroll Services','📋','บริการ Payroll ทุกสัญชาติ')">
-      <span class="emoji">📋</span>
-      <div class="tip">HR Payroll</div>
-    </div>
-    <div class="orbit-logo ol-7" onclick="openModal('Uniform & Workwear','👔','เสื้อผ้า Uniform โรงงาน')">
-      <span class="emoji">👔</span>
-      <div class="tip">Uniform</div>
-    </div>
-    <div class="orbit-logo ol-8" onclick="openModal('LungChai Industry','🏗️','อุตสาหกรรมและก่อสร้าง')">
-      <span class="emoji">🏗️</span>
-      <div class="tip">LungChai Industry</div>
-    </div>
+    <div class="ol p1" onclick="openBizModal(0)"><span>🏭</span><div class="tip">P&K Plus</div></div>
+    <div class="ol p2" onclick="openBizModal(1)"><span>💻</span><div class="tip">Network Farm</div></div>
+    <div class="ol p3" onclick="openBizModal(2)"><span>🏪</span><div class="tip">ร้านลุงชัย</div></div>
+    <div class="ol p4" onclick="openBizModal(3)"><span>⚡</span><div class="tip">Electrical</div></div>
+    <div class="ol p5" onclick="openBizModal(4)"><span>🔧</span><div class="tip">Service</div></div>
+    <div class="ol p6" onclick="openBizModal(5)"><span>📋</span><div class="tip">HR Payroll</div></div>
+    <div class="ol p7" onclick="openBizModal(6)"><span>👔</span><div class="tip">Uniform</div></div>
+    <div class="ol p8"><span>🏗️</span><div class="tip">Industry</div></div>
   </div>
-
-  <p class="hero-eyebrow">กลุ่มธุรกิจครบวงจร · Since 2010</p>
-  <h1 class="hero-title">
-    ลุงชัยไชโย
-    <span class="sub">LUNGCHAI CHAIYO GROUP</span>
-  </h1>
-  <p class="hero-desc">
-    ศูนย์รวมธุรกิจ IT · HR · ไฟฟ้า · ร้านค้า · บริการ<br/>
-    ครบวงจรในที่เดียว พร้อมให้บริการทุกท่าน
-  </p>
-
-  <div class="cta-group">
-    <a href="#shop" class="btn-primary">🛒 เข้าสู่ร้านค้า</a>
-    <a href="#register" class="btn-secondary">✨ สมัครสมาชิก</a>
+  <p class="hero-eye">กลุ่มธุรกิจครบวงจร · Since 2010</p>
+  <h1 class="htitle">ลุงชัยไชโย<span class="sub">LUNGCHAI CHAIYO GROUP</span></h1>
+  <p class="hero-desc">ศูนย์รวมธุรกิจ IT · HR · ไฟฟ้า · ร้านค้า · บริการ<br/>ครบวงจรในที่เดียว</p>
+  <div class="ctas">
+    <a href="#shop" class="btn-p">🛒 เข้าสู่ร้านค้า</a>
+    <a href="#auth" class="btn-s">✨ สมัครสมาชิก</a>
   </div>
-
-  <div class="scroll-hint">
-    <span>เลื่อนดูเพิ่มเติม</span>
-    <div class="scroll-arrow"></div>
-  </div>
+  <div class="scroll-hint"><span>เลื่อนดูเพิ่มเติม</span><div class="sarr"></div></div>
 </section>
 
 <div class="sections">
 
 <!-- FEATURES -->
-<section class="section" id="features">
-  <h2 class="section-title">ทำอะไรได้บ้าง <span class="accent">?</span></h2>
-  <p class="section-sub">แพลตฟอร์มเดียว ครบทุกความต้องการ</p>
-  <div class="features-grid">
-    <div class="feat-card" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">
-      <span class="feat-icon">🛒</span>
-      <div class="feat-title">ซื้อ-ขายสินค้า</div>
-      <div class="feat-desc">สินค้า IT อุปกรณ์ไฟฟ้า เครื่องแบบ และสินค้าจากทุกธุรกิจในกลุ่มลุงชัย</div>
-    </div>
-    <div class="feat-card" onclick="document.getElementById('reviews').scrollIntoView({behavior:'smooth'})">
-      <span class="feat-icon">⭐</span>
-      <div class="feat-title">รีวิวสินค้า</div>
-      <div class="feat-desc">อ่านรีวิวจากผู้ใช้จริง พร้อมให้คะแนนและแสดงความคิดเห็นได้เลย</div>
-    </div>
-    <div class="feat-card" onclick="document.getElementById('register').scrollIntoView({behavior:'smooth'})">
-      <span class="feat-icon">👤</span>
-      <div class="feat-title">ลงทะเบียน</div>
-      <div class="feat-desc">สมัครสมาชิกฟรี รับสิทธิพิเศษ ส่วนลด และติดตามคำสั่งซื้อได้ทันที</div>
-    </div>
-    <div class="feat-card">
-      <span class="feat-icon">🚚</span>
-      <div class="feat-title">จัดส่งทั่วไทย</div>
-      <div class="feat-desc">ระบบติดตามพัสดุ แจ้งสถานะแบบ Real-time ส่งถึงบ้านทุกที่ในไทย</div>
-    </div>
+<section class="section">
+  <h2 class="stitle">ทำอะไรได้บ้าง <span class="ac">?</span></h2>
+  <p class="ssub">แพลตฟอร์มเดียว ครบทุกความต้องการ</p>
+  <div class="feat-grid">
+    <div class="fc" onclick="scroll2('shop')"><span class="fi">🛒</span><div class="ft">ซื้อ-ขายสินค้า</div><div class="fd">สินค้า IT อุปกรณ์ไฟฟ้า เครื่องแบบ จากทุกธุรกิจในกลุ่มลุงชัย</div></div>
+    <div class="fc" onclick="scroll2('reviews')"><span class="fi">⭐</span><div class="ft">รีวิวสินค้า</div><div class="fd">อ่านรีวิวจากผู้ใช้จริง พร้อมให้คะแนนและแสดงความคิดเห็น</div></div>
+    <div class="fc" onclick="scroll2('auth')"><span class="fi">👤</span><div class="ft">ลงทะเบียน</div><div class="fd">สมัครสมาชิกฟรี รับส่วนลดทันที 5% และติดตามออเดอร์ได้</div></div>
+    <div class="fc"><span class="fi">🚚</span><div class="ft">จัดส่งทั่วไทย</div><div class="fd">ติดตามพัสดุ Real-time ส่งถึงบ้านทุกที่ในไทย</div></div>
   </div>
 </section>
 
@@ -690,63 +406,10 @@ footer .footer-logo {
 
 <!-- SHOP -->
 <section class="section" id="shop">
-  <h2 class="section-title">ร้านค้า <span class="accent">ลุงชัย</span></h2>
-  <p class="section-sub">สินค้าแนะนำจากทุกธุรกิจในกลุ่ม</p>
-  <div class="shop-grid">
-    <div class="product-card">
-      <div class="product-thumb">💻</div>
-      <div class="product-info">
-        <div class="product-name">Network Switch 24 Port</div>
-        <div class="product-price">฿ 4,500</div>
-        <div class="product-rating">⭐ 4.8 (32 รีวิว)</div>
-        <button class="btn-add" onclick="showToast('เพิ่มลงตะกร้าแล้ว!')">+ ใส่ตะกร้า</button>
-      </div>
-    </div>
-    <div class="product-card">
-      <div class="product-thumb">⚡</div>
-      <div class="product-info">
-        <div class="product-name">สายไฟ NYY 4×4 mm² (100m)</div>
-        <div class="product-price">฿ 3,200</div>
-        <div class="product-rating">⭐ 4.6 (18 รีวิว)</div>
-        <button class="btn-add" onclick="showToast('เพิ่มลงตะกร้าแล้ว!')">+ ใส่ตะกร้า</button>
-      </div>
-    </div>
-    <div class="product-card">
-      <div class="product-thumb">👔</div>
-      <div class="product-info">
-        <div class="product-name">เสื้อ Uniform โรงงาน (ปัก)</div>
-        <div class="product-price">฿ 285</div>
-        <div class="product-rating">⭐ 4.9 (54 รีวิว)</div>
-        <button class="btn-add" onclick="showToast('เพิ่มลงตะกร้าแล้ว!')">+ ใส่ตะกร้า</button>
-      </div>
-    </div>
-    <div class="product-card">
-      <div class="product-thumb">📹</div>
-      <div class="product-info">
-        <div class="product-name">กล้อง CCTV IP 4MP</div>
-        <div class="product-price">฿ 1,890</div>
-        <div class="product-rating">⭐ 4.7 (27 รีวิว)</div>
-        <button class="btn-add" onclick="showToast('เพิ่มลงตะกร้าแล้ว!')">+ ใส่ตะกร้า</button>
-      </div>
-    </div>
-    <div class="product-card">
-      <div class="product-thumb">🔌</div>
-      <div class="product-info">
-        <div class="product-name">ปลั๊กไฟอุตสาหกรรม 3P 32A</div>
-        <div class="product-price">฿ 680</div>
-        <div class="product-rating">⭐ 4.5 (11 รีวิว)</div>
-        <button class="btn-add" onclick="showToast('เพิ่มลงตะกร้าแล้ว!')">+ ใส่ตะกร้า</button>
-      </div>
-    </div>
-    <div class="product-card">
-      <div class="product-thumb">📶</div>
-      <div class="product-info">
-        <div class="product-name">Wi-Fi Access Point AC1200</div>
-        <div class="product-price">฿ 2,100</div>
-        <div class="product-rating">⭐ 4.8 (41 รีวิว)</div>
-        <button class="btn-add" onclick="showToast('เพิ่มลงตะกร้าแล้ว!')">+ ใส่ตะกร้า</button>
-      </div>
-    </div>
+  <h2 class="stitle">ร้านค้า <span class="ac">ลุงชัย</span></h2>
+  <p class="ssub">สินค้าจากฐานข้อมูลจริง · Supabase Live</p>
+  <div id="shop-grid" class="shop-grid">
+    <div class="loading-grid">⏳ กำลังโหลดสินค้า...</div>
   </div>
 </section>
 
@@ -754,33 +417,25 @@ footer .footer-logo {
 
 <!-- REVIEWS -->
 <section class="section" id="reviews">
-  <h2 class="section-title">รีวิว <span class="accent">จากลูกค้า</span></h2>
-  <p class="section-sub">ความไว้วางใจจากผู้ใช้จริง</p>
-  <div class="reviews-row">
-    <div class="review-card">
-      <div class="review-stars">★★★★★</div>
-      <div class="review-text">"สินค้าดีมาก ส่งเร็ว Network Switch ใช้งานได้เลยไม่มีปัญหา ทีมซัพพอร์ตตอบไว มืออาชีพมาก"</div>
-      <div class="review-author">
-        <div class="review-avatar">ส</div>
-        <div class="review-name">สมชาย อ. · โรงงาน EHC จ.สมุทรสาคร</div>
-      </div>
+  <h2 class="stitle">รีวิว <span class="ac">จากลูกค้า</span></h2>
+  <p class="ssub">ความไว้วางใจจากผู้ใช้จริง</p>
+  <div id="reviews-list" class="rv-row">
+    <div class="loading-grid">⏳ กำลังโหลดรีวิว...</div>
+  </div>
+  <div class="rv-form" id="review-form" style="display:none;">
+    <div class="rv-form-title">✍️ เขียนรีวิว</div>
+    <div class="star-pick" id="star-pick">
+      <span onclick="setStar(1)">★</span>
+      <span onclick="setStar(2)">★</span>
+      <span onclick="setStar(3)">★</span>
+      <span onclick="setStar(4)">★</span>
+      <span onclick="setStar(5)">★</span>
     </div>
-    <div class="review-card">
-      <div class="review-stars">★★★★★</div>
-      <div class="review-text">"สั่ง Uniform ปักโลโก้บริษัท ได้ตรงตามแบบ งานเนี้ยบ ราคาโอเคมากครับ สั่งซ้ำทุกปี"</div>
-      <div class="review-author">
-        <div class="review-avatar">ว</div>
-        <div class="review-name">วิไล ม. · HR Manager</div>
-      </div>
-    </div>
-    <div class="review-card">
-      <div class="review-stars">★★★★☆</div>
-      <div class="review-text">"ระบบสั่งซื้อสะดวก ติดตามออเดอร์ได้ตลอด สินค้ามีให้เลือกเยอะ ประทับใจบริการหลังการขาย"</div>
-      <div class="review-author">
-        <div class="review-avatar">ป</div>
-        <div class="review-name">ประยุทธ์ ร. · ช่างไฟฟ้า</div>
-      </div>
-    </div>
+    <textarea id="rv-comment" placeholder="เขียนความคิดเห็นของคุณ..."></textarea>
+    <button class="btn-review" onclick="submitReview()">ส่งรีวิว</button>
+  </div>
+  <div id="review-login-note" style="margin-top:16px;text-align:center;font-size:.82rem;color:rgba(255,255,255,.3);">
+    <a href="#auth" style="color:var(--neon);text-decoration:none;">เข้าสู่ระบบ</a> เพื่อเขียนรีวิว
   </div>
 </section>
 
@@ -788,274 +443,368 @@ footer .footer-logo {
 
 <!-- BUSINESS -->
 <section class="section" id="business">
-  <h2 class="section-title">กลุ่ม<span class="accent">ธุรกิจ</span>ทั้งหมด</h2>
-  <p class="section-sub">8 ธุรกิจ ครบวงจรในกลุ่มลุงชัยไชโย</p>
-  <div class="biz-grid">
-    <div class="biz-card" onclick="openModal('P&K Plus Thailand','🏭','บริษัทจัดหาแรงงาน นำเข้าแรงงานต่างด้าว HR & Payroll ครบวงจร')">
-      <span class="biz-icon">🏭</span>
-      <div class="biz-name">P&K Plus Thailand</div>
-      <div class="biz-cat">HR · แรงงาน</div>
-    </div>
-    <div class="biz-card" onclick="openModal('Network Farm IT','💻','IT Infrastructure · Network · CCTV · Wi-Fi ครบวงจร')">
-      <span class="biz-icon">💻</span>
-      <div class="biz-name">Network Farm IT</div>
-      <div class="biz-cat">IT · Network</div>
-    </div>
-    <div class="biz-card" onclick="openModal('ร้านค้าลุงชัย','🏪','ร้านค้าปลีก 6 สาขา สินค้าหลากหลาย')">
-      <span class="biz-icon">🏪</span>
-      <div class="biz-name">ร้านค้าลุงชัย</div>
-      <div class="biz-cat">ค้าปลีก · 6 สาขา</div>
-    </div>
-    <div class="biz-card" onclick="openModal('Electrical Supply','⚡','อุปกรณ์ไฟฟ้าโรงงาน สายไฟ ปลั๊ก เบรกเกอร์ ครบ')">
-      <span class="biz-icon">⚡</span>
-      <div class="biz-name">Electrical Supply</div>
-      <div class="biz-cat">ไฟฟ้า · โรงงาน</div>
-    </div>
-    <div class="biz-card" onclick="openModal('Service & Maintenance','🔧','ซ่อมบำรุง ติดตั้ง บริการหลังการขายทุกประเภท')">
-      <span class="biz-icon">🔧</span>
-      <div class="biz-name">Service & Maintenance</div>
-      <div class="biz-cat">ซ่อมบำรุง · บริการ</div>
-    </div>
-    <div class="biz-card" onclick="openModal('HR Payroll Services','📋','บริการ Payroll ลูกจ้างทุกสัญชาติ ไทย พม่า จีน')">
-      <span class="biz-icon">📋</span>
-      <div class="biz-name">HR Payroll Services</div>
-      <div class="biz-cat">HR · Payroll</div>
-    </div>
-    <div class="biz-card" onclick="openModal('Uniform & Workwear','👔','เสื้อผ้า Uniform โรงงาน ปักโลโก้ สั่งตัด')">
-      <span class="biz-icon">👔</span>
-      <div class="biz-name">Uniform & Workwear</div>
-      <div class="biz-cat">เครื่องแบบ · ปักโลโก้</div>
-    </div>
-    <div class="biz-card" onclick="openModal('LungChai Industry','🏗️','รับเหมาก่อสร้าง ติดตั้งระบบ อุตสาหกรรม')">
-      <span class="biz-icon">🏗️</span>
-      <div class="biz-name">LungChai Industry</div>
-      <div class="biz-cat">อุตสาหกรรม · ก่อสร้าง</div>
-    </div>
+  <h2 class="stitle">กลุ่ม<span class="ac">ธุรกิจ</span>ทั้งหมด</h2>
+  <p class="ssub">โหลดจาก Supabase · Live Data</p>
+  <div id="biz-grid" class="biz-grid">
+    <div class="loading-grid">⏳ กำลังโหลด...</div>
   </div>
 </section>
 
 <div class="divider"></div>
 
-<!-- REGISTER -->
-<section class="section" id="register">
-  <div class="register-wrap">
-    <div class="form-title">สมัครสมาชิก</div>
-    <div class="form-sub">ฟรี! รับส่วนลดทันที 5% สำหรับสมาชิกใหม่</div>
-    <div class="field-row">
-      <div class="field">
-        <label>ชื่อ</label>
-        <input type="text" placeholder="ชื่อจริง"/>
+<!-- AUTH -->
+<section class="section" id="auth">
+  <div class="auth-wrap">
+    <div id="user-bar" style="display:none;"></div>
+    <div id="auth-form">
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-reg" onclick="switchTab('reg')">สมัครสมาชิก</button>
+        <button class="auth-tab" id="tab-login" onclick="switchTab('login')">เข้าสู่ระบบ</button>
       </div>
-      <div class="field">
-        <label>นามสกุล</label>
-        <input type="text" placeholder="นามสกุล"/>
+      <!-- REGISTER -->
+      <div id="form-reg">
+        <div class="auth-title">สมัครสมาชิก</div>
+        <div class="auth-sub">ฟรี! รับส่วนลด 5% สำหรับสมาชิกใหม่</div>
+        <div class="frow">
+          <div class="field"><label>ชื่อ</label><input id="r-fname" type="text" placeholder="ชื่อจริง"/></div>
+          <div class="field"><label>นามสกุล</label><input id="r-lname" type="text" placeholder="นามสกุล"/></div>
+        </div>
+        <div class="field"><label>อีเมล</label><input id="r-email" type="email" placeholder="email@example.com"/></div>
+        <div class="field"><label>เบอร์โทร</label><input id="r-phone" type="tel" placeholder="08x-xxx-xxxx"/></div>
+        <div class="field">
+          <label>ประเภทสมาชิก</label>
+          <select id="r-type">
+            <option value="customer">ลูกค้าทั่วไป</option>
+            <option value="corporate">ลูกค้าองค์กร / โรงงาน</option>
+            <option value="reseller">ตัวแทนจำหน่าย</option>
+          </select>
+        </div>
+        <div class="field"><label>รหัสผ่าน</label><input id="r-pass" type="password" placeholder="••••••••"/></div>
+        <button class="btn-reg" onclick="doRegister()">สมัครสมาชิกเลย ✨</button>
+        <div id="reg-msg"></div>
+      </div>
+      <!-- LOGIN -->
+      <div id="form-login" style="display:none;">
+        <div class="auth-title">เข้าสู่ระบบ</div>
+        <div class="auth-sub">ยินดีต้อนรับกลับ!</div>
+        <div class="field"><label>อีเมล</label><input id="l-email" type="email" placeholder="email@example.com"/></div>
+        <div class="field"><label>รหัสผ่าน</label><input id="l-pass" type="password" placeholder="••••••••"/></div>
+        <button class="btn-reg" onclick="doLogin()">เข้าสู่ระบบ 🚀</button>
+        <div id="login-msg"></div>
       </div>
     </div>
-    <div class="field">
-      <label>อีเมล</label>
-      <input type="email" placeholder="email@example.com"/>
-    </div>
-    <div class="field">
-      <label>เบอร์โทร</label>
-      <input type="tel" placeholder="08x-xxx-xxxx"/>
-    </div>
-    <div class="field">
-      <label>ประเภทสมาชิก</label>
-      <select>
-        <option>ลูกค้าทั่วไป</option>
-        <option>ลูกค้าองค์กร / โรงงาน</option>
-        <option>ตัวแทนจำหน่าย</option>
-        <option>พนักงาน</option>
-      </select>
-    </div>
-    <div class="field">
-      <label>รหัสผ่าน</label>
-      <input type="password" placeholder="••••••••"/>
-    </div>
-    <button class="btn-register" onclick="showToast('สมัครสมาชิกสำเร็จ! 🎉')">สมัครสมาชิกเลย</button>
-    <div class="form-login-link">มีบัญชีแล้ว? <a href="#">เข้าสู่ระบบ</a></div>
   </div>
 </section>
 
-</div><!-- end sections -->
+</div>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">ลุงชัยไชโย</div>
-  <div>© 2026 LungChai Chaiyo Group · All Rights Reserved</div>
-  <div style="margin-top:6px;">lungchaichaiyo.shop</div>
+  <div class="fl">ลุงชัยไชโย</div>
+  <div class="social-links">
+    <a href="https://www.facebook.com/lungchaishop1" target="_blank">📘 Facebook</a>
+    <a href="https://line.me/R/ti/p/@971yzyyd" target="_blank">💬 LINE OA</a>
+    <a href="https://www.tiktok.com/@lungchai147258" target="_blank">🎵 TikTok</a>
+    <a href="https://s.lazada.co.th/s.Z7iuvG" target="_blank">🛍️ Lazada</a>
+    <a href="https://maps.app.goo.gl/eayqd3619xcgLWFd8" target="_blank">📍 Maps</a>
+  </div>
+  <div>© 2026 LungChai Chaiyo Group · All Rights Reserved · lungchaichaiyo.shop</div>
 </footer>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
+<!-- BIZ MODAL -->
+<div class="modal-ov" id="modal" onclick="if(event.target===this)closeModal()">
   <div class="modal-box">
     <span class="modal-icon" id="m-icon">🏢</span>
-    <div class="modal-title" id="m-title">ธุรกิจ</div>
-    <div class="modal-desc" id="m-desc">รายละเอียด</div>
+    <div class="modal-title" id="m-title"></div>
+    <div class="modal-desc" id="m-desc"></div>
+    <div class="modal-links" id="m-links"></div>
     <button class="modal-close" onclick="closeModal()">ปิด</button>
   </div>
 </div>
 
+<!-- CART BUTTON -->
+<button class="cart-btn" onclick="showToast('🛒 ระบบตะกร้าเร็วๆ นี้!')">
+  🛒<span class="cart-count" id="cart-count">0</span>
+</button>
+
 <!-- TOAST -->
-<div id="toast" style="
-  position:fixed; bottom:32px; left:50%; transform:translateX(-50%) translateY(20px);
-  background:linear-gradient(135deg,#0d1f5c,#1a3a8f);
-  border:1px solid rgba(74,227,248,0.3);
-  color:#fff; padding:12px 28px; border-radius:30px;
-  font-size:.9rem; z-index:999;
-  opacity:0; transition:all .3s; pointer-events:none;
-  box-shadow:0 8px 32px rgba(0,0,0,0.4);
-"></div>
+<div id="toast"></div>
 
 <script>
-// ──── SKY CANVAS ────
-const canvas = document.getElementById('sky-canvas');
-const ctx = canvas.getContext('2d');
-let W, H, stars = [], particles = [];
+// ── SUPABASE ──
+const SUPA_URL = 'https://hkwqrllqzfzsbsxqgaoo.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhrd3FybGxxemZ6c2JzeHFnYW9vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzNzIzNjAsImV4cCI6MjA5Njk0ODM2MH0.kPT_UY0-2-0cbDlGwya24DnOLJXA-XJGMdM6SIm7Rew';
+const { createClient } = supabase;
+const db = createClient(SUPA_URL, SUPA_KEY);
 
-function resize() {
-  W = canvas.width = window.innerWidth;
-  H = canvas.height = window.innerHeight;
-  initStars();
+let currentUser = null;
+let cartCount = 0;
+let selectedStar = 5;
+let bizData = [];
+
+// ── INIT ──
+async function init() {
+  const { data:{ session } } = await db.auth.getSession();
+  if (session) onLogin(session.user);
+  db.auth.onAuthStateChange((_e, s) => s ? onLogin(s.user) : onLogout());
+  loadProducts();
+  loadReviews();
+  loadBusinesses();
+  initCanvas();
+  initClouds();
+  initScrollReveal();
 }
 
-function initStars() {
-  stars = [];
-  for (let i = 0; i < 220; i++) {
-    stars.push({
-      x: Math.random() * W,
-      y: Math.random() * H,
-      r: Math.random() * 1.5 + 0.3,
-      a: Math.random(),
-      speed: Math.random() * 0.008 + 0.003,
-      phase: Math.random() * Math.PI * 2
+// ── AUTH ──
+async function doRegister() {
+  const email = document.getElementById('r-email').value;
+  const pass  = document.getElementById('r-pass').value;
+  const fname = document.getElementById('r-fname').value;
+  const lname = document.getElementById('r-lname').value;
+  const phone = document.getElementById('r-phone').value;
+  const type  = document.getElementById('r-type').value;
+  if (!email||!pass||!fname) { showMsg('reg-msg','กรุณากรอกข้อมูลให้ครบ','err'); return; }
+  showMsg('reg-msg','⏳ กำลังสมัคร...','ok');
+  const { data, error } = await db.auth.signUp({
+    email, password: pass,
+    options: { data: { full_name: fname+' '+lname, phone, member_type: type } }
+  });
+  if (error) { showMsg('reg-msg', error.message, 'err'); return; }
+  // upsert profile
+  if (data.user) {
+    await db.from('profiles').upsert({
+      id: data.user.id, full_name: fname+' '+lname,
+      phone, member_type: type
     });
   }
+  showMsg('reg-msg','✅ สมัครสำเร็จ! กรุณายืนยันอีเมลก่อนเข้าสู่ระบบ','ok');
+  showToast('สมัครสมาชิกสำเร็จ! 🎉');
 }
 
-function drawSky(t) {
-  // Deep sky gradient
-  const grad = ctx.createLinearGradient(0, 0, 0, H);
-  grad.addColorStop(0, '#020818');
-  grad.addColorStop(0.35, '#061540');
-  grad.addColorStop(0.7, '#0d2a70');
-  grad.addColorStop(1, '#1a4faa');
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, W, H);
+async function doLogin() {
+  const email = document.getElementById('l-email').value;
+  const pass  = document.getElementById('l-pass').value;
+  if (!email||!pass) { showMsg('login-msg','กรุณากรอกอีเมลและรหัสผ่าน','err'); return; }
+  showMsg('login-msg','⏳ กำลังเข้าสู่ระบบ...','ok');
+  const { error } = await db.auth.signInWithPassword({ email, password: pass });
+  if (error) { showMsg('login-msg', error.message==='Invalid login credentials'?'อีเมลหรือรหัสผ่านไม่ถูกต้อง':error.message, 'err'); }
+}
 
-  // Nebula glow
-  const cx = W * 0.5, cy = H * 0.38;
-  const nb = ctx.createRadialGradient(cx, cy, 0, cx, cy, W * 0.55);
-  nb.addColorStop(0, 'rgba(74,100,248,0.12)');
-  nb.addColorStop(0.5, 'rgba(37,99,200,0.06)');
-  nb.addColorStop(1, 'transparent');
-  ctx.fillStyle = nb;
-  ctx.fillRect(0, 0, W, H);
+function onLogin(user) {
+  currentUser = user;
+  const name = user.user_metadata?.full_name || user.email;
+  const type = user.user_metadata?.member_type || 'customer';
+  document.getElementById('user-bar').style.display = 'flex';
+  document.getElementById('user-bar').innerHTML = `
+    <div style="font-size:1.6rem">👤</div>
+    <div><div class="uname">${name}</div><div class="utype">${typeLabel(type)}</div></div>
+    <button class="btn-logout" onclick="doLogout()">ออกจากระบบ</button>`;
+  document.getElementById('auth-form').style.display = 'none';
+  document.getElementById('nav-auth-btn').textContent = '👤 '+name.split(' ')[0];
+  document.getElementById('review-form').style.display = 'block';
+  document.getElementById('review-login-note').style.display = 'none';
+  showToast('ยินดีต้อนรับ '+name.split(' ')[0]+' 👋');
+}
 
-  // Stars
-  stars.forEach(s => {
-    const alpha = 0.3 + 0.7 * Math.sin(t * s.speed + s.phase);
-    ctx.beginPath();
-    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(255,255,255,${alpha * s.a})`;
-    ctx.fill();
-  });
+function onLogout() {
+  currentUser = null;
+  document.getElementById('user-bar').style.display = 'none';
+  document.getElementById('auth-form').style.display = 'block';
+  document.getElementById('nav-auth-btn').textContent = 'สมัครสมาชิก';
+  document.getElementById('review-form').style.display = 'none';
+  document.getElementById('review-login-note').style.display = 'block';
+}
 
-  // Shooting stars occasionally
-  if (Math.random() < 0.004) {
-    particles.push({
-      x: Math.random() * W, y: Math.random() * H * 0.5,
-      vx: 6 + Math.random() * 4, vy: 2 + Math.random() * 2,
-      life: 1, maxLife: 40 + Math.random() * 20
-    });
+async function doLogout() {
+  await db.auth.signOut();
+  showToast('ออกจากระบบแล้ว');
+}
+
+function typeLabel(t) {
+  return {customer:'ลูกค้าทั่วไป',corporate:'ลูกค้าองค์กร',reseller:'ตัวแทนจำหน่าย',staff:'พนักงาน'}[t]||t;
+}
+
+// ── PRODUCTS ──
+async function loadProducts() {
+  const { data, error } = await db.from('products').select('*').eq('is_active',true).limit(12);
+  const grid = document.getElementById('shop-grid');
+  if (error||!data||!data.length) {
+    grid.innerHTML = '<div class="loading-grid">ไม่พบสินค้า</div>'; return;
   }
-  particles = particles.filter(p => p.life > 0);
-  particles.forEach(p => {
-    ctx.beginPath();
-    ctx.moveTo(p.x, p.y);
-    ctx.lineTo(p.x - p.vx * 6, p.y - p.vy * 6);
-    const a = p.life / p.maxLife;
-    ctx.strokeStyle = `rgba(255,255,255,${a * 0.8})`;
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
-    p.x += p.vx; p.y += p.vy; p.life--;
+  grid.innerHTML = data.map(p => `
+    <div class="pc">
+      <div class="pt">${p.thumbnail_emoji||'📦'}</div>
+      <div class="pi">
+        <div class="pn">${p.name}</div>
+        <div class="pp">฿ ${Number(p.price).toLocaleString()}</div>
+        <div class="pr">⭐ 4.8 · สต็อก ${p.stock}</div>
+        <button class="btn-add" onclick="addCart('${p.name}')">+ ใส่ตะกร้า</button>
+      </div>
+    </div>`).join('');
+  initScrollReveal();
+}
+
+// ── REVIEWS ──
+async function loadReviews() {
+  const { data } = await db.from('reviews')
+    .select('rating,comment,created_at,profiles(full_name)')
+    .order('created_at',{ascending:false}).limit(6);
+  const el = document.getElementById('reviews-list');
+  if (!data||!data.length) {
+    el.innerHTML = `
+      <div class="rv"><div class="rv-stars">★★★★★</div>
+        <div class="rv-text">"สินค้าดีมาก ส่งเร็ว ทีมซัพพอร์ตตอบไว มืออาชีพมาก"</div>
+        <div class="rv-author"><div class="rv-av">ส</div><div class="rv-name">สมชาย อ. · โรงงาน EHC</div></div></div>
+      <div class="rv"><div class="rv-stars">★★★★★</div>
+        <div class="rv-text">"สั่ง Uniform ปักโลโก้ ได้ตรงตามแบบ งานเนี้ยบ ราคาโอเค"</div>
+        <div class="rv-author"><div class="rv-av">ว</div><div class="rv-name">วิไล ม. · HR Manager</div></div></div>
+      <div class="rv"><div class="rv-stars">★★★★☆</div>
+        <div class="rv-text">"ระบบสั่งซื้อสะดวก ติดตามออเดอร์ได้ตลอด ประทับใจมาก"</div>
+        <div class="rv-author"><div class="rv-av">ป</div><div class="rv-name">ประยุทธ์ ร. · ช่างไฟฟ้า</div></div></div>`;
+    return;
+  }
+  el.innerHTML = data.map(r => {
+    const stars = '★'.repeat(r.rating)+'☆'.repeat(5-r.rating);
+    const name = r.profiles?.full_name || 'ผู้ใช้';
+    return `<div class="rv">
+      <div class="rv-stars">${stars}</div>
+      <div class="rv-text">"${r.comment}"</div>
+      <div class="rv-author">
+        <div class="rv-av">${name[0]}</div>
+        <div class="rv-name">${name}</div>
+      </div></div>`;
+  }).join('');
+}
+
+function setStar(n) {
+  selectedStar = n;
+  document.querySelectorAll('#star-pick span').forEach((s,i) => s.classList.toggle('on', i<n));
+}
+
+async function submitReview() {
+  if (!currentUser) { showToast('กรุณาเข้าสู่ระบบก่อน'); return; }
+  const comment = document.getElementById('rv-comment').value;
+  if (!comment) { showToast('กรุณาเขียนรีวิว'); return; }
+  const { error } = await db.from('reviews').insert({
+    product_id: 1, user_id: currentUser.id,
+    rating: selectedStar, comment
   });
-
-  // Horizon aurora
-  const aur = ctx.createLinearGradient(0, H * 0.65, 0, H);
-  aur.addColorStop(0, 'transparent');
-  aur.addColorStop(0.5, 'rgba(37,99,200,0.08)');
-  aur.addColorStop(1, 'rgba(74,227,248,0.04)');
-  ctx.fillStyle = aur;
-  ctx.fillRect(0, H * 0.65, W, H * 0.35);
+  if (error) { showToast('เกิดข้อผิดพลาด: '+error.message); return; }
+  document.getElementById('rv-comment').value = '';
+  showToast('ส่งรีวิวสำเร็จ! ขอบคุณ 🙏');
+  loadReviews();
 }
 
-let t = 0;
-function animate() {
-  t += 0.5;
-  drawSky(t);
-  requestAnimationFrame(animate);
+// ── BUSINESSES ──
+async function loadBusinesses() {
+  const { data } = await db.from('businesses').select('*').eq('is_active',true);
+  bizData = data || [];
+  const grid = document.getElementById('biz-grid');
+  if (!bizData.length) { grid.innerHTML='<div class="loading-grid">ไม่พบข้อมูล</div>'; return; }
+  grid.innerHTML = bizData.map((b,i) => `
+    <div class="bz" onclick="openBizModal(${i})">
+      <span class="bz-i">${b.icon}</span>
+      <div class="bz-n">${b.name}</div>
+      <div class="bz-c">${b.category}</div>
+    </div>`).join('');
+  initScrollReveal();
 }
-window.addEventListener('resize', resize);
-resize();
-animate();
 
-// ──── CLOUDS ────
-const cloudLayer = document.getElementById('cloud-layer');
-const cloudData = [
-  { w: 400, h: 180, top: '15%', delay: 0,  dur: 55 },
-  { w: 600, h: 220, top: '30%', delay: 15, dur: 70 },
-  { w: 300, h: 140, top: '50%', delay: 8,  dur: 48 },
-  { w: 500, h: 200, top: '65%', delay: 25, dur: 62 },
-  { w: 350, h: 160, top: '80%', delay: 35, dur: 58 },
-];
-cloudData.forEach(c => {
-  const el = document.createElement('div');
-  el.className = 'cloud';
-  el.style.cssText = `width:${c.w}px;height:${c.h}px;top:${c.top};
-    animation-duration:${c.dur}s;animation-delay:-${c.delay}s;`;
-  cloudLayer.appendChild(el);
-});
-
-// ──── MODAL ────
-function openModal(title, icon, desc) {
-  document.getElementById('m-title').textContent = title;
-  document.getElementById('m-icon').textContent = icon;
-  document.getElementById('m-desc').textContent = desc;
+function openBizModal(i) {
+  const b = bizData[i];
+  if (!b) return;
+  document.getElementById('m-icon').textContent = b.icon;
+  document.getElementById('m-title').textContent = b.name;
+  document.getElementById('m-desc').textContent = b.description;
+  let links = '';
+  if (b.line_url)     links += `<a class="modal-link" href="${b.line_url}" target="_blank">💬 LINE</a>`;
+  if (b.facebook_url) links += `<a class="modal-link" href="${b.facebook_url}" target="_blank">📘 Facebook</a>`;
+  if (b.shopee_url)   links += `<a class="modal-link" href="${b.shopee_url}" target="_blank">🛍️ Shopee</a>`;
+  document.getElementById('m-links').innerHTML = links;
   document.getElementById('modal').classList.add('show');
 }
-function closeModal() {
-  document.getElementById('modal').classList.remove('show');
+function closeModal() { document.getElementById('modal').classList.remove('show'); }
+
+// ── CART ──
+function addCart(name) {
+  cartCount++;
+  document.getElementById('cart-count').textContent = cartCount;
+  showToast('🛒 เพิ่ม '+name+' แล้ว!');
 }
 
-// ──── TOAST ────
+// ── UI HELPERS ──
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
-  t.style.opacity = '1';
-  t.style.transform = 'translateX(-50%) translateY(0)';
-  setTimeout(() => {
-    t.style.opacity = '0';
-    t.style.transform = 'translateX(-50%) translateY(20px)';
-  }, 2500);
+  t.style.opacity='1'; t.style.transform='translateX(-50%) translateY(0)';
+  setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(-50%) translateY(20px)';},2800);
+}
+function showMsg(id,msg,type) {
+  const el = document.getElementById(id);
+  el.className = type==='err'?'err-msg':'ok-msg';
+  el.textContent = msg;
+}
+function switchTab(tab) {
+  document.getElementById('form-reg').style.display   = tab==='reg'?'block':'none';
+  document.getElementById('form-login').style.display = tab==='login'?'block':'none';
+  document.getElementById('tab-reg').classList.toggle('active', tab==='reg');
+  document.getElementById('tab-login').classList.toggle('active', tab==='login');
+}
+function scroll2(id) { document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
+function toggleMobile() {
+  document.getElementById('mobile-menu').classList.toggle('open');
 }
 
-// ──── SCROLL REVEAL ────
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.style.opacity = '1';
-      e.target.style.transform = 'translateY(0)';
+// ── SCROLL REVEAL ──
+function initScrollReveal() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; }
+    });
+  },{threshold:0.1});
+  document.querySelectorAll('.fc,.pc,.rv,.bz').forEach(el => {
+    if (el.style.opacity==='') {
+      el.style.opacity='0'; el.style.transform='translateY(22px)';
+      el.style.transition='opacity .5s ease,transform .5s ease';
+      obs.observe(el);
     }
   });
-}, { threshold: 0.1 });
+}
 
-document.querySelectorAll('.feat-card, .product-card, .review-card, .biz-card').forEach(el => {
-  el.style.opacity = '0';
-  el.style.transform = 'translateY(24px)';
-  el.style.transition = 'opacity .5s ease, transform .5s ease';
-  observer.observe(el);
-});
+// ── SKY CANVAS ──
+function initCanvas() {
+  const canvas = document.getElementById('sky-canvas');
+  const ctx = canvas.getContext('2d');
+  let W,H,stars=[],particles=[];
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;initStars();}
+  function initStars(){stars=[];for(let i=0;i<200;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+.3,a:Math.random(),sp:Math.random()*.008+.003,ph:Math.random()*Math.PI*2});}
+  let t=0;
+  function draw(){
+    t+=.5;
+    const g=ctx.createLinearGradient(0,0,0,H);
+    g.addColorStop(0,'#010612');g.addColorStop(.4,'#051340');g.addColorStop(.7,'#0c2870');g.addColorStop(1,'#1848a0');
+    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    const nb=ctx.createRadialGradient(W*.5,H*.38,0,W*.5,H*.38,W*.55);
+    nb.addColorStop(0,'rgba(60,90,240,.1)');nb.addColorStop(1,'transparent');
+    ctx.fillStyle=nb;ctx.fillRect(0,0,W,H);
+    stars.forEach(s=>{const a=.3+.7*Math.sin(t*s.sp+s.ph);ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${a*s.a})`;ctx.fill();});
+    if(Math.random()<.004)particles.push({x:Math.random()*W,y:Math.random()*H*.5,vx:6+Math.random()*4,vy:2+Math.random()*2,life:1,ml:40+Math.random()*20});
+    particles=particles.filter(p=>p.life>0);
+    particles.forEach(p=>{ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p.x-p.vx*6,p.y-p.vy*6);ctx.strokeStyle=`rgba(255,255,255,${p.life/p.ml*.8})`;ctx.lineWidth=1.5;ctx.stroke();p.x+=p.vx;p.y+=p.vy;p.life--;});
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',resize);resize();draw();
+}
+
+function initClouds() {
+  const cl=document.getElementById('clouds');
+  [{w:380,h:160,t:'12%',d:0,du:52},{w:550,h:200,t:'28%',d:14,du:68},{w:300,h:130,t:'48%',d:7,du:46},{w:480,h:190,t:'63%',d:24,du:60},{w:340,h:150,t:'78%',d:33,du:56}].forEach(c=>{
+    const el=document.createElement('div');el.className='cloud';
+    el.style.cssText=`width:${c.w}px;height:${c.h}px;top:${c.t};animation-duration:${c.du}s;animation-delay:-${c.d}s;`;
+    cl.appendChild(el);});
+}
+
+init();
 </script>
 </body>
 </html>
