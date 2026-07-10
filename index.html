@@ -461,6 +461,62 @@ nav.scrolled {
 }
 
 /* ===========================
+   HERO QUICK MENU
+=========================== */
+.hero-quick-menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.hqm-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 4px;
+  font-family: var(--font-tech);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--steel);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+.hqm-btn:hover {
+  color: var(--gold);
+  background: rgba(201,168,76,0.08);
+  border-color: rgba(201,168,76,0.3);
+  transform: translateY(-1px);
+}
+.hqm-highlight {
+  color: #00B90A !important;
+  background: rgba(0,185,10,0.07) !important;
+  border-color: rgba(0,185,10,0.25) !important;
+}
+.hqm-highlight:hover {
+  background: rgba(0,185,10,0.18) !important;
+  border-color: #00B90A !important;
+}
+
+@media (max-width: 768px) {
+  .hero-quick-menu {
+    justify-content: center;
+  }
+  .hqm-btn {
+    font-size: 0.68rem;
+    padding: 0.4rem 0.75rem;
+  }
+}
+@media (max-width: 480px) {
+  .hqm-btn { flex: 1; min-width: 140px; justify-content: center; }
+}
+
+/* ===========================
    TICKER
 =========================== */
 .ticker-wrap {
@@ -1359,12 +1415,31 @@ footer {
           IT • ไฟฟ้า • PPE • เครื่องมือช่าง • วัสดุอุตสาหกรรม<br>
           ค้าส่ง • ค้าปลีก • ออนไลน์ • บริการหลังการขาย
         </p>
+        <!-- Row 1: Primary CTAs -->
         <div class="hero-actions">
           <a href="/inquiry.html" class="btn-primary">
             📋 ขอใบเสนอราคา
           </a>
           <a href="/catalog.html" class="btn-outline">
-            🛒 ดูสินค้าทั้งหมด
+            🛒 สินค้าทั้งหมด
+          </a>
+        </div>
+        <!-- Row 2: Quick Menu -->
+        <div class="hero-quick-menu">
+          <a href="/services.html" class="hqm-btn">
+            🔧 บริการซ่อมทั้งหมด
+          </a>
+          <a href="/portfolio.html" class="hqm-btn">
+            🏆 ผลงานที่ผ่านมา
+          </a>
+          <a href="/about.html" class="hqm-btn">
+            🏗️ โครงสร้างองค์กร
+          </a>
+          <a href="#contact" class="hqm-btn">
+            📍 แผนที่ตั้ง
+          </a>
+          <a href="https://line.me/R/ti/p/@971yzyyd" target="_blank" class="hqm-btn hqm-highlight">
+            💬 ติดต่อสอบถาม
           </a>
         </div>
         <div class="hero-stats">
