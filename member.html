@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>สมาชิก | ลุงชัย ไชโย ออล</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&family=Chakra+Petch:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #C9A84C; --gold-bright: #FFE566; --gold-dim: #6B5018;
+  --space-void: #02020C; --space-deep: #05051A;
+  --space-card: #0B0B26; --space-soft: #0E0E2E;
+  --steel: #7070A0; --cream: #DDD8C8; --white: #fff;
+  --green: #2ECC71; --red: #E74C3C;
+  --font-thai: 'Sarabun',sans-serif;
+  --font-tech: 'Chakra Petch',sans-serif;
+  --font-mono: 'Space Mono',monospace;
+  --t: 0.3s cubic-bezier(.4,0,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-thai);background:var(--space-void);color:var(--cream);min-height:100vh;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+
+/* CANVAS */
+#bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(2,2,12,.95);backdrop-filter:blur(16px);border-bottom:1px solid rgba(201,168,76,.15);padding:.85rem 0}
+.nav-inner{max-width:1100px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.nav-brand{display:flex;align-items:center;gap:.6rem}
+.nav-logo{width:36px;height:36px;border-radius:50%;border:2px solid var(--gold);object-fit:cover}
+.nav-brand-name{font-family:var(--font-tech);font-size:.85rem;font-weight:700;color:var(--gold);letter-spacing:.04em;line-height:1.1}
+.nav-brand-name span{display:block;font-size:.6rem;font-weight:300;color:var(--steel);letter-spacing:.1em}
+.nav-back{font-family:var(--font-tech);font-size:.75rem;color:var(--steel);transition:color var(--t);display:flex;align-items:center;gap:.4rem}
+.nav-back:hover{color:var(--gold)}
+
+/* MAIN */
+main{position:relative;z-index:1;padding-top:5rem;min-height:100vh;display:flex;align-items:center;justify-content:center}
+
+/* CARD */
+.card{background:var(--space-card);border:1px solid rgba(201,168,76,.15);border-radius:16px;padding:2.5rem;width:100%;max-width:460px;margin:1.5rem;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+
+/* TABS */
+.tabs{display:flex;gap:0;margin-bottom:2rem;background:var(--space-deep);border-radius:8px;padding:4px}
+.tab-btn{flex:1;padding:.65rem;font-family:var(--font-tech);font-size:.8rem;font-weight:700;letter-spacing:.05em;background:none;border:none;color:var(--steel);cursor:pointer;border-radius:6px;transition:all var(--t)}
+.tab-btn.active{background:var(--gold);color:var(--space-void)}
+
+/* SECTION LABEL */
+.section-label{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.2em;color:var(--gold);margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem}
+.section-label::before{content:'';display:block;width:20px;height:1px;background:var(--gold)}
+h2{font-family:var(--font-tech);font-size:1.4rem;font-weight:700;color:var(--white);margin-bottom:1.75rem}
+
+/* FORM */
+.form-group{margin-bottom:1.25rem}
+label{display:block;font-family:var(--font-tech);font-size:.72rem;font-weight:600;letter-spacing:.06em;color:var(--steel);margin-bottom:.4rem}
+input{width:100%;background:var(--space-deep);border:1px solid rgba(201,168,76,.2);border-radius:6px;padding:.75rem 1rem;color:var(--cream);font-family:var(--font-thai);font-size:.95rem;outline:none;transition:border-color var(--t)}
+input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.12)}
+input::placeholder{color:var(--steel);font-size:.85rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+
+/* BTN */
+.btn{width:100%;padding:.9rem;font-family:var(--font-tech);font-size:.88rem;font-weight:700;letter-spacing:.08em;border:none;border-radius:6px;cursor:pointer;transition:all var(--t);display:flex;align-items:center;justify-content:center;gap:.5rem;margin-top:.5rem}
+.btn-gold{background:var(--gold);color:var(--space-void)}
+.btn-gold:hover{background:var(--gold-bright);transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,168,76,.3)}
+.btn-gold:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* MSG */
+.msg{padding:.85rem 1rem;border-radius:6px;font-size:.88rem;margin-bottom:1rem;display:none;align-items:center;gap:.6rem}
+.msg.show{display:flex}
+.msg-ok{background:rgba(46,204,113,.12);border:1px solid rgba(46,204,113,.3);color:#2ECC71}
+.msg-err{background:rgba(231,76,60,.12);border:1px solid rgba(231,76,60,.3);color:#E74C3C}
+
+/* DASHBOARD */
+.dashboard{display:none}
+.dash-header{display:flex;align-items:center;gap:1rem;margin-bottom:2rem;padding-bottom:1.25rem;border-bottom:1px solid rgba(201,168,76,.12)}
+.dash-avatar{width:56px;height:56px;border-radius:50%;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:1.5rem;background:rgba(201,168,76,.1);flex-shrink:0}
+.dash-name{font-family:var(--font-tech);font-size:1rem;font-weight:700;color:var(--white);line-height:1.2}
+.dash-code{font-family:var(--font-mono);font-size:.65rem;color:var(--gold);letter-spacing:.1em;margin-top:.2rem}
+
+/* TIER CARD */
+.tier-card{background:var(--space-deep);border:1px solid rgba(201,168,76,.15);border-radius:10px;padding:1.25rem;margin-bottom:1.25rem}
+.tier-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem}
+.tier-badge{font-family:var(--font-tech);font-size:.78rem;font-weight:700;letter-spacing:.06em;padding:.3rem .8rem;border-radius:4px}
+.tier-bronze  {background:rgba(205,127,50,.2);color:#CD7F32;border:1px solid rgba(205,127,50,.4)}
+.tier-silver  {background:rgba(192,192,192,.15);color:#C0C0C0;border:1px solid rgba(192,192,192,.3)}
+.tier-gold    {background:rgba(255,215,0,.15);color:#FFD700;border:1px solid rgba(255,215,0,.3)}
+.tier-platinum{background:rgba(229,228,226,.15);color:#E5E4E2;border:1px solid rgba(229,228,226,.3)}
+.tier-pts{font-family:var(--font-mono);font-size:1.3rem;font-weight:700;color:var(--gold)}
+.tier-pts span{font-size:.65rem;color:var(--steel);font-weight:400;margin-left:.25rem}
+.progress-bar{height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;margin-bottom:.4rem}
+.progress-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--gold-dim),var(--gold));transition:width .8s ease}
+.tier-hint{font-family:var(--font-mono);font-size:.62rem;color:var(--steel);letter-spacing:.04em}
+
+/* STATS GRID */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1.25rem}
+.stat-card{background:var(--space-deep);border:1px solid rgba(201,168,76,.1);border-radius:8px;padding:1rem;text-align:center}
+.stat-val{font-family:var(--font-tech);font-size:1.1rem;font-weight:700;color:var(--gold);line-height:1}
+.stat-lbl{font-size:.72rem;color:var(--steel);margin-top:.25rem;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.06em}
+
+/* POINTS LOG */
+.points-list{display:flex;flex-direction:column;gap:.5rem;max-height:200px;overflow-y:auto}
+.points-list::-webkit-scrollbar{width:4px}
+.points-list::-webkit-scrollbar-thumb{background:rgba(201,168,76,.3);border-radius:2px}
+.pt-item{display:flex;justify-content:space-between;align-items:center;padding:.65rem .85rem;background:var(--space-deep);border-radius:6px;font-size:.82rem}
+.pt-desc{color:var(--cream)}
+.pt-date{font-family:var(--font-mono);font-size:.58rem;color:var(--steel);margin-top:.1rem}
+.pt-pts{font-family:var(--font-mono);font-weight:700;font-size:.88rem}
+.pt-earn{color:#2ECC71}.pt-redeem{color:#E74C3C}.pt-bonus{color:var(--gold)}
+
+/* LOGOUT */
+.btn-logout{width:100%;margin-top:1.25rem;padding:.7rem;background:none;border:1px solid rgba(231,76,60,.3);border-radius:6px;color:#E74C3C;font-family:var(--font-tech);font-size:.78rem;font-weight:600;letter-spacing:.08em;cursor:pointer;transition:all var(--t)}
+.btn-logout:hover{background:rgba(231,76,60,.1)}
+
+/* DIVIDER */
+.divider{display:flex;align-items:center;gap:.75rem;margin:1.25rem 0}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:rgba(201,168,76,.12)}
+.divider span{font-family:var(--font-mono);font-size:.62rem;color:var(--steel);letter-spacing:.08em}
+
+/* RESPONSIVE */
+@media(max-width:480px){
+  .card{padding:1.75rem 1.25rem;margin:1rem}
+  .form-row{grid-template-columns:1fr}
+  h2{font-size:1.2rem}
+}
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <img src="https://raw.githubusercontent.com/Chai147258/LUNGCHAI-CHAIYO-ALL/main/images/logo-all.jpg"
+           alt="Logo" class="nav-logo" onerror="this.style.display='none'">
+      <div class="nav-brand-name">ลุงชัย ไชโย ออล <span>MEMBER SYSTEM</span></div>
+    </div>
+    <a href="/" class="nav-back">← กลับหน้าหลัก</a>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ── AUTH CARD ── -->
+  <div class="card" id="auth-card">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('login')">เข้าสู่ระบบ</button>
+      <button class="tab-btn" onclick="switchTab('register')">สมัครสมาชิก</button>
+    </div>
+
+    <!-- LOGIN -->
+    <div id="tab-login">
+      <p class="section-label">MEMBER LOGIN</p>
+      <h2>เข้าสู่ระบบ</h2>
+      <div class="msg msg-ok" id="login-ok">✅ <span></span></div>
+      <div class="msg msg-err" id="login-err">⚠️ <span></span></div>
+      <div class="form-group">
+        <label>EMAIL หรือ เบอร์โทร</label>
+        <input type="text" id="l-login" placeholder="email@example.com หรือ 08xxxxxxxx">
+      </div>
+      <div class="form-group">
+        <label>รหัสผ่าน</label>
+        <input type="password" id="l-pass" placeholder="รหัสผ่านของคุณ" onkeydown="if(event.key==='Enter')doLogin()">
+      </div>
+      <button class="btn btn-gold" onclick="doLogin()" id="btn-login">🔐 เข้าสู่ระบบ</button>
+      <div class="divider"><span>หรือ</span></div>
+      <p style="text-align:center;font-size:.82rem;color:var(--steel)">
+        ยังไม่มีบัญชี?
+        <a onclick="switchTab('register')" style="color:var(--gold);cursor:pointer;font-weight:600">สมัครสมาชิกฟรี →</a>
+      </p>
+    </div>
+
+    <!-- REGISTER -->
+    <div id="tab-register" style="display:none">
+      <p class="section-label">NEW MEMBER</p>
+      <h2>สมัครสมาชิก</h2>
+      <div class="msg msg-ok" id="reg-ok">🎉 <span></span></div>
+      <div class="msg msg-err" id="reg-err">⚠️ <span></span></div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>ชื่อ</label>
+          <input type="text" id="r-fname" placeholder="ชื่อ">
+        </div>
+        <div class="form-group">
+          <label>นามสกุล</label>
+          <input type="text" id="r-lname" placeholder="นามสกุล">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>EMAIL</label>
+        <input type="email" id="r-email" placeholder="email@example.com">
+      </div>
+      <div class="form-group">
+        <label>เบอร์โทรศัพท์</label>
+        <input type="tel" id="r-phone" placeholder="08xxxxxxxx">
+      </div>
+      <div class="form-group">
+        <label>LINE ID (ไม่บังคับ)</label>
+        <input type="text" id="r-line" placeholder="LINE ID ของคุณ">
+      </div>
+      <div class="form-group">
+        <label>รหัสผ่าน (อย่างน้อย 6 ตัว)</label>
+        <input type="password" id="r-pass" placeholder="ตั้งรหัสผ่าน">
+      </div>
+      <button class="btn btn-gold" onclick="doRegister()" id="btn-reg">✨ สมัครสมาชิกฟรี — รับ 100 แต้ม!</button>
+      <p style="text-align:center;font-size:.75rem;color:var(--steel);margin-top:.75rem">
+        มีบัญชีแล้ว?
+        <a onclick="switchTab('login')" style="color:var(--gold);cursor:pointer">เข้าสู่ระบบ →</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- ── DASHBOARD CARD ── -->
+  <div class="card dashboard" id="dash-card">
+    <div class="dash-header">
+      <div class="dash-avatar" id="dash-avatar">👤</div>
+      <div>
+        <div class="dash-name" id="dash-name">—</div>
+        <div class="dash-code" id="dash-code">—</div>
+      </div>
+    </div>
+
+    <!-- TIER -->
+    <div class="tier-card">
+      <div class="tier-row">
+        <span class="tier-badge" id="dash-tier-badge">—</span>
+        <div style="text-align:right">
+          <div class="tier-pts" id="dash-pts">0 <span>แต้ม</span></div>
+        </div>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="tier-bar" style="width:0%"></div></div>
+      <div class="tier-hint" id="tier-hint">กำลังโหลด...</div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-val" id="dash-spend">฿0</div>
+        <div class="stat-lbl">ยอดซื้อรวม</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" id="dash-member-since">—</div>
+        <div class="stat-lbl">สมาชิกตั้งแต่</div>
+      </div>
+    </div>
+
+    <!-- POINTS LOG -->
+    <p class="section-label" style="margin-bottom:.75rem">POINTS HISTORY</p>
+    <div class="points-list" id="points-list">
+      <div style="text-align:center;color:var(--steel);font-size:.82rem;padding:1rem">กำลังโหลด...</div>
+    </div>
+
+    <button class="btn-logout" onclick="doLogout()">🚪 ออกจากระบบ</button>
+  </div>
+
+</main>
+
+<script>
+// ── CONFIG ─────────────────────────────────────────────
+const API = 'https://lungchai-member-api.onrender.com/api';
+// เปลี่ยน URL นี้หลัง deploy Render แล้ว
+
+// ── CANVAS SPACE BG ────────────────────────────────────
+(function(){
+  const c=document.getElementById('bg'),ctx=c.getContext('2d');
+  let W,H,stars=[];
+  function resize(){W=c.width=innerWidth;H=c.height=innerHeight;stars=[];
+    for(let i=0;i<200;i++)stars.push({x:Math.random()*W,y:Math.random()*H,
+      r:Math.random()*1.2+.2,a:Math.random(),da:(Math.random()-.5)*.005,
+      gold:Math.random()>.8});
+  }
+  function draw(){ctx.clearRect(0,0,W,H);
+    // nebula
+    [[.15,.2,'30,20,120',.12],[.8,.65,'80,10,140',.09],[.5,.45,'0,60,140',.06]].forEach(([cx,cy,col,a])=>{
+      const g=ctx.createRadialGradient(cx*W,cy*H,0,cx*W,cy*H,Math.max(W,H)*.4);
+      g.addColorStop(0,`rgba(${col},${a})`);g.addColorStop(1,`rgba(${col},0)`);
+      ctx.beginPath();ctx.arc(cx*W,cy*H,Math.max(W,H)*.4,0,Math.PI*2);
+      ctx.fillStyle=g;ctx.fill();
+    });
+    stars.forEach(s=>{s.a+=s.da;if(s.a<=0||s.a>=1)s.da*=-1;
+      ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=s.gold?`rgba(201,168,76,${s.a*.7})`:`rgba(200,210,255,${s.a*.5})`;
+      ctx.fill();});
+    requestAnimationFrame(draw);}
+  addEventListener('resize',resize);resize();draw();
+})();
+
+// ── HELPERS ────────────────────────────────────────────
+const token = () => localStorage.getItem('lc_token');
+const setToken = t => localStorage.setItem('lc_token', t);
+const clearToken = () => localStorage.removeItem('lc_token');
+
+function showMsg(id, msg, isErr=false){
+  const el=document.getElementById(id);
+  el.className='msg show '+(isErr?'msg-err':'msg-ok');
+  el.querySelector('span').textContent=msg;
+  if(!isErr) setTimeout(()=>el.classList.remove('show'),4000);
+}
+
+function setLoading(btnId, loading){
+  const btn=document.getElementById(btnId);
+  btn.disabled=loading;
+  btn.textContent=loading?'⏳ กรุณารอ...':btn.dataset.label||btn.textContent;
+}
+
+async function api(path, method='GET', body=null){
+  const opts={method,headers:{'Content-Type':'application/json'}};
+  if(token()) opts.headers['Authorization']='Bearer '+token();
+  if(body) opts.body=JSON.stringify(body);
+  const res=await fetch(API+path, opts);
+  const data=await res.json();
+  if(!res.ok) throw new Error(data.error||data.errors?.[0]?.msg||'เกิดข้อผิดพลาด');
+  return data;
+}
+
+// ── TAB SWITCH ─────────────────────────────────────────
+function switchTab(tab){
+  document.getElementById('tab-login').style.display    = tab==='login'    ?'block':'none';
+  document.getElementById('tab-register').style.display = tab==='register' ?'block':'none';
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>{
+    b.classList.toggle('active', (tab==='login'&&i===0)||(tab==='register'&&i===1));
+  });
+}
+
+// ── LOGIN ──────────────────────────────────────────────
+async function doLogin(){
+  const login=document.getElementById('l-login').value.trim();
+  const pass =document.getElementById('l-pass').value;
+  if(!login||!pass){showMsg('login-err','กรุณากรอกข้อมูลให้ครบ',true);return;}
+  document.getElementById('btn-login').textContent='⏳ กำลังเข้าสู่ระบบ...';
+  document.getElementById('btn-login').disabled=true;
+  try{
+    const d=await api('/auth/login','POST',{login,password:pass});
+    setToken(d.token);
+    showMsg('login-ok',d.message);
+    setTimeout(()=>showDashboard(d.member),600);
+  }catch(e){
+    showMsg('login-err',e.message,true);
+    document.getElementById('btn-login').textContent='🔐 เข้าสู่ระบบ';
+    document.getElementById('btn-login').disabled=false;
+  }
+}
+
+// ── REGISTER ───────────────────────────────────────────
+async function doRegister(){
+  const fname=document.getElementById('r-fname').value.trim();
+  const lname=document.getElementById('r-lname').value.trim();
+  const email=document.getElementById('r-email').value.trim();
+  const phone=document.getElementById('r-phone').value.trim();
+  const line =document.getElementById('r-line').value.trim();
+  const pass =document.getElementById('r-pass').value;
+  if(!fname||!lname||!email||!phone||!pass){
+    showMsg('reg-err','กรุณากรอกข้อมูลให้ครบ',true);return;
+  }
+  document.getElementById('btn-reg').textContent='⏳ กำลังสมัคร...';
+  document.getElementById('btn-reg').disabled=true;
+  try{
+    const d=await api('/auth/register','POST',
+      {firstname:fname,lastname:lname,email,phone,line_id:line,password:pass});
+    setToken(d.token);
+    showMsg('reg-ok',d.message);
+    setTimeout(()=>showDashboard(d.member),800);
+  }catch(e){
+    showMsg('reg-err',e.message,true);
+    document.getElementById('btn-reg').textContent='✨ สมัครสมาชิกฟรี — รับ 100 แต้ม!';
+    document.getElementById('btn-reg').disabled=false;
+  }
+}
+
+// ── DASHBOARD ──────────────────────────────────────────
+const TIER_LABELS={bronze:'🥉 Bronze',silver:'🥈 Silver',gold:'🥇 Gold',platinum:'💎 Platinum'};
+
+async function showDashboard(member){
+  document.getElementById('auth-card').style.display='none';
+  document.getElementById('dash-card').style.display='block';
+  document.querySelector('.dashboard').style.display='block';
+
+  document.getElementById('dash-name').textContent=`${member.firstname} ${member.lastname}`;
+  document.getElementById('dash-code').textContent=member.member_code||'กำลังโหลด...';
+  document.getElementById('dash-avatar').textContent=member.firstname?.[0]||'👤';
+  document.getElementById('dash-pts').innerHTML=`${member.points?.toLocaleString()||0} <span>แต้ม</span>`;
+  document.getElementById('dash-spend').textContent=`฿${(+member.total_spend||0).toLocaleString()}`;
+  document.getElementById('dash-member-since').textContent=
+    member.created_at?new Date(member.created_at).toLocaleDateString('th-TH',{year:'2-digit',month:'short'}):'—';
+
+  const tier=member.tier||'bronze';
+  const badge=document.getElementById('dash-tier-badge');
+  badge.textContent=TIER_LABELS[tier];
+  badge.className='tier-badge tier-'+tier;
+
+  // Load tier progress
+  try{
+    const td=await api('/member/tier');
+    document.getElementById('tier-bar').style.width=td.progress+'%';
+    document.getElementById('tier-hint').textContent=
+      td.nextTierNeed>0
+        ?`อีก ฿${td.nextTierNeed.toLocaleString()} ขึ้น ${td.current.next?.toUpperCase()}`
+        :'🏆 ระดับสูงสุดแล้ว!';
+  }catch{}
+
+  // Load points log
+  try{
+    const pd=await api('/member/points');
+    const list=document.getElementById('points-list');
+    if(!pd.history?.length){
+      list.innerHTML='<div style="text-align:center;color:var(--steel);font-size:.82rem;padding:1rem">ยังไม่มีประวัติแต้ม</div>';
+      return;
+    }
+    list.innerHTML=pd.history.map(p=>`
+      <div class="pt-item">
+        <div>
+          <div class="pt-desc">${p.description||p.type}</div>
+          <div class="pt-date">${new Date(p.created_at).toLocaleDateString('th-TH')}</div>
+        </div>
+        <div class="pt-pts pt-${p.type}">${p.points>0?'+':''}${p.points}</div>
+      </div>`).join('');
+  }catch{}
+}
+
+// ── LOGOUT ─────────────────────────────────────────────
+function doLogout(){
+  clearToken();
+  document.getElementById('dash-card').style.display='none';
+  document.querySelector('.dashboard').style.display='none';
+  document.getElementById('auth-card').style.display='block';
+  switchTab('login');
+}
+
+// ── AUTO LOGIN ─────────────────────────────────────────
+(async()=>{
+  if(!token()) return;
+  try{
+    const d=await api('/auth/me');
+    showDashboard(d.member);
+  }catch{clearToken();}
+})();
+</script>
+</body>
+</html>

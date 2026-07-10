@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="แคตตาล็อกสินค้า ลุงชัย ไชโย ออล — IT, ไฟฟ้า, PPE, เครื่องมือช่าง">
+<title>แคตตาล็อกสินค้า | ลุงชัย ไชโย ออล</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&family=Chakra+Petch:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#C9A84C;--gold-bright:#FFE566;--gold-dim:#6B5018;
+  --space-void:#02020C;--space-deep:#05051A;--space-card:#0B0B26;--space-soft:#0E0E2E;
+  --steel:#7070A0;--cream:#DDD8C8;--white:#fff;
+  --font-thai:'Sarabun',sans-serif;--font-tech:'Chakra Petch',sans-serif;--font-mono:'Space Mono',monospace;
+  --t:0.3s cubic-bezier(.4,0,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-thai);background:var(--space-void);color:var(--cream);overflow-x:hidden;min-height:100vh}
+a{color:inherit;text-decoration:none}
+#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(2,2,12,.96);backdrop-filter:blur(16px);border-bottom:1px solid rgba(201,168,76,.12);padding:.85rem 0}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.nav-brand{display:flex;align-items:center;gap:.6rem}
+.nav-logo{width:36px;height:36px;border-radius:50%;border:2px solid var(--gold);object-fit:cover}
+.nav-brand-name{font-family:var(--font-tech);font-size:.85rem;font-weight:700;color:var(--gold);letter-spacing:.04em;line-height:1.1}
+.nav-brand-name span{display:block;font-size:.6rem;font-weight:300;color:var(--steel);letter-spacing:.1em}
+.nav-links{display:flex;align-items:center;gap:1.5rem}
+.nav-links a{font-family:var(--font-tech);font-size:.75rem;font-weight:600;letter-spacing:.06em;color:var(--steel);transition:color var(--t)}
+.nav-links a:hover,.nav-links a.active{color:var(--gold)}
+.nav-cta{background:var(--gold);color:var(--space-void)!important;padding:.45rem 1.1rem;border-radius:4px;font-weight:700!important}
+.nav-cta:hover{background:var(--gold-bright)!important}
+
+/* PAGE HEADER */
+.page-header{padding:7rem 0 3rem;position:relative;z-index:1;text-align:center;border-bottom:1px solid rgba(201,168,76,.08)}
+.page-header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 80% at 50% 50%,rgba(30,20,120,.18) 0%,transparent 70%);pointer-events:none}
+.ph-label{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.22em;color:var(--gold);margin-bottom:.6rem;display:flex;align-items:center;justify-content:center;gap:.6rem}
+.ph-label::before,.ph-label::after{content:'';display:block;width:24px;height:1px;background:var(--gold)}
+.ph-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;color:var(--white);margin-bottom:.5rem}
+.ph-title span{color:var(--gold)}
+.ph-desc{color:var(--steel);font-size:.95rem;max-width:500px;margin:0 auto}
+
+/* LAYOUT */
+.catalog-layout{display:grid;grid-template-columns:240px 1fr;gap:2rem;max-width:1200px;margin:0 auto;padding:2.5rem 1.5rem;position:relative;z-index:1}
+
+/* SIDEBAR */
+.sidebar{position:sticky;top:5.5rem;height:fit-content}
+.sidebar-section{margin-bottom:1.75rem}
+.sidebar-title{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.18em;color:var(--gold);margin-bottom:.85rem;padding-bottom:.5rem;border-bottom:1px solid rgba(201,168,76,.15)}
+.cat-list{display:flex;flex-direction:column;gap:.3rem}
+.cat-btn{background:none;border:none;width:100%;text-align:left;padding:.6rem .85rem;border-radius:6px;font-family:var(--font-thai);font-size:.88rem;color:var(--steel);cursor:pointer;transition:all var(--t);display:flex;align-items:center;gap:.6rem;border:1px solid transparent}
+.cat-btn:hover{color:var(--cream);background:rgba(201,168,76,.06);border-color:rgba(201,168,76,.1)}
+.cat-btn.active{color:var(--gold);background:rgba(201,168,76,.1);border-color:rgba(201,168,76,.25);font-weight:600}
+.cat-count{margin-left:auto;font-family:var(--font-mono);font-size:.6rem;background:rgba(201,168,76,.15);color:var(--gold);padding:.15rem .45rem;border-radius:10px}
+
+/* SEARCH + FILTER */
+.search-bar{display:flex;gap:.75rem;margin-bottom:1.5rem;align-items:center;flex-wrap:wrap}
+.search-input{flex:1;background:var(--space-card);border:1px solid rgba(201,168,76,.2);border-radius:6px;padding:.7rem 1rem;color:var(--cream);font-family:var(--font-thai);font-size:.9rem;outline:none;transition:border-color var(--t);min-width:200px}
+.search-input:focus{border-color:var(--gold)}
+.search-input::placeholder{color:var(--steel)}
+.sort-select{background:var(--space-card);border:1px solid rgba(201,168,76,.2);border-radius:6px;padding:.7rem 1rem;color:var(--cream);font-family:var(--font-tech);font-size:.78rem;outline:none;cursor:pointer}
+.results-info{font-family:var(--font-mono);font-size:.68rem;color:var(--steel);letter-spacing:.06em;margin-bottom:1.25rem}
+
+/* PRODUCT GRID */
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.25rem}
+
+/* PRODUCT CARD */
+.prod-card{background:var(--space-card);border:1px solid rgba(201,168,76,.1);border-radius:12px;overflow:hidden;transition:all var(--t);position:relative;cursor:pointer}
+.prod-card:hover{border-color:rgba(201,168,76,.35);transform:translateY(-4px);box-shadow:0 12px 36px rgba(0,0,0,.4)}
+.prod-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transition:transform var(--t);transform-origin:left}
+.prod-card:hover::before{transform:scaleX(1)}
+.prod-img{aspect-ratio:1;background:var(--space-deep);display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;overflow:hidden}
+.prod-img img{width:100%;height:100%;object-fit:cover;transition:transform var(--t)}
+.prod-card:hover .prod-img img{transform:scale(1.04)}
+.prod-badge{position:absolute;top:.6rem;left:.6rem;font-family:var(--font-mono);font-size:.58rem;font-weight:700;letter-spacing:.06em;padding:.2rem .55rem;border-radius:3px}
+.badge-new{background:rgba(46,204,113,.2);color:#2ECC71;border:1px solid rgba(46,204,113,.35)}
+.badge-hot{background:rgba(231,76,60,.2);color:#E74C3C;border:1px solid rgba(231,76,60,.35)}
+.badge-sale{background:rgba(255,215,0,.2);color:#FFD700;border:1px solid rgba(255,215,0,.35)}
+.prod-body{padding:1rem}
+.prod-cat{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.1em;color:var(--gold-dim);margin-bottom:.3rem}
+.prod-name{font-family:var(--font-tech);font-size:.9rem;font-weight:700;color:var(--white);margin-bottom:.35rem;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.prod-desc{font-size:.8rem;color:var(--steel);line-height:1.5;margin-bottom:.85rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.prod-footer{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+.prod-price{font-family:var(--font-tech);font-size:1rem;font-weight:700;color:var(--gold)}
+.prod-price small{font-size:.65rem;color:var(--steel);font-weight:400;margin-right:.15rem}
+.prod-price.contact{font-size:.82rem;color:var(--steel)}
+.btn-inquiry{background:var(--gold);color:var(--space-void);border:none;border-radius:4px;padding:.4rem .85rem;font-family:var(--font-tech);font-size:.72rem;font-weight:700;letter-spacing:.05em;cursor:pointer;transition:all var(--t);white-space:nowrap}
+.btn-inquiry:hover{background:var(--gold-bright);transform:translateY(-1px)}
+
+/* EMPTY */
+.empty-state{grid-column:1/-1;text-align:center;padding:4rem 1rem;color:var(--steel)}
+.empty-icon{font-size:3rem;margin-bottom:1rem;opacity:.4}
+.empty-text{font-family:var(--font-tech);font-size:.9rem;letter-spacing:.05em}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(2,2,12,.85);backdrop-filter:blur(8px);z-index:200;display:none;align-items:center;justify-content:center;padding:1rem}
+.modal-overlay.open{display:flex}
+.modal{background:var(--space-card);border:1px solid rgba(201,168,76,.2);border-radius:16px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;position:relative}
+.modal::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--steel);font-size:1.4rem;cursor:pointer;transition:color var(--t);z-index:1}
+.modal-close:hover{color:var(--gold)}
+.modal-img{aspect-ratio:16/9;background:var(--space-deep);display:flex;align-items:center;justify-content:center;font-size:5rem;border-radius:12px 12px 0 0;overflow:hidden}
+.modal-img img{width:100%;height:100%;object-fit:cover}
+.modal-body{padding:1.75rem}
+.modal-cat{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.12em;color:var(--gold);margin-bottom:.4rem}
+.modal-name{font-family:var(--font-tech);font-size:1.2rem;font-weight:700;color:var(--white);margin-bottom:.75rem;line-height:1.3}
+.modal-desc{font-size:.9rem;color:var(--steel);line-height:1.8;margin-bottom:1.25rem}
+.modal-specs{background:var(--space-deep);border-radius:8px;padding:1rem;margin-bottom:1.25rem}
+.spec-row{display:flex;gap:.5rem;padding:.35rem 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.83rem}
+.spec-row:last-child{border:none}
+.spec-key{color:var(--steel);min-width:110px;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.04em}
+.spec-val{color:var(--cream);font-weight:600}
+.modal-price{font-family:var(--font-tech);font-size:1.4rem;font-weight:700;color:var(--gold);margin-bottom:1.25rem}
+.modal-actions{display:flex;gap:.75rem}
+.btn-line{flex:1;background:rgba(0,185,10,.15);color:#00B90A;border:1px solid rgba(0,185,10,.35);border-radius:6px;padding:.75rem;font-family:var(--font-tech);font-size:.8rem;font-weight:700;letter-spacing:.05em;cursor:pointer;transition:all var(--t);display:flex;align-items:center;justify-content:center;gap:.4rem}
+.btn-line:hover{background:#00B90A;color:var(--space-void)}
+.btn-wa{flex:1;background:rgba(37,211,102,.15);color:#25D366;border:1px solid rgba(37,211,102,.35);border-radius:6px;padding:.75rem;font-family:var(--font-tech);font-size:.8rem;font-weight:700;letter-spacing:.05em;cursor:pointer;transition:all var(--t);display:flex;align-items:center;justify-content:center;gap:.4rem}
+.btn-wa:hover{background:#25D366;color:var(--space-void)}
+
+/* RESPONSIVE */
+@media(max-width:900px){.catalog-layout{grid-template-columns:1fr}.sidebar{position:static}.cat-list{flex-direction:row;flex-wrap:wrap}.cat-btn{flex:none;width:auto}}
+@media(max-width:600px){.products-grid{grid-template-columns:repeat(2,1fr)}.search-bar{flex-direction:column}.search-input,.sort-select{width:100%}}
+@media(max-width:380px){.products-grid{grid-template-columns:1fr}}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&display=swap" rel="stylesheet">
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <img src="https://raw.githubusercontent.com/Chai147258/LUNGCHAI-CHAIYO-ALL/main/images/logo-all.jpg" alt="Logo" class="nav-logo" onerror="this.style.display='none'">
+      <div class="nav-brand-name">ลุงชัย ไชโย ออล <span>PRODUCT CATALOG</span></div>
+    </div>
+    <div class="nav-links">
+      <a href="/">หน้าหลัก</a>
+      <a href="/catalog.html" class="active">สินค้า</a>
+      <a href="/member.html">สมาชิก</a>
+      <a href="https://line.me/R/ti/p/@971yzyyd" target="_blank" class="nav-cta">💬 สอบถาม</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-header">
+  <p class="ph-label">PRODUCT CATALOG</p>
+  <h1 class="ph-title">แคตตาล็อก<span>สินค้า</span></h1>
+  <p class="ph-desc">สินค้าอุตสาหกรรมครบวงจร — IT • ไฟฟ้า • PPE • เครื่องมือช่าง</p>
+</div>
+
+<div class="catalog-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">หมวดหมู่สินค้า</div>
+      <div class="cat-list" id="cat-list"></div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">ช่องทางสั่งซื้อ</div>
+      <div style="display:flex;flex-direction:column;gap:.5rem">
+        <a href="https://line.me/R/ti/p/@971yzyyd" target="_blank" style="display:flex;align-items:center;gap:.6rem;padding:.6rem .85rem;background:rgba(0,185,10,.08);border:1px solid rgba(0,185,10,.2);border-radius:6px;font-size:.82rem;color:#00B90A;transition:all .3s" onmouseover="this.style.background='rgba(0,185,10,.15)'" onmouseout="this.style.background='rgba(0,185,10,.08)'">💬 LINE OA</a>
+        <a href="https://collshp.com/run00?view=storefront" target="_blank" style="display:flex;align-items:center;gap:.6rem;padding:.6rem .85rem;background:rgba(238,77,45,.08);border:1px solid rgba(238,77,45,.2);border-radius:6px;font-size:.82rem;color:#EE4D2D;transition:all .3s" onmouseover="this.style.background='rgba(238,77,45,.15)'" onmouseout="this.style.background='rgba(238,77,45,.08)'">🛒 Shopee</a>
+        <a href="https://s.lazada.co.th/s.Z7iuvG" target="_blank" style="display:flex;align-items:center;gap:.6rem;padding:.6rem .85rem;background:rgba(255,90,3,.08);border:1px solid rgba(255,90,3,.2);border-radius:6px;font-size:.82rem;color:#FF5A03;transition:all .3s" onmouseover="this.style.background='rgba(255,90,3,.15)'" onmouseout="this.style.background='rgba(255,90,3,.08)'">🏪 Lazada</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div>
+    <div class="search-bar">
+      <input type="text" class="search-input" id="search-input" placeholder="🔍 ค้นหาสินค้า..." oninput="filterProducts()">
+      <select class="sort-select" id="sort-select" onchange="filterProducts()">
+        <option value="default">เรียงตาม: ค่าเริ่มต้น</option>
+        <option value="name-asc">ชื่อ A-Z</option>
+        <option value="name-desc">ชื่อ Z-A</option>
+        <option value="new">ใหม่ล่าสุด</option>
+      </select>
+    </div>
+    <div class="results-info" id="results-info">กำลังโหลดสินค้า...</div>
+    <div class="products-grid" id="products-grid"></div>
+  </div>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal-content"></div>
+</div>
+
+<script>
+// ── CANVAS ──────────────────────────────────────────────
+(function(){
+  const c=document.getElementById('bg-canvas'),ctx=c.getContext('2d');
+  let W,H,stars=[];
+  function resize(){W=c.width=innerWidth;H=c.height=innerHeight;
+    stars=[];for(let i=0;i<220;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+.2,a:Math.random(),da:(Math.random()-.5)*.005,gold:Math.random()>.82});}
+  function draw(){ctx.clearRect(0,0,W,H);
+    [[.15,.25,'30,20,120',.13],[.8,.6,'80,10,140',.09],[.5,.5,'0,60,140',.07]].forEach(([cx,cy,col,a])=>{
+      const g=ctx.createRadialGradient(cx*W,cy*H,0,cx*W,cy*H,Math.max(W,H)*.4);
+      g.addColorStop(0,`rgba(${col},${a})`);g.addColorStop(1,`rgba(${col},0)`);
+      ctx.beginPath();ctx.arc(cx*W,cy*H,Math.max(W,H)*.4,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();});
+    stars.forEach(s=>{s.a+=s.da;if(s.a<=0||s.a>=1)s.da*=-1;
+      ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=s.gold?`rgba(201,168,76,${s.a*.7})`:`rgba(200,210,255,${s.a*.5})`;ctx.fill();});
+    requestAnimationFrame(draw);}
+  addEventListener('resize',resize);resize();draw();
+})();
+
+// ── PRODUCT DATA ─────────────────────────────────────────
+const PRODUCTS = [
+  // IT & COMPUTER
+  {id:1,cat:'it',catName:'💻 IT & Computer',name:'คอมพิวเตอร์ตั้งโต๊ะ Core i5',desc:'CPU Core i5 Gen12, RAM 16GB, SSD 512GB พร้อมใช้งาน',icon:'🖥️',badge:'new',price:'ติดต่อสอบถาม',specs:[['ซีพียู','Intel Core i5 Gen12'],['RAM','16 GB DDR4'],['Storage','SSD 512 GB'],['OS','Windows 11 Pro'],['รับประกัน','1 ปี']],channel:'line'},
+  {id:2,cat:'it',catName:'💻 IT & Computer',name:'โน้ตบุ๊ค Asus VivoBook',desc:'i5 Gen12, RAM 8GB, SSD 512GB จอ 15.6" FHD น้ำหนักเบา',icon:'💻',badge:'',price:'ติดต่อสอบถาม',specs:[['ซีพียู','i5 Gen12'],['RAM','8 GB'],['จอ','15.6" FHD'],['แบต','ทน 8 ชม.']]},
+  {id:3,cat:'it',catName:'💻 IT & Computer',name:'เครื่องพิมพ์ HP LaserJet',desc:'พิมพ์ขาวดำ ความเร็วสูง 30 แผ่น/นาที เหมาะสำนักงาน',icon:'🖨️',badge:'hot',price:'ติดต่อสอบถาม',specs:[['ประเภท','Laser Mono'],['ความเร็ว','30 ppm'],['ความละเอียด','600 dpi'],['รับประกัน','1 ปี']]},
+  {id:4,cat:'it',catName:'💻 IT & Computer',name:'หมึกพิมพ์ / Toner ทุกรุ่น',desc:'หมึกพิมพ์ทุกยี่ห้อ HP, Canon, Epson, Brother, Fuji',icon:'🖊️',badge:'',price:'เริ่มต้น ฿350',specs:[['ยี่ห้อ','HP / Canon / Epson / Brother'],['ประเภท','Inkjet & Laser'],['รับประกัน','เปลี่ยนใหม่ถ้าไม่พอใจ']]},
+  {id:5,cat:'it',catName:'💻 IT & Computer',name:'อุปกรณ์เครือข่าย / Router',desc:'Router, Switch, Access Point ทุกยี่ห้อ TP-Link, Cisco, Ubiquiti',icon:'📡',badge:'',price:'ติดต่อสอบถาม',specs:[['แบรนด์','TP-Link / Cisco / Ubiquiti'],['มาตรฐาน','WiFi 6 / Gigabit'],['รับประกัน','ตามแบรนด์']]},
+  // ELECTRICAL
+  {id:6,cat:'electrical',catName:'⚡ ไฟฟ้า & มอเตอร์',name:'มอเตอร์ไฟฟ้า 3 เฟส',desc:'มอเตอร์ 3 เฟส 1-100 HP สำหรับโรงงานอุตสาหกรรม',icon:'⚡',badge:'',price:'ติดต่อสอบถาม',specs:[['ประเภท','3 Phase Motor'],['ขนาด','1 - 100 HP'],['ไฟฟ้า','380V / 50Hz'],['ยี่ห้อ','Mitsubishi / Siemens']]},
+  {id:7,cat:'electrical',catName:'⚡ ไฟฟ้า & มอเตอร์',name:'พัดลมอุตสาหกรรม',desc:'พัดลมโรงงานทุกขนาด ระบายอากาศ ลดความร้อน',icon:'🌀',badge:'hot',price:'เริ่มต้น ฿1,500',specs:[['ขนาด','18"-60"'],['ระบบ','1 เฟส / 3 เฟส'],['ใช้งาน','โรงงาน / โกดัง']]},
+  {id:8,cat:'electrical',catName:'⚡ ไฟฟ้า & มอเตอร์',name:'อุปกรณ์ไฟฟ้าโรงงาน',desc:'สาย Cable, Breaker, Contactor, Relay, Timer ทุกชนิด',icon:'🔌',badge:'',price:'ติดต่อสอบถาม',specs:[['หมวด','Breaker / Contactor / Cable'],['แบรนด์','Schneider / ABB / LS'],['มาตรฐาน','IEC / มอก.']]},
+  {id:9,cat:'electrical',catName:'⚡ ไฟฟ้า & มอเตอร์',name:'บริการซ่อมมอเตอร์',desc:'รับซ่อมพันขดลวดมอเตอร์ ไดนาโม ปั๊มน้ำ ด่วน 24 ชม.',icon:'🔧',badge:'hot',price:'ติดต่อสอบถาม',specs:[['บริการ','ซ่อม/พันขดลวด/เปลี่ยนแบริ่ง'],['รับซ่อม','มอเตอร์ / ไดนาโม / ปั๊ม'],['เวลา','24 ชม. / On-site']]},
+  // PPE
+  {id:10,cat:'ppe',catName:'🦺 PPE & Safety',name:'หมวกนิรภัย Safety Helmet',desc:'หมวกนิรภัย มอก. ทุกสี ทุกแบรนด์ รับประกันคุณภาพ',icon:'⛑️',badge:'',price:'เริ่มต้น ฿120',specs:[['มาตรฐาน','มอก. 368'],['วัสดุ','HDPE / ABS'],['แบบ','ปีกรอบ / ปีกหน้า']]},
+  {id:11,cat:'ppe',catName:'🦺 PPE & Safety',name:'รองเท้าเซฟตี้',desc:'รองเท้านิรภัย หัวเหล็ก พื้นกันลื่น กันน้ำมัน มอก.',icon:'👟',badge:'new',price:'เริ่มต้น ฿450',specs:[['มาตรฐาน','มอก. 523'],['หัวรองเท้า','เหล็ก Steel Toe'],['พื้น','กันลื่น / น้ำมัน']]},
+  {id:12,cat:'ppe',catName:'🦺 PPE & Safety',name:'ถุงมือนิรภัย',desc:'ถุงมือหนัง ถุงมือไฟฟ้า ถุงมือกันสารเคมี ทุกชนิด',icon:'🧤',badge:'',price:'เริ่มต้น ฿35',specs:[['ประเภท','หนัง / ผ้า / ยาง / PVC'],['ใช้งาน','ช่าง / เคมี / ไฟฟ้า'],['ขนาด','S / M / L / XL']]},
+  {id:13,cat:'ppe',catName:'🦺 PPE & Safety',name:'ชุด PPE ครบเซ็ต',desc:'ชุดป้องกันสารเคมี เสื้อกั๊กสะท้อนแสง ครบชุด',icon:'🦺',badge:'sale',price:'ติดต่อสอบถาม',specs:[['ชุด','เสื้อกั๊ก / ชุดเคมี / ชุดเชื่อม'],['มาตรฐาน','มอก. / CE'],['รับจ้างจัด','ชุดตาม Spec โรงงาน']]},
+  // TOOLS
+  {id:14,cat:'tools',catName:'🔧 เครื่องมือช่าง',name:'ชุดเครื่องมือช่างครบชุด',desc:'ชุดเครื่องมือพื้นฐาน ไขควง, ประแจ, คีม 50+ ชิ้น',icon:'🔧',badge:'',price:'เริ่มต้น ฿850',specs:[['จำนวน','50+ ชิ้น'],['วัสดุ','Chrome Vanadium'],['กล่อง','พลาสติก ABS แข็งแรง']]},
+  {id:15,cat:'tools',catName:'🔧 เครื่องมือช่าง',name:'สว่านไฟฟ้า / Drill',desc:'สว่านไฟฟ้า สว่านกระแทก ทั้งแบบสายและไร้สาย',icon:'🔩',badge:'',price:'เริ่มต้น ฿650',specs:[['ประเภท','สายไฟ / แบตเตอรี่'],['กำลัง','500W - 1200W'],['แบรนด์','Bosch / Makita / Ingco']]},
+  {id:16,cat:'tools',catName:'🔧 เครื่องมือช่าง',name:'วัสดุสิ้นเปลือง Consumables',desc:'ใบเจียร น้ำมัน WD-40 กาว เทป ทุกชนิด ส่งโรงงาน',icon:'🪛',badge:'',price:'ติดต่อสอบถาม',specs:[['หมวด','ใบเจียร / น้ำมัน / กาว / เทป'],['ส่ง','จัดส่งถึงโรงงาน'],['ขั้นต่ำ','สั่งขั้นต่ำ ฿500']]},
+  // INDUSTRIAL
+  {id:17,cat:'industrial',catName:'🏗️ Industrial Supply',name:'อุปกรณ์โรงงาน B2B',desc:'จัดหาอุปกรณ์โรงงานตาม Spec ราคาค้าส่ง จัดส่งรวดเร็ว',icon:'🏭',badge:'',price:'ติดต่อสอบถาม',specs:[['บริการ','จัดหาตาม Spec / BOQ'],['ราคา','ค้าส่ง / Volume Discount'],['จัดส่ง','ทั่วประเทศ']]},
+  {id:18,cat:'industrial',catName:'🏗️ Industrial Supply',name:'CCTV & ระบบรักษาความปลอดภัย',desc:'กล้องวงจรปิด IP Camera, NVR, Access Control ครบชุด',icon:'📹',badge:'new',price:'ติดต่อสอบถาม',specs:[['ประเภท','IP Camera / Analog'],['ความละเอียด','2MP - 8MP (4K)'],['บริการ','ออกแบบ / ติดตั้ง / ซ่อม']]},
+  // SERVICE
+  {id:19,cat:'service',catName:'🔨 บริการ',name:'บริการซ่อมคอมพิวเตอร์',desc:'ซ่อมคอมพิวเตอร์ โน้ตบุ๊ก ทุกอาการ รับ-ส่ง ถึงที่',icon:'🖥️',badge:'',price:'เริ่มต้น ฿300',specs:[['บริการ','ซ่อม / อัปเกรด / ล้างเครื่อง'],['รับ-ส่ง','On-site / รับถึงร้าน'],['ระยะเวลา','1-3 วันทำการ']]},
+  {id:20,cat:'service',catName:'🔨 บริการ',name:'IT Support รายเดือน',desc:'ดูแลระบบ IT ประจำเดือน ซ่อมบำรุง Preventive Maintenance',icon:'🛠️',badge:'hot',price:'เริ่มต้น ฿1,500/เดือน',specs:[['รวม','PM + Repair + Support'],['เวลา','Response < 4 ชม.'],['รายงาน','รายงานประจำเดือน']]},
+];
+
+const CATEGORIES = [
+  {id:'all', label:'🏠 ทั้งหมด'},
+  {id:'it', label:'💻 IT & Computer'},
+  {id:'electrical', label:'⚡ ไฟฟ้า & มอเตอร์'},
+  {id:'ppe', label:'🦺 PPE & Safety'},
+  {id:'tools', label:'🔧 เครื่องมือช่าง'},
+  {id:'industrial', label:'🏗️ Industrial'},
+  {id:'service', label:'🔨 บริการ'},
+];
+
+let activeCat = 'all';
+
+// ── RENDER CATEGORIES ────────────────────────────────────
+function renderCats() {
+  const list = document.getElementById('cat-list');
+  list.innerHTML = CATEGORIES.map(c => {
+    const count = c.id === 'all' ? PRODUCTS.length : PRODUCTS.filter(p => p.cat === c.id).length;
+    return `<button class="cat-btn ${c.id===activeCat?'active':''}" onclick="setCat('${c.id}')">
+      ${c.label} <span class="cat-count">${count}</span>
+    </button>`;
+  }).join('');
+}
+
+function setCat(id) {
+  activeCat = id;
+  renderCats();
+  filterProducts();
+}
+
+// ── FILTER & RENDER PRODUCTS ─────────────────────────────
+function filterProducts() {
+  const q = document.getElementById('search-input').value.toLowerCase().trim();
+  const sort = document.getElementById('sort-select').value;
+
+  let filtered = PRODUCTS.filter(p => {
+    const matchCat = activeCat === 'all' || p.cat === activeCat;
+    const matchQ = !q || p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q) || p.catName.toLowerCase().includes(q);
+    return matchCat && matchQ;
+  });
+
+  if (sort === 'name-asc') filtered.sort((a,b) => a.name.localeCompare(b.name,'th'));
+  if (sort === 'name-desc') filtered.sort((a,b) => b.name.localeCompare(a.name,'th'));
+  if (sort === 'new') filtered = filtered.filter(p => p.badge === 'new').concat(filtered.filter(p => p.badge !== 'new'));
+
+  document.getElementById('results-info').textContent = `พบ ${filtered.length} รายการ${q?' สำหรับ "'+q+'"':''}`;
+
+  const grid = document.getElementById('products-grid');
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-text">ไม่พบสินค้าที่ค้นหา</div></div>`;
+    return;
+  }
+  grid.innerHTML = filtered.map(p => `
+    <div class="prod-card" onclick="openModal(${p.id})">
+      <div class="prod-img">
+        <span>${p.icon}</span>
+        ${p.badge ? `<span class="prod-badge badge-${p.badge}">${p.badge==='new'?'ใหม่':p.badge==='hot'?'ยอดนิยม':'ลดราคา'}</span>` : ''}
+      </div>
+      <div class="prod-body">
+        <div class="prod-cat">${p.catName}</div>
+        <div class="prod-name">${p.name}</div>
+        <div class="prod-desc">${p.desc}</div>
+        <div class="prod-footer">
+          <div class="prod-price ${p.price.includes('ติดต่อ')?'contact':''}">${p.price.includes('ติดต่อ')?'':'฿'}${p.price}</div>
+          <button class="btn-inquiry" onclick="event.stopPropagation();inquire('${p.name}')">สอบถาม</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+// ── MODAL ────────────────────────────────────────────────
+function openModal(id) {
+  const p = PRODUCTS.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('modal-content').innerHTML = `
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-img"><span style="font-size:5rem">${p.icon}</span></div>
+    <div class="modal-body">
+      <div class="modal-cat">${p.catName}</div>
+      <div class="modal-name">${p.name}</div>
+      <div class="modal-desc">${p.desc}</div>
+      ${p.specs?`<div class="modal-specs">${p.specs.map(s=>`
+        <div class="spec-row"><span class="spec-key">${s[0]}</span><span class="spec-val">${s[1]}</span></div>`).join('')}</div>`:''}
+      <div class="modal-price">${p.price.includes('ติดต่อ') ? '📞 ราคาพิเศษ — ติดต่อสอบถาม' : p.price}</div>
+      <div class="modal-actions">
+        <button class="btn-line" onclick="inquire('${p.name}','line')">💬 LINE OA</button>
+        <button class="btn-wa"   onclick="inquire('${p.name}','wa')">📱 WhatsApp</button>
+      </div>
+    </div>`;
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function inquire(name, ch='line') {
+  const msg = encodeURIComponent(`สวัสดีครับ สนใจสินค้า: ${name} ขอสอบถามราคาและรายละเอียดเพิ่มเติมครับ`);
+  const urls = {
+    line: `https://line.me/R/ti/p/@971yzyyd`,
+    wa:   `https://wa.me/qr/QXD7536TVAPHG1`,
+  };
+  window.open(urls[ch]||urls.line, '_blank');
+}
+
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
+
+// ── INIT ─────────────────────────────────────────────────
+renderCats();
+filterProducts();
+</script>
+</body>
+</html>
