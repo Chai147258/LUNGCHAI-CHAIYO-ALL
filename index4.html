@@ -1,0 +1,2163 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="ลุงชัย ไชโย ออล — One Stop Industrial Supply & Service | คอมพิวเตอร์ ไฟฟ้า PPE เครื่องมือช่าง ค้าส่ง ค้าปลีก ออนไลน์">
+<title>ลุงชัย ไชโย ออล | Lungchai Chaiyo All</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Sarabun:wght@300;400;600;700&family=Space+Mono:wght@400;700&family=Chakra+Petch:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ===========================
+   DESIGN TOKENS
+=========================== */
+:root {
+  /* ── GOLD ── */
+  --gold:        #C9A84C;
+  --gold-bright: #FFE566;
+  --gold-glow:   #FFD700;
+  --gold-dim:    #6B5018;
+
+  /* ── DEEP SPACE LAYERS ── */
+  --space-void:  #02020C;   /* สีดำอวกาศสนิท */
+  --space-deep:  #05051A;   /* ชั้นลึก nebula */
+  --space-mid:   #090924;   /* ชั้นกลาง */
+  --space-soft:  #0E0E2E;   /* panel / section alt */
+  --space-card:  #0B0B26;   /* card background */
+
+  /* compat aliases */
+  --ink:         #02020C;
+  --ink-mid:     #05051A;
+  --ink-soft:    #0E0E2E;
+
+  /* ── NEBULA ACCENTS ── */
+  --nebula-blue:   rgba(30, 60, 180, 0.18);
+  --nebula-purple: rgba(80, 20, 160, 0.15);
+  --nebula-teal:   rgba(0,  180, 200, 0.08);
+  --nebula-rose:   rgba(180, 10, 80,  0.08);
+
+  /* ── TEXT ── */
+  --steel:  #7070A0;
+  --cream:  #DDD8C8;
+  --white:  #FFFFFF;
+
+  /* ── FONTS ── */
+  --font-display: 'Playfair Display', serif;
+  --font-thai:    'Sarabun', sans-serif;
+  --font-tech:    'Chakra Petch', sans-serif;
+  --font-mono:    'Space Mono', monospace;
+
+  --radius-sm: 4px;
+  --radius-md: 12px;
+  --radius-lg: 24px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===========================
+   RESET & BASE
+=========================== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-thai);
+  background: var(--space-void);
+  color: var(--cream);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+
+/* ===========================
+   CANVAS BACKGROUND
+=========================== */
+#bg-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Section nebula tint overlays */
+.about-bg,
+.channels-bg,
+.brand-strip {
+  position: relative;
+}
+.about-bg::before,
+.channels-bg::before,
+.brand-strip::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+    ellipse 80% 60% at 20% 50%,
+    rgba(30,20,120,0.12) 0%,
+    transparent 70%
+  ),
+  radial-gradient(
+    ellipse 60% 80% at 80% 30%,
+    rgba(80,10,140,0.08) 0%,
+    transparent 70%
+  );
+}
+.about-bg > .container,
+.channels-bg > .container,
+.brand-strip > .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Hero nebula glow behind ring */
+.hero-visual::before {
+  content: '';
+  position: absolute;
+  width: 120%;
+  height: 120%;
+  top: -10%;
+  left: -10%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(30, 20, 120, 0.25) 0%,
+    rgba(80, 10, 140, 0.12) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+.hero-logo-ring { position: relative; z-index: 1; }
+
+/* ===========================
+   LAYOUT
+=========================== */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(1rem, 4vw, 2.5rem);
+}
+
+section { position: relative; z-index: 1; }
+
+/* ===========================
+   NAV
+=========================== */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 1rem 0;
+  transition: background var(--transition), backdrop-filter var(--transition);
+}
+
+nav.scrolled {
+  background: rgba(2, 2, 12, 0.96);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(201, 168, 76, 0.15);
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.nav-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  object-fit: cover;
+}
+
+.nav-name {
+  font-family: var(--font-tech);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.05em;
+  line-height: 1.1;
+}
+
+.nav-name span {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 300;
+  color: var(--steel);
+  letter-spacing: 0.1em;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: var(--font-tech);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--steel);
+  transition: color var(--transition);
+}
+.nav-links a:hover { color: var(--gold); }
+
+.nav-cta {
+  background: var(--gold);
+  color: var(--ink) !important;
+  padding: 0.5rem 1.25rem;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition), transform var(--transition) !important;
+}
+.nav-cta:hover { background: var(--gold-bright) !important; transform: translateY(-1px); }
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--gold);
+  transition: var(--transition);
+}
+
+/* ===========================
+   HERO
+=========================== */
+.hero {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding: 6rem 0 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.hero-eyebrow::before {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+  color: var(--white);
+}
+
+.hero-title .gold { color: var(--gold); text-shadow: 0 0 40px rgba(201,168,76,0.5), 0 0 80px rgba(201,168,76,0.2); }
+.hero-title .outline {
+  -webkit-text-stroke: 1px var(--gold);
+  color: transparent;
+}
+
+.hero-subtitle {
+  font-family: var(--font-tech);
+  font-size: clamp(1rem, 2vw, 1.4rem);
+  font-weight: 300;
+  color: var(--gold);
+  letter-spacing: 0.06em;
+  margin-bottom: 1.5rem;
+}
+
+.hero-desc {
+  font-size: 1rem;
+  color: var(--steel);
+  line-height: 1.8;
+  margin-bottom: 2rem;
+  max-width: 520px;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.btn-primary {
+  background: var(--gold);
+  color: var(--ink);
+  font-family: var(--font-tech);
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  padding: 0.85rem 2rem;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.btn-primary:hover {
+  background: var(--gold-bright);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(201,168,76,0.3);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--gold);
+  font-family: var(--font-tech);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  padding: 0.85rem 2rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--gold);
+  cursor: pointer;
+  transition: all var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.btn-outline:hover {
+  background: rgba(201,168,76,0.1);
+  transform: translateY(-2px);
+}
+
+.hero-stats {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+}
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+}
+.stat-label {
+  font-family: var(--font-tech);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--steel);
+  margin-top: 0.25rem;
+}
+
+/* Hero Visual Side */
+.hero-visual {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-logo-ring {
+  position: relative;
+  width: clamp(220px, 30vw, 360px);
+  aspect-ratio: 1;
+}
+
+.ring-outer {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,0.2);
+  animation: spinSlow 30s linear infinite;
+}
+.ring-outer::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 12px var(--gold);
+}
+
+.ring-mid {
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,0.15);
+  animation: spinSlow 20s linear infinite reverse;
+}
+
+.ring-inner {
+  position: absolute;
+  inset: 24%;
+  border-radius: 50%;
+  border: 2px solid rgba(201,168,76,0.3);
+  background: rgba(201,168,76,0.03);
+}
+
+.hero-logo-img {
+  position: absolute;
+  inset: 30%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--gold);
+  box-shadow: 0 0 40px rgba(201,168,76,0.5), 0 0 100px rgba(201,168,76,0.2), 0 0 180px rgba(80,20,160,0.2);
+}
+
+.orbit-dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 8px var(--gold);
+}
+
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ===========================
+   TICKER
+=========================== */
+.ticker-wrap {
+  background: linear-gradient(90deg, #8B6914 0%, #C9A84C 40%, #FFE566 60%, #C9A84C 80%, #8B6914 100%);
+  padding: 0.6rem 0;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+.ticker-track {
+  display: flex;
+  gap: 3rem;
+  animation: ticker 25s linear infinite;
+  width: max-content;
+}
+.ticker-item {
+  font-family: var(--font-tech);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--ink);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.ticker-item::after {
+  content: '◆';
+  font-size: 0.5rem;
+}
+
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ===========================
+   SECTION COMMON
+=========================== */
+.section-pad { padding: 6rem 0; }
+.section-pad-sm { padding: 4rem 0; }
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.section-label::before {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.section-desc {
+  font-size: 1rem;
+  color: var(--steel);
+  max-width: 600px;
+  line-height: 1.8;
+}
+
+.section-header { margin-bottom: 3.5rem; }
+
+/* ===========================
+   ABOUT
+=========================== */
+.about-bg {
+  background: var(--space-deep);
+  border-top: 1px solid rgba(201,168,76,0.06);
+  border-bottom: 1px solid rgba(201,168,76,0.06);
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.about-img-wrap {
+  position: relative;
+}
+
+.about-img-frame {
+  width: 100%;
+  aspect-ratio: 4/5;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  position: relative;
+  background: var(--ink-soft);
+  border: 1px solid rgba(201,168,76,0.2);
+}
+
+.about-img-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.about-img-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: var(--gold-dim);
+}
+.about-img-placeholder .big-icon { font-size: 4rem; }
+
+.about-badge {
+  position: absolute;
+  bottom: -1.5rem;
+  right: -1.5rem;
+  background: var(--gold);
+  color: var(--ink);
+  padding: 1.5rem;
+  border-radius: var(--radius-md);
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+.about-badge-num {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 900;
+  line-height: 1;
+}
+.about-badge-text {
+  font-family: var(--font-tech);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-top: 0.2rem;
+}
+
+/* Sub Logo Row */
+.about-sub-logos {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.85rem;
+}
+
+.sub-logo-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--space-card);
+  border: 1px solid rgba(201,168,76,0.18);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 0.5rem;
+  transition: all var(--transition);
+  cursor: default;
+}
+.sub-logo-card:hover {
+  border-color: var(--gold);
+  box-shadow: 0 0 18px rgba(201,168,76,0.2);
+  transform: translateY(-2px);
+}
+
+.sub-logo-card img {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(201,168,76,0.4);
+  box-shadow: 0 0 10px rgba(201,168,76,0.2);
+}
+
+.sub-logo-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+.sub-logo-fallback {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 2px solid rgba(201,168,76,0.4);
+  background: rgba(201,168,76,0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: var(--gold-dim);
+  gap: 2px;
+}
+.sub-logo-fallback span {
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  letter-spacing: 0.1em;
+}
+
+.about-content { padding: 1rem 0; }
+
+.about-tagline {
+  font-family: var(--font-tech);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(201,168,76,0.2);
+}
+
+.about-text {
+  color: var(--steel);
+  line-height: 1.9;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.about-pillars {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.pillar {
+  background: var(--space-card);
+  border: 1px solid rgba(201,168,76,0.15);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: border-color var(--transition);
+}
+.pillar:hover { border-color: rgba(201,168,76,0.5); }
+
+.pillar-icon { font-size: 1.4rem; }
+
+.pillar-text {
+  font-family: var(--font-tech);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--cream);
+  line-height: 1.3;
+}
+
+/* ===========================
+   SERVICES
+=========================== */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.service-card {
+  background: var(--space-card);
+  border: 1px solid rgba(201,168,76,0.12);
+  border-radius: var(--radius-md);
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition);
+  cursor: default;
+}
+
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transition: transform var(--transition);
+  transform-origin: left;
+}
+.service-card:hover::before { transform: scaleX(1); }
+.service-card:hover {
+  border-color: rgba(201,168,76,0.3);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+}
+
+.service-num {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--gold-dim);
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+}
+
+.service-icon { font-size: 2.2rem; margin-bottom: 1rem; }
+
+.service-name {
+  font-family: var(--font-tech);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+.service-name-en {
+  font-size: 0.75rem;
+  color: var(--gold);
+  font-weight: 400;
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.service-desc {
+  font-size: 0.85rem;
+  color: var(--steel);
+  line-height: 1.7;
+}
+
+.service-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 1.25rem;
+}
+.tag {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 2px;
+  background: rgba(201,168,76,0.1);
+  color: var(--gold);
+  letter-spacing: 0.05em;
+}
+
+/* ===========================
+   CHANNELS
+=========================== */
+.channels-bg { background: var(--space-deep); border-top: 1px solid rgba(201,168,76,0.06); border-bottom: 1px solid rgba(201,168,76,0.06); }
+
+.channels-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.channel-card {
+  background: var(--space-card);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--radius-md);
+  padding: 1.5rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.75rem;
+  transition: all var(--transition);
+  cursor: pointer;
+}
+.channel-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.3);
+}
+
+.channel-icon {
+  font-size: 1.8rem;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.channel-name {
+  font-family: var(--font-tech);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--cream);
+  letter-spacing: 0.03em;
+  line-height: 1.3;
+}
+.channel-sub {
+  font-size: 0.72rem;
+  color: var(--steel);
+  line-height: 1.4;
+}
+
+/* Channel colors */
+.ch-line   { background: rgba(0,185,10,0.15); border-color: rgba(0,185,10,0.3); }
+.ch-line:hover { border-color: #00B90A; box-shadow: 0 8px 28px rgba(0,185,10,0.2); }
+.ch-line .channel-icon { background: rgba(0,185,10,0.2); }
+
+.ch-fb     { background: rgba(24,119,242,0.1); border-color: rgba(24,119,242,0.25); }
+.ch-fb:hover { border-color: #1877F2; box-shadow: 0 8px 28px rgba(24,119,242,0.2); }
+.ch-fb .channel-icon { background: rgba(24,119,242,0.2); }
+
+.ch-shopee { background: rgba(238,77,45,0.1); border-color: rgba(238,77,45,0.25); }
+.ch-shopee:hover { border-color: #EE4D2D; box-shadow: 0 8px 28px rgba(238,77,45,0.2); }
+.ch-shopee .channel-icon { background: rgba(238,77,45,0.2); }
+
+.ch-lazada { background: rgba(255,90,3,0.1); border-color: rgba(255,90,3,0.25); }
+.ch-lazada:hover { border-color: #FF5A03; box-shadow: 0 8px 28px rgba(255,90,3,0.2); }
+.ch-lazada .channel-icon { background: rgba(255,90,3,0.2); }
+
+.ch-tiktok { background: rgba(255,0,80,0.1); border-color: rgba(255,0,80,0.2); }
+.ch-tiktok:hover { border-color: #FF0050; box-shadow: 0 8px 28px rgba(255,0,80,0.15); }
+.ch-tiktok .channel-icon { background: rgba(255,0,80,0.15); }
+
+.ch-ig     { background: rgba(225,48,108,0.1); border-color: rgba(225,48,108,0.2); }
+.ch-ig:hover { border-color: #E1306C; box-shadow: 0 8px 28px rgba(225,48,108,0.15); }
+.ch-ig .channel-icon { background: rgba(225,48,108,0.15); }
+
+.ch-yt     { background: rgba(255,0,0,0.1); border-color: rgba(255,0,0,0.2); }
+.ch-yt:hover { border-color: #FF0000; box-shadow: 0 8px 28px rgba(255,0,0,0.15); }
+.ch-yt .channel-icon { background: rgba(255,0,0,0.15); }
+
+.ch-wa     { background: rgba(37,211,102,0.1); border-color: rgba(37,211,102,0.2); }
+.ch-wa:hover { border-color: #25D366; box-shadow: 0 8px 28px rgba(37,211,102,0.15); }
+.ch-wa .channel-icon { background: rgba(37,211,102,0.15); }
+
+/* ===========================
+   MAP & CONTACT
+=========================== */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.map-frame {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid rgba(201,168,76,0.2);
+  aspect-ratio: 4/3;
+  background: var(--ink-soft);
+}
+.map-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  filter: grayscale(80%) invert(90%) contrast(90%);
+}
+
+.contact-info { display: flex; flex-direction: column; gap: 1.5rem; }
+
+.contact-item {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 1.25rem;
+  background: var(--space-card);
+  border: 1px solid rgba(201,168,76,0.1);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--transition);
+}
+.contact-item:hover { border-color: rgba(201,168,76,0.35); }
+
+.contact-icon {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.contact-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+  margin-bottom: 0.3rem;
+}
+
+.contact-val {
+  font-family: var(--font-tech);
+  font-size: 0.88rem;
+  color: var(--cream);
+  line-height: 1.5;
+}
+
+.contact-link-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+}
+
+.cta-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-tech);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  transition: all var(--transition);
+}
+
+.cta-line { background: rgba(0,185,10,0.15); color: #00B90A; border: 1px solid rgba(0,185,10,0.35); }
+.cta-line:hover { background: #00B90A; color: var(--ink); }
+
+.cta-wa { background: rgba(37,211,102,0.15); color: #25D366; border: 1px solid rgba(37,211,102,0.35); }
+.cta-wa:hover { background: #25D366; color: var(--ink); }
+
+.cta-fb { background: rgba(24,119,242,0.15); color: #1877F2; border: 1px solid rgba(24,119,242,0.35); }
+.cta-fb:hover { background: #1877F2; color: #fff; }
+
+/* ===========================
+   FOOTER
+=========================== */
+footer {
+  background: var(--space-void);
+  border-top: 1px solid rgba(201,168,76,0.12);
+  padding: 3rem 0 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.footer-brand-name {
+  font-family: var(--font-tech);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.footer-brand-sub {
+  font-size: 0.8rem;
+  color: var(--steel);
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+}
+
+.footer-tagline {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--gold-dim);
+  letter-spacing: 0.08em;
+  padding: 0.5rem 0.75rem;
+  border-left: 2px solid var(--gold-dim);
+}
+
+.footer-heading {
+  font-family: var(--font-tech);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+  margin-bottom: 1.25rem;
+  text-transform: uppercase;
+}
+
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.footer-links a {
+  font-size: 0.83rem;
+  color: var(--steel);
+  transition: color var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.footer-links a:hover { color: var(--gold); }
+
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-copy {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--gold-dim);
+  letter-spacing: 0.05em;
+}
+
+.footer-domain {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--gold);
+  letter-spacing: 0.08em;
+}
+
+/* ===========================
+   BRAND STRIP
+=========================== */
+.brand-strip {
+  background: var(--space-deep);
+  padding: 4rem 0;
+  border-top: 1px solid rgba(201,168,76,0.08);
+  border-bottom: 1px solid rgba(201,168,76,0.08);
+  position: relative;
+  z-index: 1;
+}
+
+.brand-logos-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.brand-divider {
+  width: 1px;
+  height: 80px;
+  background: linear-gradient(to bottom, transparent, rgba(201,168,76,0.3), transparent);
+  flex-shrink: 0;
+}
+
+.brand-logo-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+  padding: 1.5rem 2rem;
+  border-radius: var(--radius-md);
+  transition: all var(--transition);
+  cursor: default;
+  min-width: 160px;
+}
+.brand-logo-item:hover {
+  background: rgba(201,168,76,0.05);
+}
+
+.brand-logo-ring {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  padding: 3px;
+  position: relative;
+  box-shadow: 0 0 20px rgba(201,168,76,0.2);
+  transition: box-shadow var(--transition);
+  overflow: hidden;
+  background: var(--ink-soft);
+}
+.brand-logo-ring:hover {
+  box-shadow: 0 0 36px rgba(201,168,76,0.45);
+}
+.brand-logo-ring img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Brand ring color variants */
+.brand-ring-all     { border-color: #C9A84C; box-shadow: 0 0 20px rgba(201,168,76,0.25); }
+.brand-ring-all:hover { box-shadow: 0 0 36px rgba(201,168,76,0.5); }
+
+.brand-ring-network { border-color: #4A90D9; box-shadow: 0 0 20px rgba(74,144,217,0.25); }
+.brand-ring-network:hover { box-shadow: 0 0 36px rgba(74,144,217,0.5); }
+
+.brand-ring-green   { border-color: #5CB85C; box-shadow: 0 0 20px rgba(92,184,92,0.25); }
+.brand-ring-green:hover { box-shadow: 0 0 36px rgba(92,184,92,0.5); }
+
+.brand-ring-otop    { border-color: #E8A838; box-shadow: 0 0 20px rgba(232,168,56,0.25); }
+.brand-ring-otop:hover { box-shadow: 0 0 36px rgba(232,168,56,0.5); }
+
+.brand-ring-factory { border-color: #9B59B6; box-shadow: 0 0 20px rgba(155,89,182,0.25); }
+.brand-ring-factory:hover { box-shadow: 0 0 36px rgba(155,89,182,0.5); }
+
+.brand-ring-service { border-color: #E74C3C; box-shadow: 0 0 20px rgba(231,76,60,0.25); }
+.brand-ring-service:hover { box-shadow: 0 0 36px rgba(231,76,60,0.5); }
+
+.brand-ring-fashion { border-color: #E91E8C; box-shadow: 0 0 20px rgba(233,30,140,0.25); }
+.brand-ring-fashion:hover { box-shadow: 0 0 36px rgba(233,30,140,0.5); }
+
+.brand-ring-market  { border-color: #1ABC9C; box-shadow: 0 0 20px rgba(26,188,156,0.25); }
+.brand-ring-market:hover { box-shadow: 0 0 36px rgba(26,188,156,0.5); }
+
+.brand-icon-lg { font-size: 2rem; background: rgba(255,255,255,0.04); }
+
+.brand-logo-fallback {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  background: rgba(201,168,76,0.06);
+}
+
+.brand-logo-name {
+  font-family: var(--font-tech);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--cream);
+  letter-spacing: 0.03em;
+}
+
+.brand-logo-sub {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--steel);
+  letter-spacing: 0.06em;
+  line-height: 1.6;
+}
+
+/* ===========================
+   SCROLL REVEAL
+=========================== */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===========================
+   MOBILE MENU
+=========================== */
+.mobile-menu {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(2, 2, 12, 0.99);
+  backdrop-filter: blur(20px);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+.mobile-menu.open { display: flex; }
+
+.mobile-menu-close {
+  position: absolute;
+  top: 1.5rem; right: 1.5rem;
+  background: none;
+  border: none;
+  color: var(--gold);
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.mobile-menu a {
+  font-family: var(--font-tech);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--cream);
+  letter-spacing: 0.06em;
+  transition: color var(--transition);
+}
+.mobile-menu a:hover { color: var(--gold); }
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+@media (max-width: 1024px) {
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+  .channels-grid { grid-template-columns: repeat(3, 1fr); }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+
+  .hero-grid { grid-template-columns: 1fr; text-align: center; }
+  .hero-eyebrow { justify-content: center; }
+  .hero-desc { margin-left: auto; margin-right: auto; }
+  .hero-actions { justify-content: center; }
+  .hero-stats { justify-content: center; }
+  .hero-visual { order: -1; }
+  .hero-logo-ring { width: 200px; }
+
+  .about-grid { grid-template-columns: 1fr; }
+  .about-badge { right: 0; bottom: -1rem; }
+  .about-pillars { grid-template-columns: 1fr 1fr; }
+
+  .services-grid { grid-template-columns: 1fr; }
+  .channels-grid { grid-template-columns: repeat(2, 1fr); }
+
+  .contact-grid { grid-template-columns: 1fr; }
+
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 480px) {
+  .about-pillars { grid-template-columns: 1fr; }
+  .channels-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-grid { grid-template-columns: 1fr; }
+  .hero-actions { flex-direction: column; align-items: center; }
+  .btn-primary, .btn-outline { width: 100%; justify-content: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ring-outer, .ring-mid { animation: none; }
+  .ticker-track { animation: none; }
+  .reveal { opacity: 1; transform: none; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- CANVAS BACKGROUND -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <div class="container">
+    <div class="nav-inner">
+      <div class="nav-brand">
+        <img src="https://raw.githubusercontent.com/Chai147258/LUNGCHAI-CHAIYO-ALL/main/images/logo-all.jpg"
+             alt="Lungchai Logo" class="nav-logo"
+             onerror="this.style.display='none'">
+        <div class="nav-name">
+          ลุงชัย ไชโย ออล
+          <span>LUNGCHAI CHAIYO ALL</span>
+        </div>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#about">เกี่ยวกับเรา</a></li>
+        <li><a href="/catalog.html">สินค้า</a></li>
+        <li><a href="#services">บริการ</a></li>
+        <li><a href="/member.html">สมาชิก</a></li>
+        <li><a href="/inquiry.html" class="nav-cta">📋 ขอใบเสนอราคา</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="เปิดเมนู">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobile-menu">
+  <button class="mobile-menu-close" id="menu-close">✕</button>
+  <a href="#about" onclick="closeMobileMenu()">เกี่ยวกับเรา</a>
+  <a href="#services" onclick="closeMobileMenu()">บริการของเรา</a>
+  <a href="#channels" onclick="closeMobileMenu()">ช่องทางซื้อขาย</a>
+  <a href="#contact" onclick="closeMobileMenu()">ติดต่อเรา</a>
+  <a href="https://line.me/R/ti/p/@971yzyyd" target="_blank" style="color: var(--gold);">💬 LINE OA</a>
+</div>
+
+<!-- ===========================
+     HERO
+=========================== -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <!-- Content -->
+      <div class="hero-content">
+        <p class="hero-eyebrow">ONE STOP INDUSTRIAL SUPPLY</p>
+        <h1 class="hero-title">
+          ลุงชัย<br>
+          <span class="gold">ไชโย</span> <span class="outline">ออล</span>
+        </h1>
+        <p class="hero-subtitle">Lungchai Chaiyo All</p>
+        <p class="hero-desc">
+          ครบ จบ ทุกความต้องการของโรงงานและธุรกิจ<br>
+          IT • ไฟฟ้า • PPE • เครื่องมือช่าง • วัสดุอุตสาหกรรม<br>
+          ค้าส่ง • ค้าปลีก • ออนไลน์ • บริการหลังการขาย
+        </p>
+        <div class="hero-actions">
+          <a href="/inquiry.html" class="btn-primary">
+            📋 ขอใบเสนอราคา
+          </a>
+          <a href="/catalog.html" class="btn-outline">
+            🛒 ดูสินค้าทั้งหมด
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-num">10+</span>
+            <span class="stat-label">หมวดสินค้า</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num">6</span>
+            <span class="stat-label">ช่องทางซื้อขาย</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num">24/7</span>
+            <span class="stat-label">ติดต่อได้</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Visual -->
+      <div class="hero-visual">
+        <div class="hero-logo-ring">
+          <div class="ring-outer"></div>
+          <div class="ring-mid"></div>
+          <div class="ring-inner"></div>
+          <img
+            src="https://raw.githubusercontent.com/Chai147258/LUNGCHAI-CHAIYO-ALL/main/images/logo-all.jpg"
+            alt="Lungchai Chaiyo All Logo"
+            class="hero-logo-img"
+            onerror="this.style.background='rgba(201,168,76,0.1)'"
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <span class="ticker-item">💻 คอมพิวเตอร์ & IT</span>
+    <span class="ticker-item">🖨️ ซ่อมเครื่องพิมพ์</span>
+    <span class="ticker-item">⚡ อุปกรณ์ไฟฟ้าโรงงาน</span>
+    <span class="ticker-item">🔧 ซ่อมมอเตอร์ไฟฟ้า</span>
+    <span class="ticker-item">🦺 PPE อุปกรณ์ความปลอดภัย</span>
+    <span class="ticker-item">🛠️ เครื่องมือช่าง</span>
+    <span class="ticker-item">🏭 One Stop Industrial Supply</span>
+    <span class="ticker-item">🛍️ Shopee & Lazada</span>
+    <span class="ticker-item">💻 คอมพิวเตอร์ & IT</span>
+    <span class="ticker-item">🖨️ ซ่อมเครื่องพิมพ์</span>
+    <span class="ticker-item">⚡ อุปกรณ์ไฟฟ้าโรงงาน</span>
+    <span class="ticker-item">🔧 ซ่อมมอเตอร์ไฟฟ้า</span>
+    <span class="ticker-item">🦺 PPE อุปกรณ์ความปลอดภัย</span>
+    <span class="ticker-item">🛠️ เครื่องมือช่าง</span>
+    <span class="ticker-item">🏭 One Stop Industrial Supply</span>
+    <span class="ticker-item">🛍️ Shopee & Lazada</span>
+  </div>
+</div>
+
+<!-- ===========================
+     ABOUT
+=========================== -->
+<section id="about" class="section-pad about-bg">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-img-wrap reveal">
+        <!-- Main Logo -->
+        <div class="about-img-frame">
+          <img
+            src="https://raw.githubusercontent.com/Chai147258/LUNGCHAI-CHAIYO-ALL/main/images/logo-all.jpg"
+            alt="Lungchai Chaiyo All"
+            onerror="this.parentElement.innerHTML='<div class=\'about-img-placeholder\'><div class=\'big-icon\'>🏭</div><div style=\'font-family:var(--font-tech);color:var(--gold-dim);font-size:0.85rem\'>LUNGCHAI CHAIYO ALL</div></div>'"
+          >
+        </div>
+        <!-- Sub Logos Row -->
+        <div class="about-sub-logos">
+          <div class="sub-logo-card">
+            <img
+              src="https://raw.githubusercontent.com/Chai147258/LUNGCHAI-CHAIYO-ALL/main/images/logo-farm.jpg"
+              alt="Lungchai Farm"
+              onerror="this.parentElement.innerHTML='<div class=\'sub-logo-fallback\'>🌾<span>Farm</span></div>'"
+            >
+            <span class="sub-logo-label">Farm</span>
+          </div>
+          <div class="sub-logo-card">
+            <img
+              src="https://raw.githubusercontent.com/Chai147258/LUNGCHAI-CHAIYO-ALL/main/images/Logo-ff.jpg"
+              alt="Lungchai FF"
+              onerror="this.parentElement.innerHTML='<div class=\'sub-logo-fallback\'>⚡<span>FF</span></div>'"
+            >
+            <span class="sub-logo-label">FF</span>
+          </div>
+          <div class="sub-logo-card sub-logo-main-mini">
+            <img
+              src="https://raw.githubusercontent.com/Chai147258/LUNGCHAI-CHAIYO-ALL/main/images/logo-all.jpg"
+              alt="Lungchai All"
+              onerror="this.parentElement.innerHTML='<div class=\'sub-logo-fallback\'>🏭<span>All</span></div>'"
+            >
+            <span class="sub-logo-label">All</span>
+          </div>
+        </div>
+        <div class="about-badge">
+          <div class="about-badge-num">10+</div>
+          <div class="about-badge-text">ปีประสบการณ์</div>
+        </div>
+      </div>
+
+      <div class="about-content reveal">
+        <p class="section-label">ABOUT US</p>
+        <h2 class="section-title">ลุงชัย ไชโย<br><span style="color:var(--gold)">Lungchai Industrial</span></h2>
+        <p class="about-tagline">One Stop Industrial Supply & Service</p>
+        <p class="about-text">
+          ลุงชัย ไชโย ออล คือผู้จัดหาสินค้าอุตสาหกรรมครบวงจร
+          ตั้งแต่อุปกรณ์ IT คอมพิวเตอร์ เครื่องพิมพ์ ไปจนถึงอุปกรณ์ไฟฟ้าโรงงาน
+          มอเตอร์ไฟฟ้า เครื่องมือช่าง และ PPE ความปลอดภัย
+        </p>
+        <p class="about-text">
+          เราให้บริการทั้งค้าส่ง ค้าปลีก และออนไลน์
+          พร้อมทีมช่างผู้เชี่ยวชาญด้านซ่อมบำรุงและให้คำปรึกษา
+          เพื่อตอบสนองทุกความต้องการของโรงงานและธุรกิจ
+        </p>
+        <div class="about-pillars">
+          <div class="pillar"><span class="pillar-icon">🏆</span><span class="pillar-text">คุณภาพมาตรฐาน</span></div>
+          <div class="pillar"><span class="pillar-icon">🚚</span><span class="pillar-text">จัดส่งรวดเร็ว</span></div>
+          <div class="pillar"><span class="pillar-icon">🔧</span><span class="pillar-text">บริการหลังการขาย</span></div>
+          <div class="pillar"><span class="pillar-icon">💰</span><span class="pillar-text">ราคายุติธรรม</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===========================
+     BRAND STRIP
+=========================== -->
+<section class="brand-strip">
+  <div class="container">
+    <p class="section-label" style="justify-content:center;margin-bottom:2rem;">OUR BRANDS</p>
+    <!-- Row 1: logo-all + logo-farm + logo-ff -->
+    <div class="brand-logos-row">
+
+      <div class="brand-logo-item reveal">
+        <div class="brand-logo-ring brand-ring-all">
+          <img src="https://raw.githubusercontent.com/Chai147258/LUNGCHAI-CHAIYO-ALL/main/images/logo-all.jpg"
+               alt="Lungchai Chaiyo All"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="brand-logo-fallback" style="display:none">🏭</div>
+        </div>
+        <div class="brand-logo-name">ลุงชัย ไชโย ออล</div>
+        <div class="brand-logo-sub">LUNGCHAI CHAIYO ALL<br>One Stop Industrial Supply</div>
+      </div>
+
+      <div class="brand-divider"></div>
+
+      <div class="brand-logo-item reveal">
+        <div class="brand-logo-ring brand-ring-network">
+          <img src="https://raw.githubusercontent.com/Chai147258/LUNGCHAI-CHAIYO-ALL/main/images/Logo-ff.jpg"
+               alt="Network Farm IT"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="brand-logo-fallback" style="display:none">🌐</div>
+        </div>
+        <div class="brand-logo-name">Network Farm</div>
+        <div class="brand-logo-sub">Network Farm IT Solution<br>คอมพิวเตอร์ • เครือข่าย • IT</div>
+      </div>
+
+      <div class="brand-divider"></div>
+
+      <div class="brand-logo-item reveal">
+        <div class="brand-logo-ring brand-ring-green">
+          <img src="https://raw.githubusercontent.com/Chai147258/LUNGCHAI-CHAIYO-ALL/main/images/logo-farm.jpg"
+               alt="ลุงชัย รักษ์โลก"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="brand-logo-fallback" style="display:none">🌿</div>
+        </div>
+        <div class="brand-logo-name">ลุงชัย รักษ์โลก</div>
+        <div class="brand-logo-sub">Lungchai Eco<br>สิ่งแวดล้อม • ยั่งยืน • Green</div>
+      </div>
+
+      <div class="brand-divider"></div>
+
+      <div class="brand-logo-item reveal">
+        <div class="brand-logo-ring brand-ring-otop">
+          <div class="brand-logo-fallback brand-icon-lg" style="display:flex">🎁</div>
+        </div>
+        <div class="brand-logo-name">ลุงชัย ของฝาก</div>
+        <div class="brand-logo-sub">ของฝาก • ของขึ้นชื่อ<br>สินค้า OTOP</div>
+      </div>
+
+    </div>
+
+    <!-- Row 2: FF + บริการ + เสื้อผ้า + MARKET -->
+    <div class="brand-logos-row" style="margin-top:2rem;">
+
+      <div class="brand-logo-item reveal">
+        <div class="brand-logo-ring brand-ring-factory">
+          <div class="brand-logo-fallback brand-icon-lg" style="display:flex">🏗️</div>
+        </div>
+        <div class="brand-logo-name">Lungchai for Factories</div>
+        <div class="brand-logo-sub">Lungchai For Factories<br>อุตสาหกรรม • โรงงาน • B2B</div>
+      </div>
+
+      <div class="brand-divider"></div>
+
+      <div class="brand-logo-item reveal">
+        <div class="brand-logo-ring brand-ring-service">
+          <div class="brand-logo-fallback brand-icon-lg" style="display:flex">🔧</div>
+        </div>
+        <div class="brand-logo-name">ลุงชัย บริการ</div>
+        <div class="brand-logo-sub">Lungchai Service<br>ซ่อม • ติดตั้ง • บำรุงรักษา</div>
+      </div>
+
+      <div class="brand-divider"></div>
+
+      <div class="brand-logo-item reveal">
+        <div class="brand-logo-ring brand-ring-fashion">
+          <div class="brand-logo-fallback brand-icon-lg" style="display:flex">👗</div>
+        </div>
+        <div class="brand-logo-name">ลุงชัย ไชโย</div>
+        <div class="brand-logo-sub">Lungchai Chaiyo Fashion<br>เสื้อผ้าแฟชั่น • สไตล์ไทย</div>
+      </div>
+
+      <div class="brand-divider"></div>
+
+      <div class="brand-logo-item reveal">
+        <div class="brand-logo-ring brand-ring-market">
+          <div class="brand-logo-fallback brand-icon-lg" style="display:flex">🛒</div>
+        </div>
+        <div class="brand-logo-name">Lungchai Markat</div>
+        <div class="brand-logo-sub">LUNGCHAI MARKAT<br>ตลาด • ค้าส่ง • Online</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===========================
+     SERVICES
+=========================== -->
+<section id="services" class="section-pad">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="section-label">OUR SERVICES</p>
+      <h2 class="section-title">บริการของเรา</h2>
+      <p class="section-desc">ครบทุกด้านสำหรับโรงงาน ธุรกิจ และบุคคลทั่วไป</p>
+    </div>
+    <div class="services-grid">
+
+      <div class="service-card reveal">
+        <div class="service-num">01</div>
+        <div class="service-icon">💻</div>
+        <div class="service-name">IT & Computer
+          <span class="service-name-en">Information Technology</span>
+        </div>
+        <p class="service-desc">จำหน่ายคอมพิวเตอร์ โน้ตบุ๊ค อุปกรณ์ต่อพ่วง ระบบเครือข่าย พร้อมให้คำปรึกษาด้าน IT Solutions</p>
+        <div class="service-tags">
+          <span class="tag">Computer</span>
+          <span class="tag">Network</span>
+          <span class="tag">IT Solutions</span>
+        </div>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-num">02</div>
+        <div class="service-icon">🖨️</div>
+        <div class="service-name">ซ่อมเครื่องพิมพ์
+          <span class="service-name-en">Printer Repair Service</span>
+        </div>
+        <p class="service-desc">ซ่อมบำรุงเครื่องพิมพ์ทุกยี่ห้อ จำหน่ายหมึก อะไหล่ และรับซ่อมนอกสถานที่</p>
+        <div class="service-tags">
+          <span class="tag">Printer</span>
+          <span class="tag">Ink</span>
+          <span class="tag">On-site</span>
+        </div>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-num">03</div>
+        <div class="service-icon">⚡</div>
+        <div class="service-name">อุปกรณ์ไฟฟ้า
+          <span class="service-name-en">Electrical Equipment</span>
+        </div>
+        <p class="service-desc">จำหน่ายอุปกรณ์ไฟฟ้าโรงงาน พัดลมอุตสาหกรรม สวิตช์ สาย และอุปกรณ์อิเล็กทรอนิกส์ครบ</p>
+        <div class="service-tags">
+          <span class="tag">Electrical</span>
+          <span class="tag">Industrial Fan</span>
+          <span class="tag">Electronics</span>
+        </div>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-num">04</div>
+        <div class="service-icon">🔩</div>
+        <div class="service-name">ซ่อมมอเตอร์ไฟฟ้า
+          <span class="service-name-en">Electric Motor Repair</span>
+        </div>
+        <p class="service-desc">ซ่อมพันขดลวดมอเตอร์ ไดนาโม ปั๊มน้ำ และเครื่องจักรไฟฟ้าสำหรับโรงงานอุตสาหกรรม</p>
+        <div class="service-tags">
+          <span class="tag">Motor</span>
+          <span class="tag">Dynamo</span>
+          <span class="tag">Pump</span>
+        </div>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-num">05</div>
+        <div class="service-icon">🦺</div>
+        <div class="service-name">PPE & Safety
+          <span class="service-name-en">Personal Protective Equipment</span>
+        </div>
+        <p class="service-desc">อุปกรณ์ป้องกันภัยส่วนบุคคล หมวก ถุงมือ รองเท้าเซฟตี้ ชุดป้องกัน ตามมาตรฐานโรงงาน</p>
+        <div class="service-tags">
+          <span class="tag">Helmet</span>
+          <span class="tag">Gloves</span>
+          <span class="tag">Safety Shoes</span>
+        </div>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-num">06</div>
+        <div class="service-icon">🛍️</div>
+        <div class="service-name">ค้าส่ง & ออนไลน์
+          <span class="service-name-en">Wholesale & Online Sales</span>
+        </div>
+        <p class="service-desc">ค้าส่ง ค้าปลีก และออนไลน์ผ่าน Shopee, Lazada, TikTok Shop, Facebook พร้อมระบบ Affiliate</p>
+        <div class="service-tags">
+          <span class="tag">Shopee</span>
+          <span class="tag">Lazada</span>
+          <span class="tag">TikTok</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===========================
+     CHANNELS
+=========================== -->
+<section id="channels" class="section-pad channels-bg">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="section-label">SALES CHANNELS</p>
+      <h2 class="section-title">ช่องทางซื้อขาย</h2>
+      <p class="section-desc">เลือกช่องทางที่สะดวกสำหรับคุณ — เราพร้อมให้บริการทุกแพลตฟอร์ม</p>
+    </div>
+    <div class="channels-grid">
+
+      <a href="https://line.me/R/ti/p/@971yzyyd" target="_blank" class="channel-card ch-line reveal">
+        <div class="channel-icon">💬</div>
+        <div class="channel-name">LINE OA</div>
+        <div class="channel-sub">@971yzyyd<br>สอบถาม / สั่งซื้อ</div>
+      </a>
+
+      <a href="https://www.facebook.com/lungchaishop1" target="_blank" class="channel-card ch-fb reveal">
+        <div class="channel-icon">📘</div>
+        <div class="channel-name">Facebook</div>
+        <div class="channel-sub">Lungchai Shop<br>สินค้าและโปรโมชัน</div>
+      </a>
+
+      <a href="https://collshp.com/run00?view=storefront" target="_blank" class="channel-card ch-shopee reveal">
+        <div class="channel-icon">🛒</div>
+        <div class="channel-name">Shopee</div>
+        <div class="channel-sub">ร้านค้าออนไลน์<br>ซื้อง่าย มีรีวิว</div>
+      </a>
+
+      <a href="https://s.lazada.co.th/s.Z7iuvG" target="_blank" class="channel-card ch-lazada reveal">
+        <div class="channel-icon">🏪</div>
+        <div class="channel-name">Lazada</div>
+        <div class="channel-sub">สั่งซื้อออนไลน์<br>ส่งถึงบ้าน</div>
+      </a>
+
+      <a href="https://www.tiktok.com/@lungchai147258" target="_blank" class="channel-card ch-tiktok reveal">
+        <div class="channel-icon">🎵</div>
+        <div class="channel-name">TikTok Shop</div>
+        <div class="channel-sub">@lungchai147258<br>Live สด / วิดีโอสินค้า</div>
+      </a>
+
+      <a href="https://www.instagram.com/lungchaimarket" target="_blank" class="channel-card ch-ig reveal">
+        <div class="channel-icon">📸</div>
+        <div class="channel-name">Instagram</div>
+        <div class="channel-sub">@lungchaimarket<br>รูปสินค้า / Story</div>
+      </a>
+
+      <a href="https://youtube.com/@chai147258" target="_blank" class="channel-card ch-yt reveal">
+        <div class="channel-icon">▶️</div>
+        <div class="channel-name">YouTube</div>
+        <div class="channel-sub">@chai147258<br>รีวิว / วิธีใช้งาน</div>
+      </a>
+
+      <a href="https://wa.me/qr/QXD7536TVAPHG1" target="_blank" class="channel-card ch-wa reveal">
+        <div class="channel-icon">📱</div>
+        <div class="channel-name">WhatsApp</div>
+        <div class="channel-sub">ลุงชัย<br>ติดต่อด่วน</div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===========================
+     CONTACT & MAP
+=========================== -->
+<section id="contact" class="section-pad">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="section-label">CONTACT US</p>
+      <h2 class="section-title">ติดต่อเรา</h2>
+      <p class="section-desc">พร้อมให้บริการและตอบคำถามทุกวัน</p>
+    </div>
+    <div class="contact-grid">
+      <div class="reveal">
+        <div class="map-frame">
+          <iframe
+            src="https://maps.google.com/maps?q=lungchai+chaiyo&output=embed&z=15"
+            allowfullscreen
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+      </div>
+
+      <div class="contact-info reveal">
+        <div class="contact-item">
+          <span class="contact-icon">📍</span>
+          <div>
+            <div class="contact-label">ที่อยู่</div>
+            <div class="contact-val">ลุงชัย ไชโย ออล<br>ดูแผนที่ Google Maps</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon">💬</span>
+          <div>
+            <div class="contact-label">LINE OA (แนะนำ)</div>
+            <div class="contact-val">@971yzyyd — ลุงชัย ไชโย ออล</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon">🕐</span>
+          <div>
+            <div class="contact-label">เวลาทำการ</div>
+            <div class="contact-val">จันทร์ – เสาร์: 08:00 – 18:00<br>ออนไลน์: ทุกวัน 24 ชั่วโมง</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon">🌐</span>
+          <div>
+            <div class="contact-label">เว็บไซต์</div>
+            <div class="contact-val">lungchaichaiyo.shop</div>
+          </div>
+        </div>
+
+        <div class="contact-link-row">
+          <a href="https://line.me/R/ti/p/@971yzyyd" target="_blank" class="cta-link cta-line">💬 LINE OA</a>
+          <a href="https://wa.me/qr/QXD7536TVAPHG1" target="_blank" class="cta-link cta-wa">📱 WhatsApp</a>
+          <a href="https://www.facebook.com/lungchaishop1" target="_blank" class="cta-link cta-fb">📘 Facebook</a>
+        </div>
+
+        <div style="margin-top:1.5rem; display:flex; gap:0.75rem; flex-wrap:wrap;">
+          <a href="https://maps.app.goo.gl/eayqd3619xcgLWFd8" target="_blank"
+             style="font-family:var(--font-mono);font-size:0.72rem;color:var(--gold);letter-spacing:0.05em;
+                    padding:0.5rem 1rem;border:1px solid rgba(201,168,76,0.3);border-radius:4px;
+                    transition:all 0.3s;display:inline-flex;align-items:center;gap:0.4rem;"
+             onmouseover="this.style.background='rgba(201,168,76,0.1)'"
+             onmouseout="this.style.background='transparent'">
+            📍 แผนที่ 1
+          </a>
+          <a href="https://maps.app.goo.gl/4sUbVC4DiohHpyKH8" target="_blank"
+             style="font-family:var(--font-mono);font-size:0.72rem;color:var(--gold);letter-spacing:0.05em;
+                    padding:0.5rem 1rem;border:1px solid rgba(201,168,76,0.3);border-radius:4px;
+                    transition:all 0.3s;display:inline-flex;align-items:center;gap:0.4rem;"
+             onmouseover="this.style.background='rgba(201,168,76,0.1)'"
+             onmouseout="this.style.background='transparent'">
+            📍 แผนที่ 2
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===========================
+     FOOTER
+=========================== -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.25rem;">
+          <img src="https://raw.githubusercontent.com/Chai147258/LUNGCHAI-CHAIYO-ALL/main/images/logo-all.jpg"
+               alt="Logo" style="width:36px;height:36px;border-radius:50%;border:1.5px solid var(--gold);object-fit:cover;"
+               onerror="this.style.display='none'">
+          <div>
+            <div class="footer-brand-name">ลุงชัย ไชโย ออล</div>
+          </div>
+        </div>
+        <p class="footer-brand-sub">Lungchai Industrial Supply & Service<br>One Stop ทุกความต้องการของโรงงาน</p>
+        <p class="footer-tagline">IT • ELECTRICAL • PPE • TOOLS • WHOLESALE</p>
+        <!-- Footer Brand Logos -->
+        <div style="display:flex;gap:0.75rem;margin-top:1.25rem;align-items:center;">
+          <img src="https://raw.githubusercontent.com/Chai147258/LUNGCHAI-CHAIYO-ALL/main/images/logo-all.jpg"
+               alt="All" title="Lungchai Chaiyo All"
+               style="width:36px;height:36px;border-radius:50%;border:1.5px solid var(--gold);object-fit:cover;opacity:0.85;transition:opacity 0.3s"
+               onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.85'"
+               onerror="this.style.display='none'">
+          <img src="https://raw.githubusercontent.com/Chai147258/LUNGCHAI-CHAIYO-ALL/main/images/logo-farm.jpg"
+               alt="Farm" title="Lungchai Farm"
+               style="width:36px;height:36px;border-radius:50%;border:1.5px solid #6BB564;object-fit:cover;opacity:0.85;transition:opacity 0.3s"
+               onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.85'"
+               onerror="this.style.display='none'">
+          <img src="https://raw.githubusercontent.com/Chai147258/LUNGCHAI-CHAIYO-ALL/main/images/Logo-ff.jpg"
+               alt="FF" title="Lungchai FF"
+               style="width:36px;height:36px;border-radius:50%;border:1.5px solid #4A90D9;object-fit:cover;opacity:0.85;transition:opacity 0.3s"
+               onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.85'"
+               onerror="this.style.display='none'">
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-heading">บริการ</div>
+        <ul class="footer-links">
+          <li><a href="#services">💻 IT & Computer</a></li>
+          <li><a href="#services">🖨️ ซ่อมเครื่องพิมพ์</a></li>
+          <li><a href="#services">⚡ อุปกรณ์ไฟฟ้า</a></li>
+          <li><a href="#services">🔩 ซ่อมมอเตอร์</a></li>
+          <li><a href="#services">🦺 PPE Safety</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-heading">ช้อปออนไลน์</div>
+        <ul class="footer-links">
+          <li><a href="https://line.me/R/ti/p/@971yzyyd" target="_blank">💬 LINE OA</a></li>
+          <li><a href="https://collshp.com/run00?view=storefront" target="_blank">🛒 Shopee</a></li>
+          <li><a href="https://s.lazada.co.th/s.Z7iuvG" target="_blank">🏪 Lazada</a></li>
+          <li><a href="https://www.tiktok.com/@lungchai147258" target="_blank">🎵 TikTok</a></li>
+          <li><a href="https://www.facebook.com/lungchaishop1" target="_blank">📘 Facebook</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-heading">ติดตามเรา</div>
+        <ul class="footer-links">
+          <li><a href="https://youtube.com/@chai147258" target="_blank">▶️ YouTube</a></li>
+          <li><a href="https://www.instagram.com/lungchaimarket" target="_blank">📸 Instagram</a></li>
+          <li><a href="https://wa.me/qr/QXD7536TVAPHG1" target="_blank">📱 WhatsApp</a></li>
+          <li><a href="https://maps.app.goo.gl/eayqd3619xcgLWFd8" target="_blank">📍 Google Maps</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2025 ลุงชัย ไชโย ออล — Lungchai Chaiyo All. สงวนลิขสิทธิ์</span>
+      <span class="footer-domain">lungchaichaiyo.shop</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ===========================
+     JAVASCRIPT
+=========================== */
+<script>
+// ============================================
+// DEEP SPACE CANVAS — stars + nebula + comets
+// ============================================
+(function() {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  let stars = [], comets = [], nebulae = [];
+  let frame = 0;
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+    initNebulae();
+    initStars();
+  }
+
+  /* ── NEBULA CLOUDS (static radial blobs) ── */
+  function initNebulae() {
+    nebulae = [
+      // colour, cx%, cy%, rx, ry, alpha
+      { cx: 0.15, cy: 0.20, rx: W*0.35, ry: H*0.30, color: '30,20,120',  a: 0.13 },
+      { cx: 0.80, cy: 0.65, rx: W*0.40, ry: H*0.35, color: '80,10,140',  a: 0.10 },
+      { cx: 0.50, cy: 0.45, rx: W*0.55, ry: H*0.50, color: '0,60,140',   a: 0.07 },
+      { cx: 0.05, cy: 0.80, rx: W*0.30, ry: H*0.25, color: '0,140,160',  a: 0.06 },
+      { cx: 0.90, cy: 0.10, rx: W*0.25, ry: H*0.20, color: '160,10,60',  a: 0.07 },
+    ];
+  }
+
+  /* ── STARS ── */
+  function initStars() {
+    stars = [];
+    // tiny background dust
+    for (let i = 0; i < 300; i++) {
+      stars.push({
+        x:  Math.random() * W,
+        y:  Math.random() * H,
+        r:  Math.random() * 0.8 + 0.1,
+        a:  Math.random(),
+        da: (Math.random() - 0.5) * 0.004,
+        type: 'dust'
+      });
+    }
+    // mid stars
+    for (let i = 0; i < 120; i++) {
+      stars.push({
+        x:  Math.random() * W,
+        y:  Math.random() * H,
+        r:  Math.random() * 1.2 + 0.4,
+        a:  Math.random(),
+        da: (Math.random() - 0.5) * 0.006,
+        type: Math.random() > 0.8 ? 'gold' : 'white'
+      });
+    }
+    // bright foreground stars (with cross-flare)
+    for (let i = 0; i < 18; i++) {
+      stars.push({
+        x:  Math.random() * W,
+        y:  Math.random() * H,
+        r:  Math.random() * 1.8 + 1.0,
+        a:  Math.random(),
+        da: (Math.random() - 0.5) * 0.003,
+        type: 'bright',
+        gold: Math.random() > 0.5
+      });
+    }
+  }
+
+  /* ── SPAWN COMET ── */
+  function spawnComet() {
+    if (comets.length < 4 && Math.random() < 0.003) {
+      const fromLeft = Math.random() > 0.5;
+      comets.push({
+        x:    fromLeft ? -50 : W + 50,
+        y:    Math.random() * H * 0.6,
+        vx:   fromLeft ? (4 + Math.random() * 4) : -(4 + Math.random() * 4),
+        vy:   0.8 + Math.random() * 1.5,
+        life: 1,
+        tail: 120 + Math.random() * 160,
+        gold: Math.random() > 0.4
+      });
+    }
+  }
+
+  /* ── DRAW ── */
+  function draw() {
+    frame++;
+    ctx.clearRect(0, 0, W, H);
+
+    // 1. Nebula blobs
+    nebulae.forEach(n => {
+      const gx = ctx.createRadialGradient(
+        n.cx * W, n.cy * H, 0,
+        n.cx * W, n.cy * H, Math.max(n.rx, n.ry)
+      );
+      gx.addColorStop(0,   `rgba(${n.color},${n.a})`);
+      gx.addColorStop(0.5, `rgba(${n.color},${n.a * 0.4})`);
+      gx.addColorStop(1,   `rgba(${n.color},0)`);
+      ctx.save();
+      ctx.scale(1, n.ry / n.rx);
+      ctx.beginPath();
+      ctx.arc(n.cx * W, (n.cy * H) * (n.rx / n.ry), n.rx, 0, Math.PI * 2);
+      ctx.fillStyle = gx;
+      ctx.fill();
+      ctx.restore();
+    });
+
+    // 2. Stars
+    stars.forEach(s => {
+      s.a += s.da;
+      if (s.a <= 0 || s.a >= 1) s.da *= -1;
+
+      if (s.type === 'dust') {
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(180,180,220,${s.a * 0.25})`;
+        ctx.fill();
+      } else if (s.type === 'gold') {
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(201,168,76,${s.a * 0.7})`;
+        ctx.fill();
+      } else if (s.type === 'white') {
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(220,225,255,${s.a * 0.55})`;
+        ctx.fill();
+      } else if (s.type === 'bright') {
+        const col = s.gold ? '201,168,76' : '200,210,255';
+        const al  = s.a * 0.9;
+        // core
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${col},${al})`;
+        ctx.fill();
+        // glow halo
+        const halo = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 5);
+        halo.addColorStop(0,   `rgba(${col},${al * 0.4})`);
+        halo.addColorStop(1,   `rgba(${col},0)`);
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r * 5, 0, Math.PI * 2);
+        ctx.fillStyle = halo;
+        ctx.fill();
+        // cross flare
+        ctx.save();
+        ctx.globalAlpha = al * 0.35;
+        ctx.strokeStyle = `rgba(${col},1)`;
+        ctx.lineWidth = 0.5;
+        const fl = s.r * 8;
+        ctx.beginPath();
+        ctx.moveTo(s.x - fl, s.y); ctx.lineTo(s.x + fl, s.y);
+        ctx.moveTo(s.x, s.y - fl); ctx.lineTo(s.x, s.y + fl);
+        ctx.stroke();
+        ctx.restore();
+      }
+    });
+
+    // 3. Comets
+    spawnComet();
+    comets = comets.filter(c => c.life > 0 && c.x > -200 && c.x < W + 200);
+    comets.forEach(c => {
+      const col = c.gold ? '255,214,100' : '180,210,255';
+      const grad = ctx.createLinearGradient(
+        c.x - c.vx * (c.tail / Math.abs(c.vx)),
+        c.y - c.vy * (c.tail / Math.abs(c.vx)),
+        c.x, c.y
+      );
+      grad.addColorStop(0,    `rgba(${col},0)`);
+      grad.addColorStop(0.7,  `rgba(${col},${c.life * 0.3})`);
+      grad.addColorStop(1,    `rgba(${col},${c.life * 0.9})`);
+
+      ctx.beginPath();
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = 1.8;
+      ctx.moveTo(c.x - c.vx * (c.tail / Math.max(Math.abs(c.vx), 1)),
+                 c.y - c.vy * (c.tail / Math.max(Math.abs(c.vx), 1)));
+      ctx.lineTo(c.x, c.y);
+      ctx.stroke();
+
+      // head glow
+      const headGlow = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, 6);
+      headGlow.addColorStop(0, `rgba(${col},${c.life * 0.8})`);
+      headGlow.addColorStop(1, `rgba(${col},0)`);
+      ctx.beginPath();
+      ctx.arc(c.x, c.y, 6, 0, Math.PI * 2);
+      ctx.fillStyle = headGlow;
+      ctx.fill();
+
+      c.x += c.vx; c.y += c.vy; c.life -= 0.008;
+    });
+
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  draw();
+})();
+
+// --- NAV SCROLL ---
+const nav = document.getElementById('main-nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+
+// --- MOBILE MENU ---
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobile-menu');
+const menuClose = document.getElementById('menu-close');
+
+hamburger.addEventListener('click', () => mobileMenu.classList.add('open'));
+menuClose.addEventListener('click', () => mobileMenu.classList.remove('open'));
+
+function closeMobileMenu() {
+  mobileMenu.classList.remove('open');
+}
+
+// --- SCROLL REVEAL ---
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      // Stagger children
+      const siblings = e.target.parentElement.querySelectorAll('.reveal');
+      siblings.forEach((s, i) => {
+        setTimeout(() => s.classList.add('visible'), i * 80);
+      });
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+reveals.forEach(r => observer.observe(r));
+</script>
+</body>
+</html>
