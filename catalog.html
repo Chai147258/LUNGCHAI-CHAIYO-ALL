@@ -3,353 +3,378 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="แคตตาล็อกสินค้า ลุงชัย ไชโย ออล — IT, ไฟฟ้า, PPE, เครื่องมือช่าง">
+<meta name="description" content="แคตตาล็อกสินค้า ลุงชัย ไชโย ออล — 320+ รายการ IT, เครือข่าย, อุตสาหกรรม, PPE, ของฝาก OTOP, แฟชั่น">
 <title>แคตตาล็อกสินค้า | ลุงชัย ไชโย ออล</title>
-<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&family=Chakra+Petch:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&family=Chakra+Petch:wght@300;400;600;700&family=Space+Mono:wght@400;700&family=Playfair+Display:wght@900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --gold:#C9A84C;--gold-bright:#FFE566;--gold-dim:#6B5018;
-  --space-void:#02020C;--space-deep:#05051A;--space-card:#0B0B26;--space-soft:#0E0E2E;
-  --steel:#7070A0;--cream:#DDD8C8;--white:#fff;
-  --font-thai:'Sarabun',sans-serif;--font-tech:'Chakra Petch',sans-serif;--font-mono:'Space Mono',monospace;
-  --t:0.3s cubic-bezier(.4,0,.2,1);
+  --gold:#C9A84C;--gold-hi:#FFE566;--gold-dim:#6B5018;
+  --void:#02020C;--deep:#04041A;--card:#0A0A2E;
+  --steel:#8888BB;--cream:#E0DCF0;--white:#fff;
+  --ft:'Sarabun',sans-serif;--fc:'Chakra Petch',sans-serif;--fm:'Space Mono',monospace;--fd:'Playfair Display',serif;
+  --t:0.28s cubic-bezier(.4,0,.2,1);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:var(--font-thai);background:var(--space-void);color:var(--cream);overflow-x:hidden;min-height:100vh}
+body{font-family:var(--ft);background:var(--void);color:var(--cream);overflow-x:hidden;min-height:100vh}
 a{color:inherit;text-decoration:none}
-#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+#bg{position:fixed;inset:0;z-index:0;pointer-events:none}
 
 /* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(2,2,12,.96);backdrop-filter:blur(16px);border-bottom:1px solid rgba(201,168,76,.12);padding:.85rem 0}
-.nav-inner{max-width:1200px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(2,2,12,.96);backdrop-filter:blur(16px);border-bottom:1px solid rgba(201,168,76,.12);padding:.8rem 0}
+.nav-inner{max-width:1300px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
 .nav-brand{display:flex;align-items:center;gap:.6rem}
-.nav-logo{width:36px;height:36px;border-radius:50%;border:2px solid var(--gold);object-fit:cover}
-.nav-brand-name{font-family:var(--font-tech);font-size:.85rem;font-weight:700;color:var(--gold);letter-spacing:.04em;line-height:1.1}
-.nav-brand-name span{display:block;font-size:.6rem;font-weight:300;color:var(--steel);letter-spacing:.1em}
-.nav-links{display:flex;align-items:center;gap:1.5rem}
-.nav-links a{font-family:var(--font-tech);font-size:.75rem;font-weight:600;letter-spacing:.06em;color:var(--steel);transition:color var(--t)}
+.nav-logo{width:36px;height:36px;border-radius:50%;border:2px solid var(--gold);object-fit:cover;box-shadow:0 0 10px rgba(201,168,76,.4)}
+.nav-name{font-family:var(--fc);font-size:.85rem;font-weight:700;color:var(--gold);letter-spacing:.04em;line-height:1.1}
+.nav-name span{display:block;font-size:.6rem;font-weight:300;color:var(--steel);letter-spacing:.1em}
+.nav-links{display:flex;align-items:center;gap:1.3rem}
+.nav-links a{font-family:var(--fc);font-size:.75rem;font-weight:600;letter-spacing:.05em;color:var(--steel);transition:color var(--t)}
 .nav-links a:hover,.nav-links a.active{color:var(--gold)}
-.nav-cta{background:var(--gold);color:var(--space-void)!important;padding:.45rem 1.1rem;border-radius:4px;font-weight:700!important}
-.nav-cta:hover{background:var(--gold-bright)!important}
+.nav-cta{background:linear-gradient(135deg,var(--gold),var(--gold-hi));color:var(--void)!important;padding:.42rem 1rem;border-radius:20px;font-weight:700!important;box-shadow:0 0 12px rgba(201,168,76,.4)}
 
-/* PAGE HEADER */
-.page-header{padding:7rem 0 3rem;position:relative;z-index:1;text-align:center;border-bottom:1px solid rgba(201,168,76,.08)}
-.page-header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 80% at 50% 50%,rgba(30,20,120,.18) 0%,transparent 70%);pointer-events:none}
-.ph-label{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.22em;color:var(--gold);margin-bottom:.6rem;display:flex;align-items:center;justify-content:center;gap:.6rem}
-.ph-label::before,.ph-label::after{content:'';display:block;width:24px;height:1px;background:var(--gold)}
-.ph-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;color:var(--white);margin-bottom:.5rem}
-.ph-title span{color:var(--gold)}
-.ph-desc{color:var(--steel);font-size:.95rem;max-width:500px;margin:0 auto}
+/* HEADER */
+.ph{padding:6.5rem 0 2.5rem;position:relative;z-index:1;text-align:center;border-bottom:1px solid rgba(201,168,76,.08)}
+.ph::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 80% at 50% 50%,rgba(50,25,150,.2) 0%,transparent 70%);pointer-events:none}
+.ph-lbl{font-family:var(--fm);font-size:.65rem;letter-spacing:.22em;color:var(--gold);margin-bottom:.6rem;display:flex;align-items:center;justify-content:center;gap:.6rem}
+.ph-lbl::before,.ph-lbl::after{content:'';display:block;width:22px;height:1px;background:var(--gold)}
+.ph-h1{font-family:var(--fd);font-size:clamp(1.6rem,4vw,2.6rem);font-weight:900;color:var(--white);margin-bottom:.4rem}
+.ph-h1 span{color:var(--gold)}
+.ph-desc{color:var(--steel);font-size:.9rem}
+.ph-count{font-family:var(--fm);font-size:.7rem;color:var(--gold);margin-top:.5rem;letter-spacing:.05em}
 
 /* LAYOUT */
-.catalog-layout{display:grid;grid-template-columns:240px 1fr;gap:2rem;max-width:1200px;margin:0 auto;padding:2.5rem 1.5rem;position:relative;z-index:1}
+.wrap{display:grid;grid-template-columns:250px 1fr;gap:2rem;max-width:1300px;margin:0 auto;padding:2.5rem 1.5rem;position:relative;z-index:1}
 
 /* SIDEBAR */
-.sidebar{position:sticky;top:5.5rem;height:fit-content}
-.sidebar-section{margin-bottom:1.75rem}
-.sidebar-title{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.18em;color:var(--gold);margin-bottom:.85rem;padding-bottom:.5rem;border-bottom:1px solid rgba(201,168,76,.15)}
-.cat-list{display:flex;flex-direction:column;gap:.3rem}
-.cat-btn{background:none;border:none;width:100%;text-align:left;padding:.6rem .85rem;border-radius:6px;font-family:var(--font-thai);font-size:.88rem;color:var(--steel);cursor:pointer;transition:all var(--t);display:flex;align-items:center;gap:.6rem;border:1px solid transparent}
-.cat-btn:hover{color:var(--cream);background:rgba(201,168,76,.06);border-color:rgba(201,168,76,.1)}
-.cat-btn.active{color:var(--gold);background:rgba(201,168,76,.1);border-color:rgba(201,168,76,.25);font-weight:600}
-.cat-count{margin-left:auto;font-family:var(--font-mono);font-size:.6rem;background:rgba(201,168,76,.15);color:var(--gold);padding:.15rem .45rem;border-radius:10px}
+.side{position:sticky;top:5.5rem;height:fit-content;max-height:calc(100vh - 6rem);overflow-y:auto}
+.side::-webkit-scrollbar{width:4px}
+.side::-webkit-scrollbar-thumb{background:rgba(201,168,76,.3);border-radius:2px}
+.side-sec{margin-bottom:1.5rem}
+.side-t{font-family:var(--fm);font-size:.62rem;letter-spacing:.16em;color:var(--gold);margin-bottom:.75rem;padding-bottom:.4rem;border-bottom:1px solid rgba(201,168,76,.15)}
+.grp-btn{background:none;border:1px solid transparent;width:100%;text-align:left;padding:.55rem .75rem;border-radius:6px;font-family:var(--ft);font-size:.84rem;color:var(--steel);cursor:pointer;transition:all var(--t);display:flex;align-items:center;gap:.5rem;margin-bottom:.2rem}
+.grp-btn:hover{color:var(--cream);background:rgba(201,168,76,.06)}
+.grp-btn.active{color:var(--gold);background:rgba(201,168,76,.1);border-color:rgba(201,168,76,.25);font-weight:600}
+.grp-count{margin-left:auto;font-family:var(--fm);font-size:.58rem;background:rgba(201,168,76,.15);color:var(--gold);padding:.1rem .4rem;border-radius:10px}
 
-/* SEARCH + FILTER */
-.search-bar{display:flex;gap:.75rem;margin-bottom:1.5rem;align-items:center;flex-wrap:wrap}
-.search-input{flex:1;background:var(--space-card);border:1px solid rgba(201,168,76,.2);border-radius:6px;padding:.7rem 1rem;color:var(--cream);font-family:var(--font-thai);font-size:.9rem;outline:none;transition:border-color var(--t);min-width:200px}
-.search-input:focus{border-color:var(--gold)}
-.search-input::placeholder{color:var(--steel)}
-.sort-select{background:var(--space-card);border:1px solid rgba(201,168,76,.2);border-radius:6px;padding:.7rem 1rem;color:var(--cream);font-family:var(--font-tech);font-size:.78rem;outline:none;cursor:pointer}
-.results-info{font-family:var(--font-mono);font-size:.68rem;color:var(--steel);letter-spacing:.06em;margin-bottom:1.25rem}
+/* Sub-cat pills (shown when group selected) */
+.subcats{display:none;flex-wrap:wrap;gap:.3rem;margin-top:.5rem;padding-left:.3rem}
+.subcats.show{display:flex}
+.subcat-pill{
+  font-family:var(--fm);font-size:.6rem;padding:.25rem .55rem;border-radius:10px;
+  background:rgba(255,255,255,.04);color:var(--steel);cursor:pointer;
+  border:1px solid rgba(255,255,255,.06);transition:all var(--t);
+}
+.subcat-pill:hover{color:var(--cream)}
+.subcat-pill.active{background:var(--gold);color:var(--void);border-color:var(--gold)}
 
-/* PRODUCT GRID */
-.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.25rem}
+/* SEARCH */
+.search-row{display:flex;gap:.7rem;margin-bottom:1.25rem;flex-wrap:wrap}
+.search-in{flex:1;min-width:200px;background:var(--card);border:1px solid rgba(201,168,76,.2);border-radius:8px;padding:.7rem 1rem;color:var(--cream);font-family:var(--ft);font-size:.9rem;outline:none;transition:border-color var(--t)}
+.search-in:focus{border-color:var(--gold)}
+.search-in::placeholder{color:var(--steel)}
+.sort-sel{background:var(--card);border:1px solid rgba(201,168,76,.2);border-radius:8px;padding:.7rem .9rem;color:var(--cream);font-family:var(--fc);font-size:.76rem;cursor:pointer}
+.sort-sel option{background:var(--deep)}
+.res-info{font-family:var(--fm);font-size:.66rem;color:var(--steel);letter-spacing:.05em;margin-bottom:1.1rem}
 
-/* PRODUCT CARD */
-.prod-card{background:var(--space-card);border:1px solid rgba(201,168,76,.1);border-radius:12px;overflow:hidden;transition:all var(--t);position:relative;cursor:pointer}
-.prod-card:hover{border-color:rgba(201,168,76,.35);transform:translateY(-4px);box-shadow:0 12px 36px rgba(0,0,0,.4)}
-.prod-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transition:transform var(--t);transform-origin:left}
-.prod-card:hover::before{transform:scaleX(1)}
-.prod-img{aspect-ratio:1;background:var(--space-deep);display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;overflow:hidden}
-.prod-img img{width:100%;height:100%;object-fit:cover;transition:transform var(--t)}
-.prod-card:hover .prod-img img{transform:scale(1.04)}
-.prod-badge{position:absolute;top:.6rem;left:.6rem;font-family:var(--font-mono);font-size:.58rem;font-weight:700;letter-spacing:.06em;padding:.2rem .55rem;border-radius:3px}
-.badge-new{background:rgba(46,204,113,.2);color:#2ECC71;border:1px solid rgba(46,204,113,.35)}
-.badge-hot{background:rgba(231,76,60,.2);color:#E74C3C;border:1px solid rgba(231,76,60,.35)}
-.badge-sale{background:rgba(255,215,0,.2);color:#FFD700;border:1px solid rgba(255,215,0,.35)}
-.prod-body{padding:1rem}
-.prod-cat{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.1em;color:var(--gold-dim);margin-bottom:.3rem}
-.prod-name{font-family:var(--font-tech);font-size:.9rem;font-weight:700;color:var(--white);margin-bottom:.35rem;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.prod-desc{font-size:.8rem;color:var(--steel);line-height:1.5;margin-bottom:.85rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.prod-footer{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
-.prod-price{font-family:var(--font-tech);font-size:1rem;font-weight:700;color:var(--gold)}
-.prod-price small{font-size:.65rem;color:var(--steel);font-weight:400;margin-right:.15rem}
-.prod-price.contact{font-size:.82rem;color:var(--steel)}
-.btn-inquiry{background:var(--gold);color:var(--space-void);border:none;border-radius:4px;padding:.4rem .85rem;font-family:var(--font-tech);font-size:.72rem;font-weight:700;letter-spacing:.05em;cursor:pointer;transition:all var(--t);white-space:nowrap}
-.btn-inquiry:hover{background:var(--gold-bright);transform:translateY(-1px)}
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:1.1rem}
+.card{background:var(--card);border:1px solid rgba(201,168,76,.1);border-radius:12px;overflow:hidden;transition:all var(--t);position:relative;cursor:pointer}
+.card:hover{border-color:rgba(201,168,76,.4);transform:translateY(-4px);box-shadow:0 10px 32px rgba(0,0,0,.45),0 0 20px rgba(201,168,76,.08)}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transition:transform var(--t);transform-origin:left}
+.card:hover::before{transform:scaleX(1)}
+.c-img{aspect-ratio:1;background:var(--deep);display:flex;align-items:center;justify-content:center;font-size:2.6rem}
+.c-body{padding:.85rem .95rem 1rem}
+.c-cat{font-family:var(--fm);font-size:.56rem;letter-spacing:.06em;color:var(--gold-dim);margin-bottom:.3rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c-name{font-family:var(--fc);font-size:.82rem;font-weight:700;color:var(--white);margin-bottom:.55rem;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.3em}
+.c-foot{display:flex;align-items:center;justify-content:space-between;gap:.4rem}
+.c-price{font-family:var(--fc);font-size:.92rem;font-weight:700;color:var(--gold)}
+.c-btn{background:var(--gold);color:var(--void);border:none;border-radius:5px;padding:.35rem .7rem;font-family:var(--fc);font-size:.65rem;font-weight:700;letter-spacing:.03em;cursor:pointer;transition:all var(--t);white-space:nowrap}
+.c-btn:hover{background:var(--gold-hi);transform:translateY(-1px)}
 
-/* EMPTY */
-.empty-state{grid-column:1/-1;text-align:center;padding:4rem 1rem;color:var(--steel)}
-.empty-icon{font-size:3rem;margin-bottom:1rem;opacity:.4}
-.empty-text{font-family:var(--font-tech);font-size:.9rem;letter-spacing:.05em}
+.empty{grid-column:1/-1;text-align:center;padding:3.5rem 1rem;color:var(--steel)}
+.empty-icon{font-size:2.8rem;margin-bottom:.85rem;opacity:.4}
+.empty-txt{font-family:var(--fc);font-size:.85rem;letter-spacing:.04em}
+
+/* PAGINATION */
+.pager{display:flex;justify-content:center;gap:.4rem;margin-top:2.2rem;flex-wrap:wrap}
+.pg-btn{
+  min-width:36px;height:36px;padding:0 .5rem;
+  background:var(--card);border:1px solid rgba(201,168,76,.15);border-radius:6px;
+  color:var(--steel);font-family:var(--fm);font-size:.75rem;cursor:pointer;transition:all var(--t);
+  display:flex;align-items:center;justify-content:center;
+}
+.pg-btn:hover{border-color:var(--gold);color:var(--gold)}
+.pg-btn.active{background:var(--gold);color:var(--void);border-color:var(--gold);font-weight:700}
+.pg-btn:disabled{opacity:.3;cursor:not-allowed}
 
 /* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(2,2,12,.85);backdrop-filter:blur(8px);z-index:200;display:none;align-items:center;justify-content:center;padding:1rem}
-.modal-overlay.open{display:flex}
-.modal{background:var(--space-card);border:1px solid rgba(201,168,76,.2);border-radius:16px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;position:relative}
+.modal-ov{position:fixed;inset:0;background:rgba(2,2,12,.85);backdrop-filter:blur(8px);z-index:200;display:none;align-items:center;justify-content:center;padding:1rem}
+.modal-ov.open{display:flex}
+.modal{background:var(--card);border:1px solid rgba(201,168,76,.2);border-radius:16px;width:100%;max-width:440px;position:relative}
 .modal::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
-.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--steel);font-size:1.4rem;cursor:pointer;transition:color var(--t);z-index:1}
-.modal-close:hover{color:var(--gold)}
-.modal-img{aspect-ratio:16/9;background:var(--space-deep);display:flex;align-items:center;justify-content:center;font-size:5rem;border-radius:12px 12px 0 0;overflow:hidden}
-.modal-img img{width:100%;height:100%;object-fit:cover}
-.modal-body{padding:1.75rem}
-.modal-cat{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.12em;color:var(--gold);margin-bottom:.4rem}
-.modal-name{font-family:var(--font-tech);font-size:1.2rem;font-weight:700;color:var(--white);margin-bottom:.75rem;line-height:1.3}
-.modal-desc{font-size:.9rem;color:var(--steel);line-height:1.8;margin-bottom:1.25rem}
-.modal-specs{background:var(--space-deep);border-radius:8px;padding:1rem;margin-bottom:1.25rem}
-.spec-row{display:flex;gap:.5rem;padding:.35rem 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.83rem}
-.spec-row:last-child{border:none}
-.spec-key{color:var(--steel);min-width:110px;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.04em}
-.spec-val{color:var(--cream);font-weight:600}
-.modal-price{font-family:var(--font-tech);font-size:1.4rem;font-weight:700;color:var(--gold);margin-bottom:1.25rem}
-.modal-actions{display:flex;gap:.75rem}
-.btn-line{flex:1;background:rgba(0,185,10,.15);color:#00B90A;border:1px solid rgba(0,185,10,.35);border-radius:6px;padding:.75rem;font-family:var(--font-tech);font-size:.8rem;font-weight:700;letter-spacing:.05em;cursor:pointer;transition:all var(--t);display:flex;align-items:center;justify-content:center;gap:.4rem}
-.btn-line:hover{background:#00B90A;color:var(--space-void)}
-.btn-wa{flex:1;background:rgba(37,211,102,.15);color:#25D366;border:1px solid rgba(37,211,102,.35);border-radius:6px;padding:.75rem;font-family:var(--font-tech);font-size:.8rem;font-weight:700;letter-spacing:.05em;cursor:pointer;transition:all var(--t);display:flex;align-items:center;justify-content:center;gap:.4rem}
-.btn-wa:hover{background:#25D366;color:var(--space-void)}
+.m-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--steel);font-size:1.4rem;cursor:pointer;z-index:1}
+.m-close:hover{color:var(--gold)}
+.m-img{aspect-ratio:16/9;background:var(--deep);display:flex;align-items:center;justify-content:center;font-size:4.5rem;border-radius:16px 16px 0 0}
+.m-body{padding:1.6rem}
+.m-cat{font-family:var(--fm);font-size:.6rem;letter-spacing:.1em;color:var(--gold);margin-bottom:.4rem}
+.m-name{font-family:var(--fc);font-size:1.1rem;font-weight:700;color:var(--white);margin-bottom:1rem;line-height:1.3}
+.m-price{font-family:var(--fc);font-size:1.4rem;font-weight:700;color:var(--gold);margin-bottom:1.25rem}
+.m-actions{display:flex;gap:.7rem}
+.m-line{flex:1;background:rgba(0,185,10,.15);color:#00B90A;border:1px solid rgba(0,185,10,.35);border-radius:6px;padding:.75rem;font-family:var(--fc);font-size:.78rem;font-weight:700;cursor:pointer;transition:all var(--t)}
+.m-line:hover{background:#00B90A;color:var(--void)}
+.m-wa{flex:1;background:rgba(37,211,102,.15);color:#25D366;border:1px solid rgba(37,211,102,.35);border-radius:6px;padding:.75rem;font-family:var(--fc);font-size:.78rem;font-weight:700;cursor:pointer;transition:all var(--t)}
+.m-wa:hover{background:#25D366;color:var(--void)}
 
-/* RESPONSIVE */
-@media(max-width:900px){.catalog-layout{grid-template-columns:1fr}.sidebar{position:static}.cat-list{flex-direction:row;flex-wrap:wrap}.cat-btn{flex:none;width:auto}}
-@media(max-width:600px){.products-grid{grid-template-columns:repeat(2,1fr)}.search-bar{flex-direction:column}.search-input,.sort-select{width:100%}}
-@media(max-width:380px){.products-grid{grid-template-columns:1fr}}
+@media(max-width:900px){.wrap{grid-template-columns:1fr}.side{position:static;max-height:none}.side-sec:first-child{overflow-x:auto}}
+@media(max-width:600px){.grid{grid-template-columns:repeat(2,1fr)}.search-row{flex-direction:column}}
+@media(max-width:380px){.grid{grid-template-columns:1fr}}
 </style>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&display=swap" rel="stylesheet">
 </head>
 <body>
-<canvas id="bg-canvas"></canvas>
+<canvas id="bg"></canvas>
 
 <nav>
   <div class="nav-inner">
     <div class="nav-brand">
       <img src="https://raw.githubusercontent.com/Chai147258/LUNGCHAI-CHAIYO-ALL/main/images/logo-all.jpg" alt="Logo" class="nav-logo" onerror="this.style.display='none'">
-      <div class="nav-brand-name">ลุงชัย ไชโย ออล <span>PRODUCT CATALOG</span></div>
+      <div class="nav-name">ลุงชัย ไชโย ออล <span>PRODUCT CATALOG</span></div>
     </div>
     <div class="nav-links">
       <a href="/">หน้าหลัก</a>
       <a href="/catalog.html" class="active">สินค้า</a>
       <a href="/member.html">สมาชิก</a>
-      <a href="https://line.me/R/ti/p/@971yzyyd" target="_blank" class="nav-cta">💬 สอบถาม</a>
+      <a href="/inquiry.html" class="nav-cta">💬 สอบถาม</a>
     </div>
   </div>
 </nav>
 
-<div class="page-header">
-  <p class="ph-label">PRODUCT CATALOG</p>
-  <h1 class="ph-title">แคตตาล็อก<span>สินค้า</span></h1>
-  <p class="ph-desc">สินค้าอุตสาหกรรมครบวงจร — IT • ไฟฟ้า • PPE • เครื่องมือช่าง</p>
+<div class="ph">
+  <p class="ph-lbl">PRODUCT CATALOG</p>
+  <h1 class="ph-h1">แคตตาล็อก<span>สินค้า</span></h1>
+  <p class="ph-desc">สินค้าจริงจากคลัง — IT • อุตสาหกรรม • ของฝาก OTOP • แฟชั่น • และอื่นๆ</p>
+  <p class="ph-count" id="ph-count"></p>
 </div>
 
-<div class="catalog-layout">
-
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="sidebar-section">
-      <div class="sidebar-title">หมวดหมู่สินค้า</div>
-      <div class="cat-list" id="cat-list"></div>
+<div class="wrap">
+  <aside class="side">
+    <div class="side-sec">
+      <div class="side-t">หมวดหมู่หลัก</div>
+      <div id="grp-list"></div>
     </div>
-    <div class="sidebar-section">
-      <div class="sidebar-title">ช่องทางสั่งซื้อ</div>
+    <div class="side-sec">
+      <div class="side-t">ช่องทางสั่งซื้อ</div>
       <div style="display:flex;flex-direction:column;gap:.5rem">
-        <a href="https://line.me/R/ti/p/@971yzyyd" target="_blank" style="display:flex;align-items:center;gap:.6rem;padding:.6rem .85rem;background:rgba(0,185,10,.08);border:1px solid rgba(0,185,10,.2);border-radius:6px;font-size:.82rem;color:#00B90A;transition:all .3s" onmouseover="this.style.background='rgba(0,185,10,.15)'" onmouseout="this.style.background='rgba(0,185,10,.08)'">💬 LINE OA</a>
-        <a href="https://collshp.com/run00?view=storefront" target="_blank" style="display:flex;align-items:center;gap:.6rem;padding:.6rem .85rem;background:rgba(238,77,45,.08);border:1px solid rgba(238,77,45,.2);border-radius:6px;font-size:.82rem;color:#EE4D2D;transition:all .3s" onmouseover="this.style.background='rgba(238,77,45,.15)'" onmouseout="this.style.background='rgba(238,77,45,.08)'">🛒 Shopee</a>
-        <a href="https://s.lazada.co.th/s.Z7iuvG" target="_blank" style="display:flex;align-items:center;gap:.6rem;padding:.6rem .85rem;background:rgba(255,90,3,.08);border:1px solid rgba(255,90,3,.2);border-radius:6px;font-size:.82rem;color:#FF5A03;transition:all .3s" onmouseover="this.style.background='rgba(255,90,3,.15)'" onmouseout="this.style.background='rgba(255,90,3,.08)'">🏪 Lazada</a>
+        <a href="https://line.me/R/ti/p/@971yzyyd" target="_blank" style="display:flex;align-items:center;gap:.6rem;padding:.6rem .8rem;background:rgba(0,185,10,.08);border:1px solid rgba(0,185,10,.2);border-radius:6px;font-size:.8rem;color:#00B90A">💬 LINE OA</a>
+        <a href="https://collshp.com/run00?view=storefront" target="_blank" style="display:flex;align-items:center;gap:.6rem;padding:.6rem .8rem;background:rgba(238,77,45,.08);border:1px solid rgba(238,77,45,.2);border-radius:6px;font-size:.8rem;color:#EE4D2D">🛒 Shopee</a>
+        <a href="https://s.lazada.co.th/s.Z7iuvG" target="_blank" style="display:flex;align-items:center;gap:.6rem;padding:.6rem .8rem;background:rgba(255,90,3,.08);border:1px solid rgba(255,90,3,.2);border-radius:6px;font-size:.8rem;color:#FF5A03">🏪 Lazada</a>
       </div>
     </div>
   </aside>
 
-  <!-- MAIN -->
   <div>
-    <div class="search-bar">
-      <input type="text" class="search-input" id="search-input" placeholder="🔍 ค้นหาสินค้า..." oninput="filterProducts()">
-      <select class="sort-select" id="sort-select" onchange="filterProducts()">
+    <div class="search-row">
+      <input type="text" class="search-in" id="q" placeholder="🔍 ค้นหาสินค้า..." oninput="render()">
+      <select class="sort-sel" id="sort" onchange="render()">
         <option value="default">เรียงตาม: ค่าเริ่มต้น</option>
         <option value="name-asc">ชื่อ A-Z</option>
         <option value="name-desc">ชื่อ Z-A</option>
-        <option value="new">ใหม่ล่าสุด</option>
+        <option value="price-asc">ราคา ต่ำ→สูง</option>
+        <option value="price-desc">ราคา สูง→ต่ำ</option>
       </select>
     </div>
-    <div class="results-info" id="results-info">กำลังโหลดสินค้า...</div>
-    <div class="products-grid" id="products-grid"></div>
+    <div class="res-info" id="res-info"></div>
+    <div class="grid" id="grid"></div>
+    <div class="pager" id="pager"></div>
   </div>
-
 </div>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
-  <div class="modal" id="modal-content"></div>
+<div class="modal-ov" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal-c"></div>
 </div>
 
 <script>
-// ── CANVAS ──────────────────────────────────────────────
+const PRODUCTS = [{"id": 1, "name": "ตลับหมึกเลเซอร์ (รุ่นมาตรฐาน)", "cat": "ink", "catName": "💧 หมึกพิมพ์", "price": 405, "icon": "🖨️", "group": "it"}, {"id": 2, "name": "ตลับหมึกอิงค์เจ็ท (ชุดสี)", "cat": "ink", "catName": "💧 หมึกพิมพ์", "price": 1691, "icon": "🖨️", "group": "it"}, {"id": 3, "name": "กระดาษ A4 80 แกรม (รีม)", "cat": "paper", "catName": "📄 กระดาษ", "price": 875, "icon": "📄", "group": "it"}, {"id": 4, "name": "เมาส์ไร้สาย (Wireless Mouse)", "cat": "input", "catName": "⌨️ เมาส์ & คีย์บอร์ด", "price": 960, "icon": "⌨️", "group": "it"}, {"id": 5, "name": "คีย์บอร์ดมาตรฐาน", "cat": "input", "catName": "⌨️ เมาส์ & คีย์บอร์ด", "price": 312, "icon": "⌨️", "group": "it"}, {"id": 6, "name": "สายแลน CAT6 (10 เมตร)", "cat": "network", "catName": "📡 เครือข่าย (Network Farm)", "price": 2196, "icon": "📡", "group": "it"}, {"id": 7, "name": "หัวแลน RJ45 (แพ็ค 100)", "cat": "network", "catName": "📡 เครือข่าย (Network Farm)", "price": 1344, "icon": "📡", "group": "it"}, {"id": 8, "name": "สาย HDMI (2 เมตร)", "cat": "cable_it", "catName": "🔌 สาย & ฮับ IT", "price": 2980, "icon": "🔌", "group": "it"}, {"id": 9, "name": "แฟลชไดรฟ์ 64GB", "cat": "storage", "catName": "💾 สื่อบันทึกข้อมูล", "price": 1749, "icon": "💾", "group": "it"}, {"id": 10, "name": "แผ่นรองเมาส์แบบยาว", "cat": "input", "catName": "⌨️ เมาส์ & คีย์บอร์ด", "price": 1541, "icon": "⌨️", "group": "it"}, {"id": 11, "name": "ถ่านอัลคาไลน์ AA (แพ็ค 4)", "cat": "battery_it", "catName": "🔋 แบตเตอรี่ & ถ่าน", "price": 491, "icon": "🔋", "group": "it"}, {"id": 12, "name": "น้ำยาทำความสะอาดจอคอมพิวเตอร์", "cat": "cleaning_it", "catName": "🧴 ทำความสะอาด IT", "price": 334, "icon": "🧴", "group": "it"}, {"id": 13, "name": "สายชาร์จโน้ตบุ๊ก (Universal)", "cat": "accessory_it", "catName": "💻 อุปกรณ์เสริมคอม", "price": 2369, "icon": "💻", "group": "it"}, {"id": 14, "name": "พัดลมระบายความร้อนโน้ตบุ๊ก", "cat": "accessory_it", "catName": "💻 อุปกรณ์เสริมคอม", "price": 241, "icon": "💻", "group": "it"}, {"id": 15, "name": "ซองใส่โน้ตบุ๊กกันกระแทก", "cat": "bag_it", "catName": "🎒 กระเป๋า & เคสไอที", "price": 1028, "icon": "🎒", "group": "it"}, {"id": 16, "name": "เว็บแคม HD 1080p", "cat": "camera", "catName": "📷 กล้อง & เว็บแคม", "price": 2141, "icon": "📷", "group": "it"}, {"id": 17, "name": "หูฟังพร้อมไมโครโฟน", "cat": "audio", "catName": "🎧 หูฟัง & เครื่องเสียง", "price": 1654, "icon": "🎧", "group": "it"}, {"id": 18, "name": "ฮับ USB 3.0 (4 พอร์ต)", "cat": "cable_it", "catName": "🔌 สาย & ฮับ IT", "price": 2860, "icon": "🔌", "group": "it"}, {"id": 19, "name": "แผ่น CD/DVD เปล่า (แพ็ค 10)", "cat": "media", "catName": "💿 แผ่นซีดี/ดีวีดี", "price": 2061, "icon": "💿", "group": "it"}, {"id": 20, "name": "เทปกาวสำหรับซ่อมสายไฟ/สายสัญญาณ", "cat": "consumable", "catName": "🧴 วัสดุสิ้นเปลือง", "price": 1152, "icon": "🧴", "group": "factory"}, {"id": 21, "name": "ลำโพง Bluetooth พกพา", "cat": "audio", "catName": "🎧 หูฟัง & เครื่องเสียง", "price": 1063, "icon": "🎧", "group": "it"}, {"id": 22, "name": "ลำโพง Soundbar (สำหรับ TV)", "cat": "audio", "catName": "🎧 หูฟัง & เครื่องเสียง", "price": 2625, "icon": "🎧", "group": "it"}, {"id": 23, "name": "ไมโครโฟนไร้สาย (คู่)", "cat": "audio", "catName": "🎧 หูฟัง & เครื่องเสียง", "price": 2250, "icon": "🎧", "group": "it"}, {"id": 24, "name": "หูฟังไร้สาย (True Wireless)", "cat": "audio", "catName": "🎧 หูฟัง & เครื่องเสียง", "price": 1500, "icon": "🎧", "group": "it"}, {"id": 25, "name": "เครื่องขยายเสียง (Amplifier)", "cat": "audio", "catName": "🎧 หูฟัง & เครื่องเสียง", "price": 4375, "icon": "🎧", "group": "it"}, {"id": 26, "name": "ลำโพง PA ขนาด 12 นิ้ว", "cat": "audio", "catName": "🎧 หูฟัง & เครื่องเสียง", "price": 5250, "icon": "🎧", "group": "it"}, {"id": 27, "name": "มิกเซอร์เสียง (Mixing Console)", "cat": "audio", "catName": "🎧 หูฟัง & เครื่องเสียง", "price": 3500, "icon": "🎧", "group": "it"}, {"id": 28, "name": "สายสัญญาณเสียง XLR (5 เมตร)", "cat": "audio", "catName": "🎧 หูฟัง & เครื่องเสียง", "price": 438, "icon": "🎧", "group": "it"}, {"id": 29, "name": "ขาตั้งลำโพง", "cat": "audio", "catName": "🎧 หูฟัง & เครื่องเสียง", "price": 750, "icon": "🎧", "group": "it"}, {"id": 30, "name": "หูฟังมอนิเตอร์ (Studio Headphone)", "cat": "audio", "catName": "🎧 หูฟัง & เครื่องเสียง", "price": 1875, "icon": "🎧", "group": "it"}, {"id": 31, "name": "ซับวูฟเฟอร์ (Subwoofer)", "cat": "audio", "catName": "🎧 หูฟัง & เครื่องเสียง", "price": 6000, "icon": "🎧", "group": "it"}, {"id": 32, "name": "ชุดลำโพง Home Theater 5.1", "cat": "audio", "catName": "🎧 หูฟัง & เครื่องเสียง", "price": 6875, "icon": "🎧", "group": "it"}, {"id": 33, "name": "เครื่องเล่นแผ่นเสียง (Turntable)", "cat": "audio", "catName": "🎧 หูฟัง & เครื่องเสียง", "price": 4000, "icon": "🎧", "group": "it"}, {"id": 34, "name": "ปรีแอมป์ (Pre-amplifier)", "cat": "audio", "catName": "🎧 หูฟัง & เครื่องเสียง", "price": 2375, "icon": "🎧", "group": "it"}, {"id": 35, "name": "หัวแปลงสัญญาณเสียง (Adapter)", "cat": "audio", "catName": "🎧 หูฟัง & เครื่องเสียง", "price": 188, "icon": "🎧", "group": "it"}, {"id": 36, "name": "ลำโพงติดเพดาน (Ceiling Speaker)", "cat": "audio", "catName": "🎧 หูฟัง & เครื่องเสียง", "price": 938, "icon": "🎧", "group": "it"}, {"id": 37, "name": "ลำโพงคอมพิวเตอร์ (Active Speaker)", "cat": "audio", "catName": "🎧 หูฟัง & เครื่องเสียง", "price": 1125, "icon": "🎧", "group": "it"}, {"id": 38, "name": "ชุดอินเตอร์คอม (Intercom)", "cat": "audio", "catName": "🎧 หูฟัง & เครื่องเสียง", "price": 3000, "icon": "🎧", "group": "it"}, {"id": 39, "name": "แผ่นซับเสียง (Acoustic Foam)", "cat": "audio", "catName": "🎧 หูฟัง & เครื่องเสียง", "price": 500, "icon": "🎧", "group": "it"}, {"id": 40, "name": "ไดเร็คบ็อกซ์ (DI Box)", "cat": "audio", "catName": "🎧 หูฟัง & เครื่องเสียง", "price": 1375, "icon": "🎧", "group": "it"}, {"id": 41, "name": "เสื่อกกทอมือธรรมชาติ", "cat": "eco_craft", "catName": "🌿 งานฝีมือ & รักษ์โลก", "price": 605, "icon": "🌿", "group": "eco"}, {"id": 42, "name": "เสื่อกกขอบผ้าไหม", "cat": "eco_craft", "catName": "🌿 งานฝีมือ & รักษ์โลก", "price": 705, "icon": "🌿", "group": "eco"}, {"id": 43, "name": "เสื่อกกพับได้พกพา", "cat": "eco_craft", "catName": "🌿 งานฝีมือ & รักษ์โลก", "price": 402, "icon": "🌿", "group": "eco"}, {"id": 44, "name": "เสื่อกกพิมพ์ลาย", "cat": "eco_craft", "catName": "🌿 งานฝีมือ & รักษ์โลก", "price": 505, "icon": "🌿", "group": "eco"}, {"id": 45, "name": "หมวกสานปีกกว้าง", "cat": "eco_craft", "catName": "🌿 งานฝีมือ & รักษ์โลก", "price": 601, "icon": "🌿", "group": "eco"}, {"id": 46, "name": "หมวกสานทรงบักเก็ต", "cat": "eco_craft", "catName": "🌿 งานฝีมือ & รักษ์โลก", "price": 872, "icon": "🌿", "group": "eco"}, {"id": 47, "name": "หมวกสานประดับดอกไม้", "cat": "eco_craft", "catName": "🌿 งานฝีมือ & รักษ์โลก", "price": 859, "icon": "🌿", "group": "eco"}, {"id": 48, "name": "หมวกสานขอบลูกไม้", "cat": "eco_craft", "catName": "🌿 งานฝีมือ & รักษ์โลก", "price": 461, "icon": "🌿", "group": "eco"}, {"id": 49, "name": "กระเป๋าสานกระจูด", "cat": "eco_craft", "catName": "🌿 งานฝีมือ & รักษ์โลก", "price": 846, "icon": "🌿", "group": "eco"}, {"id": 50, "name": "กระเป๋าสานทรงตะกร้า", "cat": "eco_craft", "catName": "🌿 งานฝีมือ & รักษ์โลก", "price": 211, "icon": "🌿", "group": "eco"}, {"id": 51, "name": "กระเป๋าผ้าแคนวาสปักมือ", "cat": "eco_craft", "catName": "🌿 งานฝีมือ & รักษ์โลก", "price": 652, "icon": "🌿", "group": "eco"}, {"id": 52, "name": "กระเป๋าผ้าทอมือ", "cat": "eco_craft", "catName": "🌿 งานฝีมือ & รักษ์โลก", "price": 981, "icon": "🌿", "group": "eco"}, {"id": 53, "name": "กระเป๋าสตางค์ผ้าไหม", "cat": "eco_craft", "catName": "🌿 งานฝีมือ & รักษ์โลก", "price": 696, "icon": "🌿", "group": "eco"}, {"id": 54, "name": "กระเป๋าใส่แท็บเล็ตผ้าทอ", "cat": "bag_it", "catName": "🎒 กระเป๋า & เคสไอที", "price": 696, "icon": "🎒", "group": "it"}, {"id": 55, "name": "กระเป๋าถือทรงแฟชั่น", "cat": "eco_craft", "catName": "🌿 งานฝีมือ & รักษ์โลก", "price": 320, "icon": "🌿", "group": "eco"}, {"id": 56, "name": "หมวกสานเด็ก", "cat": "eco_craft", "catName": "🌿 งานฝีมือ & รักษ์โลก", "price": 999, "icon": "🌿", "group": "eco"}, {"id": 57, "name": "เสื่อรองจานงานสาน", "cat": "eco_craft", "catName": "🌿 งานฝีมือ & รักษ์โลก", "price": 809, "icon": "🌿", "group": "eco"}, {"id": 58, "name": "กระเป๋าใส่ขวดน้ำงานสาน", "cat": "other", "catName": "📦 อื่นๆ", "price": 659, "icon": "📦", "group": "other"}, {"id": 59, "name": "หมวกสานผู้ชาย", "cat": "eco_craft", "catName": "🌿 งานฝีมือ & รักษ์โลก", "price": 595, "icon": "🌿", "group": "eco"}, {"id": 60, "name": "เสื่อกกขนาดเล็ก", "cat": "eco_craft", "catName": "🌿 งานฝีมือ & รักษ์โลก", "price": 656, "icon": "🌿", "group": "eco"}, {"id": 61, "name": "มอเตอร์ไฟฟ้า 1HP (Single Phase)", "cat": "motor", "catName": "⚡ มอเตอร์ไฟฟ้า", "price": 6076, "icon": "⚡", "group": "factory"}, {"id": 62, "name": "มอเตอร์ไฟฟ้า 2HP (3 Phase)", "cat": "motor", "catName": "⚡ มอเตอร์ไฟฟ้า", "price": 3281, "icon": "⚡", "group": "factory"}, {"id": 63, "name": "มอเตอร์ไฟฟ้า 3HP (3 Phase)", "cat": "motor", "catName": "⚡ มอเตอร์ไฟฟ้า", "price": 4099, "icon": "⚡", "group": "factory"}, {"id": 64, "name": "ปั๊มน้ำหอยโข่ง 1 นิ้ว", "cat": "pump", "catName": "💧 ปั๊มน้ำ", "price": 4190, "icon": "💧", "group": "factory"}, {"id": 65, "name": "ปั๊มน้ำบาดาล 1.5HP", "cat": "pump", "catName": "💧 ปั๊มน้ำ", "price": 4716, "icon": "💧", "group": "factory"}, {"id": 66, "name": "แมกเนติกคอนแทคเตอร์", "cat": "electrical", "catName": "🔌 อุปกรณ์ไฟฟ้าโรงงาน", "price": 5935, "icon": "🔌", "group": "factory"}, {"id": 67, "name": "เบรกเกอร์กันดูด (RCBO 32A)", "cat": "electrical", "catName": "🔌 อุปกรณ์ไฟฟ้าโรงงาน", "price": 1685, "icon": "🔌", "group": "factory"}, {"id": 68, "name": "ตู้คอนซูมเมอร์ยูนิต 4 ช่อง", "cat": "electrical", "catName": "🔌 อุปกรณ์ไฟฟ้าโรงงาน", "price": 4395, "icon": "🔌", "group": "factory"}, {"id": 69, "name": "สายไฟ VAF 2x2.5 (100 เมตร)", "cat": "electrical", "catName": "🔌 อุปกรณ์ไฟฟ้าโรงงาน", "price": 2449, "icon": "🔌", "group": "factory"}, {"id": 70, "name": "พัดลมระบายอากาศอุตสาหกรรม 12 นิ้ว", "cat": "ind_fan", "catName": "🌀 พัดลมอุตสาหกรรม", "price": 4274, "icon": "🌀", "group": "factory"}, {"id": 71, "name": "คาปาซิเตอร์มอเตอร์ 20uF", "cat": "electrical", "catName": "🔌 อุปกรณ์ไฟฟ้าโรงงาน", "price": 3176, "icon": "🔌", "group": "factory"}, {"id": 72, "name": "รีเลย์ควบคุม (Relay)", "cat": "electrical", "catName": "🔌 อุปกรณ์ไฟฟ้าโรงงาน", "price": 5319, "icon": "🔌", "group": "factory"}, {"id": 73, "name": "อินเวอร์เตอร์มอเตอร์ 1.5kW", "cat": "electrical", "catName": "🔌 อุปกรณ์ไฟฟ้าโรงงาน", "price": 4960, "icon": "🔌", "group": "factory"}, {"id": 74, "name": "เซนเซอร์ตรวจจับความเคลื่อนไหว", "cat": "cctv", "catName": "📹 CCTV & Security", "price": 4619, "icon": "📹", "group": "it"}, {"id": 75, "name": "ชุดฟิวส์โรงงาน", "cat": "electrical", "catName": "🔌 อุปกรณ์ไฟฟ้าโรงงาน", "price": 3830, "icon": "🔌", "group": "factory"}, {"id": 76, "name": "มอเตอร์เกียร์ (Gear Motor) 0.5HP", "cat": "motor", "catName": "⚡ มอเตอร์ไฟฟ้า", "price": 5736, "icon": "⚡", "group": "factory"}, {"id": 77, "name": "เครื่องเช็คไฟดิจิทัล", "cat": "electrical", "catName": "🔌 อุปกรณ์ไฟฟ้าโรงงาน", "price": 885, "icon": "🔌", "group": "factory"}, {"id": 78, "name": "ตู้ควบคุมไฟฟ้าสำเร็จรูป", "cat": "electrical", "catName": "🔌 อุปกรณ์ไฟฟ้าโรงงาน", "price": 4876, "icon": "🔌", "group": "factory"}, {"id": 79, "name": "สายกราวด์ทองแดงเปลือย", "cat": "electrical", "catName": "🔌 อุปกรณ์ไฟฟ้าโรงงาน", "price": 991, "icon": "🔌", "group": "factory"}, {"id": 80, "name": "ชุดเบรกเกอร์ลูกย่อย (MCB)", "cat": "electrical", "catName": "🔌 อุปกรณ์ไฟฟ้าโรงงาน", "price": 3335, "icon": "🔌", "group": "factory"}, {"id": 81, "name": "หมวกนิรภัย (Safety Helmet)", "cat": "ppe", "catName": "🦺 PPE & Safety", "price": 508, "icon": "🦺", "group": "factory"}, {"id": 82, "name": "แว่นตานิรภัย (Safety Goggles)", "cat": "ppe", "catName": "🦺 PPE & Safety", "price": 660, "icon": "🦺", "group": "factory"}, {"id": 83, "name": "ถุงมือผ้าเคลือบยาง", "cat": "ppe", "catName": "🦺 PPE & Safety", "price": 434, "icon": "🦺", "group": "factory"}, {"id": 84, "name": "ถุงมือหนังเชื่อม", "cat": "ppe", "catName": "🦺 PPE & Safety", "price": 610, "icon": "🦺", "group": "factory"}, {"id": 85, "name": "หน้ากากอนามัย N95", "cat": "ppe", "catName": "🦺 PPE & Safety", "price": 1770, "icon": "🦺", "group": "factory"}, {"id": 86, "name": "หน้ากากกรองสารเคมี", "cat": "ppe", "catName": "🦺 PPE & Safety", "price": 570, "icon": "🦺", "group": "factory"}, {"id": 87, "name": "ที่อุดหูลดเสียง (Earplugs)", "cat": "ppe", "catName": "🦺 PPE & Safety", "price": 1391, "icon": "🦺", "group": "factory"}, {"id": 88, "name": "ครอบหูลดเสียง (Earmuffs)", "cat": "ppe", "catName": "🦺 PPE & Safety", "price": 1075, "icon": "🦺", "group": "factory"}, {"id": 89, "name": "รองเท้าเซฟตี้หัวเหล็ก", "cat": "ppe", "catName": "🦺 PPE & Safety", "price": 1386, "icon": "🦺", "group": "factory"}, {"id": 90, "name": "เสื้อกั๊กสะท้อนแสง", "cat": "ppe", "catName": "🦺 PPE & Safety", "price": 744, "icon": "🦺", "group": "factory"}, {"id": 91, "name": "เข็มขัดพยุงหลัง (Back Support)", "cat": "ppe", "catName": "🦺 PPE & Safety", "price": 1000, "icon": "🦺", "group": "factory"}, {"id": 92, "name": "ชุดหมีช่าง (Coverall)", "cat": "ppe", "catName": "🦺 PPE & Safety", "price": 200, "icon": "🦺", "group": "factory"}, {"id": 93, "name": "ปลอกแขนกันแดด", "cat": "ppe", "catName": "🦺 PPE & Safety", "price": 1349, "icon": "🦺", "group": "factory"}, {"id": 94, "name": "ถุงมือไนไตร (Nitrile Gloves)", "cat": "ppe", "catName": "🦺 PPE & Safety", "price": 952, "icon": "🦺", "group": "factory"}, {"id": 95, "name": "หน้ากากเชื่อม (Welding Mask)", "cat": "ppe", "catName": "🦺 PPE & Safety", "price": 919, "icon": "🦺", "group": "factory"}, {"id": 96, "name": "แผ่นกรองฝุ่น", "cat": "cleaning_it", "catName": "🧴 ทำความสะอาด IT", "price": 86, "icon": "🧴", "group": "it"}, {"id": 97, "name": "ชุดกันฝน", "cat": "ppe", "catName": "🦺 PPE & Safety", "price": 1714, "icon": "🦺", "group": "factory"}, {"id": 98, "name": "เข็มขัดนิรภัยเต็มตัว (Full Body Harness)", "cat": "ppe", "catName": "🦺 PPE & Safety", "price": 1671, "icon": "🦺", "group": "factory"}, {"id": 99, "name": "รองเท้าบูทกันน้ำ", "cat": "ppe", "catName": "🦺 PPE & Safety", "price": 432, "icon": "🦺", "group": "factory"}, {"id": 100, "name": "ถุงมือกันบาด (Cut Resistant)", "cat": "ppe", "catName": "🦺 PPE & Safety", "price": 1679, "icon": "🦺", "group": "factory"}, {"id": 101, "name": "กล้องวงจรปิด IP Camera (Indoor)", "cat": "cctv", "catName": "📹 CCTV & Security", "price": 1474, "icon": "📹", "group": "it"}, {"id": 102, "name": "กล้องวงจรปิด Wi-Fi (Outdoor)", "cat": "cctv", "catName": "📹 CCTV & Security", "price": 1134, "icon": "📹", "group": "it"}, {"id": 103, "name": "เครื่องบันทึกภาพ DVR 4 Channel", "cat": "cctv", "catName": "📹 CCTV & Security", "price": 3524, "icon": "📹", "group": "it"}, {"id": 104, "name": "เครื่องบันทึกภาพ NVR 8 Channel", "cat": "cctv", "catName": "📹 CCTV & Security", "price": 4828, "icon": "📹", "group": "it"}, {"id": 105, "name": "Hard Disk สำหรับงาน CCTV 1TB", "cat": "cctv", "catName": "📹 CCTV & Security", "price": 746, "icon": "📹", "group": "it"}, {"id": 106, "name": "Hard Disk สำหรับงาน CCTV 2TB", "cat": "cctv", "catName": "📹 CCTV & Security", "price": 2959, "icon": "📹", "group": "it"}, {"id": 107, "name": "สายสัญญาณ RG6 (100 เมตร)", "cat": "network", "catName": "📡 เครือข่าย (Network Farm)", "price": 6124, "icon": "📡", "group": "it"}, {"id": 108, "name": "หัวต่อ BNC Connector (แพ็ค 10)", "cat": "cctv", "catName": "📹 CCTV & Security", "price": 4555, "icon": "📹", "group": "it"}, {"id": 109, "name": "Power Supply 12V 10A", "cat": "power_it", "catName": "🔌 Power Supply", "price": 1934, "icon": "🔌", "group": "it"}, {"id": 110, "name": "กริ่งประตูอัจฉริยะ (Video Doorbell)", "cat": "cctv", "catName": "📹 CCTV & Security", "price": 2481, "icon": "📹", "group": "it"}, {"id": 111, "name": "เซนเซอร์ตรวจจับควันไฟ", "cat": "cctv", "catName": "📹 CCTV & Security", "price": 2379, "icon": "📹", "group": "it"}, {"id": 112, "name": "เซนเซอร์ตรวจจับการบุกรุก", "cat": "cctv", "catName": "📹 CCTV & Security", "price": 2701, "icon": "📹", "group": "it"}, {"id": 113, "name": "ไซเรนสัญญาณเตือนภัย", "cat": "cctv", "catName": "📹 CCTV & Security", "price": 5602, "icon": "📹", "group": "it"}, {"id": 114, "name": "กล้องวงจรปิดโซล่าเซลล์", "cat": "cctv", "catName": "📹 CCTV & Security", "price": 2654, "icon": "📹", "group": "it"}, {"id": 115, "name": "ตู้เหล็กเก็บเครื่องบันทึก (Lock Box)", "cat": "cctv", "catName": "📹 CCTV & Security", "price": 1072, "icon": "📹", "group": "it"}, {"id": 116, "name": "สวิตช์ PoE 8 Port (สำหรับกล้อง IP)", "cat": "network", "catName": "📡 เครือข่าย (Network Farm)", "price": 5221, "icon": "📡", "group": "it"}, {"id": 117, "name": "สายแลน Outdoor CAT6 (305 เมตร)", "cat": "network", "catName": "📡 เครือข่าย (Network Farm)", "price": 2964, "icon": "📡", "group": "it"}, {"id": 118, "name": "หัวแลน RJ45 (แพ็ค 50)", "cat": "network", "catName": "📡 เครือข่าย (Network Farm)", "price": 2030, "icon": "📡", "group": "it"}, {"id": 119, "name": "กล่องกันน้ำสำหรับกล้อง", "cat": "camera", "catName": "📷 กล้อง & เว็บแคม", "price": 2404, "icon": "📷", "group": "it"}, {"id": 120, "name": "ระบบควบคุมประตู Access Control", "cat": "cctv", "catName": "📹 CCTV & Security", "price": 5686, "icon": "📹", "group": "it"}, {"id": 121, "name": "Wireless Router (Wi-Fi 6)", "cat": "network", "catName": "📡 เครือข่าย (Network Farm)", "price": 9258, "icon": "📡", "group": "it"}, {"id": 122, "name": "Switch 8-Port Gigabit", "cat": "network", "catName": "📡 เครือข่าย (Network Farm)", "price": 8725, "icon": "📡", "group": "it"}, {"id": 123, "name": "Switch 16-Port PoE", "cat": "network", "catName": "📡 เครือข่าย (Network Farm)", "price": 2344, "icon": "📡", "group": "it"}, {"id": 124, "name": "Network Cable CAT6 (305m)", "cat": "network", "catName": "📡 เครือข่าย (Network Farm)", "price": 708, "icon": "📡", "group": "it"}, {"id": 125, "name": "RJ45 Connector (Pack)", "cat": "network", "catName": "📡 เครือข่าย (Network Farm)", "price": 8471, "icon": "📡", "group": "it"}, {"id": 126, "name": "Access Point (Indoor)", "cat": "network", "catName": "📡 เครือข่าย (Network Farm)", "price": 1335, "icon": "📡", "group": "it"}, {"id": 127, "name": "Access Point (Outdoor)", "cat": "network", "catName": "📡 เครือข่าย (Network Farm)", "price": 9985, "icon": "📡", "group": "it"}, {"id": 128, "name": "Network Rack 6U", "cat": "network", "catName": "📡 เครือข่าย (Network Farm)", "price": 3125, "icon": "📡", "group": "it"}, {"id": 129, "name": "Network Rack 12U", "cat": "network", "catName": "📡 เครือข่าย (Network Farm)", "price": 3685, "icon": "📡", "group": "it"}, {"id": 130, "name": "Fiber Optic Cable (Outdoor)", "cat": "network", "catName": "📡 เครือข่าย (Network Farm)", "price": 8991, "icon": "📡", "group": "it"}, {"id": 131, "name": "Media Converter (Pair)", "cat": "network", "catName": "📡 เครือข่าย (Network Farm)", "price": 2480, "icon": "📡", "group": "it"}, {"id": 132, "name": "Patch Panel 24-Port", "cat": "network", "catName": "📡 เครือข่าย (Network Farm)", "price": 2450, "icon": "📡", "group": "it"}, {"id": 133, "name": "Patch Cord CAT6 (3m)", "cat": "network", "catName": "📡 เครือข่าย (Network Farm)", "price": 4298, "icon": "📡", "group": "it"}, {"id": 134, "name": "Patch Cord CAT6 (5m)", "cat": "network", "catName": "📡 เครือข่าย (Network Farm)", "price": 4480, "icon": "📡", "group": "it"}, {"id": 135, "name": "Network Firewall Appliance", "cat": "network", "catName": "📡 เครือข่าย (Network Farm)", "price": 6976, "icon": "📡", "group": "it"}, {"id": 136, "name": "Wi-Fi Repeater/Extender", "cat": "network", "catName": "📡 เครือข่าย (Network Farm)", "price": 5236, "icon": "📡", "group": "it"}, {"id": 137, "name": "USB to Ethernet Adapter", "cat": "cable_it", "catName": "🔌 สาย & ฮับ IT", "price": 7945, "icon": "🔌", "group": "it"}, {"id": 138, "name": "Console Cable", "cat": "network", "catName": "📡 เครือข่าย (Network Farm)", "price": 5565, "icon": "📡", "group": "it"}, {"id": 139, "name": "SFP Module (1G)", "cat": "network", "catName": "📡 เครือข่าย (Network Farm)", "price": 8902, "icon": "📡", "group": "it"}, {"id": 140, "name": "Cable Tester (Digital)", "cat": "network", "catName": "📡 เครือข่าย (Network Farm)", "price": 6751, "icon": "📡", "group": "it"}, {"id": 141, "name": "ทุเรียนทอดกรอบ (ถุง 100g)", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 90, "icon": "🎁", "group": "otop"}, {"id": 142, "name": "ขนมเปี๊ยะไส้ถั่วไข่เค็ม", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 201, "icon": "🎁", "group": "otop"}, {"id": 143, "name": "มะม่วงกวน (ส้มลิ้ม)", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 372, "icon": "🎁", "group": "otop"}, {"id": 144, "name": "น้ำพริกนรกแมงดา", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 316, "icon": "🎁", "group": "otop"}, {"id": 145, "name": "กล้วยฉาบหวาน", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 344, "icon": "🎁", "group": "otop"}, {"id": 146, "name": "ปลาหมึกปรุงรส", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 292, "icon": "🎁", "group": "otop"}, {"id": 147, "name": "ทองม้วนสด", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 130, "icon": "🎁", "group": "otop"}, {"id": 148, "name": "ข้าวตังหน้าหมูหยอง", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 78, "icon": "🎁", "group": "otop"}, {"id": 149, "name": "หมูแผ่นกรอบ", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 146, "icon": "🎁", "group": "otop"}, {"id": 150, "name": "กุนเชียงหมู", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 228, "icon": "🎁", "group": "otop"}, {"id": 151, "name": "สมุนไพรแห้งแช่อิ่ม", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 294, "icon": "🎁", "group": "otop"}, {"id": 152, "name": "มะขามจี๊ดจ๊าด", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 109, "icon": "🎁", "group": "otop"}, {"id": 153, "name": "เม็ดมะม่วงหิมพานต์อบ", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 284, "icon": "🎁", "group": "otop"}, {"id": 154, "name": "กะหรี่ปั๊บ", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 174, "icon": "🎁", "group": "otop"}, {"id": 155, "name": "ลอดช่องอบแห้ง", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 191, "icon": "🎁", "group": "otop"}, {"id": 156, "name": "น้ำตาลสดบรรจุขวด", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 146, "icon": "🎁", "group": "otop"}, {"id": 157, "name": "ขนมผิง", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 328, "icon": "🎁", "group": "otop"}, {"id": 158, "name": "ลูกหยีกวน", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 269, "icon": "🎁", "group": "otop"}, {"id": 159, "name": "ปลาส้ม", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 204, "icon": "🎁", "group": "otop"}, {"id": 160, "name": "ถั่วตัด", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 280, "icon": "🎁", "group": "otop"}, {"id": 161, "name": "ปุ๋ยสูตรเสมอ 15-15-15 (กระสอบ 25kg)", "cat": "agri", "catName": "🌱 เกษตร & รักษ์โลก", "price": 1555, "icon": "🌱", "group": "eco"}, {"id": 162, "name": "ปุ๋ยอินทรีย์อัดเม็ด (กระสอบ 25kg)", "cat": "agri", "catName": "🌱 เกษตร & รักษ์โลก", "price": 1854, "icon": "🌱", "group": "eco"}, {"id": 163, "name": "เมล็ดพันธุ์ผักบุ้งจีน", "cat": "agri", "catName": "🌱 เกษตร & รักษ์โลก", "price": 2851, "icon": "🌱", "group": "eco"}, {"id": 164, "name": "เมล็ดพันธุ์คะน้า", "cat": "agri", "catName": "🌱 เกษตร & รักษ์โลก", "price": 2840, "icon": "🌱", "group": "eco"}, {"id": 165, "name": "เมล็ดพันธุ์แตงกวา", "cat": "agri", "catName": "🌱 เกษตร & รักษ์โลก", "price": 2025, "icon": "🌱", "group": "eco"}, {"id": 166, "name": "ดินปลูกผสมมูลไส้เดือน (ถุง 5kg)", "cat": "agri", "catName": "🌱 เกษตร & รักษ์โลก", "price": 3302, "icon": "🌱", "group": "eco"}, {"id": 167, "name": "จอบขุดดิน", "cat": "tools", "catName": "🔧 เครื่องมือช่าง", "price": 3475, "icon": "🔧", "group": "factory"}, {"id": 168, "name": "เสียมเหล็กกล้า", "cat": "agri", "catName": "🌱 เกษตร & รักษ์โลก", "price": 3704, "icon": "🌱", "group": "eco"}, {"id": 169, "name": "ถังพ่นยามือโยก 16 ลิตร", "cat": "agri", "catName": "🌱 เกษตร & รักษ์โลก", "price": 3729, "icon": "🌱", "group": "eco"}, {"id": 170, "name": "สายยางรดน้ำ (15 เมตร)", "cat": "agri", "catName": "🌱 เกษตร & รักษ์โลก", "price": 2750, "icon": "🌱", "group": "eco"}, {"id": 171, "name": "หัวพ่นหมอกทองเหลือง", "cat": "agri", "catName": "🌱 เกษตร & รักษ์โลก", "price": 2384, "icon": "🌱", "group": "eco"}, {"id": 172, "name": "มุ้งขาวกันแมลง (ม้วน)", "cat": "agri", "catName": "🌱 เกษตร & รักษ์โลก", "price": 1471, "icon": "🌱", "group": "eco"}, {"id": 173, "name": "ตาข่ายพลาสติกคลุมดิน", "cat": "agri", "catName": "🌱 เกษตร & รักษ์โลก", "price": 2068, "icon": "🌱", "group": "eco"}, {"id": 174, "name": "เครื่องตัดหญ้าสะพายบ่า", "cat": "agri", "catName": "🌱 เกษตร & รักษ์โลก", "price": 1258, "icon": "🌱", "group": "eco"}, {"id": 175, "name": "น้ำหมักชีวภาพ (แกลลอน 5 ลิตร)", "cat": "agri", "catName": "🌱 เกษตร & รักษ์โลก", "price": 1120, "icon": "🌱", "group": "eco"}, {"id": 176, "name": "กรรไกรตัดแต่งกิ่งไม้", "cat": "agri", "catName": "🌱 เกษตร & รักษ์โลก", "price": 135, "icon": "🌱", "group": "eco"}, {"id": 177, "name": "กระถางพลาสติก 10 นิ้ว", "cat": "agri", "catName": "🌱 เกษตร & รักษ์โลก", "price": 334, "icon": "🌱", "group": "eco"}, {"id": 178, "name": "ปุ๋ยเกล็ดสูตรเร่งดอก", "cat": "agri", "catName": "🌱 เกษตร & รักษ์โลก", "price": 2426, "icon": "🌱", "group": "eco"}, {"id": 179, "name": "ยาป้องกันเชื้อราในพืช", "cat": "agri", "catName": "🌱 เกษตร & รักษ์โลก", "price": 2489, "icon": "🌱", "group": "eco"}, {"id": 180, "name": "ฮอร์โมนพืชสูตรน้ำ", "cat": "agri", "catName": "🌱 เกษตร & รักษ์โลก", "price": 2491, "icon": "🌱", "group": "eco"}, {"id": 181, "name": "ถุงมือผ้าถักขอบสี (1 โหล)", "cat": "ppe", "catName": "🦺 PPE & Safety", "price": 259, "icon": "🦺", "group": "factory"}, {"id": 182, "name": "หน้ากากอนามัยแบบพับ (50 ชิ้น)", "cat": "ppe", "catName": "🦺 PPE & Safety", "price": 266, "icon": "🦺", "group": "factory"}, {"id": 183, "name": "ผ้าเช็ดเครื่องจักร (1 กก.)", "cat": "consumable", "catName": "🧴 วัสดุสิ้นเปลือง", "price": 1109, "icon": "🧴", "group": "factory"}, {"id": 184, "name": "เทปพันสายไฟ (ม้วน)", "cat": "electrical", "catName": "🔌 อุปกรณ์ไฟฟ้าโรงงาน", "price": 1105, "icon": "🔌", "group": "factory"}, {"id": 185, "name": "กระดาษทรายสายพาน (ม้วน)", "cat": "paper", "catName": "📄 กระดาษ", "price": 711, "icon": "📄", "group": "it"}, {"id": 186, "name": "ใบเจียรเหล็ก 4 นิ้ว", "cat": "tools", "catName": "🔧 เครื่องมือช่าง", "price": 568, "icon": "🔧", "group": "factory"}, {"id": 187, "name": "ใบตัดเหล็ก 4 นิ้ว", "cat": "tools", "catName": "🔧 เครื่องมือช่าง", "price": 372, "icon": "🔧", "group": "factory"}, {"id": 188, "name": "ถุงขยะสีดำขนาดใหญ่ (แพ็ค 10)", "cat": "consumable", "catName": "🧴 วัสดุสิ้นเปลือง", "price": 295, "icon": "🧴", "group": "factory"}, {"id": 189, "name": "น้ำมันหล่อลื่นอเนกประสงค์ (สเปรย์)", "cat": "consumable", "catName": "🧴 วัสดุสิ้นเปลือง", "price": 175, "icon": "🧴", "group": "factory"}, {"id": 190, "name": "จารบีเหลว (กระป๋อง)", "cat": "consumable", "catName": "🧴 วัสดุสิ้นเปลือง", "price": 779, "icon": "🧴", "group": "factory"}, {"id": 191, "name": "น้ำยาทำความสะอาดอุตสาหกรรม (แกลลอน 5 ลิตร)", "cat": "consumable", "catName": "🧴 วัสดุสิ้นเปลือง", "price": 784, "icon": "🧴", "group": "factory"}, {"id": 192, "name": "เทปกาวปิดกล่อง (แพ็ค 6)", "cat": "consumable", "catName": "🧴 วัสดุสิ้นเปลือง", "price": 1112, "icon": "🧴", "group": "factory"}, {"id": 193, "name": "ฟิล์มยืดพันพาเลท (ม้วน)", "cat": "consumable", "catName": "🧴 วัสดุสิ้นเปลือง", "price": 899, "icon": "🧴", "group": "factory"}, {"id": 194, "name": "สายรัดพลาสติก PP", "cat": "consumable", "catName": "🧴 วัสดุสิ้นเปลือง", "price": 1235, "icon": "🧴", "group": "factory"}, {"id": 195, "name": "หัวพ่นสเปรย์", "cat": "consumable", "catName": "🧴 วัสดุสิ้นเปลือง", "price": 1024, "icon": "🧴", "group": "factory"}, {"id": 196, "name": "น้ำยาขจัดคราบน้ำมัน (แกลลอน 5 ลิตร)", "cat": "consumable", "catName": "🧴 วัสดุสิ้นเปลือง", "price": 152, "icon": "🧴", "group": "factory"}, {"id": 197, "name": "ป้ายเตือนความปลอดภัย (พลาสติก)", "cat": "ppe", "catName": "🦺 PPE & Safety", "price": 1224, "icon": "🦺", "group": "factory"}, {"id": 198, "name": "แปรงลวดขัดสนิม", "cat": "consumable", "catName": "🧴 วัสดุสิ้นเปลือง", "price": 534, "icon": "🧴", "group": "factory"}, {"id": 199, "name": "ถุงซิปล็อคขนาดใหญ่ (แพ็ค 100)", "cat": "consumable", "catName": "🧴 วัสดุสิ้นเปลือง", "price": 255, "icon": "🧴", "group": "factory"}, {"id": 200, "name": "กระดาษเช็ดมือสำหรับโรงงาน (แพ็ค)", "cat": "paper", "catName": "📄 กระดาษ", "price": 90, "icon": "📄", "group": "it"}, {"id": 201, "name": "สว่านไฟฟ้ากระแทก 13 มม.", "cat": "tools", "catName": "🔧 เครื่องมือช่าง", "price": 4744, "icon": "🔧", "group": "factory"}, {"id": 202, "name": "ชุดไขควงอเนกประสงค์ (8 ชิ้น)", "cat": "tools", "catName": "🔧 เครื่องมือช่าง", "price": 1332, "icon": "🔧", "group": "factory"}, {"id": 203, "name": "ประแจปากตายชุด (10 ชิ้น)", "cat": "tools", "catName": "🔧 เครื่องมือช่าง", "price": 3392, "icon": "🔧", "group": "factory"}, {"id": 204, "name": "คีมปากจิ้งจก 7 นิ้ว", "cat": "tools", "catName": "🔧 เครื่องมือช่าง", "price": 4091, "icon": "🔧", "group": "factory"}, {"id": 205, "name": "คีมตัดสายไฟ 6 นิ้ว", "cat": "tools", "catName": "🔧 เครื่องมือช่าง", "price": 1198, "icon": "🔧", "group": "factory"}, {"id": 206, "name": "ตลับเมตร 5 เมตร", "cat": "tools", "catName": "🔧 เครื่องมือช่าง", "price": 3662, "icon": "🔧", "group": "factory"}, {"id": 207, "name": "เลื่อยลันดา 14 นิ้ว", "cat": "tools", "catName": "🔧 เครื่องมือช่าง", "price": 538, "icon": "🔧", "group": "factory"}, {"id": 208, "name": "ระดับน้ำ 24 นิ้ว", "cat": "tools", "catName": "🔧 เครื่องมือช่าง", "price": 760, "icon": "🔧", "group": "factory"}, {"id": 209, "name": "ค้อนหงอนด้ามเหล็ก", "cat": "tools", "catName": "🔧 เครื่องมือช่าง", "price": 295, "icon": "🔧", "group": "factory"}, {"id": 210, "name": "ประแจเลื่อน 10 นิ้ว", "cat": "tools", "catName": "🔧 เครื่องมือช่าง", "price": 560, "icon": "🔧", "group": "factory"}, {"id": 211, "name": "เครื่องเจียร 4 นิ้ว", "cat": "tools", "catName": "🔧 เครื่องมือช่าง", "price": 4952, "icon": "🔧", "group": "factory"}, {"id": 212, "name": "ชุดดอกสว่านเจาะเหล็ก/ปูน", "cat": "tools", "catName": "🔧 เครื่องมือช่าง", "price": 1468, "icon": "🔧", "group": "factory"}, {"id": 213, "name": "มีดคัตเตอร์เหล็ก", "cat": "tools", "catName": "🔧 เครื่องมือช่าง", "price": 2708, "icon": "🔧", "group": "factory"}, {"id": 214, "name": "กรรไกรตัดเหล็กแผ่น", "cat": "tools", "catName": "🔧 เครื่องมือช่าง", "price": 2611, "icon": "🔧", "group": "factory"}, {"id": 215, "name": "ชุดประแจหกเหลี่ยม", "cat": "tools", "catName": "🔧 เครื่องมือช่าง", "price": 1476, "icon": "🔧", "group": "factory"}, {"id": 216, "name": "สกัดปากแบน", "cat": "tools", "catName": "🔧 เครื่องมือช่าง", "price": 3415, "icon": "🔧", "group": "factory"}, {"id": 217, "name": "ปากกาจับชิ้นงาน 4 นิ้ว", "cat": "tools", "catName": "🔧 เครื่องมือช่าง", "price": 698, "icon": "🔧", "group": "factory"}, {"id": 218, "name": "ไฟฉายคาดหัวสำหรับช่าง", "cat": "tools", "catName": "🔧 เครื่องมือช่าง", "price": 2328, "icon": "🔧", "group": "factory"}, {"id": 219, "name": "ปืนยิงกาวซิลิโคน", "cat": "tools", "catName": "🔧 เครื่องมือช่าง", "price": 1329, "icon": "🔧", "group": "factory"}, {"id": 220, "name": "บันไดอลูมิเนียมพับได้ 5 ขั้น", "cat": "tools", "catName": "🔧 เครื่องมือช่าง", "price": 3005, "icon": "🔧", "group": "factory"}, {"id": 221, "name": "น้ำเก๊กฮวยขวด 250ml", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 64, "icon": "🎁", "group": "otop"}, {"id": 222, "name": "น้ำกระเจี๊ยบขวด 250ml", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 142, "icon": "🎁", "group": "otop"}, {"id": 223, "name": "ชาไทยพร้อมดื่ม (Spout Pouch)", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 311, "icon": "🎁", "group": "otop"}, {"id": 224, "name": "น้ำผลไม้รวม (Spout Pouch)", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 311, "icon": "🎁", "group": "otop"}, {"id": 225, "name": "เฉาก๊วยในน้ำเชื่อม (ถ้วย)", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 76, "icon": "🎁", "group": "otop"}, {"id": 226, "name": "น้ำพริกตาแดงกระปุก", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 232, "icon": "🎁", "group": "otop"}, {"id": 227, "name": "หมูฝอยหวาน", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 194, "icon": "🎁", "group": "otop"}, {"id": 228, "name": "กล้วยอบเนย", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 121, "icon": "🎁", "group": "otop"}, {"id": 229, "name": "ทองม้วนกะทิสด", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 250, "icon": "🎁", "group": "otop"}, {"id": 230, "name": "ข้าวตังหน้าตั้ง", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 71, "icon": "🎁", "group": "otop"}, {"id": 231, "name": "น้ำปลาร้าปรุงรส", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 175, "icon": "🎁", "group": "otop"}, {"id": 232, "name": "ไซรัปผลไม้เข้มข้น", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 280, "icon": "🎁", "group": "otop"}, {"id": 233, "name": "ชาเขียวมัทฉะลาเต้ (พร้อมดื่ม)", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 161, "icon": "🎁", "group": "otop"}, {"id": 234, "name": "น้ำผึ้งแท้ 100% (ขวด)", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 232, "icon": "🎁", "group": "otop"}, {"id": 235, "name": "มะขามแช่อิ่มแห้ง", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 208, "icon": "🎁", "group": "otop"}, {"id": 236, "name": "ทุเรียนกวน", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 134, "icon": "🎁", "group": "otop"}, {"id": 237, "name": "เม็ดมะม่วงหิมพานต์ปรุงรส", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 195, "icon": "🎁", "group": "otop"}, {"id": 238, "name": "กาแฟคั่วบด (ถุง 200g)", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 220, "icon": "🎁", "group": "otop"}, {"id": 239, "name": "โกโก้ผงเข้มข้น (ถุง 200g)", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 234, "icon": "🎁", "group": "otop"}, {"id": 240, "name": "ขนมปังกรอบเนยหนึบ", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 275, "icon": "🎁", "group": "otop"}, {"id": 241, "name": "พริกไทยป่น (ขวด 50g)", "cat": "seasoning", "catName": "🧂 เครื่องปรุงรส", "price": 102, "icon": "🧂", "group": "otop"}, {"id": 242, "name": "ผงกะหรี่ (ซอง 100g)", "cat": "seasoning", "catName": "🧂 เครื่องปรุงรส", "price": 70, "icon": "🧂", "group": "otop"}, {"id": 243, "name": "ผงพะโล้ (ซอง 100g)", "cat": "seasoning", "catName": "🧂 เครื่องปรุงรส", "price": 76, "icon": "🧂", "group": "otop"}, {"id": 244, "name": "น้ำปลาแท้ (ขวด 700ml)", "cat": "seasoning", "catName": "🧂 เครื่องปรุงรส", "price": 160, "icon": "🧂", "group": "otop"}, {"id": 245, "name": "ซีอิ๊วขาว (ขวด 700ml)", "cat": "seasoning", "catName": "🧂 เครื่องปรุงรส", "price": 141, "icon": "🧂", "group": "otop"}, {"id": 246, "name": "น้ำมันหอย (ขวด 800g)", "cat": "seasoning", "catName": "🧂 เครื่องปรุงรส", "price": 226, "icon": "🧂", "group": "otop"}, {"id": 247, "name": "น้ำตาลทรายแดง (ถุง 1kg)", "cat": "seasoning", "catName": "🧂 เครื่องปรุงรส", "price": 244, "icon": "🧂", "group": "otop"}, {"id": 248, "name": "เกลือสมุทรบริสุทธิ์ (ถุง 1kg)", "cat": "seasoning", "catName": "🧂 เครื่องปรุงรส", "price": 146, "icon": "🧂", "group": "otop"}, {"id": 249, "name": "กะปิอย่างดี (กระปุก 200g)", "cat": "seasoning", "catName": "🧂 เครื่องปรุงรส", "price": 71, "icon": "🧂", "group": "otop"}, {"id": 250, "name": "ผงปรุงรสหมู (ซอง 100g)", "cat": "seasoning", "catName": "🧂 เครื่องปรุงรส", "price": 172, "icon": "🧂", "group": "otop"}, {"id": 251, "name": "ผงปรุงรสไก่ (ซอง 100g)", "cat": "seasoning", "catName": "🧂 เครื่องปรุงรส", "price": 108, "icon": "🧂", "group": "otop"}, {"id": 252, "name": "อบเชยแท่ง (ถุง 100g)", "cat": "seasoning", "catName": "🧂 เครื่องปรุงรส", "price": 80, "icon": "🧂", "group": "otop"}, {"id": 253, "name": "โป๊ยกั๊ก (ถุง 50g)", "cat": "seasoning", "catName": "🧂 เครื่องปรุงรส", "price": 135, "icon": "🧂", "group": "otop"}, {"id": 254, "name": "ใบกระวานแห้ง (ซอง 50g)", "cat": "seasoning", "catName": "🧂 เครื่องปรุงรส", "price": 54, "icon": "🧂", "group": "otop"}, {"id": 255, "name": "พริกป่นละเอียด (ซอง 100g)", "cat": "seasoning", "catName": "🧂 เครื่องปรุงรส", "price": 151, "icon": "🧂", "group": "otop"}, {"id": 256, "name": "กระเทียมเจียว (กระปุก 150g)", "cat": "seasoning", "catName": "🧂 เครื่องปรุงรส", "price": 134, "icon": "🧂", "group": "otop"}, {"id": 257, "name": "หอมเจียว (กระปุก 150g)", "cat": "seasoning", "catName": "🧂 เครื่องปรุงรส", "price": 110, "icon": "🧂", "group": "otop"}, {"id": 258, "name": "น้ำส้มสายชู (ขวด 700ml)", "cat": "seasoning", "catName": "🧂 เครื่องปรุงรส", "price": 76, "icon": "🧂", "group": "otop"}, {"id": 259, "name": "ผงวุ้น (ซอง 25g)", "cat": "seasoning", "catName": "🧂 เครื่องปรุงรส", "price": 169, "icon": "🧂", "group": "otop"}, {"id": 260, "name": "สีผสมอาหาร (ขวดเล็ก)", "cat": "seasoning", "catName": "🧂 เครื่องปรุงรส", "price": 65, "icon": "🧂", "group": "otop"}, {"id": 261, "name": "ตะกร้าสานจากผักตบชวา", "cat": "eco_craft", "catName": "🌿 งานฝีมือ & รักษ์โลก", "price": 430, "icon": "🌿", "group": "eco"}, {"id": 262, "name": "กระเป๋าผ้าบาติก", "cat": "eco_craft", "catName": "🌿 งานฝีมือ & รักษ์โลก", "price": 98, "icon": "🌿", "group": "eco"}, {"id": 263, "name": "น้ำยาล้างจานสูตรมะกรูด (1 ลิตร)", "cat": "eco_craft", "catName": "🌿 งานฝีมือ & รักษ์โลก", "price": 354, "icon": "🌿", "group": "eco"}, {"id": 264, "name": "สบู่สมุนไพรขมิ้นชัน", "cat": "eco_craft", "catName": "🌿 งานฝีมือ & รักษ์โลก", "price": 226, "icon": "🌿", "group": "eco"}, {"id": 265, "name": "ไข่เค็มสมุนไพร (แพ็ค 6)", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 396, "icon": "🎁", "group": "otop"}, {"id": 266, "name": "กล้วยฉาบทำมือ", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 328, "icon": "🎁", "group": "otop"}, {"id": 267, "name": "ไม้กวาดทางมะพร้าว", "cat": "eco_craft", "catName": "🌿 งานฝีมือ & รักษ์โลก", "price": 491, "icon": "🌿", "group": "eco"}, {"id": 268, "name": "หมอนอิงผ้าคราม", "cat": "eco_craft", "catName": "🌿 งานฝีมือ & รักษ์โลก", "price": 200, "icon": "🌿", "group": "eco"}, {"id": 269, "name": "เสื่อกกทอมือ", "cat": "eco_craft", "catName": "🌿 งานฝีมือ & รักษ์โลก", "price": 174, "icon": "🌿", "group": "eco"}, {"id": 270, "name": "น้ำหมักชีวภาพ (500ml)", "cat": "agri", "catName": "🌱 เกษตร & รักษ์โลก", "price": 110, "icon": "🌱", "group": "eco"}, {"id": 271, "name": "ผ้ามัดย้อมธรรมชาติ", "cat": "eco_craft", "catName": "🌿 งานฝีมือ & รักษ์โลก", "price": 182, "icon": "🌿", "group": "eco"}, {"id": 272, "name": "ถุงผ้าลดโลกร้อน (สกรีนลาย)", "cat": "eco_craft", "catName": "🌿 งานฝีมือ & รักษ์โลก", "price": 446, "icon": "🌿", "group": "eco"}, {"id": 273, "name": "ขนมไทยโบราณ", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 474, "icon": "🎁", "group": "otop"}, {"id": 274, "name": "เทียนหอมอโรม่า", "cat": "eco_craft", "catName": "🌿 งานฝีมือ & รักษ์โลก", "price": 318, "icon": "🌿", "group": "eco"}, {"id": 275, "name": "พวงกุญแจงานฝีมือ", "cat": "eco_craft", "catName": "🌿 งานฝีมือ & รักษ์โลก", "price": 44, "icon": "🌿", "group": "eco"}, {"id": 276, "name": "น้ำพริกปลาป่น", "cat": "otop_food", "catName": "🎁 ของฝาก & OTOP", "price": 284, "icon": "🎁", "group": "otop"}, {"id": 277, "name": "เครื่องจักสานไม้ไผ่", "cat": "eco_craft", "catName": "🌿 งานฝีมือ & รักษ์โลก", "price": 520, "icon": "🌿", "group": "eco"}, {"id": 278, "name": "สมุดทำมือ (Handmade Notebook)", "cat": "eco_craft", "catName": "🌿 งานฝีมือ & รักษ์โลก", "price": 572, "icon": "🌿", "group": "eco"}, {"id": 279, "name": "ผ้าเช็ดหน้าปักลาย", "cat": "eco_craft", "catName": "🌿 งานฝีมือ & รักษ์โลก", "price": 588, "icon": "🌿", "group": "eco"}, {"id": 280, "name": "กล่องใส่ของจากวัสดุรีไซเคิล", "cat": "eco_craft", "catName": "🌿 งานฝีมือ & รักษ์โลก", "price": 382, "icon": "🌿", "group": "eco"}, {"id": 281, "name": "เสื้อยืดคอกลมผ้าไมโคร", "cat": "fashion", "catName": "👕 แฟชั่น & กีฬา", "price": 639, "icon": "👕", "group": "fashion"}, {"id": 282, "name": "กางเกงขาสั้นใส่วิ่ง (มีกระเป๋า)", "cat": "fashion", "catName": "👕 แฟชั่น & กีฬา", "price": 815, "icon": "👕", "group": "fashion"}, {"id": 283, "name": "ชุดวอร์มกีฬา (เสื้อ+กางเกง)", "cat": "fashion", "catName": "👕 แฟชั่น & กีฬา", "price": 1770, "icon": "👕", "group": "fashion"}, {"id": 284, "name": "ถุงเท้ากีฬาแบบหนา", "cat": "fashion", "catName": "👕 แฟชั่น & กีฬา", "price": 1478, "icon": "👕", "group": "fashion"}, {"id": 285, "name": "เสื้อแจ็คเก็ตกันลม", "cat": "fashion", "catName": "👕 แฟชั่น & กีฬา", "price": 1498, "icon": "👕", "group": "fashion"}, {"id": 286, "name": "กางเกงเลกกิ้งโยคะ", "cat": "fashion", "catName": "👕 แฟชั่น & กีฬา", "price": 1626, "icon": "👕", "group": "fashion"}, {"id": 287, "name": "หมวกแก๊ปใส่วิ่ง", "cat": "fashion", "catName": "👕 แฟชั่น & กีฬา", "price": 126, "icon": "👕", "group": "fashion"}, {"id": 288, "name": "ปลอกแขนกัน UV", "cat": "fashion", "catName": "👕 แฟชั่น & กีฬา", "price": 321, "icon": "👕", "group": "fashion"}, {"id": 289, "name": "ชุดบอดี้สูทสำหรับว่ายน้ำ", "cat": "fashion", "catName": "👕 แฟชั่น & กีฬา", "price": 782, "icon": "👕", "group": "fashion"}, {"id": 290, "name": "เสื้อโปโลสำหรับทีมงาน", "cat": "fashion", "catName": "👕 แฟชั่น & กีฬา", "price": 409, "icon": "👕", "group": "fashion"}, {"id": 291, "name": "รองเท้ากีฬา (ใส่วิ่งทั่วไป)", "cat": "fashion", "catName": "👕 แฟชั่น & กีฬา", "price": 1269, "icon": "👕", "group": "fashion"}, {"id": 292, "name": "กระเป๋าเป้สะพายหลังกีฬา", "cat": "fashion", "catName": "👕 แฟชั่น & กีฬา", "price": 384, "icon": "👕", "group": "fashion"}, {"id": 293, "name": "ผ้าขนหนูไมโครไฟเบอร์", "cat": "fashion", "catName": "👕 แฟชั่น & กีฬา", "price": 1620, "icon": "👕", "group": "fashion"}, {"id": 294, "name": "กางเกงขายาวผ้าแห้งไว", "cat": "fashion", "catName": "👕 แฟชั่น & กีฬา", "price": 610, "icon": "👕", "group": "fashion"}, {"id": 295, "name": "เสื้อกล้ามระบายอากาศ", "cat": "fashion", "catName": "👕 แฟชั่น & กีฬา", "price": 1400, "icon": "👕", "group": "fashion"}, {"id": 296, "name": "สายรัดข้อมือซับเหงื่อ", "cat": "fashion", "catName": "👕 แฟชั่น & กีฬา", "price": 1274, "icon": "👕", "group": "fashion"}, {"id": 297, "name": "ชุดออกกำลังกายผู้หญิง (เซ็ต 2 ชิ้น)", "cat": "fashion", "catName": "👕 แฟชั่น & กีฬา", "price": 872, "icon": "👕", "group": "fashion"}, {"id": 298, "name": "ชุดกีฬาเด็ก", "cat": "fashion", "catName": "👕 แฟชั่น & กีฬา", "price": 1324, "icon": "👕", "group": "fashion"}, {"id": 299, "name": "เข็มขัดรัดเอวใส่มือถือขณะวิ่ง", "cat": "fashion", "catName": "👕 แฟชั่น & กีฬา", "price": 810, "icon": "👕", "group": "fashion"}, {"id": 300, "name": "กระติกน้ำกีฬาพกพา", "cat": "fashion", "catName": "👕 แฟชั่น & กีฬา", "price": 1810, "icon": "👕", "group": "fashion"}, {"id": 301, "name": "ชุดผ้าปูที่นอน 3.5 ฟุต (Cotton)", "cat": "home", "catName": "🛏️ เครื่องนอน & ของใช้บ้าน", "price": 2899, "icon": "🛏️", "group": "home"}, {"id": 302, "name": "ชุดผ้าปูที่นอน 5 ฟุต (Cotton)", "cat": "home", "catName": "🛏️ เครื่องนอน & ของใช้บ้าน", "price": 2885, "icon": "🛏️", "group": "home"}, {"id": 303, "name": "ชุดผ้าปูที่นอน 6 ฟุต (Cotton)", "cat": "home", "catName": "🛏️ เครื่องนอน & ของใช้บ้าน", "price": 878, "icon": "🛏️", "group": "home"}, {"id": 304, "name": "ผ้านวมเย็บติดขนาด 60x80 นิ้ว", "cat": "home", "catName": "🛏️ เครื่องนอน & ของใช้บ้าน", "price": 2539, "icon": "🛏️", "group": "home"}, {"id": 305, "name": "ผ้านวมเย็บติดขนาด 90x100 นิ้ว", "cat": "home", "catName": "🛏️ เครื่องนอน & ของใช้บ้าน", "price": 1675, "icon": "🛏️", "group": "home"}, {"id": 306, "name": "หมอนหนุนใยสังเคราะห์", "cat": "home", "catName": "🛏️ เครื่องนอน & ของใช้บ้าน", "price": 790, "icon": "🛏️", "group": "home"}, {"id": 307, "name": "หมอนข้างใยสังเคราะห์", "cat": "home", "catName": "🛏️ เครื่องนอน & ของใช้บ้าน", "price": 2380, "icon": "🛏️", "group": "home"}, {"id": 308, "name": "หมอนบอดี้ (ยาว)", "cat": "home", "catName": "🛏️ เครื่องนอน & ของใช้บ้าน", "price": 2226, "icon": "🛏️", "group": "home"}, {"id": 309, "name": "หมอนเพื่อสุขภาพ (Memory Foam)", "cat": "home", "catName": "🛏️ เครื่องนอน & ของใช้บ้าน", "price": 284, "icon": "🛏️", "group": "home"}, {"id": 310, "name": "ปลอกหมอนหนุน (แพ็ค 2)", "cat": "home", "catName": "🛏️ เครื่องนอน & ของใช้บ้าน", "price": 2539, "icon": "🛏️", "group": "home"}, {"id": 311, "name": "ปลอกหมอนข้าง (แพ็ค 2)", "cat": "home", "catName": "🛏️ เครื่องนอน & ของใช้บ้าน", "price": 858, "icon": "🛏️", "group": "home"}, {"id": 312, "name": "ผ้ารองกันเปื้อนที่นอน 3.5 ฟุต", "cat": "home", "catName": "🛏️ เครื่องนอน & ของใช้บ้าน", "price": 3009, "icon": "🛏️", "group": "home"}, {"id": 313, "name": "ผ้ารองกันเปื้อนที่นอน 5 ฟุต", "cat": "home", "catName": "🛏️ เครื่องนอน & ของใช้บ้าน", "price": 1774, "icon": "🛏️", "group": "home"}, {"id": 314, "name": "ผ้ารองกันเปื้อนที่นอน 6 ฟุต", "cat": "home", "catName": "🛏️ เครื่องนอน & ของใช้บ้าน", "price": 1398, "icon": "🛏️", "group": "home"}, {"id": 315, "name": "ไส้ผ้านวมขนห่านเทียม", "cat": "home", "catName": "🛏️ เครื่องนอน & ของใช้บ้าน", "price": 2955, "icon": "🛏️", "group": "home"}, {"id": 316, "name": "ผ้าห่มนาโน (ขนาดพกพา)", "cat": "home", "catName": "🛏️ เครื่องนอน & ของใช้บ้าน", "price": 2156, "icon": "🛏️", "group": "home"}, {"id": 317, "name": "ผ้าห่มแพร", "cat": "home", "catName": "🛏️ เครื่องนอน & ของใช้บ้าน", "price": 1554, "icon": "🛏️", "group": "home"}, {"id": 318, "name": "หมอนรองคอเดินทาง", "cat": "home", "catName": "🛏️ เครื่องนอน & ของใช้บ้าน", "price": 1191, "icon": "🛏️", "group": "home"}, {"id": 319, "name": "มุ้งครอบกันยุงขนาดใหญ่", "cat": "home", "catName": "🛏️ เครื่องนอน & ของใช้บ้าน", "price": 3052, "icon": "🛏️", "group": "home"}, {"id": 320, "name": "แผ่นรองนอนใยมะพร้าว", "cat": "eco_craft", "catName": "🌿 งานฝีมือ & รักษ์โลก", "price": 1419, "icon": "🌿", "group": "eco"}];
+const GROUPS = {"it": {"label": "💻 IT & เครือข่าย", "cats": ["ink", "paper", "input", "camera", "audio", "media", "monitor", "printer_it", "storage", "bag_it", "accessory_it", "cleaning_it", "battery_it", "cable_it", "network", "cctv", "power_it"]}, "factory": {"label": "🏗️ อุตสาหกรรม & โรงงาน", "cats": ["motor", "pump", "electrical", "ind_fan", "ppe", "tools", "consumable"]}, "otop": {"label": "🎁 ของฝาก & OTOP", "cats": ["otop_food", "seasoning"]}, "eco": {"label": "🌿 รักษ์โลก & งานฝีมือ", "cats": ["eco_craft", "agri"]}, "fashion": {"label": "👕 แฟชั่น & กีฬา", "cats": ["fashion"]}, "home": {"label": "🛏️ ของใช้ในบ้าน", "cats": ["home"]}, "other": {"label": "📦 อื่นๆ", "cats": ["other"]}};
+
+// ── CANVAS ──
 (function(){
-  const c=document.getElementById('bg-canvas'),ctx=c.getContext('2d');
+  const c=document.getElementById('bg'),ctx=c.getContext('2d');
   let W,H,stars=[];
-  function resize(){W=c.width=innerWidth;H=c.height=innerHeight;
-    stars=[];for(let i=0;i<220;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+.2,a:Math.random(),da:(Math.random()-.5)*.005,gold:Math.random()>.82});}
-  function draw(){ctx.clearRect(0,0,W,H);
-    [[.15,.25,'30,20,120',.13],[.8,.6,'80,10,140',.09],[.5,.5,'0,60,140',.07]].forEach(([cx,cy,col,a])=>{
+  function r(){W=c.width=innerWidth;H=c.height=innerHeight;stars=[];
+    for(let i=0;i<250;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+.2,a:Math.random(),da:(Math.random()-.5)*.005,gold:Math.random()>.8});}
+  function d(){ctx.clearRect(0,0,W,H);
+    [[.15,.25,'40,25,180',.16],[.8,.6,'90,15,160',.12],[.5,.5,'0,70,200',.08]].forEach(([cx,cy,col,a])=>{
       const g=ctx.createRadialGradient(cx*W,cy*H,0,cx*W,cy*H,Math.max(W,H)*.4);
       g.addColorStop(0,`rgba(${col},${a})`);g.addColorStop(1,`rgba(${col},0)`);
       ctx.beginPath();ctx.arc(cx*W,cy*H,Math.max(W,H)*.4,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();});
     stars.forEach(s=>{s.a+=s.da;if(s.a<=0||s.a>=1)s.da*=-1;
       ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-      ctx.fillStyle=s.gold?`rgba(201,168,76,${s.a*.7})`:`rgba(200,210,255,${s.a*.5})`;ctx.fill();});
-    requestAnimationFrame(draw);}
-  addEventListener('resize',resize);resize();draw();
+      ctx.fillStyle=s.gold?`rgba(201,168,76,${s.a*.75})`:`rgba(200,210,255,${s.a*.55})`;ctx.fill();});
+    requestAnimationFrame(d);}
+  addEventListener('resize',r);r();d();
 })();
 
-// ── PRODUCT DATA ─────────────────────────────────────────
-const PRODUCTS = [
-  // IT & COMPUTER
-  {id:1,cat:'it',catName:'💻 IT & Computer',name:'คอมพิวเตอร์ตั้งโต๊ะ Core i5',desc:'CPU Core i5 Gen12, RAM 16GB, SSD 512GB พร้อมใช้งาน',icon:'🖥️',badge:'new',price:'ติดต่อสอบถาม',specs:[['ซีพียู','Intel Core i5 Gen12'],['RAM','16 GB DDR4'],['Storage','SSD 512 GB'],['OS','Windows 11 Pro'],['รับประกัน','1 ปี']],channel:'line'},
-  {id:2,cat:'it',catName:'💻 IT & Computer',name:'โน้ตบุ๊ค Asus VivoBook',desc:'i5 Gen12, RAM 8GB, SSD 512GB จอ 15.6" FHD น้ำหนักเบา',icon:'💻',badge:'',price:'ติดต่อสอบถาม',specs:[['ซีพียู','i5 Gen12'],['RAM','8 GB'],['จอ','15.6" FHD'],['แบต','ทน 8 ชม.']]},
-  {id:3,cat:'it',catName:'💻 IT & Computer',name:'เครื่องพิมพ์ HP LaserJet',desc:'พิมพ์ขาวดำ ความเร็วสูง 30 แผ่น/นาที เหมาะสำนักงาน',icon:'🖨️',badge:'hot',price:'ติดต่อสอบถาม',specs:[['ประเภท','Laser Mono'],['ความเร็ว','30 ppm'],['ความละเอียด','600 dpi'],['รับประกัน','1 ปี']]},
-  {id:4,cat:'it',catName:'💻 IT & Computer',name:'หมึกพิมพ์ / Toner ทุกรุ่น',desc:'หมึกพิมพ์ทุกยี่ห้อ HP, Canon, Epson, Brother, Fuji',icon:'🖊️',badge:'',price:'เริ่มต้น ฿350',specs:[['ยี่ห้อ','HP / Canon / Epson / Brother'],['ประเภท','Inkjet & Laser'],['รับประกัน','เปลี่ยนใหม่ถ้าไม่พอใจ']]},
-  {id:5,cat:'it',catName:'💻 IT & Computer',name:'อุปกรณ์เครือข่าย / Router',desc:'Router, Switch, Access Point ทุกยี่ห้อ TP-Link, Cisco, Ubiquiti',icon:'📡',badge:'',price:'ติดต่อสอบถาม',specs:[['แบรนด์','TP-Link / Cisco / Ubiquiti'],['มาตรฐาน','WiFi 6 / Gigabit'],['รับประกัน','ตามแบรนด์']]},
-  // ELECTRICAL
-  {id:6,cat:'electrical',catName:'⚡ ไฟฟ้า & มอเตอร์',name:'มอเตอร์ไฟฟ้า 3 เฟส',desc:'มอเตอร์ 3 เฟส 1-100 HP สำหรับโรงงานอุตสาหกรรม',icon:'⚡',badge:'',price:'ติดต่อสอบถาม',specs:[['ประเภท','3 Phase Motor'],['ขนาด','1 - 100 HP'],['ไฟฟ้า','380V / 50Hz'],['ยี่ห้อ','Mitsubishi / Siemens']]},
-  {id:7,cat:'electrical',catName:'⚡ ไฟฟ้า & มอเตอร์',name:'พัดลมอุตสาหกรรม',desc:'พัดลมโรงงานทุกขนาด ระบายอากาศ ลดความร้อน',icon:'🌀',badge:'hot',price:'เริ่มต้น ฿1,500',specs:[['ขนาด','18"-60"'],['ระบบ','1 เฟส / 3 เฟส'],['ใช้งาน','โรงงาน / โกดัง']]},
-  {id:8,cat:'electrical',catName:'⚡ ไฟฟ้า & มอเตอร์',name:'อุปกรณ์ไฟฟ้าโรงงาน',desc:'สาย Cable, Breaker, Contactor, Relay, Timer ทุกชนิด',icon:'🔌',badge:'',price:'ติดต่อสอบถาม',specs:[['หมวด','Breaker / Contactor / Cable'],['แบรนด์','Schneider / ABB / LS'],['มาตรฐาน','IEC / มอก.']]},
-  {id:9,cat:'electrical',catName:'⚡ ไฟฟ้า & มอเตอร์',name:'บริการซ่อมมอเตอร์',desc:'รับซ่อมพันขดลวดมอเตอร์ ไดนาโม ปั๊มน้ำ ด่วน 24 ชม.',icon:'🔧',badge:'hot',price:'ติดต่อสอบถาม',specs:[['บริการ','ซ่อม/พันขดลวด/เปลี่ยนแบริ่ง'],['รับซ่อม','มอเตอร์ / ไดนาโม / ปั๊ม'],['เวลา','24 ชม. / On-site']]},
-  // PPE
-  {id:10,cat:'ppe',catName:'🦺 PPE & Safety',name:'หมวกนิรภัย Safety Helmet',desc:'หมวกนิรภัย มอก. ทุกสี ทุกแบรนด์ รับประกันคุณภาพ',icon:'⛑️',badge:'',price:'เริ่มต้น ฿120',specs:[['มาตรฐาน','มอก. 368'],['วัสดุ','HDPE / ABS'],['แบบ','ปีกรอบ / ปีกหน้า']]},
-  {id:11,cat:'ppe',catName:'🦺 PPE & Safety',name:'รองเท้าเซฟตี้',desc:'รองเท้านิรภัย หัวเหล็ก พื้นกันลื่น กันน้ำมัน มอก.',icon:'👟',badge:'new',price:'เริ่มต้น ฿450',specs:[['มาตรฐาน','มอก. 523'],['หัวรองเท้า','เหล็ก Steel Toe'],['พื้น','กันลื่น / น้ำมัน']]},
-  {id:12,cat:'ppe',catName:'🦺 PPE & Safety',name:'ถุงมือนิรภัย',desc:'ถุงมือหนัง ถุงมือไฟฟ้า ถุงมือกันสารเคมี ทุกชนิด',icon:'🧤',badge:'',price:'เริ่มต้น ฿35',specs:[['ประเภท','หนัง / ผ้า / ยาง / PVC'],['ใช้งาน','ช่าง / เคมี / ไฟฟ้า'],['ขนาด','S / M / L / XL']]},
-  {id:13,cat:'ppe',catName:'🦺 PPE & Safety',name:'ชุด PPE ครบเซ็ต',desc:'ชุดป้องกันสารเคมี เสื้อกั๊กสะท้อนแสง ครบชุด',icon:'🦺',badge:'sale',price:'ติดต่อสอบถาม',specs:[['ชุด','เสื้อกั๊ก / ชุดเคมี / ชุดเชื่อม'],['มาตรฐาน','มอก. / CE'],['รับจ้างจัด','ชุดตาม Spec โรงงาน']]},
-  // TOOLS
-  {id:14,cat:'tools',catName:'🔧 เครื่องมือช่าง',name:'ชุดเครื่องมือช่างครบชุด',desc:'ชุดเครื่องมือพื้นฐาน ไขควง, ประแจ, คีม 50+ ชิ้น',icon:'🔧',badge:'',price:'เริ่มต้น ฿850',specs:[['จำนวน','50+ ชิ้น'],['วัสดุ','Chrome Vanadium'],['กล่อง','พลาสติก ABS แข็งแรง']]},
-  {id:15,cat:'tools',catName:'🔧 เครื่องมือช่าง',name:'สว่านไฟฟ้า / Drill',desc:'สว่านไฟฟ้า สว่านกระแทก ทั้งแบบสายและไร้สาย',icon:'🔩',badge:'',price:'เริ่มต้น ฿650',specs:[['ประเภท','สายไฟ / แบตเตอรี่'],['กำลัง','500W - 1200W'],['แบรนด์','Bosch / Makita / Ingco']]},
-  {id:16,cat:'tools',catName:'🔧 เครื่องมือช่าง',name:'วัสดุสิ้นเปลือง Consumables',desc:'ใบเจียร น้ำมัน WD-40 กาว เทป ทุกชนิด ส่งโรงงาน',icon:'🪛',badge:'',price:'ติดต่อสอบถาม',specs:[['หมวด','ใบเจียร / น้ำมัน / กาว / เทป'],['ส่ง','จัดส่งถึงโรงงาน'],['ขั้นต่ำ','สั่งขั้นต่ำ ฿500']]},
-  // INDUSTRIAL
-  {id:17,cat:'industrial',catName:'🏗️ Industrial Supply',name:'อุปกรณ์โรงงาน B2B',desc:'จัดหาอุปกรณ์โรงงานตาม Spec ราคาค้าส่ง จัดส่งรวดเร็ว',icon:'🏭',badge:'',price:'ติดต่อสอบถาม',specs:[['บริการ','จัดหาตาม Spec / BOQ'],['ราคา','ค้าส่ง / Volume Discount'],['จัดส่ง','ทั่วประเทศ']]},
-  {id:18,cat:'industrial',catName:'🏗️ Industrial Supply',name:'CCTV & ระบบรักษาความปลอดภัย',desc:'กล้องวงจรปิด IP Camera, NVR, Access Control ครบชุด',icon:'📹',badge:'new',price:'ติดต่อสอบถาม',specs:[['ประเภท','IP Camera / Analog'],['ความละเอียด','2MP - 8MP (4K)'],['บริการ','ออกแบบ / ติดตั้ง / ซ่อม']]},
-  // SERVICE
-  {id:19,cat:'service',catName:'🔨 บริการ',name:'บริการซ่อมคอมพิวเตอร์',desc:'ซ่อมคอมพิวเตอร์ โน้ตบุ๊ก ทุกอาการ รับ-ส่ง ถึงที่',icon:'🖥️',badge:'',price:'เริ่มต้น ฿300',specs:[['บริการ','ซ่อม / อัปเกรด / ล้างเครื่อง'],['รับ-ส่ง','On-site / รับถึงร้าน'],['ระยะเวลา','1-3 วันทำการ']]},
-  {id:20,cat:'service',catName:'🔨 บริการ',name:'IT Support รายเดือน',desc:'ดูแลระบบ IT ประจำเดือน ซ่อมบำรุง Preventive Maintenance',icon:'🛠️',badge:'hot',price:'เริ่มต้น ฿1,500/เดือน',specs:[['รวม','PM + Repair + Support'],['เวลา','Response < 4 ชม.'],['รายงาน','รายงานประจำเดือน']]},
-];
+// ── STATE ──
+let activeGroup = 'all';
+let activeSub = 'all';
+let currentPage = 1;
+const PER_PAGE = 24;
 
-const CATEGORIES = [
-  {id:'all', label:'🏠 ทั้งหมด'},
-  {id:'it', label:'💻 IT & Computer'},
-  {id:'electrical', label:'⚡ ไฟฟ้า & มอเตอร์'},
-  {id:'ppe', label:'🦺 PPE & Safety'},
-  {id:'tools', label:'🔧 เครื่องมือช่าง'},
-  {id:'industrial', label:'🏗️ Industrial'},
-  {id:'service', label:'🔨 บริการ'},
-];
+// Category label lookup (id -> label from first product)
+const CAT_LABEL = {};
+PRODUCTS.forEach(p => { CAT_LABEL[p.cat] = p.catName; });
 
-let activeCat = 'all';
+document.getElementById('ph-count').textContent = `รวม ${PRODUCTS.length} รายการสินค้า`;
 
-// ── RENDER CATEGORIES ────────────────────────────────────
-function renderCats() {
-  const list = document.getElementById('cat-list');
-  list.innerHTML = CATEGORIES.map(c => {
-    const count = c.id === 'all' ? PRODUCTS.length : PRODUCTS.filter(p => p.cat === c.id).length;
-    return `<button class="cat-btn ${c.id===activeCat?'active':''}" onclick="setCat('${c.id}')">
-      ${c.label} <span class="cat-count">${count}</span>
+// ── RENDER GROUP SIDEBAR ──
+function renderGroups(){
+  const list = document.getElementById('grp-list');
+  const total = PRODUCTS.length;
+  let html = `<button class="grp-btn ${activeGroup==='all'?'active':''}" onclick="setGroup('all')">
+    🏠 ทั้งหมด <span class="grp-count">${total}</span>
+  </button>`;
+
+  Object.entries(GROUPS).forEach(([gid, info]) => {
+    const count = PRODUCTS.filter(p => p.group === gid).length;
+    if (!count) return;
+    html += `<button class="grp-btn ${activeGroup===gid?'active':''}" onclick="setGroup('${gid}')">
+      ${info.label} <span class="grp-count">${count}</span>
     </button>`;
-  }).join('');
+    if (activeGroup === gid) {
+      const cats = [...new Set(PRODUCTS.filter(p=>p.group===gid).map(p=>p.cat))];
+      html += `<div class="subcats show">
+        <span class="subcat-pill ${activeSub==='all'?'active':''}" onclick="setSub('all')">ทั้งหมด</span>
+        ${cats.map(c => `<span class="subcat-pill ${activeSub===c?'active':''}" onclick="setSub('${c}')">${CAT_LABEL[c]}</span>`).join('')}
+      </div>`;
+    }
+  });
+  list.innerHTML = html;
 }
 
-function setCat(id) {
-  activeCat = id;
-  renderCats();
-  filterProducts();
+function setGroup(gid){
+  activeGroup = gid;
+  activeSub = 'all';
+  currentPage = 1;
+  renderGroups();
+  render();
+}
+function setSub(cid){
+  activeSub = cid;
+  currentPage = 1;
+  renderGroups();
+  render();
 }
 
-// ── FILTER & RENDER PRODUCTS ─────────────────────────────
-function filterProducts() {
-  const q = document.getElementById('search-input').value.toLowerCase().trim();
-  const sort = document.getElementById('sort-select').value;
+// ── FILTER + SORT + PAGINATE ──
+function render(){
+  const q = document.getElementById('q').value.toLowerCase().trim();
+  const sort = document.getElementById('sort').value;
 
-  let filtered = PRODUCTS.filter(p => {
-    const matchCat = activeCat === 'all' || p.cat === activeCat;
-    const matchQ = !q || p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q) || p.catName.toLowerCase().includes(q);
-    return matchCat && matchQ;
+  let list = PRODUCTS.filter(p => {
+    const mGroup = activeGroup==='all' || p.group===activeGroup;
+    const mSub   = activeSub==='all' || p.cat===activeSub;
+    const mQ     = !q || p.name.toLowerCase().includes(q) || p.catName.toLowerCase().includes(q);
+    return mGroup && mSub && mQ;
   });
 
-  if (sort === 'name-asc') filtered.sort((a,b) => a.name.localeCompare(b.name,'th'));
-  if (sort === 'name-desc') filtered.sort((a,b) => b.name.localeCompare(a.name,'th'));
-  if (sort === 'new') filtered = filtered.filter(p => p.badge === 'new').concat(filtered.filter(p => p.badge !== 'new'));
+  if(sort==='name-asc')  list.sort((a,b)=>a.name.localeCompare(b.name,'th'));
+  if(sort==='name-desc') list.sort((a,b)=>b.name.localeCompare(a.name,'th'));
+  if(sort==='price-asc') list.sort((a,b)=>a.price-b.price);
+  if(sort==='price-desc')list.sort((a,b)=>b.price-a.price);
 
-  document.getElementById('results-info').textContent = `พบ ${filtered.length} รายการ${q?' สำหรับ "'+q+'"':''}`;
+  document.getElementById('res-info').textContent = `พบ ${list.length} รายการ${q?' สำหรับ "'+q+'"':''}`;
 
-  const grid = document.getElementById('products-grid');
-  if (!filtered.length) {
-    grid.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-text">ไม่พบสินค้าที่ค้นหา</div></div>`;
-    return;
-  }
-  grid.innerHTML = filtered.map(p => `
-    <div class="prod-card" onclick="openModal(${p.id})">
-      <div class="prod-img">
-        <span>${p.icon}</span>
-        ${p.badge ? `<span class="prod-badge badge-${p.badge}">${p.badge==='new'?'ใหม่':p.badge==='hot'?'ยอดนิยม':'ลดราคา'}</span>` : ''}
-      </div>
-      <div class="prod-body">
-        <div class="prod-cat">${p.catName}</div>
-        <div class="prod-name">${p.name}</div>
-        <div class="prod-desc">${p.desc}</div>
-        <div class="prod-footer">
-          <div class="prod-price ${p.price.includes('ติดต่อ')?'contact':''}">${p.price.includes('ติดต่อ')?'':'฿'}${p.price}</div>
-          <button class="btn-inquiry" onclick="event.stopPropagation();inquire('${p.name}')">สอบถาม</button>
+  // Pagination
+  const totalPages = Math.max(1, Math.ceil(list.length / PER_PAGE));
+  if(currentPage > totalPages) currentPage = totalPages;
+  const start = (currentPage-1)*PER_PAGE;
+  const pageItems = list.slice(start, start+PER_PAGE);
+
+  const grid = document.getElementById('grid');
+  if(!pageItems.length){
+    grid.innerHTML = `<div class="empty"><div class="empty-icon">🔍</div><div class="empty-txt">ไม่พบสินค้าที่ค้นหา</div></div>`;
+  } else {
+    grid.innerHTML = pageItems.map(p => `
+      <div class="card" onclick="openModal(${p.id})">
+        <div class="c-img"><span>${p.icon}</span></div>
+        <div class="c-body">
+          <div class="c-cat">${p.catName}</div>
+          <div class="c-name">${p.name}</div>
+          <div class="c-foot">
+            <div class="c-price">฿${p.price.toLocaleString()}</div>
+            <button class="c-btn" onclick="event.stopPropagation();inquire('${p.name.replace(/'/g,"\\'")}',${p.price})">สอบถาม</button>
+          </div>
         </div>
-      </div>
-    </div>`).join('');
+      </div>`).join('');
+  }
+
+  renderPager(totalPages);
 }
 
-// ── MODAL ────────────────────────────────────────────────
-function openModal(id) {
-  const p = PRODUCTS.find(x => x.id === id);
-  if (!p) return;
-  document.getElementById('modal-content').innerHTML = `
-    <button class="modal-close" onclick="closeModal()">✕</button>
-    <div class="modal-img"><span style="font-size:5rem">${p.icon}</span></div>
-    <div class="modal-body">
-      <div class="modal-cat">${p.catName}</div>
-      <div class="modal-name">${p.name}</div>
-      <div class="modal-desc">${p.desc}</div>
-      ${p.specs?`<div class="modal-specs">${p.specs.map(s=>`
-        <div class="spec-row"><span class="spec-key">${s[0]}</span><span class="spec-val">${s[1]}</span></div>`).join('')}</div>`:''}
-      <div class="modal-price">${p.price.includes('ติดต่อ') ? '📞 ราคาพิเศษ — ติดต่อสอบถาม' : p.price}</div>
-      <div class="modal-actions">
-        <button class="btn-line" onclick="inquire('${p.name}','line')">💬 LINE OA</button>
-        <button class="btn-wa"   onclick="inquire('${p.name}','wa')">📱 WhatsApp</button>
+function renderPager(totalPages){
+  const pager = document.getElementById('pager');
+  if(totalPages<=1){ pager.innerHTML=''; return; }
+  let html = `<button class="pg-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}>‹</button>`;
+
+  const maxShow = 7;
+  let pages = [];
+  if(totalPages <= maxShow){
+    pages = Array.from({length:totalPages},(_,i)=>i+1);
+  } else {
+    pages = [1];
+    let s = Math.max(2, currentPage-1), e = Math.min(totalPages-1, currentPage+1);
+    if(s>2) pages.push('...');
+    for(let i=s;i<=e;i++) pages.push(i);
+    if(e<totalPages-1) pages.push('...');
+    pages.push(totalPages);
+  }
+  pages.forEach(p=>{
+    if(p==='...') html += `<span style="color:var(--steel);padding:0 .3rem">…</span>`;
+    else html += `<button class="pg-btn ${p===currentPage?'active':''}" onclick="goPage(${p})">${p}</button>`;
+  });
+  html += `<button class="pg-btn" onclick="goPage(${currentPage+1})" ${currentPage===totalPages?'disabled':''}>›</button>`;
+  pager.innerHTML = html;
+}
+
+function goPage(p){
+  currentPage = p;
+  render();
+  window.scrollTo({top: document.querySelector('.wrap').offsetTop - 80, behavior:'smooth'});
+}
+
+// ── MODAL ──
+function openModal(id){
+  const p = PRODUCTS.find(x=>x.id===id);
+  if(!p) return;
+  document.getElementById('modal-c').innerHTML = `
+    <button class="m-close" onclick="closeModal()">✕</button>
+    <div class="m-img"><span>${p.icon}</span></div>
+    <div class="m-body">
+      <div class="m-cat">${p.catName}</div>
+      <div class="m-name">${p.name}</div>
+      <div class="m-price">฿${p.price.toLocaleString()}</div>
+      <div class="m-actions">
+        <button class="m-line" onclick="inquire('${p.name.replace(/'/g,"\\'")}',${p.price},'line')">💬 LINE OA</button>
+        <button class="m-wa" onclick="inquire('${p.name.replace(/'/g,"\\'")}',${p.price},'wa')">📱 WhatsApp</button>
       </div>
     </div>`;
   document.getElementById('modal').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
-
-function closeModal() {
+function closeModal(){
   document.getElementById('modal').classList.remove('open');
   document.body.style.overflow = '';
 }
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
 
-function inquire(name, ch='line') {
-  const msg = encodeURIComponent(`สวัสดีครับ สนใจสินค้า: ${name} ขอสอบถามราคาและรายละเอียดเพิ่มเติมครับ`);
-  const urls = {
-    line: `https://line.me/R/ti/p/@971yzyyd`,
-    wa:   `https://wa.me/qr/QXD7536TVAPHG1`,
-  };
+function inquire(name, price, ch='line'){
+  const urls = { line:'https://line.me/R/ti/p/@971yzyyd', wa:'https://wa.me/qr/QXD7536TVAPHG1' };
   window.open(urls[ch]||urls.line, '_blank');
 }
 
-document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
-
-// ── INIT ─────────────────────────────────────────────────
-renderCats();
-filterProducts();
+// ── INIT ──
+renderGroups();
+render();
 </script>
 </body>
 </html>
