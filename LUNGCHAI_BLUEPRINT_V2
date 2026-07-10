@@ -1,0 +1,374 @@
+Blueprint Version 2.0 โดยให้เว็บไซต์เป็นทั้ง Corporate Website และ Web Application ในอนาคต
+
+LUNGCHAI CHAIYO ALL — WEB SYSTEM BLUEPRINT V2.0
+
+1. Corporate Website
+
+/
+├── Home
+├── About
+├── Business
+├── Products
+├── Services
+├── Portfolio
+├── Blog
+├── Knowledge Center
+├── Promotions
+├── Careers
+├── Contact
+└── Customer Portal
+
+
+---
+
+2. Business Units
+
+LUNGCHAI CHAIYO ALL
+
+├── Network Farm IT Solution
+├── LUNGCHAI FOR FACTORIES
+├── ลุงชัย บริการ
+├── ลุงชัย รักษ์โลก
+├── ลุงชัย ของฝาก
+├── ลุงชัย ไชโย Fashion
+└── LUNGCHAI MARKET
+
+
+---
+
+3. Core Platform
+
+ทุก Business ใช้ระบบเดียวกัน
+
+CRM
+ERP
+HR
+Inventory
+Accounting
+Asset
+Project
+Sales
+Purchase
+Document
+AI Assistant
+Notification
+
+
+---
+
+4. Service Platform (ใหม่)
+
+Service Request
+
+Ticket
+
+Helpdesk
+
+Remote Support
+
+Onsite Service
+
+Field Service
+
+Work Order
+
+Job Assignment
+
+Technician App
+
+Customer Feedback
+
+Knowledge Base
+
+SLA
+
+
+---
+
+5. Maintenance Platform (ใหม่)
+
+Preventive Maintenance (PM)
+
+Corrective Maintenance (CM)
+
+Breakdown Maintenance (BM)
+
+Maintenance Schedule
+
+Checklist
+
+Inspection
+
+Maintenance Report
+
+Photo Before/After
+
+QR Code
+
+Equipment History
+
+Warranty
+
+Maintenance Contract (MA)
+
+
+---
+
+6. Asset Management
+
+Asset Register
+
+Computer
+
+Notebook
+
+Printer
+
+Server
+
+NAS
+
+Switch
+
+Router
+
+Firewall
+
+CCTV
+
+Electrical Equipment
+
+Industrial Equipment
+
+QR Asset Tracking
+
+
+---
+
+7. Customer Portal
+
+Login
+
+Service Status
+
+PM Schedule
+
+Download Documents
+
+Quotation
+
+Invoice
+
+Warranty
+
+Equipment List
+
+Service History
+
+Support Ticket
+
+Chat
+
+
+---
+
+8. Admin Portal
+
+Dashboard
+
+CRM
+
+Sales
+
+Products
+
+Projects
+
+Service
+
+Maintenance
+
+Inventory
+
+Purchasing
+
+Accounting
+
+HR
+
+Reports
+
+AI Dashboard
+
+System Settings
+
+
+---
+
+9. Marketplace
+
+Shopee
+
+Lazada
+
+TikTok Shop
+
+Facebook Shop
+
+LINE Shopping
+
+Affiliate
+
+
+---
+
+10. AI Platform
+
+AI ฝ่ายขาย
+
+AI การตลาด
+
+AI Content Creator
+
+AI Customer Service
+
+AI Helpdesk
+
+AI Technician
+
+AI Analytics
+
+AI ERP Assistant
+
+
+---
+
+11. Mobile Apps
+
+Customer App
+
+Technician App
+
+Engineer App
+
+Sales App
+
+Manager App
+
+Vendor App
+
+
+---
+
+12. Technology Stack
+
+Frontend
+
+Next.js
+
+React
+
+Tailwind CSS
+
+
+Backend
+
+Node.js
+
+Express
+
+REST API
+
+JWT Authentication
+
+
+Database
+
+TiDB Cloud
+
+MySQL Compatible
+
+
+Storage
+
+Cloudflare R2
+
+GitHub
+
+
+Deployment
+
+GitHub Pages (Landing Page)
+
+Render (API)
+
+Cloudflare CDN
+
+
+
+---
+
+13. Roadmap
+
+Phase 1
+
+Corporate Website
+
+Landing Page
+
+SEO
+
+Product Catalog
+
+Contact
+
+
+Phase 2
+
+CRM
+
+Product Management
+
+Customer Portal
+
+Service Request
+
+
+Phase 3
+
+Service Management
+
+Maintenance Management
+
+Asset Management
+
+PM System
+
+
+Phase 4
+
+ERP
+
+HR
+
+Inventory
+
+Purchasing
+
+Accounting
+
+
+Phase 5
+
+Marketplace
+
+AI Platform
+
+Mobile Apps
+
+Business Intelligence
+
+
+เป้าหมายของ Version 2.0
+
+Version 2.0 เปลี่ยนจาก "เว็บไซต์แนะนำธุรกิจ" เป็น แพลตฟอร์มบริหารธุรกิจครบวงจร (Business Operating System) ที่รองรับทุกแบรนด์ภายใต้ LUNGCHAI CHAIYO ALL โดยใช้ฐานข้อมูลกลาง ลูกค้ากลาง และระบบกลางร่วมกัน ทำให้สามารถขยายธุรกิจในอนาคตโดยไม่ต้องสร้างระบบใหม่ซ้ำอีก.
