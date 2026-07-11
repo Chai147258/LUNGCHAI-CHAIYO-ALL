@@ -1,5 +1,77 @@
 alert("repair.js ทำงานแล้ว");
 
+console.log("repair.js ทำงานแล้ว");
+
+const serviceId = localStorage.getItem("selected_service");
+
+console.log("service_id =", serviceId);
+
+
+document
+.getElementById("repairForm")
+.addEventListener("submit", async(e)=>{
+
+e.preventDefault();
+
+console.log("กดส่งฟอร์มแล้ว");
+
+
+const name =
+document.getElementById("customer_name").value;
+
+const phone =
+document.getElementById("customer_phone").value;
+
+
+console.log({
+    name,
+    phone,
+    serviceId
+});
+
+
+const {data,error}=await supabaseClient
+.from("service_requests")
+.insert({
+
+service_id: serviceId,
+
+request_number:"REQ-"+Date.now(),
+
+customer_name:name,
+
+customer_phone:phone,
+
+is_express:
+document.getElementById("express").checked,
+
+status:"pending",
+
+note:
+document.getElementById("note").value,
+
+channel:"website"
+
+})
+.select();
+
+
+console.log("result",data,error);
+
+
+if(error){
+
+alert(error.message);
+
+return;
+
+}
+
+
+alert("ส่งสำเร็จ");
+
+});
+
 console.log("repair.js loaded");
 
 const serviceId =
