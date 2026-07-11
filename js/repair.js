@@ -29,7 +29,7 @@ document
     .insert([
         {
             service_id: Number(serviceId),
-            request_number: "REQ-" + Date.now(),
+            request_number: "WEB-" + Date.now(),
             customer_name: name,
             customer_phone: phone,
             is_express: express,
