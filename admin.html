@@ -1,122 +1,509 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
+
 <meta charset="UTF-8">
-<title>Admin Panel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Lungchai Chaiyo All - Admin</title>
+
 <style>
-body{font-family:sans-serif;background:#111;color:#fff;padding:20px}
-input,select,button{padding:8px;margin:5px;width:100%}
-button{background:#8b0000;color:#fff;border:none}
-.menu{background:#222;padding:10px;margin:10px 0}
-.hidden{display:none}
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#111827;
+    color:white;
+}
+
+header{
+    background:#8b0000;
+    padding:20px;
+}
+
+.container{
+    padding:20px;
+}
+
+.card{
+
+background:#1f2937;
+padding:20px;
+border-radius:12px;
+margin-bottom:20px;
+
+}
+
+
+.grid{
+
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:15px;
+
+}
+
+
+input,select,button{
+
+width:100%;
+padding:10px;
+margin:5px 0;
+
+}
+
+
+button{
+
+background:#8b0000;
+color:white;
+border:0;
+cursor:pointer;
+
+}
+
+
+table{
+
+width:100%;
+background:white;
+color:black;
+border-collapse:collapse;
+
+}
+
+
+td,th{
+
+padding:10px;
+border-bottom:1px solid #ddd;
+
+}
+
+
+.hidden{
+
+display:none;
+
+}
+
 </style>
+
 </head>
+
 
 <body>
 
-<!-- 🔐 LOGIN -->
-<div id="login">
-  <h2>🔐 Admin Login</h2>
-  <input type="password" id="pass" placeholder="ใส่รหัสผ่าน">
-  <button onclick="login()">เข้าสู่ระบบ</button>
-  <p id="msg"></p>
+
+<header>
+
+<h1>
+🛠 Lungchai Chaiyo All
+</h1>
+
+<p>
+Admin Panel V2
+</p>
+
+</header>
+
+
+
+<div class="container">
+
+
+<!-- LOGIN -->
+
+<div id="loginBox" class="card">
+
+<h2>
+🔐 Admin Login
+</h2>
+
+
+<input 
+id="email"
+placeholder="Email">
+
+
+<input 
+id="password"
+type="password"
+placeholder="Password">
+
+
+<button onclick="login()">
+เข้าสู่ระบบ
+</button>
+
+
+<p id="loginMsg"></p>
+
 </div>
 
-<!-- 🛠 ADMIN -->
-<div id="admin" class="hidden">
-  <h2>🛠 จัดการเมนู</h2>
 
-  <input id="name" placeholder="ชื่อเมนู">
-  <input id="price" placeholder="ราคา">
-  <input id="image" placeholder="path รูป เช่น images/a.jpg">
 
-  <select id="category">
-    <option value="food">อาหาร</option>
-    <option value="drink">เครื่องดื่ม</option>
-    <option value="fruit">ผลไม้</option>
-  </select>
 
-  <button onclick="addMenu()">➕ บันทึกเมนู</button>
+<!-- ADMIN -->
 
-  <div id="list"></div>
+<div id="adminBox" class="hidden">
+
+
+
+<div class="grid">
+
+
+<div class="card">
+
+<h3>
+งานใหม่
+</h3>
+
+<h1 id="pending">
+0
+</h1>
+
 </div>
 
-<script>
-const ADMIN_PASSWORD = "1234";
 
-let menus = JSON.parse(localStorage.getItem("menus") || "[]");
-let editIndex = -1;
+<div class="card">
 
-function login(){
-  if(pass.value === ADMIN_PASSWORD){
-    loginBox.style.display="none";
-    admin.classList.remove("hidden");
-  }else{
-    msg.innerText = "❌ รหัสไม่ถูกต้อง";
-  }
-}
+<h3>
+กำลังทำ
+</h3>
 
-function addMenu(){
-  const m = {
-    name:name.value,
-    price:price.value,
-    image:image.value,
-    category:category.value
-  };
+<h1 id="working">
+0
+</h1>
 
-  if(editIndex==-1) menus.push(m);
-  else menus[editIndex]=m;
+</div>
 
-  localStorage.setItem("menus",JSON.stringify(menus));
-  clear();
-  render();
-}
 
-function render(){
-  list.innerHTML="";
-  menus.forEach((m,i)=>{
-    list.innerHTML+=`
-    <div class="menu">
-      <b>${m.name}</b> ${m.price} บาท<br>
-      <small>${m.category}</small><br>
-      <button onclick="edit(${i})">✏️ แก้ไข</button>
-      <button onclick="del(${i})">🗑 ลบ</button>
-    </div>`;
-  });
-}
+<div class="card">
 
-function edit(i){
-  const m=menus[i];
-  name.value=m.name;
-  price.value=m.price;
-  image.value=m.image;
-  category.value=m.category;
-  editIndex=i;
-}
+<h3>
+เสร็จแล้ว
+</h3>
 
-function del(i){
-  if(confirm("ลบเมนูนี้?")){
-    menus.splice(i,1);
-    localStorage.setItem("menus",JSON.stringify(menus));
-    render();
-  }
-}
+<h1 id="complete">
+0
+</h1>
 
-function clear(){
-  name.value="";
-  price.value="";
-  image.value="";
-  editIndex=-1;
-}
+</div>
 
-const loginBox=document.getElementById("login");
-const admin=document.getElementById("admin");
-const list=document.getElementById("list");
 
-render();
-</script>
+</div>
+
+
+
+
+<div class="card">
+
+
+<h2>
+📋 งานแจ้งซ่อมล่าสุด
+</h2>
+
+
+<table>
+
+
+<thead>
+
+<tr>
+
+<th>
+เลขงาน
+</th>
+
+<th>
+ลูกค้า
+</th>
+
+<th>
+โทร
+</th>
+
+<th>
+สถานะ
+</th>
+
+
+</tr>
+
+</thead>
+
+
+<tbody id="jobs">
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+
+
+
+<div class="card">
+
+
+<h2>
+📦 เพิ่มสินค้า
+</h2>
+
+
+<input id="productName"
+placeholder="ชื่อสินค้า">
+
+
+<input id="price"
+placeholder="ราคา">
+
+
+<input id="image"
+placeholder="รูป">
+
+
+<select id="category">
+
+<option value="1">
+Computer
+</option>
+
+<option value="2">
+Network
+</option>
+
+<option value="3">
+CCTV
+</option>
+
+</select>
+
+
+
+<button onclick="addProduct()">
+
+เพิ่มสินค้า
+
+</button>
+
+
+<p id="productMsg"></p>
+
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script src="../js/supabase.js"></script>
 
+
+
+<script>
+
+
+async function login(){
+
+
+const email=
+document.getElementById("email").value;
+
+
+const password=
+document.getElementById("password").value;
+
+
+
+const {data,error}=
+
+await supabaseClient.auth.signInWithPassword({
+
+email,
+password
+
+});
+
+
+
+if(error){
+
+loginMsg.innerText=error.message;
+
+return;
+
+}
+
+
+
+loginBox.style.display="none";
+
+adminBox.classList.remove("hidden");
+
+
+loadDashboard();
+
+
+}
+
+
+
+
+async function loadDashboard(){
+
+
+
+const {data,error}=
+
+await supabaseClient
+
+.from("service_requests")
+
+.select("*")
+
+.order("id",{ascending:false})
+
+.limit(20);
+
+
+
+if(error){
+
+console.log(error);
+
+return;
+
+}
+
+
+
+let pending=0;
+let working=0;
+let complete=0;
+
+
+
+jobs.innerHTML="";
+
+
+
+data.forEach(j=>{
+
+
+if(j.status=="pending")
+pending++;
+
+
+if(j.status=="in_progress")
+working++;
+
+
+if(j.status=="completed")
+complete++;
+
+
+
+jobs.innerHTML += `
+
+<tr>
+
+<td>${j.request_number}</td>
+
+<td>${j.customer_name}</td>
+
+<td>${j.customer_phone}</td>
+
+<td>${j.status}</td>
+
+</tr>
+
+`;
+
+});
+
+
+
+document.getElementById("pending").innerHTML=pending;
+
+document.getElementById("working").innerHTML=working;
+
+document.getElementById("complete").innerHTML=complete;
+
+
+}
+
+
+
+
+
+async function addProduct(){
+
+
+
+const {error}=
+
+await supabaseClient
+
+.from("products")
+
+.insert([
+
+{
+
+product_name:
+productName.value,
+
+
+sell_price:
+Number(price.value),
+
+
+image_url:
+image.value,
+
+
+category_id:
+Number(category.value)
+
+}
+
+]);
+
+
+
+if(error){
+
+productMsg.innerHTML=error.message;
+
+return;
+
+}
+
+
+productMsg.innerHTML="เพิ่มสินค้าแล้ว";
+
+
+}
+
+
+
+</script>
+
+
 </body>
+
 </html>
