@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Jobs Management</title>
+
+<link rel="stylesheet" href="css/admin.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="../js/supabase.js"></script>
+
+</head>
+
+<body>
+
+<div class="sidebar">
+
+<div class="logo">
+
+<h2>LUNGCHAI</h2>
+
+<small>Admin</small>
+
+</div>
+
+<ul class="menu">
+
+<li><a href="index.html">📊 Dashboard</a></li>
+
+<li><a class="active">🔧 งานซ่อม</a></li>
+
+<li><a href="technicians.html">👨‍🔧 ช่าง</a></li>
+
+<li><a href="products.html">📦 สินค้า</a></li>
+
+<li><a href="customers.html">👥 ลูกค้า</a></li>
+
+<li><a href="reports.html">📈 รายงาน</a></li>
+
+</ul>
+
+</div>
+
+<div class="content">
+
+<h1>จัดการงานซ่อม</h1>
+
+<br>
+
+<input
+
+id="search"
+
+placeholder="ค้นหาชื่อลูกค้า / เบอร์โทร / เลขงาน">
+
+<br><br>
+
+<select id="statusFilter">
+
+<option value="">ทุกสถานะ</option>
+
+<option value="pending">pending</option>
+
+<option value="confirmed">confirmed</option>
+
+<option value="in_progress">in_progress</option>
+
+<option value="completed">completed</option>
+
+<option value="cancelled">cancelled</option>
+
+</select>
+
+<br><br>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>เลขงาน</th>
+
+<th>ลูกค้า</th>
+
+<th>โทร</th>
+
+<th>สถานะ</th>
+
+<th>วันที่</th>
+
+<th>จัดการ</th>
+
+</tr>
+
+</thead>
+
+<tbody id="jobList">
+
+</tbody>
+
+</table>
+
+</div>
+
+<script src="js/jobs.js"></script>
+
+</body>
+
+</html>
