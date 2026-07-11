@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LUNGCHAI CHAIYO ALL | Admin Dashboard</title>
+
+<link rel="stylesheet" href="css/admin.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/supabase.js"></script>
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <div class="logo">
+        <h2>LUNGCHAI</h2>
+        <small>Admin Panel</small>
+    </div>
+
+    <ul class="menu">
+
+        <li>
+            <a href="index.html" class="active">
+                📊 Dashboard
+            </a>
+        </li>
+
+        <li>
+            <a href="jobs.html">
+                🔧 งานซ่อม
+            </a>
+        </li>
+
+        <li>
+            <a href="technicians.html">
+                👨‍🔧 ช่าง
+            </a>
+        </li>
+
+        <li>
+            <a href="products.html">
+                📦 สินค้า
+            </a>
+        </li>
+
+        <li>
+            <a href="customers.html">
+                👥 ลูกค้า
+            </a>
+        </li>
+
+        <li>
+            <a href="reports.html">
+                📈 รายงาน
+            </a>
+        </li>
+
+        <li>
+            <a href="settings.html">
+                ⚙ ตั้งค่า
+            </a>
+        </li>
+
+        <li>
+            <button id="logoutBtn">
+                🚪 Logout
+            </button>
+        </li>
+
+    </ul>
+
+</div>
+
+
+<div class="content">
+
+<header>
+
+<h1>Dashboard</h1>
+
+<p id="adminName">
+กำลังโหลด...
+</p>
+
+</header>
+
+
+<section class="cards">
+
+<div class="card">
+<h3>งานใหม่</h3>
+<div id="pendingCount">0</div>
+</div>
+
+<div class="card">
+<h3>กำลังดำเนินการ</h3>
+<div id="workingCount">0</div>
+</div>
+
+<div class="card">
+<h3>งานเสร็จ</h3>
+<div id="completedCount">0</div>
+</div>
+
+<div class="card">
+<h3>ลูกค้า</h3>
+<div id="customerCount">0</div>
+</div>
+
+</section>
+
+
+<section class="table-box">
+
+<h2>รายการแจ้งซ่อมล่าสุด</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>เลขงาน</th>
+
+<th>ลูกค้า</th>
+
+<th>โทร</th>
+
+<th>สถานะ</th>
+
+<th>วันที่</th>
+
+</tr>
+
+</thead>
+
+<tbody id="jobsTable">
+
+<tr>
+
+<td colspan="5">
+
+กำลังโหลด...
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</section>
+
+
+</div>
+
+<script src="js/dashboard.js"></script>
+
+</body>
+</html>
