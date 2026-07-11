@@ -1470,5 +1470,17 @@ document.querySelectorAll('.reveal').forEach((el,i)=>{
   io.observe(el);
 });
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const supabaseUrl = "https://hkwqrllqzfzsbsxqgaoo.supabase.co";
+
+const supabaseKey = "ใส่ Anon Key ของคุณตรงนี้";
+
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+console.log("Supabase Connected");
+</script>
 </body>
 </html>
