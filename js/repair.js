@@ -1,3 +1,5 @@
+alert("repair.js ทำงานแล้ว");
+
 console.log("repair.js loaded");
 
 const serviceId =
