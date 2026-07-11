@@ -1,3 +1,5 @@
+console.log("repair.js loaded");
+
 const serviceId =
 localStorage.getItem("selected_service");
 
