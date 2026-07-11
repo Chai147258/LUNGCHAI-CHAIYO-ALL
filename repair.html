@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>แจ้งซ่อม | ลุงชัย ไชโย ออล</title>
+
+</head>
+
+<body>
+
+<h1>แจ้งซ่อมออนไลน์</h1>
+
+<form id="repairForm">
+
+<label>ชื่อ</label>
+<input id="customer_name" required>
+
+<br>
+
+<label>เบอร์โทร</label>
+<input id="customer_phone" required>
+
+<br>
+
+<label>
+<input type="checkbox" id="express">
+บริการด่วน
+</label>
+
+<br>
+
+<label>รายละเอียดอาการเสีย</label>
+<textarea id="note"></textarea>
+
+<br>
+
+<button type="submit">
+ส่งแจ้งซ่อม
+</button>
+
+</form>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
+<script src="js/repair.js"></script>
+
+
+</body>
+
+</html>
