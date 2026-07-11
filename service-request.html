@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>แจ้งซ่อม IT | ลุงชัย ไชโย</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f5f7fa;
+padding:20px;
+}
+
+.box{
+max-width:500px;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:10px;
+}
+
+input,textarea,select{
+
+width:100%;
+padding:10px;
+margin:8px 0;
+
+}
+
+button{
+
+background:#0066ff;
+color:white;
+border:0;
+padding:12px;
+width:100%;
+border-radius:5px;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="box">
+
+<h2>
+🔧 แจ้งซ่อม IT
+</h2>
+
+
+<input id="name"
+placeholder="ชื่อผู้แจ้ง">
+
+
+<input id="phone"
+placeholder="เบอร์โทร">
+
+
+<select id="device">
+
+<option>
+Computer
+</option>
+
+<option>
+Notebook
+</option>
+
+<option>
+Printer
+</option>
+
+<option>
+Network
+</option>
+
+<option>
+CCTV
+</option>
+
+</select>
+
+
+
+<textarea
+id="problem"
+placeholder="อาการเสีย">
+</textarea>
+
+
+<button onclick="sendRequest()">
+
+ส่งแจ้งซ่อม
+
+</button>
+
+
+</div>
+
+
+
+<script type="module"
+src="service-request.js">
+</script>
+
+
+</body>
+
+</html>
