@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Admin Service Management</title>
+
+<link rel="stylesheet" href="admin.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h2>🔧 Service Management</h2>
+
+<button onclick="logout()">
+ออกจากระบบ
+</button>
+
+</header>
+
+
+
+<div class="layout">
+
+
+<aside>
+
+<ul>
+
+<li onclick="location.href='admin.html'">
+Dashboard
+</li>
+
+<li>
+🔧 แจ้งซ่อม IT
+</li>
+
+<li>
+📦 สินค้า
+</li>
+
+<li>
+👥 ลูกค้า
+</li>
+
+</ul>
+
+</aside>
+
+
+
+<main>
+
+
+<h1>
+รายการแจ้งซ่อม
+</h1>
+
+
+
+<table>
+
+
+<thead>
+
+<tr>
+
+<th>เลขที่งาน</th>
+<th>ลูกค้า</th>
+<th>อุปกรณ์</th>
+<th>อาการ</th>
+<th>สถานะ</th>
+<th>จัดการ</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="serviceList">
+
+</tbody>
+
+
+</table>
+
+
+</main>
+
+
+</div>
+
+
+<script type="module" src="service.js"></script>
+
+
+</body>
+
+</html>
