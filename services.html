@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="บริการซ่อมทั้งหมด ลุงชัย ไชโย ออล — 160+ รายการ ครอบคลุมเสื้อผ้า คอมพิวเตอร์ เครือข่าย บ้าน ไฟฟ้า ยานพาหนะ">
+<title>บริการซ่อมทั้งหมด | ลุงชัย ไชโย ออล</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&family=Chakra+Petch:wght@300;400;600;700&family=Space+Mono:wght@400;700&family=Playfair+Display:wght@900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#C9A84C;--gold-hi:#FFE566;--gold-dim:#6B5018;
+  --void:#02020C;--deep:#04041A;--card:#0A0A2E;
+  --steel:#8888BB;--cream:#E0DCF0;--white:#fff;
+  --ft:'Sarabun',sans-serif;--fc:'Chakra Petch',sans-serif;--fm:'Space Mono',monospace;--fd:'Playfair Display',serif;
+  --t:0.28s cubic-bezier(.4,0,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--ft);background:var(--void);color:var(--cream);overflow-x:hidden;min-height:100vh}
+a{color:inherit;text-decoration:none}
+#bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(2,2,12,.96);backdrop-filter:blur(16px);border-bottom:1px solid rgba(201,168,76,.12);padding:.8rem 0}
+.nav-inner{max-width:1300px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.nav-brand{display:flex;align-items:center;gap:.6rem}
+.nav-logo{width:36px;height:36px;border-radius:50%;border:2px solid var(--gold);object-fit:cover;box-shadow:0 0 10px rgba(201,168,76,.4)}
+.nav-name{font-family:var(--fc);font-size:.85rem;font-weight:700;color:var(--gold);letter-spacing:.04em;line-height:1.1}
+.nav-name span{display:block;font-size:.6rem;font-weight:300;color:var(--steel);letter-spacing:.1em}
+.nav-links{display:flex;align-items:center;gap:1.3rem}
+.nav-links a{font-family:var(--fc);font-size:.75rem;font-weight:600;letter-spacing:.05em;color:var(--steel);transition:color var(--t)}
+.nav-links a:hover,.nav-links a.active{color:var(--gold)}
+.nav-cta{background:linear-gradient(135deg,var(--gold),var(--gold-hi));color:var(--void)!important;padding:.42rem 1rem;border-radius:20px;font-weight:700!important;box-shadow:0 0 12px rgba(201,168,76,.4)}
+
+.ph{padding:6.5rem 0 2.5rem;position:relative;z-index:1;text-align:center;border-bottom:1px solid rgba(201,168,76,.08)}
+.ph::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 80% at 50% 50%,rgba(50,25,150,.2) 0%,transparent 70%);pointer-events:none}
+.ph-lbl{font-family:var(--fm);font-size:.65rem;letter-spacing:.22em;color:var(--gold);margin-bottom:.6rem;display:flex;align-items:center;justify-content:center;gap:.6rem}
+.ph-lbl::before,.ph-lbl::after{content:'';display:block;width:22px;height:1px;background:var(--gold)}
+.ph-h1{font-family:var(--fd);font-size:clamp(1.6rem,4vw,2.6rem);font-weight:900;color:var(--white);margin-bottom:.4rem}
+.ph-h1 span{color:var(--gold)}
+.ph-desc{color:var(--steel);font-size:.9rem}
+.ph-count{font-family:var(--fm);font-size:.7rem;color:var(--gold);margin-top:.5rem;letter-spacing:.05em}
+
+.wrap{display:grid;grid-template-columns:250px 1fr;gap:2rem;max-width:1300px;margin:0 auto;padding:2.5rem 1.5rem;position:relative;z-index:1}
+
+.side{position:sticky;top:5.5rem;height:fit-content;max-height:calc(100vh - 6rem);overflow-y:auto}
+.side::-webkit-scrollbar{width:4px}
+.side::-webkit-scrollbar-thumb{background:rgba(201,168,76,.3);border-radius:2px}
+.side-sec{margin-bottom:1.5rem}
+.side-t{font-family:var(--fm);font-size:.62rem;letter-spacing:.16em;color:var(--gold);margin-bottom:.75rem;padding-bottom:.4rem;border-bottom:1px solid rgba(201,168,76,.15)}
+.grp-btn{background:none;border:1px solid transparent;width:100%;text-align:left;padding:.6rem .8rem;border-radius:6px;font-family:var(--ft);font-size:.84rem;color:var(--steel);cursor:pointer;transition:all var(--t);display:flex;align-items:center;gap:.5rem;margin-bottom:.25rem}
+.grp-btn:hover{color:var(--cream);background:rgba(201,168,76,.06)}
+.grp-btn.active{color:var(--gold);background:rgba(201,168,76,.1);border-color:rgba(201,168,76,.25);font-weight:600}
+.grp-count{margin-left:auto;font-family:var(--fm);font-size:.58rem;background:rgba(201,168,76,.15);color:var(--gold);padding:.1rem .4rem;border-radius:10px}
+
+.search-row{display:flex;gap:.7rem;margin-bottom:1.25rem;flex-wrap:wrap}
+.search-in{flex:1;min-width:200px;background:var(--card);border:1px solid rgba(201,168,76,.2);border-radius:8px;padding:.7rem 1rem;color:var(--cream);font-family:var(--ft);font-size:.9rem;outline:none;transition:border-color var(--t)}
+.search-in:focus{border-color:var(--gold)}
+.search-in::placeholder{color:var(--steel)}
+.sort-sel{background:var(--card);border:1px solid rgba(201,168,76,.2);border-radius:8px;padding:.7rem .9rem;color:var(--cream);font-family:var(--fc);font-size:.76rem;cursor:pointer}
+.sort-sel option{background:var(--deep)}
+.res-info{font-family:var(--fm);font-size:.66rem;color:var(--steel);letter-spacing:.05em;margin-bottom:1.1rem}
+
+/* Toggle express/normal */
+.mode-toggle{display:flex;gap:.4rem;margin-bottom:1.1rem;background:var(--card);padding:.3rem;border-radius:8px;border:1px solid rgba(201,168,76,.15);width:fit-content}
+.mode-btn{padding:.5rem 1.1rem;border-radius:6px;font-family:var(--fc);font-size:.75rem;font-weight:700;letter-spacing:.04em;background:none;border:none;color:var(--steel);cursor:pointer;transition:all var(--t)}
+.mode-btn.active{background:var(--gold);color:var(--void)}
+.mode-btn.active.express{background:#E74C3C;color:#fff}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1.1rem}
+.card{background:var(--card);border:1px solid rgba(201,168,76,.1);border-radius:12px;overflow:hidden;transition:all var(--t);position:relative;cursor:pointer;padding:1.1rem}
+.card:hover{border-color:rgba(201,168,76,.4);transform:translateY(-4px);box-shadow:0 10px 32px rgba(0,0,0,.45),0 0 20px rgba(201,168,76,.08)}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transition:transform var(--t);transform-origin:left}
+.card:hover::before{transform:scaleX(1)}
+.c-top{display:flex;align-items:center;gap:.7rem;margin-bottom:.7rem}
+.c-icon{font-size:1.7rem;width:44px;height:44px;border-radius:10px;background:var(--deep);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.c-cat{font-family:var(--fm);font-size:.56rem;letter-spacing:.05em;color:var(--gold-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c-name{font-family:var(--fc);font-size:.88rem;font-weight:700;color:var(--white);line-height:1.35;min-height:2.4em}
+.c-prices{display:flex;justify-content:space-between;align-items:flex-end;margin:.75rem 0;padding-top:.6rem;border-top:1px solid rgba(255,255,255,.05)}
+.c-price-box{display:flex;flex-direction:column}
+.c-price-lbl{font-family:var(--fm);font-size:.55rem;color:var(--steel);letter-spacing:.05em;margin-bottom:.15rem}
+.c-price-val{font-family:var(--fc);font-size:1.05rem;font-weight:700;color:var(--gold)}
+.c-price-val.express{color:#FF6B5B}
+.c-dur{font-size:.62rem;color:var(--steel);margin-top:.1rem}
+.c-btn{width:100%;background:var(--gold);color:var(--void);border:none;border-radius:6px;padding:.55rem;font-family:var(--fc);font-size:.72rem;font-weight:700;letter-spacing:.03em;cursor:pointer;transition:all var(--t)}
+.c-btn:hover{background:var(--gold-hi);transform:translateY(-1px)}
+
+.empty{grid-column:1/-1;text-align:center;padding:3.5rem 1rem;color:var(--steel)}
+.empty-icon{font-size:2.8rem;margin-bottom:.85rem;opacity:.4}
+.empty-txt{font-family:var(--fc);font-size:.85rem;letter-spacing:.04em}
+.loading{grid-column:1/-1;text-align:center;padding:3.5rem 1rem;color:var(--gold);font-family:var(--fm);font-size:.8rem}
+
+.pager{display:flex;justify-content:center;gap:.4rem;margin-top:2.2rem;flex-wrap:wrap}
+.pg-btn{min-width:36px;height:36px;padding:0 .5rem;background:var(--card);border:1px solid rgba(201,168,76,.15);border-radius:6px;color:var(--steel);font-family:var(--fm);font-size:.75rem;cursor:pointer;transition:all var(--t);display:flex;align-items:center;justify-content:center}
+.pg-btn:hover{border-color:var(--gold);color:var(--gold)}
+.pg-btn.active{background:var(--gold);color:var(--void);border-color:var(--gold);font-weight:700}
+.pg-btn:disabled{opacity:.3;cursor:not-allowed}
+
+.modal-ov{position:fixed;inset:0;background:rgba(2,2,12,.85);backdrop-filter:blur(8px);z-index:200;display:none;align-items:center;justify-content:center;padding:1rem}
+.modal-ov.open{display:flex}
+.modal{background:var(--card);border:1px solid rgba(201,168,76,.2);border-radius:16px;width:100%;max-width:440px;position:relative}
+.modal::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.m-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--steel);font-size:1.4rem;cursor:pointer;z-index:1}
+.m-close:hover{color:var(--gold)}
+.m-body{padding:1.8rem}
+.m-icon{font-size:3rem;text-align:center;margin-bottom:1rem}
+.m-cat{font-family:var(--fm);font-size:.62rem;letter-spacing:.1em;color:var(--gold);margin-bottom:.4rem;text-align:center}
+.m-name{font-family:var(--fc);font-size:1.15rem;font-weight:700;color:var(--white);margin-bottom:1.25rem;line-height:1.3;text-align:center}
+.m-price-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1.5rem}
+.m-price-card{background:var(--deep);border-radius:10px;padding:1rem;text-align:center;border:1px solid rgba(201,168,76,.15)}
+.m-price-card.express{border-color:rgba(231,76,60,.3)}
+.m-price-card-lbl{font-family:var(--fm);font-size:.62rem;color:var(--steel);letter-spacing:.06em;margin-bottom:.4rem}
+.m-price-card-val{font-family:var(--fc);font-size:1.3rem;font-weight:700;color:var(--gold)}
+.m-price-card.express .m-price-card-val{color:#FF6B5B}
+.m-price-card-dur{font-size:.68rem;color:var(--steel);margin-top:.3rem}
+.m-actions{display:flex;gap:.7rem}
+.m-line{flex:1;background:rgba(0,185,10,.15);color:#00B90A;border:1px solid rgba(0,185,10,.35);border-radius:6px;padding:.75rem;font-family:var(--fc);font-size:.78rem;font-weight:700;cursor:pointer;transition:all var(--t)}
+.m-line:hover{background:#00B90A;color:var(--void)}
+.m-wa{flex:1;background:rgba(37,211,102,.15);color:#25D366;border:1px solid rgba(37,211,102,.35);border-radius:6px;padding:.75rem;font-family:var(--fc);font-size:.78rem;font-weight:700;cursor:pointer;transition:all var(--t)}
+.m-wa:hover{background:#25D366;color:var(--void)}
+
+@media(max-width:900px){.wrap{grid-template-columns:1fr}.side{position:static;max-height:none}}
+@media(max-width:600px){.grid{grid-template-columns:1fr}.search-row{flex-direction:column}.m-price-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <img src="https://raw.githubusercontent.com/Chai147258/LUNGCHAI-CHAIYO-ALL/main/images/logo-all.jpg" alt="Logo" class="nav-logo" onerror="this.style.display='none'">
+      <div class="nav-name">ลุงชัย ไชโย ออล <span>REPAIR SERVICES</span></div>
+    </div>
+    <div class="nav-links">
+      <a href="/">หน้าหลัก</a>
+      <a href="/catalog.html">สินค้า</a>
+      <a href="/services.html" class="active">บริการซ่อม</a>
+      <a href="/member.html">สมาชิก</a>
+      <a href="/inquiry.html" class="nav-cta">💬 สอบถาม</a>
+    </div>
+  </div>
+</nav>
+
+<div class="ph">
+  <p class="ph-lbl">REPAIR SERVICES</p>
+  <h1 class="ph-h1">บริการซ่อม<span>ทั้งหมด</span></h1>
+  <p class="ph-desc">ครอบคลุมทุกงานซ่อม — เสื้อผ้า คอมพิวเตอร์ เครือข่าย บ้าน ไฟฟ้า ยานพาหนะ และอื่นๆ</p>
+  <p class="ph-count" id="ph-count">กำลังโหลดข้อมูล...</p>
+</div>
+
+<div class="wrap">
+  <aside class="side">
+    <div class="side-sec">
+      <div class="side-t">หมวดหมู่บริการ</div>
+      <div id="grp-list"><div style="color:var(--steel);font-size:.8rem;padding:.5rem">กำลังโหลด...</div></div>
+    </div>
+    <div class="side-sec">
+      <div class="side-t">ติดต่อด่วน</div>
+      <div style="display:flex;flex-direction:column;gap:.5rem">
+        <a href="https://line.me/R/ti/p/@971yzyyd" target="_blank" style="display:flex;align-items:center;gap:.6rem;padding:.6rem .8rem;background:rgba(0,185,10,.08);border:1px solid rgba(0,185,10,.2);border-radius:6px;font-size:.8rem;color:#00B90A">💬 LINE OA</a>
+        <a href="https://wa.me/qr/QXD7536TVAPHG1" target="_blank" style="display:flex;align-items:center;gap:.6rem;padding:.6rem .8rem;background:rgba(37,211,102,.08);border:1px solid rgba(37,211,102,.2);border-radius:6px;font-size:.8rem;color:#25D366">📱 WhatsApp</a>
+      </div>
+    </div>
+  </aside>
+
+  <div>
+    <div class="mode-toggle">
+      <button class="mode-btn active" id="mode-normal" onclick="setMode('normal')">🕐 ราคาปกติ (1-3 วัน)</button>
+      <button class="mode-btn" id="mode-express" onclick="setMode('express')">⚡ ด่วนพิเศษ (24 ชม.)</button>
+    </div>
+    <div class="search-row">
+      <input type="text" class="search-in" id="q" placeholder="🔍 ค้นหาบริการซ่อม..." oninput="render()">
+      <select class="sort-sel" id="sort" onchange="render()">
+        <option value="default">เรียงตาม: ค่าเริ่มต้น</option>
+        <option value="name-asc">ชื่อ A-Z</option>
+        <option value="price-asc">ราคา ต่ำ→สูง</option>
+        <option value="price-desc">ราคา สูง→ต่ำ</option>
+      </select>
+    </div>
+    <div class="res-info" id="res-info"></div>
+    <div class="grid" id="grid"><div class="loading">⏳ กำลังโหลดบริการจากฐานข้อมูล...</div></div>
+    <div class="pager" id="pager"></div>
+  </div>
+</div>
+
+<div class="modal-ov" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal-c"></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+// SUPABASE CONFIG
+// ═══════════════════════════════════════
+const SB_URL = 'https://hkwqrllqzfzsbsxqgaoo.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhrd3FybGxxemZ6c2JzeHFnYW9vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzNzIzNjAsImV4cCI6MjA5Njk0ODM2MH0.kPT_UY0-2-0cbDlGwya24DnOLJXA-XJGMdM6SIm7Rew';
+
+async function sbFetch(path){
+  const res = await fetch(`${SB_URL}/rest/v1/${path}`, {
+    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
+  });
+  if(!res.ok) throw new Error('Supabase fetch failed: '+res.status);
+  return res.json();
+}
+
+// ═══════════════════════════════════════
+// CANVAS
+// ═══════════════════════════════════════
+(function(){
+  const c=document.getElementById('bg'),ctx=c.getContext('2d');
+  let W,H,stars=[];
+  function r(){W=c.width=innerWidth;H=c.height=innerHeight;stars=[];
+    for(let i=0;i<250;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+.2,a:Math.random(),da:(Math.random()-.5)*.005,gold:Math.random()>.8});}
+  function d(){ctx.clearRect(0,0,W,H);
+    [[.15,.25,'40,25,180',.16],[.8,.6,'90,15,160',.12],[.5,.5,'0,70,200',.08]].forEach(([cx,cy,col,a])=>{
+      const g=ctx.createRadialGradient(cx*W,cy*H,0,cx*W,cy*H,Math.max(W,H)*.4);
+      g.addColorStop(0,`rgba(${col},${a})`);g.addColorStop(1,`rgba(${col},0)`);
+      ctx.beginPath();ctx.arc(cx*W,cy*H,Math.max(W,H)*.4,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();});
+    stars.forEach(s=>{s.a+=s.da;if(s.a<=0||s.a>=1)s.da*=-1;
+      ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=s.gold?`rgba(201,168,76,${s.a*.75})`:`rgba(200,210,255,${s.a*.55})`;ctx.fill();});
+    requestAnimationFrame(d);}
+  addEventListener('resize',r);r();d();
+})();
+
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+let CATEGORIES = [];
+let SERVICES = [];
+let activeCat = 'all';
+let mode = 'normal'; // normal | express
+let currentPage = 1;
+const PER_PAGE = 24;
+
+function setMode(m){
+  mode = m;
+  document.getElementById('mode-normal').classList.toggle('active', m==='normal');
+  document.getElementById('mode-express').classList.toggle('active', m==='express');
+  document.getElementById('mode-express').classList.toggle('express', m==='express');
+  render();
+}
+
+// ═══════════════════════════════════════
+// LOAD DATA FROM SUPABASE
+// ═══════════════════════════════════════
+async function loadData(){
+  try{
+    const [cats, svcs] = await Promise.all([
+      sbFetch('service_categories?select=*&order=sort_order.asc'),
+      sbFetch('services?select=*,service_categories(name,icon)&is_active=eq.true&order=id.asc')
+    ]);
+    CATEGORIES = cats;
+    SERVICES = svcs.map(s => ({
+      id: s.id,
+      catId: s.category_id,
+      catName: s.service_categories?.name || '',
+      icon: s.icon || '🔧',
+      name: s.name,
+      normal: parseFloat(s.normal_price),
+      express: parseFloat(s.express_price),
+      durNormal: s.duration_normal || '1-3 วัน',
+      durExpress: s.duration_express || '24 ชม.'
+    }));
+    document.getElementById('ph-count').textContent = `รวม ${SERVICES.length} รายการบริการ จาก ${CATEGORIES.length} หมวดหมู่`;
+    renderGroups();
+    render();
+  }catch(err){
+    console.error(err);
+    document.getElementById('grid').innerHTML = `<div class="empty"><div class="empty-icon">⚠️</div><div class="empty-txt">โหลดข้อมูลไม่สำเร็จ กรุณาลองใหม่</div></div>`;
+    document.getElementById('ph-count').textContent = 'เกิดข้อผิดพลาดในการโหลดข้อมูล';
+  }
+}
+
+// ═══════════════════════════════════════
+// RENDER SIDEBAR
+// ═══════════════════════════════════════
+function renderGroups(){
+  const list = document.getElementById('grp-list');
+  let html = `<button class="grp-btn ${activeCat==='all'?'active':''}" onclick="setCat('all')">
+    🏠 ทั้งหมด <span class="grp-count">${SERVICES.length}</span>
+  </button>`;
+  CATEGORIES.forEach(c => {
+    const count = SERVICES.filter(s => s.catId === c.id).length;
+    html += `<button class="grp-btn ${activeCat===c.id?'active':''}" onclick="setCat(${c.id})">
+      ${c.icon} ${c.name} <span class="grp-count">${count}</span>
+    </button>`;
+  });
+  list.innerHTML = html;
+}
+
+function setCat(id){
+  activeCat = id;
+  currentPage = 1;
+  renderGroups();
+  render();
+}
+
+// ═══════════════════════════════════════
+// FILTER + SORT + PAGINATE
+// ═══════════════════════════════════════
+function render(){
+  const q = document.getElementById('q').value.toLowerCase().trim();
+  const sort = document.getElementById('sort').value;
+  const priceKey = mode === 'express' ? 'express' : 'normal';
+
+  let list = SERVICES.filter(s => {
+    const mCat = activeCat==='all' || s.catId===activeCat;
+    const mQ = !q || s.name.toLowerCase().includes(q) || s.catName.toLowerCase().includes(q);
+    return mCat && mQ;
+  });
+
+  if(sort==='name-asc')   list.sort((a,b)=>a.name.localeCompare(b.name,'th'));
+  if(sort==='price-asc')  list.sort((a,b)=>a[priceKey]-b[priceKey]);
+  if(sort==='price-desc') list.sort((a,b)=>b[priceKey]-a[priceKey]);
+
+  document.getElementById('res-info').textContent = `พบ ${list.length} รายการ${q?' สำหรับ "'+q+'"':''}`;
+
+  const totalPages = Math.max(1, Math.ceil(list.length / PER_PAGE));
+  if(currentPage > totalPages) currentPage = totalPages;
+  const start = (currentPage-1)*PER_PAGE;
+  const pageItems = list.slice(start, start+PER_PAGE);
+
+  const grid = document.getElementById('grid');
+  if(!pageItems.length){
+    grid.innerHTML = `<div class="empty"><div class="empty-icon">🔍</div><div class="empty-txt">ไม่พบบริการที่ค้นหา</div></div>`;
+  } else {
+    grid.innerHTML = pageItems.map(s => `
+      <div class="card" onclick="openModal(${s.id})">
+        <div class="c-top">
+          <div class="c-icon">${s.icon}</div>
+          <div style="flex:1;min-width:0">
+            <div class="c-cat">${s.catName}</div>
+          </div>
+        </div>
+        <div class="c-name">${s.name}</div>
+        <div class="c-prices">
+          <div class="c-price-box">
+            <div class="c-price-lbl">${mode==='express'?'⚡ ด่วน':'🕐 ปกติ'}</div>
+            <div class="c-price-val ${mode==='express'?'express':''}">฿${s[priceKey].toLocaleString()}</div>
+            <div class="c-dur">${mode==='express'?s.durExpress:s.durNormal}</div>
+          </div>
+        </div>
+        <button class="c-btn" onclick="event.stopPropagation();inquireService(${s.id})">📋 ขอใช้บริการ</button>
+      </div>`).join('');
+  }
+
+  renderPager(totalPages);
+}
+
+function renderPager(totalPages){
+  const pager = document.getElementById('pager');
+  if(totalPages<=1){ pager.innerHTML=''; return; }
+  let html = `<button class="pg-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}>‹</button>`;
+  const maxShow = 7;
+  let pages = [];
+  if(totalPages <= maxShow){
+    pages = Array.from({length:totalPages},(_,i)=>i+1);
+  } else {
+    pages = [1];
+    let s = Math.max(2, currentPage-1), e = Math.min(totalPages-1, currentPage+1);
+    if(s>2) pages.push('...');
+    for(let i=s;i<=e;i++) pages.push(i);
+    if(e<totalPages-1) pages.push('...');
+    pages.push(totalPages);
+  }
+  pages.forEach(p=>{
+    if(p==='...') html += `<span style="color:var(--steel);padding:0 .3rem">…</span>`;
+    else html += `<button class="pg-btn ${p===currentPage?'active':''}" onclick="goPage(${p})">${p}</button>`;
+  });
+  html += `<button class="pg-btn" onclick="goPage(${currentPage+1})" ${currentPage===totalPages?'disabled':''}>›</button>`;
+  pager.innerHTML = html;
+}
+
+function goPage(p){
+  currentPage = p;
+  render();
+  window.scrollTo({top: document.querySelector('.wrap').offsetTop - 80, behavior:'smooth'});
+}
+
+// ═══════════════════════════════════════
+// MODAL
+// ═══════════════════════════════════════
+function openModal(id){
+  const s = SERVICES.find(x=>x.id===id);
+  if(!s) return;
+  document.getElementById('modal-c').innerHTML = `
+    <button class="m-close" onclick="closeModal()">✕</button>
+    <div class="m-body">
+      <div class="m-icon">${s.icon}</div>
+      <div class="m-cat">${s.catName}</div>
+      <div class="m-name">${s.name}</div>
+      <div class="m-price-grid">
+        <div class="m-price-card">
+          <div class="m-price-card-lbl">🕐 ราคาปกติ</div>
+          <div class="m-price-card-val">฿${s.normal.toLocaleString()}</div>
+          <div class="m-price-card-dur">${s.durNormal}</div>
+        </div>
+        <div class="m-price-card express">
+          <div class="m-price-card-lbl">⚡ ด่วนพิเศษ</div>
+          <div class="m-price-card-val">฿${s.express.toLocaleString()}</div>
+          <div class="m-price-card-dur">${s.durExpress}</div>
+        </div>
+      </div>
+      <div class="m-actions">
+        <button class="m-line" onclick="inquireService(${s.id},'line')">💬 LINE OA</button>
+        <button class="m-wa" onclick="inquireService(${s.id},'wa')">📱 WhatsApp</button>
+      </div>
+    </div>`;
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+
+function inquireService(id, ch='line'){
+  const s = SERVICES.find(x=>x.id===id);
+  const urls = { line:'https://line.me/R/ti/p/@971yzyyd', wa:'https://wa.me/qr/QXD7536TVAPHG1' };
+  window.open(urls[ch]||urls.line, '_blank');
+}
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+loadData();
+</script>
+</body>
+</html>
