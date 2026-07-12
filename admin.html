@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin Dashboard | ลุงชัย ไชโย ออล</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&family=Chakra+Petch:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --gold:#C9A84C;--gold-hi:#FFE566;--gold-dim:#6B5018;
+  --void:#02020C;--deep:#04041A;--card:#0A0A2E;--soft:#0E0E38;
+  --steel:#8888BB;--cream:#E0DCF0;--white:#fff;
+  --green:#2ECC71;--red:#E74C3C;--blue:#4A90D9;--orange:#E8A838;
+  --ft:'Sarabun',sans-serif;--fc:'Chakra Petch',sans-serif;--fm:'Space Mono',monospace;
+  --t:0.2s cubic-bezier(.4,0,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--ft);background:var(--void);color:var(--cream);min-height:100vh;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-thumb{background:rgba(201,168,76,.3);border-radius:3px}
+
+/* ═══ LOGIN SCREEN ═══ */
+#login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1.5rem;position:relative}
+#login-screen::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 40%,rgba(60,30,180,.25) 0%,transparent 70%);pointer-events:none}
+.login-card{background:var(--card);border:1px solid rgba(201,168,76,.2);border-radius:16px;padding:2.5rem;width:100%;max-width:400px;position:relative;z-index:1}
+.login-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);border-radius:16px 16px 0 0}
+.login-logo{width:64px;height:64px;border-radius:50%;border:2px solid var(--gold);object-fit:cover;display:block;margin:0 auto 1rem;box-shadow:0 0 20px rgba(201,168,76,.4)}
+.login-title{font-family:var(--fc);font-size:1.1rem;font-weight:700;color:var(--gold);text-align:center;letter-spacing:.05em;margin-bottom:.3rem}
+.login-sub{font-family:var(--fm);font-size:.65rem;color:var(--steel);text-align:center;letter-spacing:.15em;margin-bottom:2rem}
+.login-group{margin-bottom:1.1rem}
+.login-group label{display:block;font-family:var(--fc);font-size:.72rem;font-weight:600;color:var(--steel);letter-spacing:.06em;margin-bottom:.4rem}
+.login-group input{width:100%;background:var(--deep);border:1px solid rgba(201,168,76,.2);border-radius:6px;padding:.75rem 1rem;color:var(--cream);font-size:.9rem;outline:none;transition:border-color var(--t)}
+.login-group input:focus{border-color:var(--gold)}
+.login-btn{width:100%;background:var(--gold);color:var(--void);border:none;border-radius:8px;padding:.85rem;font-family:var(--fc);font-weight:700;font-size:.85rem;letter-spacing:.06em;margin-top:.5rem;transition:all var(--t)}
+.login-btn:hover{background:var(--gold-hi);transform:translateY(-1px)}
+.login-btn:disabled{opacity:.5;cursor:not-allowed}
+.login-msg{padding:.7rem 1rem;border-radius:6px;font-size:.82rem;margin-bottom:1rem;display:none}
+.login-msg.show{display:block}
+.login-msg.err{background:rgba(231,76,60,.12);border:1px solid rgba(231,76,60,.3);color:#E74C3C}
+
+/* ═══ ADMIN SHELL ═══ */
+#admin-shell{display:none;min-height:100vh}
+#admin-shell.active{display:flex}
+
+/* Sidebar */
+.sidebar{width:240px;flex-shrink:0;background:var(--card);border-right:1px solid rgba(201,168,76,.1);display:flex;flex-direction:column;position:fixed;top:0;bottom:0;left:0;z-index:50;transition:transform var(--t)}
+.sb-brand{display:flex;align-items:center;gap:.7rem;padding:1.25rem 1.1rem;border-bottom:1px solid rgba(201,168,76,.1)}
+.sb-logo{width:38px;height:38px;border-radius:50%;border:2px solid var(--gold);object-fit:cover}
+.sb-brand-txt{font-family:var(--fc);font-size:.8rem;font-weight:700;color:var(--gold);line-height:1.2}
+.sb-brand-txt span{display:block;font-size:.6rem;font-weight:300;color:var(--steel);letter-spacing:.1em}
+.sb-nav{flex:1;overflow-y:auto;padding:1rem .75rem}
+.sb-section-lbl{font-family:var(--fm);font-size:.6rem;letter-spacing:.14em;color:var(--gold-dim);padding:.6rem .6rem .4rem;text-transform:uppercase}
+.sb-link{display:flex;align-items:center;gap:.65rem;padding:.65rem .75rem;border-radius:8px;color:var(--steel);font-size:.85rem;font-weight:500;margin-bottom:.15rem;transition:all var(--t);border:1px solid transparent;background:none;width:100%;text-align:left}
+.sb-link:hover{background:rgba(201,168,76,.06);color:var(--cream)}
+.sb-link.active{background:rgba(201,168,76,.12);color:var(--gold);border-color:rgba(201,168,76,.25);font-weight:700}
+.sb-link .ico{font-size:1.05rem;width:20px;text-align:center}
+.sb-badge{margin-left:auto;background:var(--red);color:#fff;font-family:var(--fm);font-size:.6rem;padding:.1rem .4rem;border-radius:8px;font-weight:700}
+.sb-footer{padding:1rem;border-top:1px solid rgba(201,168,76,.1)}
+.sb-user{display:flex;align-items:center;gap:.6rem;margin-bottom:.75rem}
+.sb-user-av{width:34px;height:34px;border-radius:50%;background:var(--gold);color:var(--void);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;flex-shrink:0}
+.sb-user-name{font-size:.78rem;font-weight:600;color:var(--cream);line-height:1.3}
+.sb-user-role{font-family:var(--fm);font-size:.6rem;color:var(--gold);letter-spacing:.05em}
+.sb-logout{width:100%;padding:.55rem;background:none;border:1px solid rgba(231,76,60,.3);border-radius:6px;color:#E74C3C;font-size:.78rem;font-weight:600;transition:all var(--t)}
+.sb-logout:hover{background:rgba(231,76,60,.1)}
+
+/* Main area */
+.main{flex:1;margin-left:240px;min-height:100vh;display:flex;flex-direction:column}
+.topbar{position:sticky;top:0;z-index:40;background:rgba(2,2,12,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(201,168,76,.1);padding:.9rem 1.75rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.tb-title{font-family:var(--fc);font-size:1.05rem;font-weight:700;color:var(--white)}
+.tb-title span{color:var(--gold)}
+.hamburger-sb{display:none;background:none;border:none;color:var(--gold);font-size:1.3rem}
+.tb-actions{display:flex;align-items:center;gap:.75rem}
+.tb-search{background:var(--card);border:1px solid rgba(201,168,76,.15);border-radius:8px;padding:.5rem 1rem;color:var(--cream);font-size:.82rem;width:220px;outline:none;transition:border-color var(--t)}
+.tb-search:focus{border-color:var(--gold)}
+
+.content{flex:1;padding:1.75rem}
+.page{display:none}
+.page.active{display:block}
+
+/* ═══ STATS CARDS ═══ */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:1.75rem}
+.stat-card{background:var(--card);border:1px solid rgba(201,168,76,.1);border-radius:12px;padding:1.3rem;position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);opacity:.6}
+.stat-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem}
+.stat-icon{font-size:1.4rem;width:42px;height:42px;background:rgba(201,168,76,.1);border-radius:10px;display:flex;align-items:center;justify-content:center}
+.stat-trend{font-family:var(--fm);font-size:.65rem;padding:.15rem .5rem;border-radius:10px}
+.trend-up{background:rgba(46,204,113,.15);color:#2ECC71}
+.trend-down{background:rgba(231,76,60,.15);color:#E74C3C}
+.stat-val{font-family:var(--fc);font-size:1.7rem;font-weight:700;color:var(--white);line-height:1}
+.stat-lbl{font-size:.78rem;color:var(--steel);margin-top:.3rem}
+
+/* ═══ CARD / PANEL ═══ */
+.panel{background:var(--card);border:1px solid rgba(201,168,76,.1);border-radius:12px;padding:1.5rem;margin-bottom:1.5rem}
+.panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:.75rem}
+.panel-title{font-family:var(--fc);font-size:1rem;font-weight:700;color:var(--white)}
+.panel-sub{font-size:.78rem;color:var(--steel);margin-top:.2rem}
+
+/* ═══ BUTTONS ═══ */
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.55rem 1.1rem;border-radius:6px;font-family:var(--fc);font-size:.78rem;font-weight:700;letter-spacing:.03em;border:none;transition:all var(--t)}
+.btn-gold{background:var(--gold);color:var(--void)}
+.btn-gold:hover{background:var(--gold-hi);transform:translateY(-1px)}
+.btn-outline{background:none;border:1px solid rgba(201,168,76,.3);color:var(--gold)}
+.btn-outline:hover{background:rgba(201,168,76,.08)}
+.btn-red{background:rgba(231,76,60,.12);color:#E74C3C;border:1px solid rgba(231,76,60,.3)}
+.btn-red:hover{background:#E74C3C;color:#fff}
+.btn-sm{padding:.35rem .75rem;font-size:.7rem}
+.btn-icon-only{padding:.4rem;width:32px;height:32px;justify-content:center}
+
+/* ═══ TABLE ═══ */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.85rem}
+thead th{text-align:left;padding:.7rem .9rem;font-family:var(--fc);font-size:.68rem;letter-spacing:.06em;color:var(--gold);text-transform:uppercase;border-bottom:2px solid rgba(201,168,76,.15);white-space:nowrap}
+tbody td{padding:.7rem .9rem;border-bottom:1px solid rgba(255,255,255,.05);color:var(--cream)}
+tbody tr{transition:background var(--t)}
+tbody tr:hover{background:rgba(201,168,76,.04)}
+.cell-muted{color:var(--steel);font-size:.78rem}
+.cell-num{font-family:var(--fm)}
+
+/* Badges */
+.badge{display:inline-flex;align-items:center;gap:.3rem;padding:.2rem .6rem;border-radius:10px;font-size:.68rem;font-weight:700;font-family:var(--fc);letter-spacing:.03em}
+.badge-active{background:rgba(46,204,113,.15);color:#2ECC71}
+.badge-inactive{background:rgba(136,136,187,.15);color:#8888BB}
+.badge-pending{background:rgba(232,168,56,.15);color:#E8A838}
+.badge-done{background:rgba(46,204,113,.15);color:#2ECC71}
+.badge-cancel{background:rgba(231,76,60,.15);color:#E74C3C}
+.badge-admin{background:rgba(201,168,76,.15);color:var(--gold)}
+
+/* ═══ FORM ═══ */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-group{margin-bottom:1rem}
+.form-group.full{grid-column:1/-1}
+.form-group label{display:block;font-family:var(--fc);font-size:.72rem;font-weight:600;color:var(--steel);letter-spacing:.05em;margin-bottom:.4rem}
+.form-group input,.form-group select,.form-group textarea{width:100%;background:var(--deep);border:1px solid rgba(201,168,76,.18);border-radius:6px;padding:.65rem .85rem;color:var(--cream);font-family:var(--ft);font-size:.85rem;outline:none;transition:border-color var(--t)}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--gold)}
+.form-group select option{background:var(--deep)}
+.form-group textarea{resize:vertical;min-height:80px}
+
+/* ═══ MODAL ═══ */
+.modal-ov{position:fixed;inset:0;background:rgba(2,2,12,.8);backdrop-filter:blur(6px);z-index:200;display:none;align-items:center;justify-content:center;padding:1rem}
+.modal-ov.open{display:flex}
+.modal{background:var(--card);border:1px solid rgba(201,168,76,.2);border-radius:14px;width:100%;max-width:560px;max-height:88vh;overflow-y:auto;position:relative}
+.modal::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid rgba(201,168,76,.1)}
+.modal-title{font-family:var(--fc);font-weight:700;color:var(--white)}
+.modal-close{background:none;border:none;color:var(--steel);font-size:1.3rem}
+.modal-close:hover{color:var(--gold)}
+.modal-body{padding:1.5rem}
+.modal-foot{padding:1.1rem 1.5rem;border-top:1px solid rgba(201,168,76,.1);display:flex;justify-content:flex-end;gap:.6rem}
+
+/* Toast */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;z-index:300;background:var(--card);border:1px solid rgba(201,168,76,.3);border-radius:10px;padding:.9rem 1.2rem;font-size:.85rem;box-shadow:0 8px 32px rgba(0,0,0,.5);display:flex;align-items:center;gap:.6rem;transform:translateX(400px);transition:transform .3s ease}
+.toast.show{transform:translateX(0)}
+.toast.ok{border-color:rgba(46,204,113,.4)}
+.toast.err{border-color:rgba(231,76,60,.4)}
+
+/* Empty/loading */
+.loading-row,.empty-row{text-align:center;padding:2.5rem 1rem;color:var(--steel);font-family:var(--fm);font-size:.8rem}
+
+/* Pagination small */
+.pg-mini{display:flex;justify-content:flex-end;gap:.4rem;margin-top:1rem}
+.pg-mini button{min-width:32px;height:32px;background:var(--deep);border:1px solid rgba(201,168,76,.15);border-radius:5px;color:var(--steel);font-family:var(--fm);font-size:.72rem}
+.pg-mini button.active{background:var(--gold);color:var(--void);border-color:var(--gold)}
+.pg-mini button:disabled{opacity:.3}
+
+/* Charts bar (simple) */
+.bar-row{display:flex;align-items:center;gap:.75rem;margin-bottom:.65rem}
+.bar-lbl{width:150px;font-size:.78rem;color:var(--cream);flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-track{flex:1;height:8px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--gold-dim),var(--gold));border-radius:4px}
+.bar-val{width:50px;text-align:right;font-family:var(--fm);font-size:.72rem;color:var(--gold);flex-shrink:0}
+
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .hamburger-sb{display:block}
+  .tb-search{width:140px}
+  .form-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════
+     LOGIN SCREEN
+═══════════════════════════════════ -->
+<div id="login-screen">
+  <div class="login-card">
+    <img src="https://raw.githubusercontent.com/Chai147258/LUNGCHAI-CHAIYO-ALL/main/images/logo-all.jpg" class="login-logo" alt="Logo" onerror="this.style.display='none'">
+    <div class="login-title">ลุงชัย ไชโย ออล</div>
+    <div class="login-sub">ADMIN DASHBOARD</div>
+    <div class="login-msg err" id="login-err"></div>
+    <div class="login-group">
+      <label>Email</label>
+      <input type="email" id="login-email" placeholder="admin@lungchaichaiyo.shop" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div class="login-group">
+      <label>รหัสผ่าน</label>
+      <input type="password" id="login-pass" placeholder="รหัสผ่านของคุณ" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="login-btn" id="login-btn" onclick="doLogin()">🔐 เข้าสู่ระบบ</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     ADMIN SHELL
+═══════════════════════════════════ -->
+<div id="admin-shell">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-brand">
+      <img src="https://raw.githubusercontent.com/Chai147258/LUNGCHAI-CHAIYO-ALL/main/images/logo-all.jpg" class="sb-logo" alt="Logo" onerror="this.style.display='none'">
+      <div class="sb-brand-txt">ลุงชัย ไชโย ออล<span>ADMIN PANEL</span></div>
+    </div>
+    <nav class="sb-nav">
+      <div class="sb-section-lbl">ภาพรวม</div>
+      <button class="sb-link active" data-page="dashboard" onclick="goPage('dashboard')"><span class="ico">📊</span> Dashboard</button>
+
+      <div class="sb-section-lbl">สินค้า & บริการ</div>
+      <button class="sb-link" data-page="products" onclick="goPage('products')"><span class="ico">📦</span> สินค้า</button>
+      <button class="sb-link" data-page="categories" onclick="goPage('categories')"><span class="ico">🗂️</span> หมวดหมู่สินค้า</button>
+      <button class="sb-link" data-page="services" onclick="goPage('services')"><span class="ico">🔧</span> บริการซ่อม</button>
+
+      <div class="sb-section-lbl">คำสั่งซื้อ & คำขอ</div>
+      <button class="sb-link" data-page="orders" onclick="goPage('orders')"><span class="ico">🛒</span> ออเดอร์</button>
+      <button class="sb-link" data-page="service_requests" onclick="goPage('service_requests')"><span class="ico">📋</span> คำขอใช้บริการ <span class="sb-badge" id="badge-sr" style="display:none">0</span></button>
+      <button class="sb-link" data-page="contacts" onclick="goPage('contacts')"><span class="ico">💬</span> ข้อความติดต่อ <span class="sb-badge" id="badge-contact" style="display:none">0</span></button>
+
+      <div class="sb-section-lbl">สมาชิก & องค์กร</div>
+      <button class="sb-link" data-page="members" onclick="goPage('members')"><span class="ico">👥</span> สมาชิก</button>
+      <button class="sb-link" data-page="businesses" onclick="goPage('businesses')"><span class="ico">🏢</span> แบรนด์ในเครือ</button>
+      <button class="sb-link" data-page="technicians" onclick="goPage('technicians')"><span class="ico">👨‍🔧</span> ช่างเทคนิค</button>
+
+      <div class="sb-section-lbl">ระบบ</div>
+      <button class="sb-link" data-page="logs" onclick="goPage('logs')"><span class="ico">📜</span> Activity Logs</button>
+    </nav>
+    <div class="sb-footer">
+      <div class="sb-user">
+        <div class="sb-user-av" id="sb-user-av">A</div>
+        <div>
+          <div class="sb-user-name" id="sb-user-name">Admin</div>
+          <div class="sb-user-role" id="sb-user-role">ADMIN</div>
+        </div>
+      </div>
+      <button class="sb-logout" onclick="doLogout()">🚪 ออกจากระบบ</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:.75rem">
+        <button class="hamburger-sb" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+        <div class="tb-title" id="tb-title">📊 <span>Dashboard</span></div>
+      </div>
+      <div class="tb-actions">
+        <a href="/" target="_blank" class="btn btn-outline btn-sm">🌐 ดูเว็บไซต์</a>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ═══ PAGE: DASHBOARD ═══ -->
+      <div class="page active" id="page-dashboard">
+        <div class="stats-grid" id="dash-stats">
+          <div class="loading-row">⏳ กำลังโหลดสถิติ...</div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem" id="dash-grid-2col">
+          <div class="panel">
+            <div class="panel-head"><div class="panel-title">📦 สินค้าตามกลุ่มธุรกิจ</div></div>
+            <div id="dash-product-groups"><div class="loading-row">⏳ กำลังโหลด...</div></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><div class="panel-title">🔧 บริการตามหมวดหมู่</div></div>
+            <div id="dash-service-cats"><div class="loading-row">⏳ กำลังโหลด...</div></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title">📋 คำขอใช้บริการล่าสุด</div>
+            <button class="btn btn-outline btn-sm" onclick="goPage('service_requests')">ดูทั้งหมด →</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>เลขที่</th><th>ลูกค้า</th><th>บริการ</th><th>สถานะ</th><th>วันที่</th></tr></thead>
+              <tbody id="dash-recent-sr"><tr><td colspan="5" class="loading-row">⏳ กำลังโหลด...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ PAGE: PRODUCTS ═══ -->
+      <div class="page" id="page-products">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <div class="panel-title">📦 จัดการสินค้า</div>
+              <div class="panel-sub" id="products-count">กำลังโหลด...</div>
+            </div>
+            <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+              <input type="text" class="tb-search" id="products-search" placeholder="🔍 ค้นหาสินค้า..." oninput="renderProducts()" style="width:200px">
+              <select class="tb-search" id="products-filter-group" onchange="renderProducts()" style="width:160px">
+                <option value="">ทุกกลุ่ม</option>
+              </select>
+              <button class="btn btn-gold btn-sm" onclick="openProductModal()">+ เพิ่มสินค้า</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>ID</th><th>สินค้า</th><th>หมวดหมู่</th><th>ราคา</th><th>สถานะ</th><th>จัดการ</th></tr></thead>
+              <tbody id="products-tbody"><tr><td colspan="6" class="loading-row">⏳ กำลังโหลด...</td></tr></tbody>
+            </table>
+          </div>
+          <div class="pg-mini" id="products-pager"></div>
+        </div>
+      </div>
+
+      <!-- ═══ PAGE: CATEGORIES ═══ -->
+      <div class="page" id="page-categories">
+        <div class="panel">
+          <div class="panel-head">
+            <div><div class="panel-title">🗂️ หมวดหมู่สินค้า</div><div class="panel-sub" id="categories-count">กำลังโหลด...</div></div>
+            <button class="btn btn-gold btn-sm" onclick="openCategoryModal()">+ เพิ่มหมวดหมู่</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>ไอคอน</th><th>ชื่อหมวดหมู่</th><th>กลุ่มธุรกิจ</th><th>Slug</th><th>สินค้า</th><th>จัดการ</th></tr></thead>
+              <tbody id="categories-tbody"><tr><td colspan="6" class="loading-row">⏳ กำลังโหลด...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ PAGE: SERVICES ═══ -->
+      <div class="page" id="page-services">
+        <div class="panel">
+          <div class="panel-head">
+            <div><div class="panel-title">🔧 บริการซ่อม</div><div class="panel-sub" id="services-count">กำลังโหลด...</div></div>
+            <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+              <input type="text" class="tb-search" id="services-search" placeholder="🔍 ค้นหาบริการ..." oninput="renderServices()" style="width:200px">
+              <button class="btn btn-gold btn-sm" onclick="openServiceModal()">+ เพิ่มบริการ</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>ID</th><th>บริการ</th><th>หมวดหมู่</th><th>ราคาปกติ</th><th>ราคาด่วน</th><th>สถานะ</th><th>จัดการ</th></tr></thead>
+              <tbody id="services-tbody"><tr><td colspan="7" class="loading-row">⏳ กำลังโหลด...</td></tr></tbody>
+            </table>
+          </div>
+          <div class="pg-mini" id="services-pager"></div>
+        </div>
+      </div>
+
+      <!-- ═══ PAGE: ORDERS ═══ -->
+      <div class="page" id="page-orders">
+        <div class="panel">
+          <div class="panel-head"><div><div class="panel-title">🛒 ออเดอร์ทั้งหมด</div><div class="panel-sub" id="orders-count">กำลังโหลด...</div></div></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>ID</th><th>ลูกค้า</th><th>ยอดรวม</th><th>สถานะ</th><th>ที่อยู่จัดส่ง</th><th>วันที่</th></tr></thead>
+              <tbody id="orders-tbody"><tr><td colspan="6" class="loading-row">⏳ กำลังโหลด...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ PAGE: SERVICE REQUESTS ═══ -->
+      <div class="page" id="page-service_requests">
+        <div class="panel">
+          <div class="panel-head">
+            <div><div class="panel-title">📋 คำขอใช้บริการ</div><div class="panel-sub" id="sr-count">กำลังโหลด...</div></div>
+            <select class="tb-search" id="sr-filter-status" onchange="renderServiceRequests()" style="width:160px">
+              <option value="">ทุกสถานะ</option>
+              <option value="pending">รอดำเนินการ</option>
+              <option value="confirmed">ยืนยันแล้ว</option>
+              <option value="in_progress">กำลังดำเนินการ</option>
+              <option value="completed">เสร็จสิ้น</option>
+              <option value="cancelled">ยกเลิก</option>
+            </select>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>เลขที่</th><th>ลูกค้า</th><th>เบอร์โทร</th><th>บริการ</th><th>ประเภท</th><th>ราคา</th><th>สถานะ</th><th>วันที่</th><th>จัดการ</th></tr></thead>
+              <tbody id="sr-tbody"><tr><td colspan="9" class="loading-row">⏳ กำลังโหลด...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ PAGE: CONTACTS ═══ -->
+      <div class="page" id="page-contacts">
+        <div class="panel">
+          <div class="panel-head"><div><div class="panel-title">💬 ข้อความติดต่อ</div><div class="panel-sub" id="contacts-count">กำลังโหลด...</div></div></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>ชื่อ</th><th>เบอร์โทร</th><th>Email</th><th>ข้อความ</th><th>สถานะ</th><th>วันที่</th><th>จัดการ</th></tr></thead>
+              <tbody id="contacts-tbody"><tr><td colspan="7" class="loading-row">⏳ กำลังโหลด...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ PAGE: MEMBERS ═══ -->
+      <div class="page" id="page-members">
+        <div class="panel">
+          <div class="panel-head"><div><div class="panel-title">👥 สมาชิกทั้งหมด</div><div class="panel-sub" id="members-count">กำลังโหลด...</div></div></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>ชื่อ</th><th>เบอร์โทร</th><th>ประเภท</th><th>แต้มสะสม</th><th>สมัครเมื่อ</th></tr></thead>
+              <tbody id="members-tbody"><tr><td colspan="5" class="loading-row">⏳ กำลังโหลด...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ PAGE: BUSINESSES ═══ -->
+      <div class="page" id="page-businesses">
+        <div class="panel">
+          <div class="panel-head"><div><div class="panel-title">🏢 แบรนด์ในเครือ</div><div class="panel-sub" id="businesses-count">กำลังโหลด...</div></div></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>ไอคอน</th><th>ชื่อแบรนด์</th><th>หมวด</th><th>สถานะ</th></tr></thead>
+              <tbody id="businesses-tbody"><tr><td colspan="4" class="loading-row">⏳ กำลังโหลด...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ PAGE: TECHNICIANS ═══ -->
+      <div class="page" id="page-technicians">
+        <div class="panel">
+          <div class="panel-head"><div><div class="panel-title">👨‍🔧 ช่างเทคนิค</div><div class="panel-sub" id="tech-count">กำลังโหลด...</div></div></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>ชื่อ</th><th>เบอร์โทร</th><th>ความชำนาญ</th><th>สถานะ</th></tr></thead>
+              <tbody id="tech-tbody"><tr><td colspan="4" class="loading-row">⏳ กำลังโหลด...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ PAGE: LOGS ═══ -->
+      <div class="page" id="page-logs">
+        <div class="panel">
+          <div class="panel-head"><div><div class="panel-title">📜 Activity Logs</div><div class="panel-sub">ประวัติการดำเนินการของ Admin</div></div></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>วันที่</th><th>Action</th><th>ตาราง</th><th>รายละเอียด</th></tr></thead>
+              <tbody id="logs-tbody"><tr><td colspan="4" class="loading-row">⏳ กำลังโหลด...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PRODUCT MODAL
+═══════════════════════════════════ -->
+<div class="modal-ov" id="product-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title" id="product-modal-title">เพิ่มสินค้า</div>
+      <button class="modal-close" onclick="closeModal('product-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="pf-id">
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>ชื่อสินค้า *</label>
+          <input type="text" id="pf-name" placeholder="ชื่อสินค้า">
+        </div>
+        <div class="form-group">
+          <label>หมวดหมู่ *</label>
+          <select id="pf-category"></select>
+        </div>
+        <div class="form-group">
+          <label>ราคา (บาท) *</label>
+          <input type="number" id="pf-price" placeholder="0">
+        </div>
+        <div class="form-group">
+          <label>ไอคอน (Emoji)</label>
+          <input type="text" id="pf-icon" placeholder="📦" maxlength="4">
+        </div>
+        <div class="form-group">
+          <label>สถานะ</label>
+          <select id="pf-active">
+            <option value="true">เปิดใช้งาน</option>
+            <option value="false">ปิดใช้งาน</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeModal('product-modal')">ยกเลิก</button>
+      <button class="btn btn-gold" onclick="saveProduct()">💾 บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     CATEGORY MODAL
+═══════════════════════════════════ -->
+<div class="modal-ov" id="category-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title" id="category-modal-title">เพิ่มหมวดหมู่</div>
+      <button class="modal-close" onclick="closeModal('category-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="cf-id">
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>ชื่อหมวดหมู่ *</label>
+          <input type="text" id="cf-name" placeholder="ชื่อหมวดหมู่">
+        </div>
+        <div class="form-group">
+          <label>กลุ่มธุรกิจ *</label>
+          <select id="cf-group"></select>
+        </div>
+        <div class="form-group">
+          <label>ไอคอน</label>
+          <input type="text" id="cf-icon" placeholder="📦" maxlength="4">
+        </div>
+        <div class="form-group full">
+          <label>Slug (ภาษาอังกฤษ ไม่มีเว้นวรรค) *</label>
+          <input type="text" id="cf-slug" placeholder="my-category">
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeModal('category-modal')">ยกเลิก</button>
+      <button class="btn btn-gold" onclick="saveCategory()">💾 บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     SERVICE MODAL
+═══════════════════════════════════ -->
+<div class="modal-ov" id="service-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title" id="service-modal-title">เพิ่มบริการ</div>
+      <button class="modal-close" onclick="closeModal('service-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="sf-id">
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>ชื่อบริการ *</label>
+          <input type="text" id="sf-name" placeholder="ชื่อบริการ">
+        </div>
+        <div class="form-group">
+          <label>หมวดหมู่ *</label>
+          <select id="sf-category"></select>
+        </div>
+        <div class="form-group">
+          <label>ไอคอน</label>
+          <input type="text" id="sf-icon" placeholder="🔧" maxlength="4">
+        </div>
+        <div class="form-group">
+          <label>ราคาปกติ (บาท) *</label>
+          <input type="number" id="sf-normal" placeholder="0">
+        </div>
+        <div class="form-group">
+          <label>ราคาด่วน (บาท) *</label>
+          <input type="number" id="sf-express" placeholder="0">
+        </div>
+        <div class="form-group">
+          <label>ระยะเวลาปกติ</label>
+          <input type="text" id="sf-dur-normal" placeholder="1-3 วัน">
+        </div>
+        <div class="form-group">
+          <label>ระยะเวลาด่วน</label>
+          <input type="text" id="sf-dur-express" placeholder="24 ชม.">
+        </div>
+        <div class="form-group full">
+          <label>สถานะ</label>
+          <select id="sf-active">
+            <option value="true">เปิดใช้งาน</option>
+            <option value="false">ปิดใช้งาน</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeModal('service-modal')">ยกเลิก</button>
+      <button class="btn btn-gold" onclick="saveService()">💾 บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════
+// SUPABASE INIT
+// ═══════════════════════════════════════
+const SB_URL = 'https://hkwqrllqzfzsbsxqgaoo.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhrd3FybGxxemZ6c2JzeHFnYW9vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzNzIzNjAsImV4cCI6MjA5Njk0ODM2MH0.kPT_UY0-2-0cbDlGwya24DnOLJXA-XJGMdM6SIm7Rew';
+const { createClient } = supabase;
+const sb = createClient(SB_URL, SB_KEY);
+
+let currentProfile = null;
+
+// ═══════════════════════════════════════
+// TOAST HELPER
+// ═══════════════════════════════════════
+function toast(msg, type='ok'){
+  const t = document.getElementById('toast');
+  t.textContent = (type==='ok'?'✅ ':'⚠️ ') + msg;
+  t.className = 'toast show ' + type;
+  setTimeout(()=> t.classList.remove('show'), 3200);
+}
+
+// ═══════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════
+async function doLogin(){
+  const email = document.getElementById('login-email').value.trim();
+  const pass  = document.getElementById('login-pass').value;
+  const errEl = document.getElementById('login-err');
+  errEl.classList.remove('show');
+
+  if(!email || !pass){
+    errEl.textContent = '⚠️ กรุณากรอก Email และรหัสผ่าน';
+    errEl.classList.add('show');
+    return;
+  }
+
+  const btn = document.getElementById('login-btn');
+  btn.disabled = true; btn.textContent = '⏳ กำลังเข้าสู่ระบบ...';
+
+  const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+
+  if(error){
+    errEl.textContent = '⚠️ ' + (error.message.includes('Invalid') ? 'Email หรือรหัสผ่านไม่ถูกต้อง' : error.message);
+    errEl.classList.add('show');
+    btn.disabled = false; btn.textContent = '🔐 เข้าสู่ระบบ';
+    return;
+  }
+
+  // Check admin/staff role
+  const { data: profile, error: profErr } = await sb
+    .from('profiles')
+    .select('*')
+    .eq('id', data.user.id)
+    .single();
+
+  if(profErr || !profile || !['admin','staff'].includes(profile.member_type)){
+    errEl.textContent = '⛔ บัญชีนี้ไม่มีสิทธิ์เข้าใช้งาน Admin Panel';
+    errEl.classList.add('show');
+    await sb.auth.signOut();
+    btn.disabled = false; btn.textContent = '🔐 เข้าสู่ระบบ';
+    return;
+  }
+
+  currentProfile = profile;
+  showAdminShell();
+}
+
+async function doLogout(){
+  await sb.auth.signOut();
+  currentProfile = null;
+  document.getElementById('admin-shell').classList.remove('active');
+  document.getElementById('login-screen').style.display = 'flex';
+}
+
+async function checkSession(){
+  const { data: { session } } = await sb.auth.getSession();
+  if(!session) return;
+
+  const { data: profile } = await sb.from('profiles').select('*').eq('id', session.user.id).single();
+  if(profile && ['admin','staff'].includes(profile.member_type)){
+    currentProfile = profile;
+    showAdminShell();
+  }
+}
+
+function showAdminShell(){
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('admin-shell').classList.add('active');
+  document.getElementById('sb-user-name').textContent = currentProfile.full_name || 'Admin';
+  document.getElementById('sb-user-role').textContent = currentProfile.member_type.toUpperCase();
+  document.getElementById('sb-user-av').textContent = (currentProfile.full_name || 'A')[0].toUpperCase();
+  loadDashboard();
+}
+
+// ═══════════════════════════════════════
+// AUDIT LOG HELPER
+// ═══════════════════════════════════════
+async function logAction(action, table, recordId, detail){
+  try{
+    await sb.from('admin_logs').insert({
+      user_id: currentProfile.id,
+      action, table_name: table, record_id: String(recordId), detail
+    });
+  }catch(e){ console.warn('log failed', e); }
+}
+
+// ═══════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════
+const PAGE_TITLES = {
+  dashboard: '📊 Dashboard', products: '📦 สินค้า', categories: '🗂️ หมวดหมู่สินค้า',
+  services: '🔧 บริการซ่อม', orders: '🛒 ออเดอร์', service_requests: '📋 คำขอใช้บริการ',
+  contacts: '💬 ข้อความติดต่อ', members: '👥 สมาชิก', businesses: '🏢 แบรนด์ในเครือ',
+  technicians: '👨‍🔧 ช่างเทคนิค', logs: '📜 Activity Logs'
+};
+
+const loadedPages = new Set();
+
+function goPage(page){
+  document.querySelectorAll('.sb-link').forEach(l => l.classList.toggle('active', l.dataset.page===page));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.getElementById('tb-title').innerHTML = PAGE_TITLES[page].replace(' ', ' <span>') + '</span>';
+  document.getElementById('sidebar').classList.remove('open');
+
+  const loaders = {
+    products: loadProducts, categories: loadCategories, services: loadServices,
+    orders: loadOrders, service_requests: loadServiceRequests, contacts: loadContacts,
+    members: loadMembers, businesses: loadBusinesses, technicians: loadTechnicians, logs: loadLogs
+  };
+  if(loaders[page]) loaders[page]();
+}
+
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+function openModalEl(id){ document.getElementById(id).classList.add('open'); }
+
+// ═══════════════════════════════════════
+// DASHBOARD
+// ═══════════════════════════════════════
+async function loadDashboard(){
+  const [prodRes, svcRes, srRes, orderRes, memberRes, contactRes] = await Promise.all([
+    sb.from('products').select('id, categories(name, icon, product_groups(label))', { count: 'exact' }),
+    sb.from('services').select('id, service_categories(name)', { count: 'exact' }),
+    sb.from('service_requests').select('*', { count: 'exact' }).order('created_at', { ascending: false }).limit(6),
+    sb.from('orders').select('*', { count: 'exact' }),
+    sb.from('profiles').select('*', { count: 'exact' }),
+    sb.from('contacts').select('*', { count: 'exact' }).eq('status', 'new')
+  ]);
+
+  const pendingSR = (srRes.data || []).filter(r => r.status === 'pending').length;
+  const newContacts = contactRes.count || 0;
+
+  document.getElementById('badge-sr').style.display = pendingSR ? 'inline-block' : 'none';
+  document.getElementById('badge-sr').textContent = pendingSR;
+  document.getElementById('badge-contact').style.display = newContacts ? 'inline-block' : 'none';
+  document.getElementById('badge-contact').textContent = newContacts;
+
+  document.getElementById('dash-stats').innerHTML = `
+    <div class="stat-card"><div class="stat-top"><div class="stat-icon">📦</div></div><div class="stat-val">${prodRes.count||0}</div><div class="stat-lbl">สินค้าทั้งหมด</div></div>
+    <div class="stat-card"><div class="stat-top"><div class="stat-icon">🔧</div></div><div class="stat-val">${svcRes.count||0}</div><div class="stat-lbl">บริการซ่อม</div></div>
+    <div class="stat-card"><div class="stat-top"><div class="stat-icon">📋</div></div><div class="stat-val">${srRes.count||0}</div><div class="stat-lbl">คำขอใช้บริการ</div></div>
+    <div class="stat-card"><div class="stat-top"><div class="stat-icon">🛒</div></div><div class="stat-val">${orderRes.count||0}</div><div class="stat-lbl">ออเดอร์ทั้งหมด</div></div>
+    <div class="stat-card"><div class="stat-top"><div class="stat-icon">👥</div></div><div class="stat-val">${memberRes.count||0}</div><div class="stat-lbl">สมาชิกทั้งหมด</div></div>
+  `;
+
+  // Group breakdown for products
+  const groupCounts = {};
+  (prodRes.data||[]).forEach(p => {
+    const label = p.categories?.product_groups?.label || 'ไม่ระบุ';
+    groupCounts[label] = (groupCounts[label]||0)+1;
+  });
+  const maxG = Math.max(...Object.values(groupCounts), 1);
+  document.getElementById('dash-product-groups').innerHTML = Object.entries(groupCounts)
+    .sort((a,b)=>b[1]-a[1])
+    .map(([label,n]) => `<div class="bar-row"><div class="bar-lbl">${label}</div><div class="bar-track"><div class="bar-fill" style="width:${(n/maxG*100)}%"></div></div><div class="bar-val">${n}</div></div>`)
+    .join('') || '<div class="empty-row">ไม่มีข้อมูล</div>';
+
+  // Service category breakdown
+  const svcCounts = {};
+  (svcRes.data||[]).forEach(s => {
+    const name = s.service_categories?.name || 'ไม่ระบุ';
+    svcCounts[name] = (svcCounts[name]||0)+1;
+  });
+  const maxS = Math.max(...Object.values(svcCounts), 1);
+  document.getElementById('dash-service-cats').innerHTML = Object.entries(svcCounts)
+    .sort((a,b)=>b[1]-a[1])
+    .map(([label,n]) => `<div class="bar-row"><div class="bar-lbl">${label}</div><div class="bar-track"><div class="bar-fill" style="width:${(n/maxS*100)}%"></div></div><div class="bar-val">${n}</div></div>`)
+    .join('') || '<div class="empty-row">ไม่มีข้อมูล</div>';
+
+  // Recent service requests
+  const tbody = document.getElementById('dash-recent-sr');
+  if(!srRes.data?.length){
+    tbody.innerHTML = '<tr><td colspan="5" class="empty-row">ยังไม่มีคำขอใช้บริการ</td></tr>';
+  } else {
+    tbody.innerHTML = srRes.data.map(r => `
+      <tr>
+        <td class="cell-num">${r.request_number||'-'}</td>
+        <td>${r.customer_name||'-'}</td>
+        <td class="cell-muted">${r.service_id||'-'}</td>
+        <td>${statusBadge(r.status)}</td>
+        <td class="cell-muted">${fmtDate(r.created_at)}</td>
+      </tr>`).join('');
+  }
+}
+
+function statusBadge(status){
+  const map = {
+    pending: ['badge-pending','รอดำเนินการ'], confirmed: ['badge-active','ยืนยันแล้ว'],
+    in_progress: ['badge-active','กำลังดำเนินการ'], completed: ['badge-done','เสร็จสิ้น'],
+    cancelled: ['badge-cancel','ยกเลิก'], delivered: ['badge-done','จัดส่งแล้ว'],
+    shipping: ['badge-active','กำลังจัดส่ง'], new: ['badge-pending','ใหม่'],
+    contacted: ['badge-active','ติดต่อแล้ว'], closed: ['badge-done','ปิดแล้ว']
+  };
+  const [cls, label] = map[status] || ['badge-inactive', status];
+  return `<span class="badge ${cls}">${label}</span>`;
+}
+
+function fmtDate(d){
+  if(!d) return '-';
+  return new Date(d).toLocaleDateString('th-TH', { day:'2-digit', month:'short', year:'2-digit', hour:'2-digit', minute:'2-digit' });
+}
+
+// ═══════════════════════════════════════
+// PRODUCTS
+// ═══════════════════════════════════════
+let allProducts = [], allCategories = [], allGroups = [];
+let productsPage = 1;
+const PRODUCTS_PER_PAGE = 15;
+
+async function loadProducts(){
+  const [prodRes, catRes, grpRes] = await Promise.all([
+    sb.from('products').select('*, categories(name, icon, group_id, product_groups(label))').order('id'),
+    sb.from('categories').select('*, product_groups(label)').order('name'),
+    sb.from('product_groups').select('*').order('sort_order')
+  ]);
+  allProducts = prodRes.data || [];
+  allCategories = catRes.data || [];
+  allGroups = grpRes.data || [];
+
+  const filterGroup = document.getElementById('products-filter-group');
+  filterGroup.innerHTML = '<option value="">ทุกกลุ่ม</option>' + allGroups.map(g=>`<option value="${g.id}">${g.label}</option>`).join('');
+
+  renderProducts();
+}
+
+function renderProducts(){
+  const q = document.getElementById('products-search').value.toLowerCase().trim();
+  const groupFilter = document.getElementById('products-filter-group').value;
+
+  let list = allProducts.filter(p => {
+    const mQ = !q || p.name.toLowerCase().includes(q);
+    const mG = !groupFilter || String(p.categories?.group_id) === groupFilter;
+    return mQ && mG;
+  });
+
+  document.getElementById('products-count').textContent = `รวม ${list.length} รายการ (จาก ${allProducts.length} ทั้งหมด)`;
+
+  const totalPages = Math.max(1, Math.ceil(list.length / PRODUCTS_PER_PAGE));
+  if(productsPage > totalPages) productsPage = totalPages;
+  const pageItems = list.slice((productsPage-1)*PRODUCTS_PER_PAGE, productsPage*PRODUCTS_PER_PAGE);
+
+  const tbody = document.getElementById('products-tbody');
+  if(!pageItems.length){
+    tbody.innerHTML = '<tr><td colspan="6" class="empty-row">ไม่พบสินค้า</td></tr>';
+  } else {
+    tbody.innerHTML = pageItems.map(p => `
+      <tr>
+        <td class="cell-muted">#${p.id}</td>
+        <td>${p.thumbnail_icon||'📦'} ${p.name}</td>
+        <td class="cell-muted">${p.categories?.name||'-'}</td>
+        <td class="cell-num">฿${(+p.price).toLocaleString()}</td>
+        <td>${p.is_active ? '<span class="badge badge-active">เปิด</span>' : '<span class="badge badge-inactive">ปิด</span>'}</td>
+        <td>
+          <button class="btn btn-outline btn-sm btn-icon-only" onclick="editProduct(${p.id})" title="แก้ไข">✏️</button>
+          <button class="btn btn-red btn-sm btn-icon-only" onclick="deleteProduct(${p.id})" title="ลบ">🗑️</button>
+        </td>
+      </tr>`).join('');
+  }
+  renderMiniPager('products-pager', totalPages, productsPage, p => { productsPage = p; renderProducts(); });
+}
+
+function renderMiniPager(elId, totalPages, current, onGo){
+  const el = document.getElementById(elId);
+  if(totalPages<=1){ el.innerHTML=''; return; }
+  let html = `<button ${current===1?'disabled':''} onclick="(${onGo.toString()})(${current-1})">‹</button>`;
+  for(let i=1;i<=totalPages;i++){
+    if(totalPages>7 && i>2 && i<totalPages-1 && Math.abs(i-current)>1) { if(i===3||i===totalPages-2) html+=`<span style="color:var(--steel)">…</span>`; continue; }
+    html += `<button class="${i===current?'active':''}" onclick="(${onGo.toString()})(${i})">${i}</button>`;
+  }
+  html += `<button ${current===totalPages?'disabled':''} onclick="(${onGo.toString()})(${current+1})">›</button>`;
+  el.innerHTML = html;
+}
+
+function openProductModal(){
+  document.getElementById('product-modal-title').textContent = 'เพิ่มสินค้า';
+  document.getElementById('pf-id').value = '';
+  document.getElementById('pf-name').value = '';
+  document.getElementById('pf-price').value = '';
+  document.getElementById('pf-icon').value = '📦';
+  document.getElementById('pf-active').value = 'true';
+  document.getElementById('pf-category').innerHTML = allCategories.map(c=>`<option value="${c.id}">${c.icon} ${c.name}</option>`).join('');
+  openModalEl('product-modal');
+}
+
+function editProduct(id){
+  const p = allProducts.find(x=>x.id===id);
+  if(!p) return;
+  document.getElementById('product-modal-title').textContent = 'แก้ไขสินค้า';
+  document.getElementById('pf-id').value = p.id;
+  document.getElementById('pf-name').value = p.name;
+  document.getElementById('pf-price').value = p.price;
+  document.getElementById('pf-icon').value = p.thumbnail_icon || '📦';
+  document.getElementById('pf-active').value = String(p.is_active);
+  document.getElementById('pf-category').innerHTML = allCategories.map(c=>`<option value="${c.id}" ${c.id===p.category_id?'selected':''}>${c.icon} ${c.name}</option>`).join('');
+  openModalEl('product-modal');
+}
+
+async function saveProduct(){
+  const id = document.getElementById('pf-id').value;
+  const payload = {
+    name: document.getElementById('pf-name').value.trim(),
+    category_id: +document.getElementById('pf-category').value,
+    price: +document.getElementById('pf-price').value,
+    thumbnail_icon: document.getElementById('pf-icon').value.trim() || '📦',
+    is_active: document.getElementById('pf-active').value === 'true'
+  };
+  if(!payload.name || !payload.price){ toast('กรุณากรอกชื่อและราคาสินค้า','err'); return; }
+
+  if(id){
+    const { error } = await sb.from('products').update(payload).eq('id', id);
+    if(error){ toast(error.message,'err'); return; }
+    await logAction('update','products',id, payload.name);
+    toast('อัปเดตสินค้าสำเร็จ');
+  } else {
+    const { data, error } = await sb.from('products').insert(payload).select().single();
+    if(error){ toast(error.message,'err'); return; }
+    await logAction('create','products',data.id, payload.name);
+    toast('เพิ่มสินค้าสำเร็จ');
+  }
+  closeModal('product-modal');
+  loadProducts();
+}
+
+async function deleteProduct(id){
+  if(!confirm('ยืนยันลบสินค้านี้?')) return;
+  const { error } = await sb.from('products').delete().eq('id', id);
+  if(error){ toast(error.message,'err'); return; }
+  await logAction('delete','products',id,'');
+  toast('ลบสินค้าสำเร็จ');
+  loadProducts();
+}
+
+// ═══════════════════════════════════════
+// CATEGORIES
+// ═══════════════════════════════════════
+async function loadCategories(){
+  const [catRes, grpRes, prodRes] = await Promise.all([
+    sb.from('categories').select('*, product_groups(label)').order('name'),
+    sb.from('product_groups').select('*').order('sort_order'),
+    sb.from('products').select('category_id')
+  ]);
+  allCategories = catRes.data || [];
+  allGroups = grpRes.data || [];
+  const countByCategory = {};
+  (prodRes.data||[]).forEach(p => countByCategory[p.category_id] = (countByCategory[p.category_id]||0)+1);
+
+  document.getElementById('categories-count').textContent = `รวม ${allCategories.length} หมวดหมู่`;
+  const tbody = document.getElementById('categories-tbody');
+  tbody.innerHTML = allCategories.map(c => `
+    <tr>
+      <td style="font-size:1.3rem">${c.icon||'📦'}</td>
+      <td>${c.name}</td>
+      <td class="cell-muted">${c.product_groups?.label||'-'}</td>
+      <td class="cell-muted">${c.slug}</td>
+      <td class="cell-num">${countByCategory[c.id]||0}</td>
+      <td>
+        <button class="btn btn-outline btn-sm btn-icon-only" onclick="editCategory(${c.id})" title="แก้ไข">✏️</button>
+        <button class="btn btn-red btn-sm btn-icon-only" onclick="deleteCategory(${c.id})" title="ลบ">🗑️</button>
+      </td>
+    </tr>`).join('') || '<tr><td colspan="6" class="empty-row">ไม่มีหมวดหมู่</td></tr>';
+}
+
+function openCategoryModal(){
+  document.getElementById('category-modal-title').textContent = 'เพิ่มหมวดหมู่';
+  document.getElementById('cf-id').value = '';
+  document.getElementById('cf-name').value = '';
+  document.getElementById('cf-icon').value = '📦';
+  document.getElementById('cf-slug').value = '';
+  document.getElementById('cf-group').innerHTML = allGroups.map(g=>`<option value="${g.id}">${g.label}</option>`).join('');
+  openModalEl('category-modal');
+}
+
+function editCategory(id){
+  const c = allCategories.find(x=>x.id===id);
+  if(!c) return;
+  document.getElementById('category-modal-title').textContent = 'แก้ไขหมวดหมู่';
+  document.getElementById('cf-id').value = c.id;
+  document.getElementById('cf-name').value = c.name;
+  document.getElementById('cf-icon').value = c.icon || '📦';
+  document.getElementById('cf-slug').value = c.slug;
+  document.getElementById('cf-group').innerHTML = allGroups.map(g=>`<option value="${g.id}" ${g.id===c.group_id?'selected':''}>${g.label}</option>`).join('');
+  openModalEl('category-modal');
+}
+
+async function saveCategory(){
+  const id = document.getElementById('cf-id').value;
+  const payload = {
+    name: document.getElementById('cf-name').value.trim(),
+    group_id: +document.getElementById('cf-group').value,
+    icon: document.getElementById('cf-icon').value.trim() || '📦',
+    slug: document.getElementById('cf-slug').value.trim().toLowerCase().replace(/\s+/g,'-')
+  };
+  if(!payload.name || !payload.slug){ toast('กรุณากรอกชื่อและ Slug','err'); return; }
+
+  if(id){
+    const { error } = await sb.from('categories').update(payload).eq('id', id);
+    if(error){ toast(error.message,'err'); return; }
+    await logAction('update','categories',id, payload.name);
+    toast('อัปเดตหมวดหมู่สำเร็จ');
+  } else {
+    const { data, error } = await sb.from('categories').insert(payload).select().single();
+    if(error){ toast(error.message,'err'); return; }
+    await logAction('create','categories',data.id, payload.name);
+    toast('เพิ่มหมวดหมู่สำเร็จ');
+  }
+  closeModal('category-modal');
+  loadCategories();
+}
+
+async function deleteCategory(id){
+  if(!confirm('ยืนยันลบหมวดหมู่นี้? สินค้าที่อยู่ในหมวดนี้จะไม่ถูกลบ')) return;
+  const { error } = await sb.from('categories').delete().eq('id', id);
+  if(error){ toast(error.message,'err'); return; }
+  await logAction('delete','categories',id,'');
+  toast('ลบหมวดหมู่สำเร็จ');
+  loadCategories();
+}
+
+// ═══════════════════════════════════════
+// SERVICES
+// ═══════════════════════════════════════
+let allServices = [], allServiceCategories = [];
+let servicesPage = 1;
+const SERVICES_PER_PAGE = 15;
+
+async function loadServices(){
+  const [svcRes, catRes] = await Promise.all([
+    sb.from('services').select('*, service_categories(name, icon)').order('id'),
+    sb.from('service_categories').select('*').order('sort_order')
+  ]);
+  allServices = svcRes.data || [];
+  allServiceCategories = catRes.data || [];
+  renderServices();
+}
+
+function renderServices(){
+  const q = document.getElementById('services-search').value.toLowerCase().trim();
+  let list = allServices.filter(s => !q || s.name.toLowerCase().includes(q));
+
+  document.getElementById('services-count').textContent = `รวม ${list.length} รายการ (จาก ${allServices.length} ทั้งหมด)`;
+
+  const totalPages = Math.max(1, Math.ceil(list.length / SERVICES_PER_PAGE));
+  if(servicesPage > totalPages) servicesPage = totalPages;
+  const pageItems = list.slice((servicesPage-1)*SERVICES_PER_PAGE, servicesPage*SERVICES_PER_PAGE);
+
+  const tbody = document.getElementById('services-tbody');
+  if(!pageItems.length){
+    tbody.innerHTML = '<tr><td colspan="7" class="empty-row">ไม่พบบริการ</td></tr>';
+  } else {
+    tbody.innerHTML = pageItems.map(s => `
+      <tr>
+        <td class="cell-muted">#${s.id}</td>
+        <td>${s.icon||'🔧'} ${s.name}</td>
+        <td class="cell-muted">${s.service_categories?.name||'-'}</td>
+        <td class="cell-num">฿${(+s.normal_price).toLocaleString()}</td>
+        <td class="cell-num">฿${(+s.express_price).toLocaleString()}</td>
+        <td>${s.is_active ? '<span class="badge badge-active">เปิด</span>' : '<span class="badge badge-inactive">ปิด</span>'}</td>
+        <td>
+          <button class="btn btn-outline btn-sm btn-icon-only" onclick="editService(${s.id})" title="แก้ไข">✏️</button>
+          <button class="btn btn-red btn-sm btn-icon-only" onclick="deleteService(${s.id})" title="ลบ">🗑️</button>
+        </td>
+      </tr>`).join('');
+  }
+  renderMiniPager('services-pager', totalPages, servicesPage, p => { servicesPage = p; renderServices(); });
+}
+
+function openServiceModal(){
+  document.getElementById('service-modal-title').textContent = 'เพิ่มบริการ';
+  ['sf-id','sf-name','sf-normal','sf-express'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('sf-icon').value = '🔧';
+  document.getElementById('sf-dur-normal').value = '1-3 วัน';
+  document.getElementById('sf-dur-express').value = '24 ชม.';
+  document.getElementById('sf-active').value = 'true';
+  document.getElementById('sf-category').innerHTML = allServiceCategories.map(c=>`<option value="${c.id}">${c.icon} ${c.name}</option>`).join('');
+  openModalEl('service-modal');
+}
+
+function editService(id){
+  const s = allServices.find(x=>x.id===id);
+  if(!s) return;
+  document.getElementById('service-modal-title').textContent = 'แก้ไขบริการ';
+  document.getElementById('sf-id').value = s.id;
+  document.getElementById('sf-name').value = s.name;
+  document.getElementById('sf-icon').value = s.icon || '🔧';
+  document.getElementById('sf-normal').value = s.normal_price;
+  document.getElementById('sf-express').value = s.express_price;
+  document.getElementById('sf-dur-normal').value = s.duration_normal || '';
+  document.getElementById('sf-dur-express').value = s.duration_express || '';
+  document.getElementById('sf-active').value = String(s.is_active);
+  document.getElementById('sf-category').innerHTML = allServiceCategories.map(c=>`<option value="${c.id}" ${c.id===s.category_id?'selected':''}>${c.icon} ${c.name}</option>`).join('');
+  openModalEl('service-modal');
+}
+
+async function saveService(){
+  const id = document.getElementById('sf-id').value;
+  const payload = {
+    name: document.getElementById('sf-name').value.trim(),
+    category_id: +document.getElementById('sf-category').value,
+    icon: document.getElementById('sf-icon').value.trim() || '🔧',
+    normal_price: +document.getElementById('sf-normal').value,
+    express_price: +document.getElementById('sf-express').value,
+    duration_normal: document.getElementById('sf-dur-normal').value.trim() || '1-3 วัน',
+    duration_express: document.getElementById('sf-dur-express').value.trim() || '24 ชม.',
+    is_active: document.getElementById('sf-active').value === 'true'
+  };
+  if(!payload.name || !payload.normal_price || !payload.express_price){ toast('กรุณากรอกข้อมูลให้ครบ','err'); return; }
+
+  if(id){
+    const { error } = await sb.from('services').update(payload).eq('id', id);
+    if(error){ toast(error.message,'err'); return; }
+    await logAction('update','services',id, payload.name);
+    toast('อัปเดตบริการสำเร็จ');
+  } else {
+    const { data, error } = await sb.from('services').insert(payload).select().single();
+    if(error){ toast(error.message,'err'); return; }
+    await logAction('create','services',data.id, payload.name);
+    toast('เพิ่มบริการสำเร็จ');
+  }
+  closeModal('service-modal');
+  loadServices();
+}
+
+async function deleteService(id){
+  if(!confirm('ยืนยันลบบริการนี้?')) return;
+  const { error } = await sb.from('services').delete().eq('id', id);
+  if(error){ toast(error.message,'err'); return; }
+  await logAction('delete','services',id,'');
+  toast('ลบบริการสำเร็จ');
+  loadServices();
+}
+
+// ═══════════════════════════════════════
+// ORDERS
+// ═══════════════════════════════════════
+async function loadOrders(){
+  const { data, count } = await sb.from('orders').select('*, profiles(full_name, phone)', { count: 'exact' }).order('created_at', { ascending: false });
+  document.getElementById('orders-count').textContent = `รวม ${count||0} ออเดอร์`;
+  const tbody = document.getElementById('orders-tbody');
+  if(!data?.length){
+    tbody.innerHTML = '<tr><td colspan="6" class="empty-row">ยังไม่มีออเดอร์</td></tr>';
+    return;
+  }
+  tbody.innerHTML = data.map(o => `
+    <tr>
+      <td class="cell-muted">#${o.id}</td>
+      <td>${o.profiles?.full_name || '-'}<div class="cell-muted">${o.profiles?.phone||''}</div></td>
+      <td class="cell-num">฿${(+o.total_amount).toLocaleString()}</td>
+      <td>${statusBadge(o.status)}</td>
+      <td class="cell-muted">${o.shipping_address||'-'}</td>
+      <td class="cell-muted">${fmtDate(o.created_at)}</td>
+    </tr>`).join('');
+}
+
+// ═══════════════════════════════════════
+// SERVICE REQUESTS
+// ═══════════════════════════════════════
+async function loadServiceRequests(){
+  const { data, count } = await sb.from('service_requests').select('*, services(name), profiles(full_name)', { count: 'exact' }).order('created_at', { ascending: false });
+  window._allSR = data || [];
+  document.getElementById('sr-count').textContent = `รวม ${count||0} คำขอ`;
+  renderServiceRequests();
+}
+
+function renderServiceRequests(){
+  const filter = document.getElementById('sr-filter-status').value;
+  let list = (window._allSR||[]).filter(r => !filter || r.status === filter);
+  const tbody = document.getElementById('sr-tbody');
+  if(!list.length){
+    tbody.innerHTML = '<tr><td colspan="9" class="empty-row">ไม่พบคำขอ</td></tr>';
+    return;
+  }
+  tbody.innerHTML = list.map(r => `
+    <tr>
+      <td class="cell-num">${r.request_number||'-'}</td>
+      <td>${r.customer_name || r.profiles?.full_name || '-'}</td>
+      <td class="cell-muted">${r.customer_phone||'-'}</td>
+      <td class="cell-muted">${r.services?.name||'-'}</td>
+      <td>${r.is_express ? '⚡ ด่วน' : '🕐 ปกติ'}</td>
+      <td class="cell-num">${r.quoted_price ? '฿'+(+r.quoted_price).toLocaleString() : '-'}</td>
+      <td>${statusBadge(r.status)}</td>
+      <td class="cell-muted">${fmtDate(r.created_at)}</td>
+      <td>
+        <select onchange="updateSRStatus(${r.id}, this.value)" style="background:var(--deep);border:1px solid rgba(201,168,76,.2);border-radius:4px;padding:.3rem .5rem;color:var(--cream);font-size:.72rem">
+          <option value="">เปลี่ยนสถานะ</option>
+          <option value="pending">รอดำเนินการ</option>
+          <option value="confirmed">ยืนยันแล้ว</option>
+          <option value="in_progress">กำลังดำเนินการ</option>
+          <option value="completed">เสร็จสิ้น</option>
+          <option value="cancelled">ยกเลิก</option>
+        </select>
+      </td>
+    </tr>`).join('');
+}
+
+async function updateSRStatus(id, status){
+  if(!status) return;
+  const { error } = await sb.from('service_requests').update({ status, updated_at: new Date().toISOString() }).eq('id', id);
+  if(error){ toast(error.message,'err'); return; }
+  await logAction('update_status','service_requests',id, status);
+  toast('อัปเดตสถานะสำเร็จ');
+  loadServiceRequests();
+  loadDashboard();
+}
+
+// ═══════════════════════════════════════
+// CONTACTS
+// ═══════════════════════════════════════
+async function loadContacts(){
+  const { data, count } = await sb.from('contacts').select('*', { count: 'exact' }).order('created_at', { ascending: false });
+  document.getElementById('contacts-count').textContent = `รวม ${count||0} ข้อความ`;
+  const tbody = document.getElementById('contacts-tbody');
+  if(!data?.length){
+    tbody.innerHTML = '<tr><td colspan="7" class="empty-row">ยังไม่มีข้อความติดต่อ</td></tr>';
+    return;
+  }
+  tbody.innerHTML = data.map(c => `
+    <tr>
+      <td>${c.name||'-'}</td>
+      <td class="cell-muted">${c.phone||'-'}</td>
+      <td class="cell-muted">${c.email||'-'}</td>
+      <td style="max-width:280px;white-space:normal">${c.message||'-'}</td>
+      <td>${statusBadge(c.status)}</td>
+      <td class="cell-muted">${fmtDate(c.created_at)}</td>
+      <td>
+        <select onchange="updateContactStatus(${c.id}, this.value)" style="background:var(--deep);border:1px solid rgba(201,168,76,.2);border-radius:4px;padding:.3rem .5rem;color:var(--cream);font-size:.72rem">
+          <option value="">เปลี่ยนสถานะ</option>
+          <option value="new">ใหม่</option>
+          <option value="contacted">ติดต่อแล้ว</option>
+          <option value="closed">ปิดแล้ว</option>
+        </select>
+      </td>
+    </tr>`).join('');
+}
+
+async function updateContactStatus(id, status){
+  if(!status) return;
+  const { error } = await sb.from('contacts').update({ status }).eq('id', id);
+  if(error){ toast(error.message,'err'); return; }
+  await logAction('update_status','contacts',id, status);
+  toast('อัปเดตสถานะสำเร็จ');
+  loadContacts();
+  loadDashboard();
+}
+
+// ═══════════════════════════════════════
+// MEMBERS
+// ═══════════════════════════════════════
+async function loadMembers(){
+  const { data, count } = await sb.from('profiles').select('*', { count: 'exact' }).order('created_at', { ascending: false });
+  document.getElementById('members-count').textContent = `รวม ${count||0} สมาชิก`;
+  const tbody = document.getElementById('members-tbody');
+  if(!data?.length){
+    tbody.innerHTML = '<tr><td colspan="5" class="empty-row">ยังไม่มีสมาชิก</td></tr>';
+    return;
+  }
+  const typeLabel = { customer:'ลูกค้าทั่วไป', corporate:'องค์กร', reseller:'ตัวแทนจำหน่าย', staff:'พนักงาน', admin:'ผู้ดูแลระบบ' };
+  tbody.innerHTML = data.map(m => `
+    <tr>
+      <td>${m.full_name||'-'}</td>
+      <td class="cell-muted">${m.phone||'-'}</td>
+      <td>${m.member_type==='admin'||m.member_type==='staff' ? `<span class="badge badge-admin">${typeLabel[m.member_type]}</span>` : (typeLabel[m.member_type]||m.member_type)}</td>
+      <td class="cell-num">${m.points||0}</td>
+      <td class="cell-muted">${fmtDate(m.created_at)}</td>
+    </tr>`).join('');
+}
+
+// ═══════════════════════════════════════
+// BUSINESSES
+// ═══════════════════════════════════════
+async function loadBusinesses(){
+  const { data, count } = await sb.from('businesses').select('*', { count: 'exact' }).order('id');
+  document.getElementById('businesses-count').textContent = `รวม ${count||0} แบรนด์`;
+  const tbody = document.getElementById('businesses-tbody');
+  if(!data?.length){
+    tbody.innerHTML = '<tr><td colspan="4" class="empty-row">ยังไม่มีแบรนด์</td></tr>';
+    return;
+  }
+  tbody.innerHTML = data.map(b => `
+    <tr>
+      <td style="font-size:1.3rem">${b.icon||'🏢'}</td>
+      <td>${b.name}</td>
+      <td class="cell-muted">${b.category||'-'}</td>
+      <td>${b.is_active ? '<span class="badge badge-active">เปิด</span>' : '<span class="badge badge-inactive">ปิด</span>'}</td>
+    </tr>`).join('');
+}
+
+// ═══════════════════════════════════════
+// TECHNICIANS
+// ═══════════════════════════════════════
+async function loadTechnicians(){
+  const { data, count } = await sb.from('technicians').select('*', { count: 'exact' }).order('id');
+  document.getElementById('tech-count').textContent = `รวม ${count||0} ช่าง`;
+  const tbody = document.getElementById('tech-tbody');
+  if(!data?.length){
+    tbody.innerHTML = '<tr><td colspan="4" class="empty-row">ยังไม่มีช่างเทคนิค</td></tr>';
+    return;
+  }
+  tbody.innerHTML = data.map(t => `
+    <tr>
+      <td>${t.name}</td>
+      <td class="cell-muted">${t.phone||'-'}</td>
+      <td class="cell-muted">${t.skill||'-'}</td>
+      <td>${t.status==='available' ? '<span class="badge badge-active">ว่าง</span>' : '<span class="badge badge-inactive">ไม่ว่าง</span>'}</td>
+    </tr>`).join('');
+}
+
+// ═══════════════════════════════════════
+// LOGS
+// ═══════════════════════════════════════
+async function loadLogs(){
+  const { data } = await sb.from('admin_logs').select('*').order('created_at', { ascending: false }).limit(100);
+  const tbody = document.getElementById('logs-tbody');
+  if(!data?.length){
+    tbody.innerHTML = '<tr><td colspan="4" class="empty-row">ยังไม่มี Activity Log</td></tr>';
+    return;
+  }
+  tbody.innerHTML = data.map(l => `
+    <tr>
+      <td class="cell-muted">${fmtDate(l.created_at)}</td>
+      <td><span class="badge badge-admin">${l.action}</span></td>
+      <td class="cell-muted">${l.table_name}</td>
+      <td class="cell-muted">${l.detail||'-'}</td>
+    </tr>`).join('');
+}
+
+// ═══════════════════════════════════════
+// ESC to close modals
+// ═══════════════════════════════════════
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape') document.querySelectorAll('.modal-ov.open').forEach(m => m.classList.remove('open'));
+});
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+checkSession();
+</script>
+</body>
+</html>
