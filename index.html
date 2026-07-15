@@ -1,466 +1,848 @@
 <!DOCTYPE html>
-
-<html lang="th"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>ลุงชัย ไชโย ออล - Lungchai Chaiyo All | Industrial Supply &amp; Service</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Anuphan:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            'space-dark': '#0c0c0c',
-            'industrial-gold': '#FFD700',
-            'cyber-amber': '#FFBF00',
-            'orbital-bronze': '#CD7F32',
-            'surface-bright': 'rgba(255, 215, 0, 0.12)',
-          },
-          fontFamily: {
-            sans: ['Anuphan', 'Space Grotesk', 'sans-serif'],
-          },
-        }
-      }
-    }
-  </script>
-<style data-purpose="animations">
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-15px); }
-    }
-    .animate-float { animation: float 6s ease-in-out infinite; }
-
-    @keyframes pulse-glow {
-      0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.4)); }
-      50% { filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8)); }
-    }
-    .glow-gold { animation: pulse-glow 3s infinite; }
-
-    .glass-morphism {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 215, 0, 0.15);
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-    }
-    
-    .sun-flare-hover {
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .sun-flare-hover:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 25px 5px rgba(255, 215, 0, 0.6), 0 0 40px 10px rgba(255, 191, 0, 0.2);
-      color: black !important;
-    }
-
-    .nav-link {
-      transition: all 0.3s ease;
-    }
-    .nav-link:hover {
-      color: #FFD700;
-      text-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
-      transform: scale(1.05);
-    }
-
-    #bg-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-    }
-
-    .nebula-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      pointer-events: none;
-    }
-
-    /* Mobile Menu styles */
-    #mobile-menu {
-      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    #mobile-menu.hidden-menu {
-      transform: translateX(100%);
-    }
-    
-    /* Accessibility: prevent scroll when menu open */
-    body.menu-open {
-      overflow: hidden;
-    }
-
-    @keyframes star-twinkle {
-      0% { opacity: 0.2; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(1.05); }
-      100% { opacity: 0.3; transform: scale(1); }
-    }
-  </style>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>LUNGCHAI CHAIYO ALL | One Platform. Everything Business.</title>
+<meta name="description" content="ลุงชัย ไชโย ออล — One Stop Industrial Supply & Service รวมสินค้า บริการ เทคโนโลยี และเครือข่ายธุรกิจไว้ในแพลตฟอร์มเดียว">
+<link rel="icon" href="images/logo-all.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&family=Sarabun:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-    /* Global Background Styles - Light Purple & Black Cosmic Theme */
-    #bg-canvas {
-      background: radial-gradient(circle at center, #3d0066 0%, #020308 100%) !important;
-      overflow: hidden;
-    }
-    #bg-canvas::before,
-    #bg-canvas::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-repeat: repeat;
-      animation: star-twinkle 4s infinite alternate;
-    }
-    #bg-canvas::before {
-      background-size: 200px 200px;
-      background-image: 
-        radial-gradient(2px 2px at 20px 30px, #c084fc, rgba(0,0,0,0)),
-        radial-gradient(3px 3px at 40px 70px, #ffffff, rgba(0,0,0,0)),
-        radial-gradient(2px 2px at 50px 160px, #e9d5ff, rgba(0,0,0,0)),
-        radial-gradient(4px 4px at 90px 40px, #ffffff, rgba(0,0,0,0)),
-        radial-gradient(2px 2px at 130px 80px, #c084fc, rgba(0,0,0,0));
-      opacity: 0.4;
-    }
-    #bg-canvas::after {
-      background-size: 350px 350px;
-      background-image: 
-        radial-gradient(4px 4px at 10px 10px, #e9d5ff, rgba(0,0,0,0)),
-        radial-gradient(6px 6px at 150px 150px, #ffffff, rgba(0,0,0,0)),
-        radial-gradient(3px 3px at 250px 50px, #c084fc, rgba(0,0,0,0));
-      opacity: 0.2;
-      animation: star-twinkle 7s infinite alternate-reverse;
-      filter: blur(1px);
-    }
-    .nebula-overlay {
-      background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.15) 0%, transparent 70%) !important;
-    }
+  /* ============================================================
+     TOKENS — Premium Space Industrial
+     ============================================================ */
+  :root{
+    --space-black:#0C0C0C;
+    --panel:#131313;
+    --panel-raised:#1a1a1a;
+    --line:#2a2a2a;
+    --gold:#FFD700;
+    --amber:#FFBF00;
+    --bronze:#CD7F32;
+    --white:#F3F1EC;
+    --muted:#9C9791;
+    --muted-dim:#6b665f;
+    --font-display:'Kanit',sans-serif;
+    --font-body:'Sarabun',sans-serif;
+    --font-mono:'JetBrains Mono',monospace;
+    --container:1240px;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--space-black);
+    color:var(--white);
+    font-family:var(--font-body);
+    overflow-x:hidden;
+    line-height:1.6;
+  }
+  ::selection{background:var(--gold);color:var(--space-black);}
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  button{font-family:inherit;cursor:pointer;}
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important;scroll-behavior:auto !important;}
+  }
+
+  /* Blueprint grid texture — signature backdrop */
+  .blueprint-grid{
+    position:fixed;inset:0;z-index:0;pointer-events:none;
+    background-image:
+      linear-gradient(rgba(255,215,0,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,215,0,0.035) 1px, transparent 1px);
+    background-size:44px 44px;
+    -webkit-mask-image:radial-gradient(ellipse 90% 70% at 50% 0%, #000 40%, transparent 100%);
+    mask-image:radial-gradient(ellipse 90% 70% at 50% 0%, #000 40%, transparent 100%);
+  }
+  .scanline{
+    position:fixed;left:0;right:0;height:120px;z-index:1;pointer-events:none;
+    background:linear-gradient(180deg, transparent, rgba(255,215,0,0.05), transparent);
+    animation:scan 9s linear infinite;
+  }
+  @keyframes scan{0%{top:-120px;}100%{top:100vh;}}
+
+  .wrap{max-width:var(--container);margin:0 auto;padding:0 24px;position:relative;z-index:2;}
+
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--amber);display:flex;align-items:center;gap:10px;margin-bottom:14px;
+  }
+  .eyebrow::before{content:'';width:22px;height:1px;background:var(--bronze);}
+
+  h1,h2,h3,h4{font-family:var(--font-display);}
+
+  .section-title{
+    font-size:clamp(28px,4.2vw,44px);font-weight:700;line-height:1.15;color:var(--white);
+  }
+  .section-sub{color:var(--muted);font-size:16px;max-width:560px;margin-top:12px;}
+  .section-head{margin-bottom:44px;}
+
+  /* ============================================================
+     HEADER
+     ============================================================ */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    background:rgba(12,12,12,0.82);backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+    transition:border-color .3s;
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;height:76px;}
+  .brand{display:flex;align-items:center;gap:12px;}
+  .brand img{width:44px;height:44px;border-radius:8px;object-fit:cover;border:1px solid var(--bronze);}
+  .brand-text{display:flex;flex-direction:column;line-height:1.15;}
+  .brand-text b{font-family:var(--font-display);font-size:15.5px;font-weight:700;letter-spacing:.02em;color:var(--white);}
+  .brand-text span{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.16em;color:var(--amber);}
+  .nav-menu{display:flex;gap:36px;align-items:center;}
+  .nav-menu a{
+    font-size:14.5px;color:var(--muted);font-weight:500;position:relative;padding:6px 0;
+    transition:color .25s;
+  }
+  .nav-menu a::after{
+    content:'';position:absolute;left:0;bottom:0;width:0;height:1.5px;background:var(--gold);transition:width .25s;
+  }
+  .nav-menu a:hover{color:var(--white);}
+  .nav-menu a:hover::after{width:100%;}
+  .nav-cta{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--gold);color:var(--space-black);font-weight:700;font-size:14px;
+    padding:11px 22px;border-radius:3px;border:none;letter-spacing:.01em;
+    transition:transform .2s, box-shadow .2s;
+  }
+  .nav-cta:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(255,215,0,0.25);}
+  .burger{display:none;flex-direction:column;gap:5px;background:none;border:none;padding:8px;}
+  .burger span{width:24px;height:2px;background:var(--white);display:block;}
+
+  .mobile-menu{
+    display:none;position:fixed;top:76px;left:0;right:0;bottom:0;background:var(--space-black);
+    z-index:99;padding:32px 24px;flex-direction:column;gap:4px;overflow-y:auto;
+  }
+  .mobile-menu.open{display:flex;}
+  .mobile-menu a{padding:18px 4px;border-bottom:1px solid var(--line);font-size:18px;font-family:var(--font-display);}
+
+  /* ============================================================
+     HERO
+     ============================================================ */
+  .hero{
+    min-height:100svh;display:flex;flex-direction:column;justify-content:center;
+    position:relative;padding:150px 0 90px;
+  }
+  .hero-glow{
+    position:absolute;top:8%;left:50%;transform:translateX(-50%);
+    width:640px;height:640px;border-radius:50%;
+    background:radial-gradient(circle, rgba(255,215,0,0.10) 0%, rgba(205,127,50,0.04) 45%, transparent 70%);
+    filter:blur(10px);pointer-events:none;
+  }
+  .hero-inner{text-align:center;position:relative;}
+  .hero-logo{
+    width:104px;height:104px;margin:0 auto 28px;border-radius:16px;object-fit:cover;
+    border:1px solid var(--bronze);
+    box-shadow:0 0 0 1px rgba(255,215,0,0.08), 0 20px 60px rgba(255,215,0,0.12);
+    animation:float 6s ease-in-out infinite;
+  }
+  @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+
+  .hero-tagline{
+    font-family:var(--font-mono);font-size:12px;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--amber);margin-bottom:20px;
+  }
+  .hero h1{
+    font-size:clamp(40px,7vw,84px);font-weight:800;letter-spacing:.01em;line-height:1.05;
+    color:var(--white);
+  }
+  .hero h1 .gold{
+    background:linear-gradient(120deg,var(--gold),var(--bronze) 80%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero-sub{
+    font-family:var(--font-display);font-weight:400;font-size:clamp(17px,2vw,22px);
+    color:var(--muted);margin:22px auto 8px;max-width:640px;
+  }
+  .hero-supporting{
+    display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:26px;
+    font-family:var(--font-mono);font-size:12.5px;color:var(--muted-dim);letter-spacing:.05em;
+  }
+  .hero-supporting span{padding:6px 14px;border:1px solid var(--line);border-radius:20px;}
+  .hero-supporting span b{color:var(--amber);font-weight:500;}
+
+  /* ============================================================
+     GATEWAY — 4 buttons
+     ============================================================ */
+  .gateway{padding:20px 0 110px;position:relative;}
+  .gateway-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:56px;
+  }
+  .gw-card{
+    background:var(--panel);border:1px solid var(--line);border-radius:10px;
+    padding:30px 22px;position:relative;overflow:hidden;
+    transition:transform .3s, border-color .3s, background .3s;
+  }
+  .gw-card::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:2px;
+    background:linear-gradient(90deg,transparent,var(--gold),transparent);
+    transform:scaleX(0);transition:transform .35s;
+  }
+  .gw-card:hover{transform:translateY(-6px);border-color:var(--bronze);background:var(--panel-raised);}
+  .gw-card:hover::before{transform:scaleX(1);}
+  .gw-num{font-family:var(--font-mono);font-size:11px;color:var(--muted-dim);letter-spacing:.15em;}
+  .gw-icon{
+    width:46px;height:46px;border:1px solid var(--bronze);border-radius:10px;
+    display:flex;align-items:center;justify-content:center;margin:18px 0 20px;
+    color:var(--gold);font-size:20px;
+  }
+  .gw-card h3{font-size:19px;font-weight:600;color:var(--white);margin-bottom:8px;}
+  .gw-card p{font-size:13.5px;color:var(--muted);line-height:1.55;margin-bottom:18px;min-height:44px;}
+  .gw-link{
+    display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);
+    font-size:12px;color:var(--amber);letter-spacing:.05em;
+  }
+  .gw-link svg{width:13px;height:13px;transition:transform .25s;}
+  .gw-card:hover .gw-link svg{transform:translateX(4px);}
+
+  /* ============================================================
+     SEARCH HUB
+     ============================================================ */
+  .search-hub{padding:60px 0 100px;}
+  .search-box{
+    background:var(--panel);border:1px solid var(--line);border-radius:12px;
+    padding:36px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;
+  }
+  .search-box input{
+    flex:1;min-width:220px;background:transparent;border:none;outline:none;
+    color:var(--white);font-family:var(--font-body);font-size:16px;padding:10px 4px;
+  }
+  .search-box input::placeholder{color:var(--muted-dim);}
+  .search-icon{color:var(--muted);flex-shrink:0;}
+  .search-btn{
+    background:var(--amber);color:var(--space-black);border:none;font-weight:700;
+    font-size:14px;padding:13px 28px;border-radius:6px;transition:transform .2s;
+  }
+  .search-btn:hover{transform:translateY(-1px);}
+  .search-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px;}
+  .search-tags a{
+    font-size:12.5px;color:var(--muted);border:1px solid var(--line);padding:7px 14px;
+    border-radius:20px;font-family:var(--font-mono);transition:.25s;
+  }
+  .search-tags a:hover{color:var(--gold);border-color:var(--bronze);}
+
+  /* ============================================================
+     ECOSYSTEM
+     ============================================================ */
+  .ecosystem{padding:80px 0;background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .eco-flow{
+    display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:14px;margin-top:50px;
+  }
+  .eco-item{
+    background:var(--space-black);border:1px solid var(--line);border-radius:8px;
+    padding:16px 22px;text-align:center;font-size:14.5px;font-weight:500;color:var(--white);
+    min-width:130px;
+  }
+  .eco-plus{color:var(--bronze);font-size:20px;font-family:var(--font-mono);}
+  .eco-eq{color:var(--gold);font-size:22px;font-family:var(--font-mono);}
+  .eco-result{
+    background:linear-gradient(120deg, rgba(255,215,0,0.14), rgba(205,127,50,0.08));
+    border:1px solid var(--gold);color:var(--gold);font-weight:700;
+  }
+
+  /* ============================================================
+     BUSINESS UNITS
+     ============================================================ */
+  .units{padding:110px 0;}
+  .units-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:50px;}
+  .unit-card{
+    background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:26px 22px;
+    transition:.3s;position:relative;
+  }
+  .unit-card:hover{border-color:var(--bronze);transform:translateY(-4px);}
+  .unit-idx{font-family:var(--font-mono);font-size:11px;color:var(--bronze);letter-spacing:.1em;margin-bottom:14px;display:block;}
+  .unit-card h4{font-size:16.5px;font-weight:600;color:var(--white);margin-bottom:10px;line-height:1.3;}
+  .unit-tags{display:flex;flex-wrap:wrap;gap:6px;}
+  .unit-tags span{
+    font-size:11px;color:var(--muted);background:rgba(255,255,255,0.03);
+    border:1px solid var(--line);padding:4px 9px;border-radius:4px;font-family:var(--font-mono);
+  }
+
+  /* ============================================================
+     SERVICE PLATFORM
+     ============================================================ */
+  .services-sec{padding:100px 0;background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .svc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:50px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .svc-item{background:var(--space-black);padding:28px 20px;text-align:center;transition:.25s;}
+  .svc-item:hover{background:var(--panel-raised);}
+  .svc-item .ic{font-size:24px;color:var(--gold);margin-bottom:12px;}
+  .svc-item span{font-size:13.5px;color:var(--white);font-weight:500;}
+
+  /* ============================================================
+     PRODUCT CATEGORIES
+     ============================================================ */
+  .products{padding:110px 0;}
+  .prod-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:50px;}
+  .prod-col{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:32px;}
+  .prod-col-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:20px;border-bottom:1px solid var(--line);padding-bottom:16px;}
+  .prod-col-head h4{font-size:19px;font-weight:600;color:var(--gold);}
+  .prod-col-head span{font-family:var(--font-mono);font-size:11px;color:var(--muted-dim);}
+  .prod-list{display:flex;flex-wrap:wrap;gap:10px;}
+  .prod-list span{
+    font-size:13px;color:var(--muted);padding:8px 14px;border:1px solid var(--line);border-radius:6px;
+    transition:.25s;
+  }
+  .prod-list span:hover{color:var(--white);border-color:var(--bronze);}
+
+  /* ============================================================
+     WORKFLOW
+     ============================================================ */
+  .workflow{padding:110px 0;background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .wf-track{display:flex;overflow-x:auto;gap:0;margin-top:56px;padding-bottom:16px;scrollbar-width:thin;}
+  .wf-step{flex:0 0 200px;padding:0 22px 0 0;position:relative;}
+  .wf-step:not(:last-child)::after{
+    content:'';position:absolute;top:19px;right:0;width:22px;height:1px;
+    background:repeating-linear-gradient(90deg,var(--bronze) 0 6px,transparent 6px 10px);
+  }
+  .wf-num{
+    font-family:var(--font-mono);font-size:13px;color:var(--space-black);background:var(--gold);
+    width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-weight:700;margin-bottom:16px;
+  }
+  .wf-step h5{font-size:15px;font-weight:600;color:var(--white);margin-bottom:6px;}
+  .wf-step p{font-size:12.5px;color:var(--muted);line-height:1.5;}
+
+  /* ============================================================
+     TRUST STATS
+     ============================================================ */
+  .trust{padding:90px 0;}
+  .trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:20px;}
+  .trust-item{background:var(--space-black);padding:38px 20px;text-align:center;}
+  .trust-item b{
+    display:block;font-family:var(--font-display);font-size:clamp(30px,4vw,46px);font-weight:700;
+    background:linear-gradient(120deg,var(--gold),var(--amber));-webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .trust-item span{font-size:13px;color:var(--muted);font-family:var(--font-mono);letter-spacing:.03em;}
+
+  /* ============================================================
+     REGISTER
+     ============================================================ */
+  .register{padding:110px 0;background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .reg-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:50px;}
+  .reg-card{
+    background:var(--space-black);border:1px solid var(--line);border-radius:10px;padding:26px 18px;
+    text-align:center;transition:.3s;
+  }
+  .reg-card:hover{border-color:var(--gold);transform:translateY(-4px);}
+  .reg-card .ic{font-size:26px;color:var(--amber);margin-bottom:14px;}
+  .reg-card h5{font-size:14.5px;font-weight:600;color:var(--white);}
+
+  /* ============================================================
+     CONTACT
+     ============================================================ */
+  .contact{padding:110px 0;}
+  .contact-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:50px;margin-top:50px;align-items:start;}
+  .contact-info h3{font-size:24px;font-weight:600;color:var(--white);margin-bottom:16px;}
+  .contact-info p{color:var(--muted);font-size:15px;margin-bottom:28px;max-width:440px;}
+  .contact-list{display:flex;flex-direction:column;gap:16px;}
+  .contact-list a{display:flex;align-items:center;gap:14px;font-size:14.5px;color:var(--muted);transition:.25s;}
+  .contact-list a:hover{color:var(--gold);}
+  .contact-list .ic{
+    width:38px;height:38px;border:1px solid var(--bronze);border-radius:8px;display:flex;
+    align-items:center;justify-content:center;color:var(--gold);flex-shrink:0;font-size:15px;
+  }
+  .contact-form{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:32px;}
+  .contact-form input,.contact-form textarea,.contact-form select{
+    width:100%;background:var(--space-black);border:1px solid var(--line);border-radius:6px;
+    padding:13px 14px;color:var(--white);font-family:var(--font-body);font-size:14.5px;margin-bottom:14px;
+    outline:none;transition:border-color .25s;
+  }
+  .contact-form input:focus,.contact-form textarea:focus,.contact-form select:focus{border-color:var(--gold);}
+  .contact-form textarea{resize:vertical;min-height:100px;}
+  .contact-form button{
+    width:100%;background:var(--gold);color:var(--space-black);border:none;font-weight:700;
+    padding:14px;border-radius:6px;font-size:15px;transition:transform .2s;
+  }
+  .contact-form button:hover{transform:translateY(-1px);}
+
+  /* ============================================================
+     FOOTER
+     ============================================================ */
+  footer{padding:60px 0 30px;border-top:1px solid var(--line);}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:36px;margin-bottom:50px;}
+  .foot-brand{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+  .foot-brand img{width:38px;height:38px;border-radius:8px;object-fit:cover;border:1px solid var(--bronze);}
+  .foot-brand b{font-family:var(--font-display);font-size:15px;color:var(--white);}
+  .footer p.desc{color:var(--muted);font-size:13.5px;max-width:280px;}
+  .foot-col h6{font-family:var(--font-mono);font-size:11px;letter-spacing:.15em;color:var(--amber);text-transform:uppercase;margin-bottom:16px;}
+  .foot-col a{display:block;color:var(--muted);font-size:13.5px;margin-bottom:10px;transition:.25s;}
+  .foot-col a:hover{color:var(--gold);}
+  .foot-bottom{
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
+    padding-top:26px;border-top:1px solid var(--line);
+    font-size:12.5px;color:var(--muted-dim);font-family:var(--font-mono);
+  }
+  .foot-social{display:flex;gap:10px;}
+  .foot-social a{
+    width:34px;height:34px;border:1px solid var(--line);border-radius:8px;display:flex;
+    align-items:center;justify-content:center;color:var(--muted);transition:.25s;
+  }
+  .foot-social a:hover{border-color:var(--gold);color:var(--gold);}
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+  @media (max-width:1080px){
+    .gateway-grid{grid-template-columns:repeat(2,1fr);}
+    .units-grid{grid-template-columns:repeat(2,1fr);}
+    .svc-grid{grid-template-columns:repeat(2,1fr);}
+    .reg-grid{grid-template-columns:repeat(3,1fr);}
+    .trust-grid{grid-template-columns:repeat(2,1fr);}
+    .prod-cols{grid-template-columns:1fr;}
+    .contact-grid{grid-template-columns:1fr;}
+    .foot-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:720px){
+    .nav-menu{display:none;}
+    .burger{display:flex;}
+    .gateway-grid{grid-template-columns:1fr;}
+    .units-grid{grid-template-columns:1fr;}
+    .svc-grid{grid-template-columns:repeat(2,1fr);}
+    .reg-grid{grid-template-columns:repeat(2,1fr);}
+    .eco-flow{flex-direction:column;}
+    .foot-grid{grid-template-columns:1fr;gap:28px;}
+    .foot-bottom{flex-direction:column;text-align:center;}
+    .nav-cta{display:none;}
+    .hero{padding-top:130px;}
+  }
 </style>
 </head>
-<body class="bg-space-dark text-white selection:bg-industrial-gold/30 overflow-x-hidden" style="font-size: 110%;">
-<div class="nebula-overlay"></div>
-<div id="bg-canvas"></div>
-<!-- BEGIN: MainHeader -->
-<header class="fixed top-0 left-0 w-full transition-all duration-300 z-10" data-purpose="navigation">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4 flex justify-between items-center backdrop-blur-md border-b border-white/5 bg-black/20">
-<div class="flex items-center space-x-2">
-<div class="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-cyber-amber to-orbital-bronze rounded-full flex items-center justify-center font-bold text-space-dark shadow-[0_0_15px_rgba(255,191,0,0.3)] text-sm md:text-base">
-          7
-        </div>
-<div class="flex flex-col leading-none">
-<span class="text-base md:text-lg font-bold tracking-tight text-white">ลุงชัย ไชโย ออล</span>
-<span class="text-[8px] md:text-[10px] opacity-90 uppercase tracking-widest text-industrial-gold/80">Lungchai Chaiyo All</span>
-</div>
-</div>
-<!-- Desktop Navigation -->
-<nav class="hidden lg:flex items-center space-x-4 xl:space-x-6 text-xs xl:text-sm font-medium">
-<a class="nav-link text-white/90" href="#">เกี่ยวกับ</a>
-<a class="nav-link text-white/90" href="#">แบรนด์</a>
-<a class="nav-link text-white/90" href="#">บริการ</a>
-<a class="nav-link text-white/90" href="#">สินค้า</a>
-<a class="nav-link text-white/90" href="#">ผลงาน</a>
-<a class="nav-link text-white/90" href="#">ช่องทาง</a>
-<a class="nav-link text-white/90" href="#">สมาชิก</a>
-<a class="nav-link text-white/90" href="#">ติดต่อ</a>
-<button class="bg-industrial-gold text-black px-4 py-2 rounded-lg font-bold flex items-center gap-2 sun-flare-hover transition-all">
-<span>📋</span>
-          ขอใบเสนอราคา
-        </button>
-</nav>
-<!-- Mobile & Tablet Menu Toggle -->
-<button aria-label="Toggle Menu" class="lg:hidden flex items-center justify-center p-2 rounded-lg text-industrial-gold hover:bg-white/5 transition-colors" onclick="toggleMenu()">
-<svg class="w-7 h-7" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-<path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
-</svg>
-</button>
-</div>
-<!-- Mobile Side Menu Overlay -->
-<div class="fixed inset-0 z-50 lg:hidden hidden-menu" id="mobile-menu">
-<div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="toggleMenu()"></div>
-<div class="absolute top-0 right-0 h-full w-72 bg-space-dark border-l border-industrial-gold/20 p-6 flex flex-col shadow-2xl overflow-y-auto">
-<div class="flex justify-between items-center mb-10">
-<div class="flex items-center space-x-2">
-<div class="w-8 h-8 bg-industrial-gold rounded-full flex items-center justify-center font-bold text-space-dark text-xs">7</div>
-<span class="text-sm font-bold text-white uppercase tracking-tighter">Navigation</span>
-</div>
-<button aria-label="Close Menu" class="text-industrial-gold p-2 hover:rotate-90 transition-transform duration-300" onclick="toggleMenu()">
-<svg class="w-7 h-7" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-<path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
-</svg>
-</button>
-</div>
-<nav class="flex flex-col space-y-2">
-<a class="py-4 border-b border-white/5 text-lg font-semibold text-white/90 flex items-center justify-between group hover:text-industrial-gold transition-colors" href="#">
-            เกี่ยวกับเรา <span class="text-industrial-gold opacity-0 group-hover:opacity-100 transition-opacity">→</span>
-</a>
-<a class="py-4 border-b border-white/5 text-lg font-semibold text-white/90 flex items-center justify-between group hover:text-industrial-gold transition-colors" href="#">
-            แบรนด์ <span class="text-industrial-gold opacity-0 group-hover:opacity-100 transition-opacity">→</span>
-</a>
-<a class="py-4 border-b border-white/5 text-lg font-semibold text-white/90 flex items-center justify-between group hover:text-industrial-gold transition-colors" href="#">
-            บริการของเรา <span class="text-industrial-gold opacity-0 group-hover:opacity-100 transition-opacity">→</span>
-</a>
-<a class="py-4 border-b border-white/5 text-lg font-semibold text-white/90 flex items-center justify-between group hover:text-industrial-gold transition-colors" href="#">
-            สินค้า <span class="text-industrial-gold opacity-0 group-hover:opacity-100 transition-opacity">→</span>
-</a>
-<a class="py-4 border-b border-white/5 text-lg font-semibold text-white/90 flex items-center justify-between group hover:text-industrial-gold transition-colors" href="#">
-            ผลงาน <span class="text-industrial-gold opacity-0 group-hover:opacity-100 transition-opacity">→</span>
-</a>
-<a class="py-4 border-b border-white/5 text-lg font-semibold text-white/90 flex items-center justify-between group hover:text-industrial-gold transition-colors" href="#">
-            สมาชิก <span class="text-industrial-gold opacity-0 group-hover:opacity-100 transition-opacity">→</span>
-</a>
-<a class="py-4 border-b border-white/5 text-lg font-semibold text-white/90 flex items-center justify-between group hover:text-industrial-gold transition-colors" href="#">
-            ติดต่อเรา <span class="text-industrial-gold opacity-0 group-hover:opacity-100 transition-opacity">→</span>
-</a>
-<div class="pt-8">
-<button class="w-full bg-industrial-gold text-black py-4 rounded-xl font-bold flex items-center justify-center gap-3 shadow-[0_10px_20px_-5px_rgba(255,215,0,0.3)] hover:scale-[1.02] active:scale-95 transition-all">
-<span class="text-xl">📋</span>
-              ขอใบเสนอราคา
-            </button>
-</div>
-<div class="pt-10 flex flex-col items-center gap-4 text-center opacity-60">
-<p class="text-[10px] uppercase tracking-[0.2em] text-white">One Stop Industrial Service</p>
-<div class="flex gap-4">
-<span class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-xs">FB</span>
-<span class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-xs">LN</span>
-<span class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-xs">YT</span>
-</div>
-</div>
-</nav>
-</div>
-</div>
+<body>
+
+<div class="blueprint-grid"></div>
+<div class="scanline"></div>
+
+<!-- ================= HEADER ================= -->
+<header>
+  <div class="wrap nav">
+    <a href="#" class="brand">
+      <img src="images/logo-all.jpg" alt="Lungchai Chaiyo All">
+      <div class="brand-text">
+        <b>LUNGCHAI CHAIYO ALL</b>
+        <span>ONE PLATFORM · EVERYTHING BUSINESS</span>
+      </div>
+    </a>
+    <nav class="nav-menu">
+      <a href="#ecosystem">เกี่ยวกับเรา</a>
+      <a href="#units">ธุรกิจ</a>
+      <a href="#services">บริการ</a>
+      <a href="catalog.html">สินค้า</a>
+      <a href="#workflow">ผลงาน</a>
+      <a href="#contact">ติดต่อ</a>
+    </nav>
+    <a href="inquiry.html" class="nav-cta">ขอใบเสนอราคา</a>
+    <button class="burger" id="burgerBtn" aria-label="เมนู">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </header>
-<!-- END: MainHeader -->
-<main class="relative pt-20 md:pt-28 pb-10 md:pb-20 overflow-hidden">
-<!-- BEGIN: Hero Branding Section -->
-<section class="max-w-5xl mx-auto text-center px-4 mb-8 md:mb-12">
-<div class="relative inline-block mb-6 md:mb-8 animate-float">
-<div class="absolute -inset-6 md:-inset-10 blur-[40px] md:blur-[80px] rounded-full bg-purple-500/10"></div>
-<div class="relative z-10 mx-auto w-40 h-40 md:w-64 md:h-64 flex items-center justify-center">
-<img alt="Saturn Logo" class="w-full h-full object-contain brightness-110 sepia-[0.6] saturate-[2] hue-rotate-[-10deg]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2banl4t23Oypi0l14L3BbOs5WQvOVJ56MFOBtOxW6QKONBhmOtHVUFW8-wVw0fBzE_qhlw0qiA7XETSr3lGJH81ivfe3QyV0gHUlcvx8bOMwYqRZi9wMqsSMxoxCxNan4vTg223nN8oB4Jr-APk4U46bqNM-k7bbNMemBfqMxaYLqF1Q5w7YRYJvIL7OvNwgTN-_LtAZlYu9uIeEqbQfnpV3AywsTZviNNdw4ta29hkJ11W6sgMerTTCRB8D2a0iUnr3ux-lqfnYd"/>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#ecosystem">เกี่ยวกับเรา</a>
+  <a href="#units">ธุรกิจ</a>
+  <a href="#services">บริการ</a>
+  <a href="catalog.html">สินค้า</a>
+  <a href="#workflow">ผลงาน</a>
+  <a href="#contact">ติดต่อ</a>
+  <a href="inquiry.html" style="color:var(--gold);">ขอใบเสนอราคา →</a>
 </div>
-<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 w-full">
-<span class="bg-gradient-to-r from-amber-600 to-yellow-500 px-4 md:px-6 py-1 md:py-2 rounded text-lg md:text-2xl font-bold border border-white/20 shadow-2xl text-black">เข้าสู่ไซน์</span>
-</div>
-</div>
-<div class="space-y-3 md:space-y-4">
-<p class="text-[10px] md:text-xs uppercase tracking-[0.2em] md:tracking-[0.4em] text-cyber-amber font-bold">One Stop Industrial Supply &amp; Service</p>
-<h1 class="text-3xl sm:text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-white via-industrial-gold to-orbital-bronze drop-shadow-[0_0_10px_rgba(255,215,0,0.3)] leading-tight">
-          ลุงชัย ไชโย ออล
-        </h1>
-<h2 class="text-sm md:text-xl font-medium text-white/90 tracking-widest uppercase">Lungchai Chaiyo All</h2>
-<div class="mt-4 md:mt-6 space-y-1 text-xs md:text-base text-white/80 font-medium max-w-2xl mx-auto px-4">
-<p>ครบ จบ ทุกความต้องการของโรงงานและธุรกิจ</p>
-<p class="hidden sm:block">IT • ไฟฟ้า • PPE • เครื่องมือช่าง • วัสดุอุตสาหกรรม</p>
-<p class="sm:hidden">IT • ไฟฟ้า • PPE • เครื่องมือช่าง</p>
-<p>ค้าส่ง • ค้าปลีก • ออนไลน์ • บริการหลังการขาย</p>
-</div>
-</div>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="wrap hero-inner">
+    <img src="images/logo-all.jpg" alt="Lungchai Chaiyo All" class="hero-logo">
+    <div class="hero-tagline">One Stop Industrial Supply &amp; Service</div>
+    <h1>ลุงชัย <span class="gold">ไชโย</span> ออล</h1>
+    <p class="hero-sub">One Platform. Everything Business.<br>สินค้า · บริการ · เทคโนโลยี · โซลูชันธุรกิจ ครบในที่เดียว</p>
+    <div class="hero-supporting">
+      <span><b>7</b> Business Units</span>
+      <span><b>320+</b> รายการสินค้า</span>
+      <span><b>24/7</b> Support</span>
+      <span><b>8</b> ช่องทางจำหน่าย</span>
+    </div>
+  </div>
 </section>
-<!-- END: Hero Branding Section -->
-<!-- BEGIN: Search Hub -->
-<section class="max-w-4xl mx-auto px-4 mb-8 md:mb-16" data-purpose="search-interface">
-<div class="glass-morphism rounded-2xl p-4 md:p-6 relative overflow-hidden">
-<div class="grid grid-cols-1 sm:grid-cols-3 gap-2 md:gap-3 mb-4 md:mb-6">
-<button class="flex items-center justify-center gap-2 py-3 border border-industrial-gold/50 rounded-xl bg-industrial-gold/10 text-xs md:text-sm font-bold text-industrial-gold sun-flare-hover">
-<span>🔍</span> ค้นหาบริการ/สินค้า
-          </button>
-<button class="flex items-center justify-center gap-2 py-3 border border-white/10 rounded-xl bg-white/5 hover:bg-white/10 text-xs md:text-sm font-bold text-white sun-flare-hover">
-<span>🛠️</span> แจ้งซ่อมด่วน
-          </button>
-<button class="flex items-center justify-center gap-2 py-3 border border-white/10 rounded-xl bg-white/5 hover:bg-white/10 text-xs md:text-sm font-bold text-white sun-flare-hover">
-<span>👩‍🔧</span> หาช่างใกล้คุณ
-          </button>
-</div>
-<div class="flex flex-col md:flex-row items-stretch bg-black/60 border border-industrial-gold/20 rounded-xl p-1 gap-1">
-<div class="flex items-center flex-1">
-<div class="pl-4 text-industrial-gold/70">
-<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
-</div>
-<input class="w-full bg-transparent border-none focus:ring-0 text-white placeholder-white/30 text-xs md:text-sm py-3 px-3" placeholder="ค้นหาบริการซ่อม เช่น ซ่อมพริ้นเตอร์ เปลี่ยนหมึก..." type="text"/>
-</div>
-<button class="bg-industrial-gold text-black px-6 md:px-8 py-3 rounded-lg font-bold flex items-center justify-center gap-1 sun-flare-hover text-sm">
-            ค้นหา <span class="hidden md:inline transition-transform">→</span>
-</button>
-</div>
-<div class="mt-4 flex flex-wrap gap-2 items-center text-[10px] md:text-xs font-medium text-white/70">
-<span>ยอดนิยม :</span>
-<a class="px-3 py-1 border border-white/20 rounded-full hover:bg-industrial-gold/20 hover:text-industrial-gold transition-colors" href="#">ซ่อมพริ้นเตอร์</a>
-<a class="px-3 py-1 border border-white/20 rounded-full hover:bg-industrial-gold/20 hover:text-industrial-gold transition-colors" href="#">ซ่อมมอเตอร์</a>
-<a class="px-3 py-1 border border-white/20 rounded-full hover:bg-industrial-gold/20 hover:text-industrial-gold transition-colors" href="#">กล้องวงจรปิด</a>
-<a class="px-3 py-1 border border-white/20 rounded-full hover:bg-industrial-gold/20 hover:text-industrial-gold transition-colors" href="#">ซ่อมคอมฯ</a>
-</div>
-</div>
+
+<!-- ================= GATEWAY (4 buttons) ================= -->
+<section class="gateway">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Smart Gateway</div>
+      <h2 class="section-title">เลือกเส้นทางของคุณ</h2>
+      <p class="section-sub">4 ประตูสู่ระบบธุรกิจ LUNGCHAI CHAIYO ALL — เข้าถึงสินค้า บริการ และเครือข่ายช่างทั่วประเทศ</p>
+    </div>
+    <div class="gateway-grid">
+
+      <a href="index4.html" class="gw-card">
+        <div class="gw-num">GATE / 01</div>
+        <div class="gw-icon">🌐</div>
+        <h3>เข้าสู่เว็บไซต์หลัก</h3>
+        <p>สินค้า บริการ ผลงาน และข้อมูลบริษัททั้งหมดในที่เดียว</p>
+        <span class="gw-link">เข้าสู่เว็บไซต์ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+      </a>
+
+      <a href="services.html" class="gw-card">
+        <div class="gw-num">GATE / 02</div>
+        <div class="gw-icon">🔧</div>
+        <h3>ช่างซ่อมใกล้ฉัน</h3>
+        <p>ค้นหาช่าง IT · Network · CCTV · ไฟฟ้า พร้อมระบบจองคิว</p>
+        <span class="gw-link">ค้นหาช่าง <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+      </a>
+
+      <a href="service-request.html" class="gw-card">
+        <div class="gw-num">GATE / 03</div>
+        <div class="gw-icon">🎫</div>
+        <h3>แจ้งซ่อม-ติดตามงานออนไลน์</h3>
+        <p>สร้าง Ticket แนบรูป มอบหมายช่าง และติดตามสถานะแบบเรียลไทม์</p>
+        <span class="gw-link">แจ้งซ่อมทันที <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+      </a>
+
+      <a href="member.html" class="gw-card">
+        <div class="gw-num">GATE / 04</div>
+        <div class="gw-icon">👤</div>
+        <h3>สมัคร ลงทะเบียน</h3>
+        <p>ลูกค้า · ร้านค้า · ช่าง Partner · Supplier · องค์กร</p>
+        <span class="gw-link">สมัครสมาชิก <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+      </a>
+
+    </div>
+  </div>
 </section>
-<!-- END: Search Hub -->
-<!-- BEGIN: Service Grid -->
-<section class="max-w-4xl mx-auto px-4" data-purpose="action-buttons">
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-<button class="glass-morphism h-24 md:h-28 rounded-xl flex flex-col items-center justify-center gap-2 hover:bg-industrial-gold/10 sun-flare-hover group">
-<div class="text-2xl md:text-3xl bg-industrial-gold/10 p-2 rounded-lg group-hover:scale-110 transition-transform">📋</div>
-<span class="text-xs md:text-sm font-bold tracking-wide text-white">ขอใบเสนอราคา</span>
-</button>
-<button class="glass-morphism h-24 md:h-28 rounded-xl flex flex-col items-center justify-center gap-2 hover:bg-industrial-gold/10 sun-flare-hover group">
-<div class="text-2xl md:text-3xl bg-industrial-gold/10 p-2 rounded-lg group-hover:scale-110 transition-transform">🛒</div>
-<span class="text-xs md:text-sm font-bold tracking-wide text-white">สินค้าทั้งหมด</span>
-</button>
-</div>
-<div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-<div class="glass-morphism p-3 md:p-4 rounded-xl flex flex-col items-center text-center gap-2 cursor-pointer hover:bg-industrial-gold/10 transition-all sun-flare-hover">
-<span class="text-xl md:text-2xl">🔧</span>
-<span class="text-[10px] md:text-[11px] font-bold leading-tight text-white">บริการซ่อม<br/>ทั้งหมด</span>
-</div>
-<div class="glass-morphism p-3 md:p-4 rounded-xl flex flex-col items-center text-center gap-2 cursor-pointer hover:bg-industrial-gold/10 transition-all sun-flare-hover">
-<span class="text-xl md:text-2xl text-industrial-gold">🏆</span>
-<span class="text-[10px] md:text-[11px] font-bold leading-tight text-white">ผลงานที่<br/>ผ่านมา</span>
-</div>
-<div class="glass-morphism p-3 md:p-4 rounded-xl flex flex-col items-center text-center gap-2 cursor-pointer hover:bg-industrial-gold/10 transition-all sun-flare-hover">
-<span class="text-xl md:text-2xl text-industrial-gold">⭐</span>
-<span class="text-[10px] md:text-[11px] font-bold leading-tight text-white">รีวิวจาก<br/>ลูกค้า</span>
-</div>
-<div class="glass-morphism p-3 md:p-4 rounded-xl flex flex-col items-center text-center gap-2 cursor-pointer hover:bg-industrial-gold/10 transition-all sun-flare-hover">
-<span class="text-xl md:text-2xl text-industrial-gold">📡</span>
-<span class="text-[10px] md:text-[11px] font-bold leading-tight text-white">เช็คติดตาม<br/>งาน</span>
-</div>
-<div class="glass-morphism p-3 md:p-4 rounded-xl flex flex-col items-center text-center gap-2 cursor-pointer hover:bg-industrial-gold/10 transition-all sun-flare-hover">
-<span class="text-xl md:text-2xl text-industrial-gold">🏗️</span>
-<span class="text-[10px] md:text-[11px] font-bold leading-tight text-white">โครงสร้าง<br/>องค์กร</span>
-</div>
-<div class="glass-morphism p-3 md:p-4 rounded-xl flex flex-col items-center text-center gap-2 cursor-pointer hover:bg-industrial-gold/10 transition-all sun-flare-hover">
-<span class="text-xl md:text-2xl text-amber-500">📍</span>
-<span class="text-[10px] md:text-[11px] font-bold leading-tight text-white">แผนที่ตั้ง</span>
-</div>
-<div class="glass-morphism p-3 md:p-4 rounded-xl flex flex-col items-center text-center gap-2 cursor-pointer hover:bg-industrial-gold/10 transition-all sun-flare-hover">
-<span class="text-xl md:text-2xl text-industrial-gold">🗺️</span>
-<span class="text-[10px] md:text-[11px] font-bold leading-tight text-white">เช็คระยะ<br/>ทาง</span>
-</div>
-<div class="glass-morphism p-3 md:p-4 rounded-xl flex flex-col items-center text-center gap-2 cursor-pointer border border-industrial-gold/40 hover:bg-industrial-gold/20 transition-all glow-gold sun-flare-hover">
-<span class="text-xl md:text-2xl">💬</span>
-<span class="text-[10px] md:text-[11px] font-bold leading-tight text-white">ติดต่อ<br/>สอบถาม</span>
-</div>
-</div>
+
+<!-- ================= SEARCH HUB ================= -->
+<section class="search-hub">
+  <div class="wrap">
+    <form class="search-box" action="catalog.html" method="get">
+      <span class="search-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+      </span>
+      <input type="text" name="q" placeholder="ค้นหาสินค้า บริการ หรือช่างที่ต้องการ เช่น เครื่องพิมพ์, กล้องวงจรปิด, ติดตั้งเน็ตเวิร์ก...">
+      <button type="submit" class="search-btn">ค้นหา</button>
+    </form>
+    <div class="search-tags">
+      <a href="catalog.html">คอมพิวเตอร์</a>
+      <a href="catalog.html">อุปกรณ์เครือข่าย</a>
+      <a href="catalog.html">PPE</a>
+      <a href="services.html">ติดตั้งกล้องวงจรปิด</a>
+      <a href="catalog.html">วัสดุก่อสร้าง</a>
+      <a href="catalog.html">ของฝาก OTOP</a>
+      <a href="catalog.html">ชุดยูนิฟอร์ม</a>
+    </div>
+  </div>
 </section>
-<!-- END: Service Grid -->
-<!-- BEGIN: Stats Footer -->
-<section class="max-w-4xl mx-auto px-4 mt-12 md:mt-20" data-purpose="company-stats">
-<div class="grid grid-cols-2 md:flex md:flex-wrap md:justify-center gap-8 md:gap-24 text-center">
-<div>
-<div class="text-2xl md:text-4xl font-bold text-industrial-gold drop-shadow-[0_0_10px_rgba(255,215,0,0.5)]">10+</div>
-<div class="text-[8px] md:text-[10px] uppercase font-bold tracking-widest text-white/60">หมวดสินค้า</div>
-</div>
-<div>
-<div class="text-2xl md:text-4xl font-bold text-industrial-gold drop-shadow-[0_0_10px_rgba(255,215,0,0.5)]">7</div>
-<div class="text-[8px] md:text-[10px] uppercase font-bold tracking-widest text-white/60">แบรนด์</div>
-</div>
-<div>
-<div class="text-2xl md:text-4xl font-bold text-industrial-gold drop-shadow-[0_0_10px_rgba(255,215,0,0.5)]">8</div>
-<div class="text-[8px] md:text-[10px] uppercase font-bold tracking-widest text-white/60">ช่องทางขาย</div>
-</div>
-<div>
-<div class="text-2xl md:text-4xl font-bold text-industrial-gold drop-shadow-[0_0_10px_rgba(255,215,0,0.5)]">24/7</div>
-<div class="text-[8px] md:text-[10px] uppercase font-bold tracking-widest text-white/60">พร้อมให้บริการ</div>
-</div>
-</div>
+
+<!-- ================= ECOSYSTEM ================= -->
+<section class="ecosystem" id="ecosystem">
+  <div class="wrap">
+    <div class="section-head" style="text-align:center;">
+      <div class="eyebrow" style="justify-content:center;">Business Ecosystem</div>
+      <h2 class="section-title">ระบบนิเวศธุรกิจที่ครบวงจร</h2>
+      <p class="section-sub" style="margin:12px auto 0;">รวมสินค้า บริการ เทคโนโลยี และเครือข่ายพันธมิตร ไว้ในแพลตฟอร์มเดียว</p>
+    </div>
+    <div class="eco-flow">
+      <div class="eco-item">สินค้า</div>
+      <span class="eco-plus">+</span>
+      <div class="eco-item">บริการ</div>
+      <span class="eco-plus">+</span>
+      <div class="eco-item">Technology</div>
+      <span class="eco-plus">+</span>
+      <div class="eco-item">Partner</div>
+      <span class="eco-plus">+</span>
+      <div class="eco-item">Community</div>
+      <span class="eco-eq">=</span>
+      <div class="eco-item eco-result">LUNGCHAI CHAIYO ALL</div>
+    </div>
+  </div>
 </section>
-<section class="max-w-4xl mx-auto px-4 mt-16 md:mt-24 mb-12 md:mb-20" data-purpose="app-download">
-<div class="glass-morphism rounded-2xl p-8 md:p-12 text-center relative overflow-hidden">
-<div class="absolute -top-24 -left-24 w-48 h-48 bg-purple-500/10 blur-[60px] rounded-full"></div>
-<div class="absolute -bottom-24 -right-24 w-48 h-48 bg-purple-500/10 blur-[60px] rounded-full"></div>
-<h2 class="text-2xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-industrial-gold to-white drop-shadow-[0_0_15px_rgba(255,215,0,0.4)] mb-8 tracking-tight">
-      ดาวน์โหลดแอปพลิเคชัน
-    </h2>
-<div class="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6">
-<a class="w-full sm:w-auto flex items-center gap-3 px-6 py-3 rounded-xl border border-industrial-gold/30 bg-black/40 backdrop-blur-md hover:bg-industrial-gold/10 hover:border-industrial-gold/60 transition-all duration-300 sun-flare-hover group" href="#">
-<svg class="w-8 h-8 text-white group-hover:text-industrial-gold transition-colors" fill="currentColor" viewbox="0 0 384 512">
-<path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"></path>
-</svg>
-<div class="text-left">
-<div class="text-[10px] uppercase tracking-widest text-white/60 leading-none mb-1">Download on the</div>
-<div class="text-lg font-bold text-white leading-none">App Store</div>
-</div>
-</a>
-<a class="w-full sm:w-auto flex items-center gap-3 px-6 py-3 rounded-xl border border-industrial-gold/30 bg-black/40 backdrop-blur-md hover:bg-industrial-gold/10 hover:border-industrial-gold/60 transition-all duration-300 sun-flare-hover group" href="#">
-<svg class="w-8 h-8 text-white group-hover:text-industrial-gold transition-colors" fill="currentColor" viewbox="0 0 512 512">
-<path d="M325.3 234.3L104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6l-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"></path>
-</svg>
-<div class="text-left">
-<div class="text-[10px] uppercase tracking-widest text-white/60 leading-none mb-1">Get it on</div>
-<div class="text-lg font-bold text-white leading-none">Google Play</div>
-</div>
-</a>
-</div>
-</div>
+
+<!-- ================= BUSINESS UNITS ================= -->
+<section class="units" id="units">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Business Units</div>
+      <h2 class="section-title">7 ธุรกิจในเครือ</h2>
+      <p class="section-sub">แต่ละหน่วยธุรกิจเชี่ยวชาญเฉพาะด้าน ทำงานร่วมกันเป็นหนึ่งเดียว</p>
+    </div>
+    <div class="units-grid">
+
+      <div class="unit-card">
+        <span class="unit-idx">01 / IT</span>
+        <h4>Network Farm IT Solution</h4>
+        <div class="unit-tags"><span>Computer</span><span>Network</span><span>Server</span><span>CCTV</span><span>Cloud</span></div>
+      </div>
+
+      <div class="unit-card">
+        <span class="unit-idx">02 / SERVICE</span>
+        <h4>ลุงชัย บริการ</h4>
+        <div class="unit-tags"><span>Repair</span><span>Installation</span><span>Maintenance</span><span>On-Site</span></div>
+      </div>
+
+      <div class="unit-card">
+        <span class="unit-idx">03 / FACTORY</span>
+        <h4>Lungchai Factory Solution</h4>
+        <div class="unit-tags"><span>Industrial IT</span><span>Electrical</span><span>Automation</span><span>Engineering</span></div>
+      </div>
+
+      <div class="unit-card">
+        <span class="unit-idx">04 / MARKET</span>
+        <h4>Lungchai Market</h4>
+        <div class="unit-tags"><span>Marketplace</span><span>Wholesale</span><span>Retail</span><span>Seller</span></div>
+      </div>
+
+      <div class="unit-card">
+        <span class="unit-idx">05 / OTOP</span>
+        <h4>ลุงชัย ของฝาก</h4>
+        <div class="unit-tags"><span>Local Product</span><span>OTOP</span><span>Food</span></div>
+      </div>
+
+      <div class="unit-card">
+        <span class="unit-idx">06 / FASHION</span>
+        <h4>ลุงชัย ไชโย Fashion</h4>
+        <div class="unit-tags"><span>Clothing</span><span>Lifestyle</span><span>Merchandise</span></div>
+      </div>
+
+      <div class="unit-card">
+        <span class="unit-idx">07 / GREEN</span>
+        <h4>ลุงชัย รักษ์โลก</h4>
+        <div class="unit-tags"><span>Green Product</span><span>Recycle</span><span>Sustainable</span></div>
+      </div>
+
+      <div class="unit-card" style="display:flex;flex-direction:column;justify-content:center;align-items:flex-start;background:linear-gradient(135deg, rgba(255,215,0,0.08), rgba(205,127,50,0.04));border-color:var(--bronze);">
+        <h4 style="color:var(--gold);margin-bottom:6px;">ดูทั้งหมด</h4>
+        <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;">สำรวจทุกหน่วยธุรกิจในเครือ</p>
+        <a href="index4.html" class="gw-link" style="font-size:12.5px;">เปิดดูรายละเอียด →</a>
+      </div>
+
+    </div>
+  </div>
 </section>
-<!-- END: Stats Footer -->
-</main>
-<!-- BEGIN: Floating Contact -->
-<div class="fixed right-4 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-3 p-2 glass-morphism rounded-full border border-industrial-gold/30 shadow-2xl">
-<a class="w-8 h-8 flex items-center justify-center rounded-full bg-industrial-gold/10 text-industrial-gold hover:bg-industrial-gold hover:text-black transition-all duration-300 glow-gold group" href="#">
-<span class="material-symbols-outlined text-lg">call</span>
-</a>
-<a class="w-8 h-8 flex items-center justify-center rounded-full bg-industrial-gold/10 text-industrial-gold hover:bg-industrial-gold hover:text-black transition-all duration-300 glow-gold group" href="#">
-<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.814 4.269 8.846 10.036 9.608.391.084.922.258 1.057.592.121.303.079.778.039 1.085l-.171 1.027c-.053.303-.242 1.185 1.039.646 1.281-.54 6.913-4.071 9.428-6.969 1.726-1.921 2.571-3.978 2.571-5.989z"></path></svg>
-</a>
-<a class="w-8 h-8 flex items-center justify-center rounded-full bg-industrial-gold/10 text-industrial-gold hover:bg-industrial-gold hover:text-black transition-all duration-300 glow-gold group" href="#">
-<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.46 12.22l-1.17 1.17c-.2.2-.51.2-.71 0l-2.58-2.58-2.58 2.58c-.2.2-.51.2-.71 0l-1.17-1.17c-.2-.2-.2-.51 0-.71l2.58-2.58-2.58-2.58c-.2-.2-.2-.51 0-.71l1.17-1.17c.2-.2.51-.2.71 0l2.58 2.58 2.58-2.58c.2-.2.51-.2.71 0l1.17 1.17c.2.2.2.51 0 .71l-2.58 2.58 2.58 2.58c.2.2.2.51 0 .71z"></path></svg>
-</a>
-<a class="w-8 h-8 flex items-center justify-center rounded-full bg-industrial-gold/10 text-industrial-gold hover:bg-industrial-gold hover:text-black transition-all duration-300 glow-gold group" href="#">
-<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.17-2.89-.6-4.09-1.47-.88-.64-1.61-1.47-2.11-2.44v10.17c.03 1.43-.35 2.94-1.2 4.03-1.33 1.71-3.64 2.47-5.75 2.01-2.33-.51-4.15-2.68-4.21-5.06-.03-2.31 1.51-4.53 3.76-5.06.94-.22 1.95-.1 2.84.31V8.55c-1.57-.24-3.23-.04-4.6.79-1.88 1.12-2.97 3.35-2.7 5.53.22 2.15 1.69 4.08 3.74 4.73 2.01.63 4.33.04 5.75-1.57.99-1.13 1.39-2.66 1.31-4.16V.02z"></path></svg>
-</a>
-<a class="w-8 h-8 flex items-center justify-center rounded-full bg-industrial-gold/10 text-industrial-gold hover:bg-industrial-gold hover:text-black transition-all duration-300 glow-gold group" href="#">
-<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
-</a>
-<a class="w-8 h-8 flex items-center justify-center rounded-full bg-industrial-gold/10 text-industrial-gold hover:bg-industrial-gold hover:text-black transition-all duration-300 glow-gold group" href="#">
-<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M12 0C5.373 0 0 4.974 0 11.111c0 3.498 1.744 6.614 4.469 8.654V24l4.088-2.242c1.012.28 2.089.431 3.205.431 6.627 0 12-4.975 12-11.111C23.762 4.974 18.389 0 12 0zm1.159 14.963l-3.048-3.252-5.939 3.252 6.525-6.92 3.117 3.252 5.866-3.252-6.521 6.92z"></path></svg>
-</a>
-<a class="w-8 h-8 flex items-center justify-center rounded-full bg-industrial-gold/10 text-industrial-gold hover:bg-industrial-gold hover:text-black transition-all duration-300 glow-gold group" href="#">
-<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.668-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"></path></svg>
-</a>
-<a class="w-8 h-8 flex items-center justify-center rounded-full bg-industrial-gold/10 text-industrial-gold hover:bg-industrial-gold hover:text-black transition-all duration-300 glow-gold group" href="#">
-<div class="relative">
-<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.814 4.269 8.846 10.036 9.608.391.084.922.258 1.057.592.121.303.079.778.039 1.085l-.171 1.027c-.053.303-.242 1.185 1.039.646 1.281-.54 6.913-4.071 9.428-6.969 1.726-1.921 2.571-3.978 2.571-5.989z"></path></svg>
-<span class="absolute -top-1 -right-1 w-2 h-2 bg-industrial-gold rounded-full border border-black"></span>
-</div>
-</a>
-</div>
-<!-- END: Floating Contact -->
+
+<!-- ================= SERVICE PLATFORM ================= -->
+<section class="services-sec" id="services">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Service Platform</div>
+      <h2 class="section-title">บริการหลักของเรา</h2>
+      <p class="section-sub">ทีมช่างมืออาชีพ พร้อมให้บริการครอบคลุมทุกความต้องการ</p>
+    </div>
+    <div class="svc-grid">
+      <div class="svc-item"><div class="ic">💻</div><span>IT Support</span></div>
+      <div class="svc-item"><div class="ic">🖥️</div><span>Computer Repair</span></div>
+      <div class="svc-item"><div class="ic">📡</div><span>Network Installation</span></div>
+      <div class="svc-item"><div class="ic">🎥</div><span>CCTV</span></div>
+      <div class="svc-item"><div class="ic">🗄️</div><span>Server</span></div>
+      <div class="svc-item"><div class="ic">🏭</div><span>Factory Maintenance</span></div>
+      <div class="svc-item"><div class="ic">⚡</div><span>Electrical System</span></div>
+      <div class="svc-item"><div class="ic">📋</div><span>Preventive Maintenance</span></div>
+    </div>
+    <div style="text-align:center;margin-top:40px;">
+      <a href="services.html" class="nav-cta" style="display:inline-flex;">ดูบริการทั้งหมด 160 รายการ →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PRODUCT CATEGORIES ================= -->
+<section class="products">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Product Categories</div>
+      <h2 class="section-title">หมวดหมู่สินค้า</h2>
+      <p class="section-sub">มากกว่า 320 รายการ พร้อมส่งทั้งค้าส่งและค้าปลีก</p>
+    </div>
+    <div class="prod-cols">
+      <div class="prod-col">
+        <div class="prod-col-head"><h4>IT Product</h4><span>DIGITAL</span></div>
+        <div class="prod-list">
+          <span>Computer</span><span>Notebook</span><span>Printer</span><span>Scanner</span>
+          <span>Network Equipment</span><span>Accessories</span>
+        </div>
+      </div>
+      <div class="prod-col">
+        <div class="prod-col-head"><h4>Industrial Product</h4><span>FACTORY</span></div>
+        <div class="prod-list">
+          <span>Electrical</span><span>PPE</span><span>Tools</span><span>Factory Supply</span>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:40px;">
+      <a href="catalog.html" class="nav-cta" style="display:inline-flex;">เปิดแคตตาล็อกสินค้า →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= WORKFLOW ================= -->
+<section class="workflow" id="workflow">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Customer Workflow</div>
+      <h2 class="section-title">ขั้นตอนการใช้บริการ</h2>
+      <p class="section-sub">จากค้นหาบริการ ถึงปิดงานและรีวิว — ระบบเดียวที่ครบวงจร</p>
+    </div>
+    <div class="wf-track">
+      <div class="wf-step"><div class="wf-num">1</div><h5>ค้นหาบริการ</h5><p>เลือกหมวดหมู่ที่ต้องการ</p></div>
+      <div class="wf-step"><div class="wf-num">2</div><h5>เลือกบริการ</h5><p>ดูรายละเอียดและราคา</p></div>
+      <div class="wf-step"><div class="wf-num">3</div><h5>กรอกข้อมูล</h5><p>ระบุปัญหาและสถานที่</p></div>
+      <div class="wf-step"><div class="wf-num">4</div><h5>ส่งรูป</h5><p>แนบรูปประกอบ</p></div>
+      <div class="wf-step"><div class="wf-num">5</div><h5>รับ Ticket</h5><p>ระบบสร้างเลขติดตามงาน</p></div>
+      <div class="wf-step"><div class="wf-num">6</div><h5>ช่างดำเนินการ</h5><p>มอบหมายช่างใกล้ที่สุด</p></div>
+      <div class="wf-step"><div class="wf-num">7</div><h5>ติดตามงาน</h5><p>อัปเดตสถานะเรียลไทม์</p></div>
+      <div class="wf-step"><div class="wf-num">8</div><h5>ปิดงาน + รีวิว</h5><p>ยืนยันความพึงพอใจ</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= COMPANY TRUST ================= -->
+<section class="trust">
+  <div class="wrap">
+    <div class="trust-grid">
+      <div class="trust-item"><b>10+</b><span>Product Categories</span></div>
+      <div class="trust-item"><b>7</b><span>Business Units</span></div>
+      <div class="trust-item"><b>8</b><span>Sales Channels</span></div>
+      <div class="trust-item"><b>24/7</b><span>Support</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= REGISTER PLATFORM ================= -->
+<section class="register">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Register Platform</div>
+      <h2 class="section-title">สมัครสมาชิกวันนี้</h2>
+      <p class="section-sub">เข้าร่วมเครือข่ายธุรกิจ LUNGCHAI CHAIYO ALL</p>
+    </div>
+    <div class="reg-grid">
+      <a href="member.html" class="reg-card"><div class="ic">🧑</div><h5>ลูกค้า</h5></a>
+      <a href="member.html" class="reg-card"><div class="ic">🏪</div><h5>ร้านค้า</h5></a>
+      <a href="member.html" class="reg-card"><div class="ic">🛠️</div><h5>ช่าง Partner</h5></a>
+      <a href="member.html" class="reg-card"><div class="ic">📦</div><h5>Supplier</h5></a>
+      <a href="member.html" class="reg-card"><div class="ic">🏢</div><h5>องค์กร</h5></a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Contact</div>
+      <h2 class="section-title">ติดต่อเรา</h2>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <h3>พร้อมให้คำปรึกษาทุกความต้องการทางธุรกิจ</h3>
+        <p>ทีมงานของเราพร้อมตอบทุกคำถาม ตั้งแต่การเลือกสินค้าไปจนถึงงานบริการหน้างาน ติดต่อได้ทุกช่องทาง</p>
+        <div class="contact-list">
+          <a href="https://line.me/R/ti/p/@971yzyyd" target="_blank" rel="noopener">
+            <span class="ic">💬</span> LINE Official — @lungchaichaiyoall
+          </a>
+          <a href="https://www.facebook.com/lungchai147258" target="_blank" rel="noopener">
+            <span class="ic">📘</span> Facebook — LUNGCHAI CHAIYO ALL
+          </a>
+          <a href="https://www.instagram.com/lungchaimarket" target="_blank" rel="noopener">
+            <span class="ic">📷</span> Instagram — @lungchaimarket
+          </a>
+          <a href="https://maps.app.goo.gl/eayqd3619xcgLWFd8" target="_blank" rel="noopener">
+            <span class="ic">📍</span> แผนที่ / Location
+          </a>
+        </div>
+      </div>
+      <form class="contact-form">
+        <input type="text" placeholder="ชื่อ-นามสกุล" required>
+        <input type="tel" placeholder="เบอร์โทรศัพท์" required>
+        <select>
+          <option>เรื่องที่ต้องการติดต่อ</option>
+          <option>ขอใบเสนอราคา</option>
+          <option>แจ้งซ่อม</option>
+          <option>สอบถามสินค้า</option>
+          <option>สมัครเป็นพาร์ทเนอร์</option>
+        </select>
+        <textarea placeholder="รายละเอียดที่ต้องการติดต่อ"></textarea>
+        <button type="submit">ส่งข้อความ</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="footer">
+        <div class="foot-brand">
+          <img src="images/logo-all.jpg" alt="Lungchai Chaiyo All">
+          <b>LUNGCHAI CHAIYO ALL</b>
+        </div>
+        <p class="desc">One Stop Industrial Supply &amp; Service — สินค้า บริการ เทคโนโลยี และเครือข่ายธุรกิจไว้ในแพลตฟอร์มเดียว</p>
+      </div>
+      <div class="foot-col">
+        <h6>Platform</h6>
+        <a href="index4.html">เว็บไซต์หลัก</a>
+        <a href="catalog.html">แคตตาล็อกสินค้า</a>
+        <a href="services.html">บริการ</a>
+        <a href="member.html">สมัครสมาชิก</a>
+      </div>
+      <div class="foot-col">
+        <h6>Business Units</h6>
+        <a href="#units">Network Farm IT</a>
+        <a href="#units">Lungchai Factory</a>
+        <a href="#units">Lungchai Market</a>
+        <a href="#units">ของฝาก &amp; Fashion</a>
+      </div>
+      <div class="foot-col">
+        <h6>Support</h6>
+        <a href="service-request.html">แจ้งซ่อมออนไลน์</a>
+        <a href="inquiry.html">ขอใบเสนอราคา</a>
+        <a href="#contact">ติดต่อเรา</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 LUNGCHAI CHAIYO ALL. All rights reserved.</span>
+      <div class="foot-social">
+        <a href="https://www.facebook.com/lungchai147258" target="_blank" rel="noopener" aria-label="Facebook">FB</a>
+        <a href="https://www.instagram.com/lungchaimarket" target="_blank" rel="noopener" aria-label="Instagram">IG</a>
+        <a href="https://www.tiktok.com/@lungchai147258" target="_blank" rel="noopener" aria-label="TikTok">TK</a>
+        <a href="https://line.me/R/ti/p/@971yzyyd" target="_blank" rel="noopener" aria-label="LINE">LN</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
 <script>
-    function toggleMenu() {
-      const menu = document.getElementById('mobile-menu');
-      const body = document.body;
-      const isHidden = menu.classList.contains('hidden-menu');
-      
-      if (isHidden) {
-        menu.classList.remove('hidden-menu');
-        body.classList.add('menu-open');
-      } else {
-        menu.classList.add('hidden-menu');
-        body.classList.remove('menu-open');
-      }
-    }
+  const burgerBtn = document.getElementById('burgerBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  burgerBtn.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.remove('open')));
 
-    // Close menu on resize if switching to desktop
-    window.addEventListener('resize', () => {
-      if (window.innerWidth >= 1024) {
-        const menu = document.getElementById('mobile-menu');
-        if (!menu.classList.contains('hidden-menu')) {
-          toggleMenu();
-        }
+  // Header border intensifies on scroll
+  const hdr = document.querySelector('header');
+  window.addEventListener('scroll', () => {
+    hdr.style.borderBottomColor = window.scrollY > 40 ? 'rgba(255,215,0,0.18)' : 'var(--line)';
+  });
+
+  // Scroll-reveal for cards/sections
+  const revealTargets = document.querySelectorAll('.gw-card, .unit-card, .svc-item, .reg-card, .prod-col, .trust-item, .wf-step');
+  revealTargets.forEach(el => { el.style.opacity = 0; el.style.transform = 'translateY(16px)'; el.style.transition = 'opacity .6s ease, transform .6s ease'; });
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = 1;
+        entry.target.style.transform = 'translateY(0)';
+        io.unobserve(entry.target);
       }
     });
+  }, { threshold: 0.12 });
+  revealTargets.forEach(el => io.observe(el));
+</script>
 
-    window.addEventListener('scroll', () => {
-      const header = document.querySelector('header');
-      const container = header.querySelector('div');
-      if (window.scrollY > 20) {
-        container.classList.add('bg-black/80', 'backdrop-blur-xl', 'border-industrial-gold/20');
-      } else {
-        container.classList.remove('bg-black/80', 'backdrop-blur-xl', 'border-industrial-gold/20');
-      }
-    });
-  </script>
-</body></html>
+</body>
+</html>
