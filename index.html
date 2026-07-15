@@ -4,6 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="ลุงชัย ไชโย ออล — One Stop Industrial Supply | IT • ไฟฟ้า • PPE • เครื่องมือช่าง">
+<meta name="theme-color" content="#02020C">
+<link rel="icon" type="image/jpeg" href="https://raw.githubusercontent.com/Chai147258/LUNGCHAI-CHAIYO-ALL/main/images/logo-all.jpg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ลุงชัย ไชโย ออล | Lungchai Chaiyo All — One Stop Industrial Supply">
+<meta property="og:description" content="ครบ จบ ทุกความต้องการของโรงงานและธุรกิจ IT • ไฟฟ้า • PPE • เครื่องมือช่าง • วัสดุอุตสาหกรรม">
+<meta property="og:image" content="https://raw.githubusercontent.com/Chai147258/LUNGCHAI-CHAIYO-ALL/main/images/logo-all.jpg">
+<meta property="og:url" content="https://lungchaichaiyo.shop/">
+<meta name="twitter:card" content="summary_large_image">
 <title>ลุงชัย ไชโย ออล | Lungchai Chaiyo All</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -378,6 +386,54 @@ img{display:block;max-width:100%}
   line-height:1.85;
   max-width:580px;
   margin:0 auto 2rem;
+}
+
+/* ══════════════════════════════════════════
+   CTA PANEL — glass console wrapper
+══════════════════════════════════════════ */
+.cta-panel{
+  width:100%;
+  max-width:680px;
+  margin:0 auto 2rem;
+  padding:clamp(1rem,2.5vw,1.5rem);
+  border-radius:20px;
+  background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01));
+  border:1px solid rgba(201,168,76,.16);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  box-shadow:0 20px 60px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.05);
+}
+
+/* ══════════════════════════════════════════
+   FLOATING QUICK-CONTACT
+══════════════════════════════════════════ */
+.fab-wrap{
+  position:fixed;
+  right:clamp(.9rem,3vw,1.6rem);
+  bottom:clamp(.9rem,3vw,1.6rem);
+  z-index:450;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:.6rem;
+}
+.fab{
+  display:flex;align-items:center;justify-content:center;
+  width:52px;height:52px;border-radius:50%;
+  box-shadow:0 8px 24px rgba(0,0,0,.5);
+  transition:transform var(--t) var(--ease),box-shadow var(--t);
+  font-size:1.5rem;
+  animation:fabPop .5s var(--ease) both;
+}
+.fab:hover{transform:scale(1.1) translateY(-2px)}
+.fab-line{background:linear-gradient(135deg,#00C73C,#00B90A);display:flex;align-items:center;justify-content:center}
+.fab-wa{background:linear-gradient(135deg,#25D366,#128C7E);display:flex;align-items:center;justify-content:center;width:44px;height:44px;font-size:1.25rem}
+@keyframes fabPop{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:scale(1)}}
+.fab-line{box-shadow:0 8px 24px rgba(0,185,10,.4),0 0 0 0 rgba(0,185,10,.5);animation:fabPop .5s var(--ease) both,fabRing 2.6s ease-out infinite}
+@keyframes fabRing{
+  0%{box-shadow:0 8px 24px rgba(0,185,10,.4),0 0 0 0 rgba(0,185,10,.45)}
+  70%{box-shadow:0 8px 24px rgba(0,185,10,.4),0 0 0 14px rgba(0,185,10,0)}
+  100%{box-shadow:0 8px 24px rgba(0,185,10,.4),0 0 0 0 rgba(0,185,10,0)}
 }
 
 /* ══════════════════════════════════════════
@@ -864,6 +920,8 @@ footer{
   .ft-grid{grid-template-columns:1fr}
   .brands-grid{grid-template-columns:repeat(2,1fr)}
   .ch-grid{grid-template-columns:repeat(2,1fr)}
+  .fab-line{width:46px;height:46px;font-size:1.3rem}
+  .fab-wa{width:40px;height:40px;font-size:1.1rem}
 }
 
 /* TV / Large */
@@ -952,56 +1010,59 @@ footer{
     ค้าส่ง • ค้าปลีก • ออนไลน์ • บริการหลังการขาย
   </p>
 
-  <!-- ── CTA ROW 1 — 2 PRIMARY ── -->
-  <div class="cta-grid reveal">
-    <a href="/inquiry.html" class="cta-btn cta-primary">
-      <span class="btn-icon">📋</span>
-      <span class="btn-txt">ขอใบเสนอราคา</span>
-    </a>
-    <a href="/catalog.html" class="cta-btn cta-primary">
-      <span class="btn-icon">🛒</span>
-      <span class="btn-txt">สินค้าทั้งหมด</span>
-    </a>
-  </div>
+  <!-- ── CTA CONSOLE PANEL ── -->
+  <div class="cta-panel reveal">
+    <!-- Row 1 — 2 primary -->
+    <div class="cta-grid">
+      <a href="/inquiry.html" class="cta-btn cta-primary">
+        <span class="btn-icon">📋</span>
+        <span class="btn-txt">ขอใบเสนอราคา</span>
+      </a>
+      <a href="/catalog.html" class="cta-btn cta-primary">
+        <span class="btn-icon">🛒</span>
+        <span class="btn-txt">สินค้าทั้งหมด</span>
+      </a>
+    </div>
 
-  <!-- ── CTA ROW 2 — 4 ── -->
-  <div class="cta-row2 reveal">
-    <a href="/services.html" class="cta-btn">
-      <span class="btn-icon">🔧</span>
-      <span class="btn-txt">บริการซ่อม<br>ทั้งหมด</span>
-    </a>
-    <a href="/portfolio.html" class="cta-btn">
-      <span class="btn-icon">🏆</span>
-      <span class="btn-txt">ผลงานที่<br>ผ่านมา</span>
-    </a>
-    <a href="/reviews.html" class="cta-btn">
-      <span class="btn-icon">⭐</span>
-      <span class="btn-txt">รีวิวจาก<br>ลูกค้า</span>
-    </a>
-    <a href="/track.html" class="cta-btn">
-      <span class="btn-icon">📡</span>
-      <span class="btn-txt">เช็ค&ติดตาม<br>งาน</span>
-    </a>
-  </div>
+    <!-- Row 2 — 4 -->
+    <div class="cta-row2">
+      <a href="/services.html" class="cta-btn">
+        <span class="btn-icon">🔧</span>
+        <span class="btn-txt">บริการซ่อม<br>ทั้งหมด</span>
+      </a>
+      <a href="/portfolio.html" class="cta-btn">
+        <span class="btn-icon">🏆</span>
+        <span class="btn-txt">ผลงานที่<br>ผ่านมา</span>
+      </a>
+      <a href="/reviews.html" class="cta-btn">
+        <span class="btn-icon">⭐</span>
+        <span class="btn-txt">รีวิวจาก<br>ลูกค้า</span>
+      </a>
+      <a href="/track.html" class="cta-btn">
+        <span class="btn-icon">📡</span>
+        <span class="btn-txt">เช็ค&ติดตาม<br>งาน</span>
+      </a>
+    </div>
 
-  <!-- ── CTA ROW 3 — 4 ── -->
-  <div class="cta-row3 reveal">
-    <a href="/about.html" class="cta-btn">
-      <span class="btn-icon">🏗️</span>
-      <span class="btn-txt">โครงสร้าง<br>องค์กร</span>
-    </a>
-    <a href="#contact" class="cta-btn">
-      <span class="btn-icon">📍</span>
-      <span class="btn-txt">แผนที่ตั้ง</span>
-    </a>
-    <a href="https://maps.app.goo.gl/eayqd3619xcgLWFd8" target="_blank" class="cta-btn">
-      <span class="btn-icon">🗺️</span>
-      <span class="btn-txt">เช็คระยะ<br>ทาง</span>
-    </a>
-    <a href="https://line.me/R/ti/p/@971yzyyd" target="_blank" class="cta-btn cta-line-hl">
-      <span class="btn-icon">💬</span>
-      <span class="btn-txt">ติดต่อ<br>สอบถาม</span>
-    </a>
+    <!-- Row 3 — 4 -->
+    <div class="cta-row3" style="margin-bottom:0">
+      <a href="/about.html" class="cta-btn">
+        <span class="btn-icon">🏗️</span>
+        <span class="btn-txt">โครงสร้าง<br>องค์กร</span>
+      </a>
+      <a href="#contact" class="cta-btn">
+        <span class="btn-icon">📍</span>
+        <span class="btn-txt">แผนที่ตั้ง</span>
+      </a>
+      <a href="https://maps.app.goo.gl/eayqd3619xcgLWFd8" target="_blank" class="cta-btn">
+        <span class="btn-icon">🗺️</span>
+        <span class="btn-txt">เช็คระยะ<br>ทาง</span>
+      </a>
+      <a href="https://line.me/R/ti/p/@971yzyyd" target="_blank" class="cta-btn cta-line-hl">
+        <span class="btn-icon">💬</span>
+        <span class="btn-txt">ติดต่อ<br>สอบถาม</span>
+      </a>
+    </div>
   </div>
 
   <!-- Stats -->
@@ -1273,6 +1334,12 @@ footer{
   </div>
 </footer>
 
+<!-- ══ FLOATING QUICK CONTACT ══ -->
+<div class="fab-wrap">
+  <a href="https://wa.me/qr/QXD7536TVAPHG1" target="_blank" class="fab fab-wa" aria-label="WhatsApp" title="WhatsApp">📱</a>
+  <a href="https://line.me/R/ti/p/@971yzyyd" target="_blank" class="fab fab-line" aria-label="LINE OA" title="แชท LINE OA">💬</a>
+</div>
+
 <!-- ══ SCRIPTS ══ -->
 <script>
 /* ─────────────────────────────────────────
@@ -1472,26 +1539,8 @@ document.querySelectorAll('.reveal').forEach((el,i)=>{
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-const supabaseUrl = "https://hkwqrllqzfzsbsxqgaoo.supabase.co";
-
-const supabaseKey = "ใส่ Anon Key ของคุณตรงนี้";
-
-const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-
-console.log("Supabase Connected");
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/supabase.js"></script>
 <script src="js/service.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/supabase.js"></script>
-<script src="js/service.js"></script>
-
-</body>
-</html>
 </body>
 </html>
