@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+
+<html class="light" lang="th"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>IT Repair Pro - Professional IT &amp; Office Equipment Services</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Shared Component Styling & Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-tint": "#2d6197",
+                    "secondary": "#0060ac",
+                    "on-primary-fixed-variant": "#07497d",
+                    "surface-bright": "#f9f9fc",
+                    "surface": "#f9f9fc",
+                    "secondary-fixed-dim": "#a4c9ff",
+                    "inverse-surface": "#2f3133",
+                    "primary-fixed": "#d2e4ff",
+                    "on-primary-container": "#8ebdf9",
+                    "secondary-container": "#68abff",
+                    "primary-container": "#0f4c81",
+                    "error-container": "#ffdad6",
+                    "on-secondary-fixed-variant": "#004883",
+                    "tertiary": "#303436",
+                    "on-tertiary-fixed-variant": "#434749",
+                    "surface-container-highest": "#e2e2e5",
+                    "on-background": "#1a1c1e",
+                    "tertiary-fixed-dim": "#c4c7c9",
+                    "error": "#ba1a1a",
+                    "primary": "#00355f",
+                    "surface-container-high": "#e8e8ea",
+                    "on-secondary-fixed": "#001c39",
+                    "on-surface": "#1a1c1e",
+                    "on-primary-fixed": "#001c37",
+                    "outline-variant": "#c2c7d1",
+                    "outline": "#727780",
+                    "tertiary-container": "#474b4d",
+                    "on-primary": "#ffffff",
+                    "surface-container-low": "#f3f3f6",
+                    "primary-fixed-dim": "#a0c9ff",
+                    "inverse-primary": "#a0c9ff",
+                    "on-secondary-container": "#003e73",
+                    "on-secondary": "#ffffff",
+                    "background": "#f9f9fc",
+                    "secondary-fixed": "#d4e3ff",
+                    "on-tertiary": "#ffffff",
+                    "on-surface-variant": "#42474f",
+                    "on-tertiary-container": "#b7bbbd",
+                    "surface-container-lowest": "#ffffff",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed": "#e0e3e5",
+                    "surface-container": "#eeeef0",
+                    "on-tertiary-fixed": "#181c1e",
+                    "surface-dim": "#dadadc",
+                    "on-error-container": "#93000a",
+                    "surface-variant": "#e2e2e5",
+                    "inverse-on-surface": "#f0f0f3"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "margin-desktop": "48px",
+                    "margin-mobile": "16px",
+                    "section-gap": "80px",
+                    "container-max": "1200px",
+                    "unit": "8px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": ["Be Vietnam Pro"],
+                    "headline-lg": ["Be Vietnam Pro"],
+                    "body-md": ["Be Vietnam Pro"],
+                    "label-sm": ["Be Vietnam Pro"],
+                    "headline-sm": ["Be Vietnam Pro"],
+                    "label-md": ["Be Vietnam Pro"],
+                    "headline-md": ["Be Vietnam Pro"],
+                    "body-lg": ["Be Vietnam Pro"]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": ["30px", {"lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "headline-lg": ["40px", {"lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "headline-md": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Be Vietnam Pro', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .animate-subtle-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-background selection:bg-secondary-fixed selection:text-on-secondary-fixed">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full bg-surface dark:bg-on-background border-b border-outline-variant dark:border-on-tertiary-fixed-variant z-50">
+<nav class="flex justify-between items-center px-margin-mobile md:px-margin-desktop h-20 w-full max-w-container-max mx-auto">
+<div class="font-headline-sm text-headline-sm font-bold text-primary dark:text-primary-fixed-dim">
+                IT Repair Pro
+            </div>
+<!-- Desktop Links -->
+<div class="hidden md:flex gap-8 items-center">
+<a class="font-body-md text-body-md text-primary dark:text-primary-fixed font-semibold border-b-2 border-primary dark:border-primary-fixed pb-1" href="#">Home</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-secondary transition-colors" href="#">Services</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-secondary transition-colors" href="#">Track Status</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-secondary transition-colors" href="#">Contact Us</a>
+</div>
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-lg font-label-md text-label-md transition-all duration-200 active:opacity-80 hover:bg-secondary">
+                จองบริการ
+            </button>
+</nav>
+</header>
+<main class="pt-20">
+<!-- Hero Section -->
+<section class="relative overflow-hidden bg-surface py-20 md:py-32">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 md:grid-cols-2 gap-gutter items-center">
+<div class="z-10">
+<span class="inline-block px-4 py-1.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm mb-6">
+                        Reliable IT Solutions
+                    </span>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-6 max-w-lg">
+                        Expert IT &amp; Office Equipment Repair Services
+                    </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-10 max-w-md">
+                        Fast, professional, and reliable repairs for all your technical needs. From servers to workstations, we keep your business running smoothly.
+                    </p>
+<div class="flex flex-col sm:flex-row gap-4">
+<button class="bg-primary text-on-primary px-8 py-4 rounded-xl font-headline-sm text-headline-sm flex items-center justify-center gap-2 transition-all hover:shadow-lg active:scale-95">
+                            จองบริการ
+                            <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<button class="border border-outline text-primary px-8 py-4 rounded-xl font-headline-sm text-headline-sm transition-all hover:bg-surface-container-low">
+                            Our Services
+                        </button>
+</div>
+</div>
+<div class="relative mt-12 md:mt-0">
+<div class="aspect-square rounded-full bg-secondary-fixed/30 absolute -top-10 -right-10 w-64 h-64 blur-3xl"></div>
+<div class="relative z-10 animate-subtle-float">
+<img class="rounded-3xl shadow-2xl border border-outline-variant w-full h-[500px] object-cover" data-alt="A professional technician in a clean, modern workshop setting, meticulously repairing a high-end laptop with precision tools. The lighting is bright and even, highlighting a corporate modernism aesthetic with blue and white tones. In the background, blurred server racks and network equipment emphasize a comprehensive IT repair environment. The mood is clinical, expert-led, and highly organized." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0pv1BgMsSvOvT8tLNE-UC5EsNuNeOIbqzu-A__BJ0khAG2aHVRdrri0FqG-P0X25IBlEYrQe57dwh7XgCf5_IFfFUkoSU1cZZVhh8e95xdac5gGrNAcfEOrvvl8DDcTakSGOP9lfJsPNg97FM7so_eQvLKHRVRlotjKncaoWCCwv638SQkQ7thmartSnCmwnSkM6dff-EMIuvtXxrHKe3X2WDrbzDcoDK_HwEMVB5ZDfeiROmQ-nIWtDos8MJQRUQsirlBPb-okA"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Service Categories -->
+<section class="py-section-gap bg-surface-container-low">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="text-center mb-16">
+<h2 class="font-headline-md text-headline-md text-primary mb-4">บริการซ่อมและดูแลรักษา</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">ครอบคลุมทุกอุปกรณ์สำนักงานและระบบไอทีแบบครบวงจร</p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-gutter">
+<!-- Computer -->
+<div class="bg-surface p-8 rounded-2xl border border-outline-variant hover:border-secondary transition-all hover:shadow-sm group">
+<div class="w-12 h-12 bg-primary-fixed rounded-xl flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">laptop_mac</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm mb-3">Computer</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Laptops, Desktops, and Workstations hardware repair.</p>
+</div>
+<!-- Printer -->
+<div class="bg-surface p-8 rounded-2xl border border-outline-variant hover:border-secondary transition-all hover:shadow-sm group">
+<div class="w-12 h-12 bg-primary-fixed rounded-xl flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">print</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm mb-3">Printer</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Professional ink-jet, laser, and industrial printer maintenance.</p>
+</div>
+<!-- Network -->
+<div class="bg-surface p-8 rounded-2xl border border-outline-variant hover:border-secondary transition-all hover:shadow-sm group">
+<div class="w-12 h-12 bg-primary-fixed rounded-xl flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">router</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm mb-3">Network</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Wi-Fi optimization and network infrastructure setup.</p>
+</div>
+<!-- CCTV -->
+<div class="bg-surface p-8 rounded-2xl border border-outline-variant hover:border-secondary transition-all hover:shadow-sm group">
+<div class="w-12 h-12 bg-primary-fixed rounded-xl flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">videocam</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm mb-3">CCTV</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Security camera installation and system troubleshooting.</p>
+</div>
+<!-- Server -->
+<div class="bg-surface p-8 rounded-2xl border border-outline-variant hover:border-secondary transition-all hover:shadow-sm group">
+<div class="w-12 h-12 bg-primary-fixed rounded-xl flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dns</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm mb-3">Server</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Enterprise server maintenance and data recovery services.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- How It Works Section -->
+<section class="py-section-gap">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
+<div>
+<h2 class="font-headline-md text-headline-md text-primary mb-2">ขั้นตอนการรับบริการ</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">สะดวก รวดเร็ว และเป็นระบบ</p>
+</div>
+<a class="text-secondary font-label-md text-label-md flex items-center gap-1 hover:underline" href="#">
+                        Learn about our process <span class="material-symbols-outlined text-sm">open_in_new</span>
+</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-12 relative">
+<!-- Divider Line (Desktop) -->
+<div class="hidden md:block absolute top-12 left-10 right-10 h-0.5 bg-outline-variant z-0"></div>
+<!-- Step 1 -->
+<div class="relative z-10 flex flex-col items-center text-center">
+<div class="w-24 h-24 rounded-full bg-surface border-4 border-primary flex items-center justify-center mb-6 shadow-sm">
+<span class="material-symbols-outlined text-primary text-4xl">edit_note</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm mb-2">Request Service</h4>
+<p class="font-body-md text-body-md text-on-surface-variant px-4">แจ้งซ่อมผ่านหน้าเว็บหรือโทรหาเราได้ทันที</p>
+</div>
+<!-- Step 2 -->
+<div class="relative z-10 flex flex-col items-center text-center">
+<div class="w-24 h-24 rounded-full bg-surface border-4 border-outline-variant flex items-center justify-center mb-6 shadow-sm">
+<span class="material-symbols-outlined text-on-surface-variant text-4xl">troubleshoot</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm mb-2">Expert Diagnosis</h4>
+<p class="font-body-md text-body-md text-on-surface-variant px-4">ช่างประเมินอาการและแจ้งราคาอย่างชัดเจน</p>
+</div>
+<!-- Step 3 -->
+<div class="relative z-10 flex flex-col items-center text-center">
+<div class="w-24 h-24 rounded-full bg-surface border-4 border-outline-variant flex items-center justify-center mb-6 shadow-sm">
+<span class="material-symbols-outlined text-on-surface-variant text-4xl">build</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm mb-2">Professional Repair</h4>
+<p class="font-body-md text-body-md text-on-surface-variant px-4">ดำเนินการซ่อมด้วยอะไหล่คุณภาพมาตรฐาน</p>
+</div>
+<!-- Step 4 -->
+<div class="relative z-10 flex flex-col items-center text-center">
+<div class="w-24 h-24 rounded-full bg-surface border-4 border-outline-variant flex items-center justify-center mb-6 shadow-sm">
+<span class="material-symbols-outlined text-on-surface-variant text-4xl">verified</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm mb-2">Success</h4>
+<p class="font-body-md text-body-md text-on-surface-variant px-4">ตรวจเช็คความเรียบร้อยและส่งมอบอุปกรณ์</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Track Status Section -->
+<section class="py-section-gap bg-primary text-on-primary">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter items-center">
+<div>
+<h2 class="font-headline-md text-headline-md mb-6">ติดตามสถานะงานซ่อม</h2>
+<p class="font-body-lg text-body-lg text-on-primary-container mb-8">
+                            ตรวจสอบความคืบหน้าของอุปกรณ์คุณได้ง่ายๆ เพียงกรอกหมายเลขใบรับบริการ
+                        </p>
+<div class="flex flex-col sm:flex-row gap-4 p-2 bg-white/10 rounded-2xl backdrop-blur-md">
+<input class="flex-grow bg-white text-on-background border-none rounded-xl px-6 py-4 font-body-md focus:ring-2 focus:ring-secondary-container" placeholder="กรอกหมายเลขติดตาม (e.g. RP-2024-001)" type="text"/>
+<button class="bg-secondary text-on-secondary px-10 py-4 rounded-xl font-headline-sm hover:bg-secondary-container transition-colors">
+                                ตรวจสอบ
+                            </button>
+</div>
+<p class="mt-4 font-label-sm text-label-sm text-on-primary-container flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">info</span>
+                            กรุณาติดต่อเจ้าหน้าที่หากคุณลืมหมายเลขติดตาม
+                        </p>
+</div>
+<div class="hidden md:flex justify-center">
+<div class="bg-white/5 p-8 rounded-3xl border border-white/10 w-full max-w-md">
+<div class="flex justify-between items-center mb-8 pb-4 border-b border-white/10">
+<span class="font-label-md">Recent Inquiry: RP-2023-441</span>
+<div class="flex items-center gap-2">
+<div class="status-dot bg-green-400"></div>
+<span class="font-label-sm text-green-400">In Progress</span>
+</div>
+</div>
+<div class="space-y-6">
+<div class="flex gap-4">
+<div class="w-8 h-8 rounded-full bg-green-400/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-green-400 text-sm">check</span>
+</div>
+<div>
+<p class="font-label-md">Request Received</p>
+<p class="text-xs text-on-primary-container">Oct 24, 09:00 AM</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="w-8 h-8 rounded-full bg-green-400 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-sm">sync</span>
+</div>
+<div>
+<p class="font-label-md font-bold">Expert Diagnosis</p>
+<p class="text-xs text-on-primary-container">Oct 24, 11:30 AM</p>
+</div>
+</div>
+<div class="flex gap-4 opacity-50">
+<div class="w-8 h-8 rounded-full border border-white/20"></div>
+<div>
+<p class="font-label-md">Repairing</p>
+<p class="text-xs text-on-primary-container">Pending</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Trust Signals / Why Choose Us -->
+<section class="py-section-gap bg-surface">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="text-center mb-16">
+<h2 class="font-headline-md text-headline-md text-primary mb-4">ทำไมต้องเลือก IT Repair Pro?</h2>
+<div class="w-20 h-1.5 bg-secondary-container mx-auto rounded-full"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="p-10 bg-surface-container-low rounded-3xl border border-outline-variant flex flex-col items-center text-center">
+<div class="w-16 h-16 bg-white rounded-full shadow-sm flex items-center justify-center text-secondary mb-8">
+<span class="material-symbols-outlined text-4xl">engineering</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm mb-4">Certified Technicians</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">ทีมช่างผู้เชี่ยวชาญที่มีใบรับรองและประสบการณ์กว่า 10 ปี ในการซ่อมบำรุงอุปกรณ์ไอทีทุกระดับ</p>
+</div>
+<div class="p-10 bg-surface-container-low rounded-3xl border border-outline-variant flex flex-col items-center text-center">
+<div class="w-16 h-16 bg-white rounded-full shadow-sm flex items-center justify-center text-secondary mb-8">
+<span class="material-symbols-outlined text-4xl">local_shipping</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm mb-4">On-site Service</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">บริการถึงที่บ้านหรือออฟฟิศของคุณ ไม่ต้องยกเครื่องให้เหนื่อย เราพร้อมดูแลถึงที่</p>
+</div>
+<div class="p-10 bg-surface-container-low rounded-3xl border border-outline-variant flex flex-col items-center text-center">
+<div class="w-16 h-16 bg-white rounded-full shadow-sm flex items-center justify-center text-secondary mb-8">
+<span class="material-symbols-outlined text-4xl">security</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm mb-4">Service Warranty</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">มั่นใจด้วยการรับประกันงานซ่อมนานสูงสุด 90 วัน และอะไหล่แท้มาตรฐานสากล</p>
+</div>
+</div>
+<!-- Client Logos Simulation -->
+<div class="mt-20 pt-16 border-t border-outline-variant flex flex-wrap justify-center items-center gap-16 grayscale opacity-60">
+<div class="font-headline-sm text-outline font-bold italic">TECH-CORP</div>
+<div class="font-headline-sm text-outline font-bold italic">GLOBAL_LOGISTICS</div>
+<div class="font-headline-sm text-outline font-bold italic">INNO-BANK</div>
+<div class="font-headline-sm text-outline font-bold italic">SMART_BUILD</div>
+<div class="font-headline-sm text-outline font-bold italic">ECO-SYS</div>
+</div>
+</div>
+</section>
+<!-- Final CTA -->
+<section class="py-section-gap bg-surface-container-low">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="text-center mb-16">
+<h2 class="font-headline-md text-headline-md text-primary mb-4">รีวิวจากลูกค้าที่ไว้วางใจเรา</h2>
+<div class="w-20 h-1.5 bg-secondary-container mx-auto rounded-full"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Review 1 -->
+<div class="bg-surface p-8 rounded-3xl border border-outline-variant shadow-sm flex flex-col">
+<div class="flex text-secondary mb-4">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-8 flex-grow italic">"บริการรวดเร็วมากครับ ช่างสุภาพและมีความเป็นมืออาชีพมาก เครื่องกลับมาใช้งานได้เหมือนใหม่เลย"</p>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">person</span>
+</div>
+<div>
+<p class="font-label-md font-bold text-primary">คุณสมชาย วิวัฒน์</p>
+<p class="text-xs text-on-surface-variant">ซ่อมคอมพิวเตอร์</p>
+</div>
+</div>
+</div>
+<!-- Review 2 -->
+<div class="bg-surface p-8 rounded-3xl border border-outline-variant shadow-sm flex flex-col">
+<div class="flex text-secondary mb-4">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-8 flex-grow italic">"ประทับใจการซ่อมเครื่องพิมพ์ถึงที่ สะดวกและราคาเป็นกันเองมากครับ ไม่ต้องยกเครื่องไปเองให้เหนื่อย"</p>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">person</span>
+</div>
+<div>
+<p class="font-label-md font-bold text-primary">คุณนงลักษณ์ สุขใจ</p>
+<p class="text-xs text-on-surface-variant">ซ่อมเครื่องพิมพ์</p>
+</div>
+</div>
+</div>
+<!-- Review 3 -->
+<div class="bg-surface p-8 rounded-3xl border border-outline-variant shadow-sm flex flex-col">
+<div class="flex text-secondary mb-4">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-8 flex-grow italic">"ทีมงานเข้ามาเซ็ตระบบ Network ที่ออฟฟิศใหม่ สัญญาณเสถียรขึ้นมาก ทำงานได้ลื่นไหลไม่มีสะดุด"</p>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">person</span>
+</div>
+<div>
+<p class="font-label-md font-bold text-primary">คุณธนา กิจการดี</p>
+<p class="text-xs text-on-surface-variant">ติดตั้งระบบ Network</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section class="py-section-gap relative">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="bg-primary rounded-[2rem] p-12 md:p-20 text-center relative overflow-hidden">
+<!-- Subtle background decoration -->
+<div class="absolute top-0 right-0 w-64 h-64 bg-secondary-container/20 rounded-full blur-3xl -mr-32 -mt-32"></div>
+<div class="relative z-10">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-primary mb-6">
+                            พร้อมให้บริการคุณแล้ววันนี้
+                        </h2>
+<p class="font-body-lg text-body-lg text-on-primary-container mb-12 max-w-2xl mx-auto">
+                            ปรึกษาอาการเบื้องต้นฟรี หรือจองคิวช่างผู้เชี่ยวชาญเข้าตรวจสอบอุปกรณ์ของคุณได้ทันที 
+                        </p>
+<div class="flex flex-col sm:flex-row justify-center gap-6">
+<button class="bg-surface text-primary px-12 py-5 rounded-2xl font-headline-sm shadow-xl hover:bg-surface-bright transition-all active:scale-95">
+                                จองบริการทันที
+                            </button>
+<button class="border-2 border-on-primary-container text-on-primary px-12 py-5 rounded-2xl font-headline-sm hover:bg-white/10 transition-all">
+                                โทร 02-123-4567
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-highest dark:bg-tertiary">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-mobile md:px-margin-desktop py-section-gap w-full max-w-container-max mx-auto">
+<div class="md:col-span-1">
+<div class="font-headline-sm text-headline-sm font-bold text-primary dark:text-primary-fixed mb-6">
+                    IT Repair Pro
+                </div>
+<p class="font-body-md text-body-md text-on-surface-variant dark:text-on-tertiary-container mb-6">
+                    Professional IT solutions and repair services for corporate and home users. Reliability in every fix.
+                </p>
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-lg">face_nod</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-lg">alternate_email</span>
+</a>
+</div>
+</div>
+<div>
+<h4 class="font-label-md text-label-md text-primary dark:text-primary-fixed mb-6">Company</h4>
+<ul class="space-y-4">
+<li><a class="font-body-md text-body-md text-on-surface-variant dark:text-on-tertiary-container hover:underline decoration-secondary" href="#">About Us</a></li>
+<li><a class="font-body-md text-body-md text-on-surface-variant dark:text-on-tertiary-container hover:underline decoration-secondary" href="#">Our Careers</a></li>
+<li><a class="font-body-md text-body-md text-on-surface-variant dark:text-on-tertiary-container hover:underline decoration-secondary" href="#">Case Studies</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-label-md text-label-md text-primary dark:text-primary-fixed mb-6">Legal</h4>
+<ul class="space-y-4">
+<li><a class="font-body-md text-body-md text-on-surface-variant dark:text-on-tertiary-container hover:underline decoration-secondary" href="#">Privacy Policy</a></li>
+<li><a class="font-body-md text-body-md text-on-surface-variant dark:text-on-tertiary-container hover:underline decoration-secondary" href="#">Terms of Service</a></li>
+<li><a class="font-body-md text-body-md text-on-surface-variant dark:text-on-tertiary-container hover:underline decoration-secondary" href="#">Service Level Agreement</a></li>
+<li><a class="font-body-md text-body-md text-on-surface-variant dark:text-on-tertiary-container hover:underline decoration-secondary" href="#">FAQ</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-label-md text-label-md text-primary dark:text-primary-fixed mb-6">Contact</h4>
+<ul class="space-y-4 font-body-md text-body-md text-on-surface-variant dark:text-on-tertiary-container">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-secondary">location_on</span>
+                        123 IT Tower, Sukhumvit Rd, Bangkok, Thailand
+                    </li>
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">call</span>
+                        02-123-4567
+                    </li>
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">mail</span>
+                        support@itrepairpro.com
+                    </li>
+</ul>
+</div>
+</div>
+<div class="border-t border-outline-variant/30 py-8 text-center px-margin-mobile">
+<p class="font-body-md text-body-md text-on-surface-variant dark:text-on-tertiary-container">
+                © 2024 IT Repair Pro. Professional IT &amp; Office Equipment Services.
+            </p>
+</div>
+</footer>
+<script>
+        // Micro-interactions and subtle scroll effects
+        document.addEventListener('DOMContentLoaded', () => {
+            const header = document.querySelector('header');
+            
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('shadow-md', 'bg-white/95', 'backdrop-blur-sm');
+                } else {
+                    header.classList.remove('shadow-md', 'bg-white/95', 'backdrop-blur-sm');
+                }
+            });
+
+            // Smooth scroll for anchors
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body></html>
