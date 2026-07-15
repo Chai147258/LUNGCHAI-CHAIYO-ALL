@@ -1,1681 +1,435 @@
 <!DOCTYPE html>
-<html lang="th">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="ลุงชัย ไชโย ออล — One Stop Industrial Supply | IT • ไฟฟ้า • PPE • เครื่องมือช่าง">
-<meta name="theme-color" content="#02020C">
-<link rel="icon" type="image/jpeg" href="https://raw.githubusercontent.com/Chai147258/LUNGCHAI-CHAIYO-ALL/main/images/logo-all.jpg">
-<meta property="og:type" content="website">
-<meta property="og:title" content="ลุงชัย ไชโย ออล | Lungchai Chaiyo All — One Stop Industrial Supply">
-<meta property="og:description" content="ครบ จบ ทุกความต้องการของโรงงานและธุรกิจ IT • ไฟฟ้า • PPE • เครื่องมือช่าง • วัสดุอุตสาหกรรม">
-<meta property="og:image" content="https://raw.githubusercontent.com/Chai147258/LUNGCHAI-CHAIYO-ALL/main/images/logo-all.jpg">
-<meta property="og:url" content="https://lungchaichaiyo.shop/">
-<meta name="twitter:card" content="summary_large_image">
-<title>ลุงชัย ไชโย ออล | Lungchai Chaiyo All</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Sarabun:wght@300;400;600;700&family=Chakra+Petch:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<style>
-/* ══════════════════════════════════════════
-   DESIGN TOKENS
-══════════════════════════════════════════ */
-:root {
-  --gold:       #C9A84C;
-  --gold-hi:    #FFE566;
-  --gold-dim:   #6B5018;
-  --gold-glow:  rgba(201,168,76,0.45);
 
-  --void:    #02020C;
-  --deep:    #04041A;
-  --mid:     #07072A;
-  --card:    #0A0A2E;
-  --panel:   #0D0D38;
-
-  --steel:   #8888BB;
-  --cream:   #E0DCF0;
-  --white:   #FFFFFF;
-
-  --ft: 'Sarabun',sans-serif;
-  --fc: 'Chakra Petch',sans-serif;
-  --fm: 'Space Mono',monospace;
-  --fd: 'Playfair Display',serif;
-
-  --ease: cubic-bezier(.4,0,.2,1);
-  --t:    0.28s;
-  --t2:   0.5s;
-}
-
-/* ══════════════════════════════════════════
-   BASE
-══════════════════════════════════════════ */
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;font-size:16px}
-body{
-  font-family:var(--ft);
-  background:var(--void);
-  color:var(--cream);
-  overflow-x:hidden;
-  min-height:100svh;
-}
-a{color:inherit;text-decoration:none}
-img{display:block;max-width:100%}
-.container{
-  width:100%;
-  max-width:1280px;
-  margin:0 auto;
-  padding:0 clamp(1rem,4vw,2.5rem);
-}
-
-/* ══════════════════════════════════════════
-   GALAXY CANVAS
-══════════════════════════════════════════ */
-#galaxy{
-  position:fixed;
-  inset:0;
-  z-index:0;
-  pointer-events:none;
-}
-
-/* ══════════════════════════════════════════
-   NAV
-══════════════════════════════════════════ */
-#nav{
-  position:fixed;
-  top:0;left:0;right:0;
-  z-index:500;
-  transition:background var(--t2),backdrop-filter var(--t2);
-  padding:.7rem 0;
-}
-#nav.solid{
-  background:rgba(2,2,12,.95);
-  backdrop-filter:blur(20px);
-  border-bottom:1px solid rgba(201,168,76,.15);
-}
-.nav-wrap{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:1rem;
-}
-
-/* Brand */
-.nav-brand{display:flex;align-items:center;gap:.65rem;flex-shrink:0}
-.nav-logo-img{
-  width:clamp(32px,5vw,42px);
-  height:clamp(32px,5vw,42px);
-  border-radius:50%;
-  border:2px solid var(--gold);
-  object-fit:cover;
-  box-shadow:0 0 12px var(--gold-glow);
-}
-.nav-title{
-  font-family:var(--fc);
-  font-size:clamp(.75rem,1.5vw,.9rem);
-  font-weight:700;
-  color:var(--gold);
-  letter-spacing:.04em;
-  line-height:1.15;
-}
-.nav-title small{
-  display:block;
-  font-size:.58em;
-  font-weight:300;
-  color:var(--steel);
-  letter-spacing:.12em;
-}
-
-/* Desktop links */
-.nav-links{
-  display:flex;
-  align-items:center;
-  gap:clamp(.6rem,1.5vw,1.4rem);
-  list-style:none;
-  flex-wrap:nowrap;
-}
-.nav-links a{
-  font-family:var(--fc);
-  font-size:clamp(.65rem,1.1vw,.78rem);
-  font-weight:600;
-  letter-spacing:.06em;
-  color:var(--steel);
-  transition:color var(--t);
-  white-space:nowrap;
-}
-.nav-links a:hover{color:var(--gold)}
-.nav-cta-pill{
-  background:linear-gradient(135deg,var(--gold),var(--gold-hi));
-  color:var(--void)!important;
-  padding:.38rem .9rem;
-  border-radius:20px;
-  font-weight:700!important;
-  box-shadow:0 0 14px var(--gold-glow);
-  transition:box-shadow var(--t),transform var(--t)!important;
-}
-.nav-cta-pill:hover{
-  box-shadow:0 0 24px var(--gold-glow)!important;
-  transform:translateY(-1px);
-}
-
-/* Hamburger */
-.hamburger{
-  display:none;
-  flex-direction:column;
-  gap:5px;
-  background:none;
-  border:none;
-  cursor:pointer;
-  padding:5px;
-  z-index:600;
-}
-.hamburger span{
-  display:block;width:26px;height:2px;
-  background:var(--gold);
-  border-radius:2px;
-  transition:var(--t);
-}
-.hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
-.hamburger.open span:nth-child(2){opacity:0}
-.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
-
-/* Mobile drawer */
-.mob-menu{
-  display:none;
-  position:fixed;
-  inset:0;
-  z-index:400;
-  background:rgba(2,2,12,.97);
-  backdrop-filter:blur(24px);
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:1.6rem;
-}
-.mob-menu.open{display:flex}
-.mob-menu a{
-  font-family:var(--fc);
-  font-size:1.2rem;
-  font-weight:700;
-  letter-spacing:.06em;
-  color:var(--cream);
-  transition:color var(--t);
-}
-.mob-menu a:hover{color:var(--gold)}
-.mob-close{
-  position:absolute;
-  top:1.2rem;right:1.4rem;
-  background:none;border:none;
-  color:var(--steel);font-size:1.8rem;
-  cursor:pointer;transition:color var(--t);
-}
-.mob-close:hover{color:var(--gold)}
-
-/* ══════════════════════════════════════════
-   HERO — FULL GALAXY
-══════════════════════════════════════════ */
-.hero{
-  position:relative;
-  z-index:1;
-  min-height:100svh;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding:5rem clamp(1rem,4vw,2rem) 3rem;
-  overflow:hidden;
-}
-
-/* Galaxy center glow behind logo */
-.hero::before{
-  content:'';
-  position:absolute;
-  top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  width:clamp(400px,70vw,900px);
-  height:clamp(400px,70vw,900px);
-  background:radial-gradient(
-    ellipse at center,
-    rgba(60,30,180,.35) 0%,
-    rgba(30,10,100,.2)  35%,
-    rgba(10,5,50,.08)   60%,
-    transparent         75%
-  );
-  pointer-events:none;
-  animation:galaxyPulse 8s ease-in-out infinite;
-}
-@keyframes galaxyPulse{
-  0%,100%{opacity:.7;transform:translate(-50%,-50%) scale(1)}
-  50%{opacity:1;transform:translate(-50%,-50%) scale(1.08)}
-}
-
-/* ── UNIVERSE LOGO RING ── */
-.universe{
-  position:relative;
-  width:clamp(180px,30vw,340px);
-  height:clamp(180px,30vw,340px);
-  margin:0 auto 2.5rem;
-  flex-shrink:0;
-}
-
-/* Rings */
-.u-ring{
-  position:absolute;
-  inset:0;
-  border-radius:50%;
-  border:1px solid rgba(201,168,76,.18);
-}
-.u-ring-1{animation:spin 40s linear infinite}
-.u-ring-1::before,
-.u-ring-1::after{
-  content:'';
-  position:absolute;
-  width:8px;height:8px;
-  border-radius:50%;
-  background:var(--gold);
-  box-shadow:0 0 10px var(--gold),0 0 20px var(--gold);
-  top:-4px;left:50%;transform:translateX(-50%);
-}
-.u-ring-1::after{top:auto;bottom:-4px}
-
-.u-ring-2{
-  inset:10%;
-  border:1px solid rgba(100,60,255,.25);
-  animation:spin 25s linear infinite reverse;
-}
-.u-ring-2::before{
-  content:'';
-  position:absolute;
-  width:6px;height:6px;
-  border-radius:50%;
-  background:#7B68EE;
-  box-shadow:0 0 8px #7B68EE;
-  right:-3px;top:50%;transform:translateY(-50%);
-}
-
-.u-ring-3{
-  inset:20%;
-  border:1.5px solid rgba(201,168,76,.3);
-  animation:spin 18s linear infinite;
-}
-
-.u-ring-4{
-  inset:29%;
-  border:2px solid rgba(201,168,76,.5);
-  background:radial-gradient(ellipse,rgba(30,15,100,.6),rgba(5,5,30,.9));
-}
-
-@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-
-/* Logo center */
-.u-logo{
-  position:absolute;
-  inset:31%;
-  border-radius:50%;
-  object-fit:cover;
-  border:3px solid var(--gold);
-  box-shadow:
-    0 0 0 6px rgba(201,168,76,.12),
-    0 0 40px rgba(201,168,76,.6),
-    0 0 80px rgba(201,168,76,.25),
-    0 0 160px rgba(80,30,200,.3);
-  animation:logoPulse 4s ease-in-out infinite;
-}
-@keyframes logoPulse{
-  0%,100%{box-shadow:0 0 0 6px rgba(201,168,76,.12),0 0 40px rgba(201,168,76,.6),0 0 80px rgba(201,168,76,.25),0 0 160px rgba(80,30,200,.3)}
-  50%{box-shadow:0 0 0 10px rgba(201,168,76,.18),0 0 60px rgba(201,168,76,.8),0 0 120px rgba(201,168,76,.35),0 0 220px rgba(80,30,200,.4)}
-}
-
-/* Orbit dots */
-.orbit-dot{
-  position:absolute;
-  border-radius:50%;
-  animation:orbitFloat 6s ease-in-out infinite;
-}
-.od1{width:10px;height:10px;background:var(--gold);box-shadow:0 0 12px var(--gold);top:-5px;left:40%;animation-delay:0s}
-.od2{width:7px;height:7px;background:#7B68EE;box-shadow:0 0 10px #7B68EE;bottom:8%;right:-2%;animation-delay:-2s}
-.od3{width:6px;height:6px;background:#00FFFF;box-shadow:0 0 8px #00FFFF;top:15%;left:-1%;animation-delay:-4s}
-@keyframes orbitFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-
-/* ── HERO TEXT ── */
-.hero-eyebrow{
-  font-family:var(--fm);
-  font-size:clamp(.6rem,.9vw,.72rem);
-  letter-spacing:.25em;
-  color:var(--gold);
-  margin-bottom:.75rem;
-  display:flex;align-items:center;justify-content:center;gap:.6rem;
-}
-.hero-eyebrow::before,.hero-eyebrow::after{
-  content:'';display:block;
-  width:clamp(20px,3vw,40px);height:1px;
-  background:linear-gradient(90deg,transparent,var(--gold));
-}
-.hero-eyebrow::after{transform:rotate(180deg)}
-
-.hero-h1{
-  font-family:var(--fd);
-  font-size:clamp(2rem,6vw,5rem);
-  font-weight:900;
-  line-height:1.05;
-  margin-bottom:.4rem;
-  color:var(--white);
-  text-shadow:0 0 60px rgba(201,168,76,.4);
-}
-.hero-h1 .g{
-  color:var(--gold);
-  text-shadow:0 0 30px rgba(201,168,76,.8),0 0 60px rgba(201,168,76,.4);
-}
-.hero-h1 .o{
-  -webkit-text-stroke:1.5px var(--gold);
-  color:transparent;
-}
-
-.hero-sub{
-  font-family:var(--fc);
-  font-size:clamp(.85rem,1.5vw,1.1rem);
-  font-weight:300;
-  color:rgba(201,168,76,.8);
-  letter-spacing:.1em;
-  margin-bottom:.75rem;
-}
-
-.hero-desc{
-  font-size:clamp(.82rem,1.3vw,.95rem);
-  color:var(--steel);
-  line-height:1.85;
-  max-width:580px;
-  margin:0 auto 2rem;
-}
-
-/* ══════════════════════════════════════════
-   QUICK FINDER — Search / Repair / Technician
-══════════════════════════════════════════ */
-.finder-sec{padding:0 0 clamp(1.5rem,4vw,2.5rem)}
-.finder-panel{
-  max-width:820px;margin:0 auto;
-  padding:clamp(1rem,3vw,1.6rem) clamp(1rem,3.5vw,2rem);
-  border-radius:22px;
-  background:linear-gradient(180deg,rgba(201,168,76,.07),rgba(255,255,255,.015));
-  border:1px solid rgba(201,168,76,.28);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-  box-shadow:0 24px 70px rgba(0,0,0,.45),0 0 50px rgba(201,168,76,.1),inset 0 1px 0 rgba(255,255,255,.06);
-}
-.finder-tabs{display:flex;gap:.5rem;margin-bottom:1rem}
-.finder-tab{
-  flex:1;
-  display:flex;align-items:center;justify-content:center;gap:.4rem;
-  padding:.65rem .4rem;border-radius:11px;
-  background:rgba(255,255,255,.03);
-  border:1px solid rgba(201,168,76,.16);
-  color:var(--steel);font-family:var(--fc);font-size:.72rem;font-weight:600;
-  cursor:pointer;transition:all var(--t) var(--ease);letter-spacing:.02em;
-}
-.finder-tab .ft-ic{font-size:1rem}
-.finder-tab span:not(.ft-ic){white-space:nowrap}
-.finder-tab:hover{border-color:rgba(201,168,76,.45);color:var(--cream)}
-.finder-tab.active{
-  background:linear-gradient(135deg,rgba(201,168,76,.2),rgba(201,168,76,.06));
-  border-color:var(--gold);color:var(--gold-hi);
-  box-shadow:0 0 18px rgba(201,168,76,.22);
-}
-.finder-form{
-  display:flex;align-items:center;gap:.5rem;
-  background:rgba(2,2,12,.55);
-  border:1px solid rgba(201,168,76,.22);
-  border-radius:13px;
-  padding:.3rem .3rem .3rem 1rem;
-  transition:border-color var(--t);
-}
-.finder-form:focus-within{border-color:var(--gold)}
-.finder-ic{font-size:1.05rem;flex-shrink:0;opacity:.65}
-.finder-input{
-  flex:1;min-width:0;background:none;border:none;outline:none;
-  color:var(--cream);font-family:var(--ft);font-size:.9rem;padding:.65rem 0;
-}
-.finder-input::placeholder{color:var(--steel)}
-.finder-btn{
-  flex-shrink:0;
-  background:linear-gradient(135deg,var(--gold),var(--gold-hi));
-  color:var(--void);font-family:var(--fc);font-weight:700;font-size:.76rem;
-  padding:.68rem 1.15rem;border-radius:10px;border:none;cursor:pointer;
-  letter-spacing:.03em;transition:all var(--t) var(--ease);white-space:nowrap;
-}
-.finder-btn:hover{box-shadow:0 0 22px rgba(201,168,76,.55);transform:translateY(-1px)}
-.finder-tags{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-top:.9rem}
-.finder-tags-lbl{color:var(--steel);font-family:var(--fm);letter-spacing:.05em;font-size:.62rem}
-.finder-tags a{
-  color:var(--gold);padding:.28rem .7rem;border-radius:20px;
-  background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.16);
-  transition:all var(--t);font-family:var(--fc);font-size:.68rem;cursor:pointer;
-}
-.finder-tags a:hover{background:rgba(201,168,76,.2);border-color:var(--gold);color:var(--gold-hi)}
-
-@media(max-width:600px){
-  .finder-tab{font-size:.62rem;padding:.6rem .2rem;gap:.25rem}
-  .finder-tab .ft-ic{font-size:1.1rem}
-  .finder-btn{padding:.65rem .85rem;font-size:.68rem}
-}
-
-/* ══════════════════════════════════════════
-   CTA PANEL — glass console wrapper
-══════════════════════════════════════════ */
-.cta-panel{
-  width:100%;
-  max-width:680px;
-  margin:0 auto 2rem;
-  padding:clamp(1rem,2.5vw,1.5rem);
-  border-radius:20px;
-  background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01));
-  border:1px solid rgba(201,168,76,.16);
-  backdrop-filter:blur(18px);
-  -webkit-backdrop-filter:blur(18px);
-  box-shadow:0 20px 60px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.05);
-}
-
-/* ══════════════════════════════════════════
-   FLOATING QUICK-CONTACT
-══════════════════════════════════════════ */
-.fab-wrap{
-  position:fixed;
-  right:clamp(.9rem,3vw,1.6rem);
-  bottom:clamp(.9rem,3vw,1.6rem);
-  z-index:450;
-  display:flex;
-  flex-direction:column;
-  align-items:flex-end;
-  gap:.6rem;
-}
-.fab{
-  display:flex;align-items:center;justify-content:center;
-  width:52px;height:52px;border-radius:50%;
-  box-shadow:0 8px 24px rgba(0,0,0,.5);
-  transition:transform var(--t) var(--ease),box-shadow var(--t);
-  font-size:1.5rem;
-  animation:fabPop .5s var(--ease) both;
-}
-.fab:hover{transform:scale(1.1) translateY(-2px)}
-.fab-line{background:linear-gradient(135deg,#00C73C,#00B90A);display:flex;align-items:center;justify-content:center}
-.fab-wa{background:linear-gradient(135deg,#25D366,#128C7E);display:flex;align-items:center;justify-content:center;width:44px;height:44px;font-size:1.25rem}
-@keyframes fabPop{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:scale(1)}}
-.fab-line{box-shadow:0 8px 24px rgba(0,185,10,.4),0 0 0 0 rgba(0,185,10,.5);animation:fabPop .5s var(--ease) both,fabRing 2.6s ease-out infinite}
-@keyframes fabRing{
-  0%{box-shadow:0 8px 24px rgba(0,185,10,.4),0 0 0 0 rgba(0,185,10,.45)}
-  70%{box-shadow:0 8px 24px rgba(0,185,10,.4),0 0 0 14px rgba(0,185,10,0)}
-  100%{box-shadow:0 8px 24px rgba(0,185,10,.4),0 0 0 0 rgba(0,185,10,0)}
-}
-
-/* ══════════════════════════════════════════
-   CTA BUTTON GRID
-══════════════════════════════════════════ */
-.cta-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:.6rem;
-  width:100%;
-  max-width:640px;
-  margin:0 auto 1rem;
-}
-/* Row 1 — 2 big primary */
-.cta-grid .cta-primary{
-  grid-column:span 1;
-}
-/* Row 2 — 4 equal */
-.cta-row2{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:.6rem;
-  width:100%;
-  max-width:640px;
-  margin:0 auto 1rem;
-}
-/* Row 3 — 4 equal */
-.cta-row3{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:.6rem;
-  width:100%;
-  max-width:640px;
-  margin:0 auto 1.5rem;
-}
-
-/* Base CTA button */
-.cta-btn{
-  position:relative;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:.3rem;
-  padding:.65rem .4rem;
-  border-radius:10px;
-  font-family:var(--fc);
-  font-weight:600;
-  letter-spacing:.03em;
-  cursor:pointer;
-  border:none;
-  overflow:hidden;
-  transition:transform var(--t) var(--ease),
-             box-shadow var(--t) var(--ease);
-  text-align:center;
-  line-height:1.2;
-
-  /* Space glass effect */
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(201,168,76,.22);
-  color:var(--cream);
-}
-.cta-btn::before{
-  content:'';
-  position:absolute;
-  inset:0;
-  background:linear-gradient(135deg,
-    rgba(201,168,76,.12) 0%,
-    rgba(201,168,76,.04) 50%,
-    rgba(80,30,200,.08) 100%);
-  opacity:0;
-  transition:opacity var(--t);
-}
-.cta-btn:hover::before{opacity:1}
-.cta-btn:hover{
-  transform:translateY(-3px) scale(1.03);
-  border-color:rgba(201,168,76,.6);
-  box-shadow:
-    0 0 20px rgba(201,168,76,.3),
-    0 6px 24px rgba(0,0,0,.4),
-    inset 0 1px 0 rgba(255,255,255,.08);
-}
-.cta-btn:active{transform:translateY(-1px) scale(1.01)}
-
-.cta-btn .btn-icon{
-  font-size:clamp(1rem,2.5vw,1.4rem);
-  line-height:1;
-  filter:drop-shadow(0 0 6px rgba(201,168,76,.5));
-  transition:transform var(--t),filter var(--t);
-}
-.cta-btn:hover .btn-icon{
-  transform:scale(1.15);
-  filter:drop-shadow(0 0 12px rgba(201,168,76,.8));
-}
-.cta-btn .btn-txt{
-  font-size:clamp(.6rem,1.1vw,.72rem);
-  letter-spacing:.03em;
-  color:var(--cream);
-  transition:color var(--t);
-  word-break:keep-all;
-}
-.cta-btn:hover .btn-txt{color:var(--gold-hi)}
-
-/* Primary — bigger */
-.cta-primary{
-  padding:.85rem .5rem;
-  border-color:rgba(201,168,76,.4);
-  background:rgba(201,168,76,.07);
-}
-.cta-primary .btn-icon{font-size:clamp(1.2rem,3vw,1.7rem)}
-.cta-primary .btn-txt{font-size:clamp(.68rem,1.2vw,.8rem);font-weight:700}
-
-/* Highlight (LINE) */
-.cta-line-hl{
-  border-color:rgba(0,185,10,.4)!important;
-  background:rgba(0,185,10,.07)!important;
-}
-.cta-line-hl .btn-txt{color:#5EFF72!important}
-.cta-line-hl:hover{
-  border-color:#00B90A!important;
-  box-shadow:0 0 20px rgba(0,185,10,.35),0 6px 24px rgba(0,0,0,.4)!important;
-}
-.cta-line-hl:hover .btn-txt{color:#00FF1A!important}
-.cta-line-hl .btn-icon{filter:drop-shadow(0 0 6px rgba(0,185,10,.6))!important}
-
-/* ══════════════════════════════════════════
-   STATS ROW
-══════════════════════════════════════════ */
-.hero-stats{
-  display:flex;
-  justify-content:center;
-  gap:clamp(1.5rem,4vw,3rem);
-  flex-wrap:wrap;
-}
-.stat-item{text-align:center}
-.stat-num{
-  display:block;
-  font-family:var(--fd);
-  font-size:clamp(1.4rem,3vw,2rem);
-  font-weight:700;
-  color:var(--gold);
-  text-shadow:0 0 20px var(--gold-glow);
-  line-height:1;
-}
-.stat-lbl{
-  font-family:var(--fm);
-  font-size:clamp(.55rem,.85vw,.65rem);
-  letter-spacing:.1em;
-  color:var(--steel);
-  margin-top:.2rem;
-}
-
-/* ══════════════════════════════════════════
-   TICKER
-══════════════════════════════════════════ */
-.ticker-wrap{
-  position:relative;z-index:1;
-  overflow:hidden;padding:.55rem 0;
-  background:linear-gradient(90deg,#7A5010,#C9A84C 30%,#FFE566 50%,#C9A84C 70%,#7A5010);
-}
-.ticker-track{
-  display:flex;gap:2rem;
-  width:max-content;
-  animation:tick 22s linear infinite;
-}
-.ticker-item{
-  font-family:var(--fc);font-size:.75rem;
-  font-weight:700;letter-spacing:.08em;
-  color:var(--void);white-space:nowrap;
-  display:flex;align-items:center;gap:.75rem;
-}
-.ticker-item::after{content:'✦';font-size:.5rem}
-@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
-/* ══════════════════════════════════════════
-   SECTIONS COMMON
-══════════════════════════════════════════ */
-section{position:relative;z-index:1}
-.sec{padding:clamp(3rem,7vw,6rem) 0}
-.sec-alt{background:rgba(10,10,40,.6)}
-.sec-label{
-  font-family:var(--fm);font-size:.65rem;
-  letter-spacing:.22em;color:var(--gold);
-  margin-bottom:.6rem;
-  display:flex;align-items:center;gap:.6rem;
-}
-.sec-label::before{content:'';display:block;width:22px;height:1px;background:var(--gold)}
-.sec-h2{
-  font-family:var(--fd);
-  font-size:clamp(1.6rem,3.5vw,2.6rem);
-  font-weight:700;color:var(--white);
-  line-height:1.2;margin-bottom:.85rem;
-}
-.sec-h2 span{color:var(--gold)}
-.sec-desc{color:var(--steel);font-size:.95rem;line-height:1.8;max-width:580px}
-
-/* ══════════════════════════════════════════
-   ABOUT
-══════════════════════════════════════════ */
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4rem);align-items:center}
-.about-frame{
-  position:relative;
-  aspect-ratio:1;
-  border-radius:50%;
-  border:2px solid rgba(201,168,76,.3);
-  overflow:hidden;
-  background:var(--card);
-  box-shadow:0 0 60px rgba(201,168,76,.2),0 0 120px rgba(60,20,160,.2);
-  max-width:320px;
-  margin:0 auto;
-}
-.about-frame img{width:100%;height:100%;object-fit:cover}
-.about-badge{
-  position:absolute;bottom:-1rem;right:-1rem;
-  background:var(--gold);color:var(--void);
-  padding:1rem 1.2rem;border-radius:12px;
-  text-align:center;
-  box-shadow:0 6px 24px rgba(0,0,0,.4);
-}
-.about-badge-n{font-family:var(--fd);font-size:2rem;font-weight:900;line-height:1}
-.about-badge-t{font-family:var(--fc);font-size:.6rem;font-weight:700;letter-spacing:.05em}
-.about-tagline{
-  font-family:var(--fc);font-size:1rem;font-weight:700;
-  color:var(--gold);letter-spacing:.04em;
-  margin-bottom:1rem;padding-bottom:1rem;
-  border-bottom:1px solid rgba(201,168,76,.15);
-}
-.about-p{color:var(--steel);line-height:1.9;margin-bottom:.85rem;font-size:.93rem}
-.pillars{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:1.5rem}
-.pillar{
-  background:rgba(10,10,46,.7);
-  border:1px solid rgba(201,168,76,.12);
-  border-radius:8px;
-  padding:.85rem 1rem;
-  display:flex;align-items:center;gap:.65rem;
-  transition:border-color var(--t);
-}
-.pillar:hover{border-color:rgba(201,168,76,.4)}
-.pillar-icon{font-size:1.3rem}
-.pillar-txt{font-family:var(--fc);font-size:.75rem;font-weight:600;color:var(--cream)}
-
-/* ══════════════════════════════════════════
-   SERVICES GRID
-══════════════════════════════════════════ */
-.svc-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(clamp(160px,28%,240px),1fr));
-  gap:1.25rem;
-}
-.svc-card{
-  background:rgba(10,10,46,.8);
-  border:1px solid rgba(201,168,76,.1);
-  border-radius:14px;
-  padding:1.75rem 1.4rem;
-  position:relative;overflow:hidden;
-  transition:all var(--t) var(--ease);
-}
-.svc-card::after{
-  content:'';position:absolute;
-  top:0;left:0;right:0;height:2px;
-  background:var(--gold);
-  transform:scaleX(0);transform-origin:left;
-  transition:transform var(--t);
-}
-.svc-card:hover{border-color:rgba(201,168,76,.35);transform:translateY(-5px);box-shadow:0 12px 40px rgba(0,0,0,.5),0 0 30px rgba(201,168,76,.1)}
-.svc-card:hover::after{transform:scaleX(1)}
-.svc-n{font-family:var(--fm);font-size:.6rem;color:var(--gold-dim);letter-spacing:.1em;margin-bottom:.85rem}
-.svc-icon{font-size:2rem;margin-bottom:.85rem}
-.svc-name{font-family:var(--fc);font-size:.95rem;font-weight:700;color:var(--white);margin-bottom:.35rem}
-.svc-en{font-size:.7rem;color:var(--gold);font-weight:400;margin-bottom:.65rem}
-.svc-desc{font-size:.82rem;color:var(--steel);line-height:1.7}
-.svc-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:1rem}
-.tag{
-  font-family:var(--fm);font-size:.58rem;
-  padding:.2rem .55rem;border-radius:3px;
-  background:rgba(201,168,76,.1);color:var(--gold);
-  letter-spacing:.04em;
-}
-
-/* ══════════════════════════════════════════
-   BRANDS / CHANNELS
-══════════════════════════════════════════ */
-.brands-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(clamp(120px,20%,160px),1fr));
-  gap:1rem;
-}
-.brand-item{
-  display:flex;flex-direction:column;align-items:center;
-  gap:.65rem;padding:1.4rem .8rem;
-  background:rgba(10,10,46,.7);
-  border:1px solid rgba(201,168,76,.1);
-  border-radius:12px;
-  text-align:center;
-  transition:all var(--t) var(--ease);
-}
-.brand-item:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 8px 28px rgba(201,168,76,.2)}
-.brand-ring{
-  width:clamp(56px,8vw,80px);
-  height:clamp(56px,8vw,80px);
-  border-radius:50%;
-  border:2px solid var(--gold);
-  overflow:hidden;background:var(--card);
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.8rem;
-  box-shadow:0 0 16px rgba(201,168,76,.25);
-  transition:box-shadow var(--t);
-  flex-shrink:0;
-}
-.brand-item:hover .brand-ring{box-shadow:0 0 28px rgba(201,168,76,.5)}
-.brand-ring img{width:100%;height:100%;object-fit:cover}
-.brand-name{font-family:var(--fc);font-size:clamp(.65rem,.9vw,.78rem);font-weight:700;color:var(--cream);line-height:1.3}
-.brand-sub{font-family:var(--fm);font-size:.58rem;color:var(--steel);letter-spacing:.05em;line-height:1.5}
-
-.ch-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(clamp(110px,18%,150px),1fr));
-  gap:.85rem;
-}
-.ch-card{
-  display:flex;flex-direction:column;align-items:center;
-  gap:.55rem;padding:1.1rem .75rem;
-  border-radius:12px;background:rgba(10,10,46,.7);
-  border:1px solid rgba(255,255,255,.06);
-  text-align:center;
-  transition:all var(--t) var(--ease);
-  cursor:pointer;
-}
-.ch-card:hover{transform:translateY(-4px)}
-.ch-icon{font-size:1.6rem;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.ch-name{font-family:var(--fc);font-size:.72rem;font-weight:700;color:var(--cream)}
-.ch-sub{font-size:.65rem;color:var(--steel);line-height:1.4}
-
-.ch-line{border-color:rgba(0,185,10,.25);background:rgba(0,185,10,.07)}
-.ch-line:hover{border-color:#00B90A;box-shadow:0 0 20px rgba(0,185,10,.25)}
-.ch-fb{border-color:rgba(24,119,242,.25);background:rgba(24,119,242,.07)}
-.ch-fb:hover{border-color:#1877F2;box-shadow:0 0 20px rgba(24,119,242,.25)}
-.ch-shopee{border-color:rgba(238,77,45,.25);background:rgba(238,77,45,.07)}
-.ch-shopee:hover{border-color:#EE4D2D;box-shadow:0 0 20px rgba(238,77,45,.25)}
-.ch-lazada{border-color:rgba(255,90,3,.25);background:rgba(255,90,3,.07)}
-.ch-lazada:hover{border-color:#FF5A03;box-shadow:0 0 20px rgba(255,90,3,.25)}
-.ch-tiktok{border-color:rgba(255,0,80,.2);background:rgba(255,0,80,.07)}
-.ch-tiktok:hover{border-color:#FF0050;box-shadow:0 0 20px rgba(255,0,80,.2)}
-.ch-ig{border-color:rgba(225,48,108,.2);background:rgba(225,48,108,.07)}
-.ch-ig:hover{border-color:#E1306C;box-shadow:0 0 20px rgba(225,48,108,.2)}
-.ch-yt{border-color:rgba(255,0,0,.2);background:rgba(255,0,0,.07)}
-.ch-yt:hover{border-color:#FF0000;box-shadow:0 0 20px rgba(255,0,0,.2)}
-.ch-wa{border-color:rgba(37,211,102,.2);background:rgba(37,211,102,.07)}
-.ch-wa:hover{border-color:#25D366;box-shadow:0 0 20px rgba(37,211,102,.2)}
-
-/* ══════════════════════════════════════════
-   MAP & CONTACT
-══════════════════════════════════════════ */
-.contact-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:2.5rem;align-items:start}
-.map-wrap{
-  border-radius:14px;overflow:hidden;
-  border:1px solid rgba(201,168,76,.2);
-  aspect-ratio:4/3;background:var(--card);
-}
-.map-wrap iframe{width:100%;height:100%;border:0;filter:grayscale(70%) invert(88%) contrast(85%)}
-.cinfo{display:flex;flex-direction:column;gap:1rem}
-.cinfo-item{
-  display:flex;gap:.9rem;align-items:flex-start;
-  padding:1.1rem;
-  background:rgba(10,10,46,.7);
-  border:1px solid rgba(201,168,76,.1);
-  border-radius:10px;
-  transition:border-color var(--t);
-}
-.cinfo-item:hover{border-color:rgba(201,168,76,.35)}
-.cinfo-icon{font-size:1.3rem;flex-shrink:0;margin-top:.05rem}
-.cinfo-lbl{font-family:var(--fm);font-size:.6rem;letter-spacing:.1em;color:var(--gold);margin-bottom:.25rem}
-.cinfo-val{font-family:var(--fc);font-size:.85rem;color:var(--cream);line-height:1.5}
-.map-btns{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem}
-.map-btn{
-  display:inline-flex;align-items:center;gap:.4rem;
-  padding:.45rem .9rem;
-  font-family:var(--fm);font-size:.62rem;letter-spacing:.06em;
-  color:var(--gold);
-  border:1px solid rgba(201,168,76,.3);border-radius:4px;
-  transition:all var(--t);
-}
-.map-btn:hover{background:rgba(201,168,76,.1);border-color:var(--gold)}
-.contact-btns{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1rem}
-.cb{
-  display:inline-flex;align-items:center;gap:.5rem;
-  padding:.6rem 1.1rem;border-radius:6px;
-  font-family:var(--fc);font-size:.76rem;font-weight:700;
-  letter-spacing:.04em;transition:all var(--t);border:1px solid transparent;
-}
-.cb-line{background:rgba(0,185,10,.12);color:#00B90A;border-color:rgba(0,185,10,.3)}
-.cb-line:hover{background:#00B90A;color:var(--void)}
-.cb-wa{background:rgba(37,211,102,.12);color:#25D366;border-color:rgba(37,211,102,.3)}
-.cb-wa:hover{background:#25D366;color:var(--void)}
-.cb-fb{background:rgba(24,119,242,.12);color:#1877F2;border-color:rgba(24,119,242,.3)}
-.cb-fb:hover{background:#1877F2;color:#fff}
-
-/* ══════════════════════════════════════════
-   FOOTER
-══════════════════════════════════════════ */
-footer{
-  position:relative;z-index:1;
-  background:rgba(2,2,12,.95);
-  border-top:1px solid rgba(201,168,76,.1);
-  padding:3rem 0 1.5rem;
-}
-.ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:2rem;margin-bottom:2rem}
-.ft-brand-name{font-family:var(--fc);font-size:.95rem;font-weight:700;color:var(--gold);margin:.6rem 0 .4rem;letter-spacing:.04em}
-.ft-brand-sub{font-size:.8rem;color:var(--steel);line-height:1.7;margin-bottom:1rem}
-.ft-tag{
-  font-family:var(--fm);font-size:.65rem;letter-spacing:.08em;
-  color:var(--gold-dim);
-  border-left:2px solid var(--gold-dim);
-  padding-left:.65rem;line-height:1.6;
-}
-.ft-logos{display:flex;gap:.6rem;margin-top:1.1rem;align-items:center}
-.ft-logo{
-  width:34px;height:34px;border-radius:50%;
-  object-fit:cover;border:1.5px solid rgba(201,168,76,.4);
-  opacity:.8;transition:opacity var(--t),box-shadow var(--t);
-}
-.ft-logo:hover{opacity:1;box-shadow:0 0 12px rgba(201,168,76,.5)}
-.ft-h{
-  font-family:var(--fc);font-size:.68rem;font-weight:700;
-  letter-spacing:.12em;color:var(--gold);
-  margin-bottom:1rem;text-transform:uppercase;
-}
-.ft-links{list-style:none;display:flex;flex-direction:column;gap:.55rem}
-.ft-links a{
-  font-size:.82rem;color:var(--steel);
-  display:flex;align-items:center;gap:.4rem;
-  transition:color var(--t);
-}
-.ft-links a:hover{color:var(--gold)}
-.ft-bottom{
-  display:flex;align-items:center;justify-content:space-between;
-  flex-wrap:wrap;gap:.75rem;
-  padding-top:1.25rem;
-  border-top:1px solid rgba(255,255,255,.05);
-}
-.ft-copy{font-family:var(--fm);font-size:.65rem;color:var(--gold-dim);letter-spacing:.04em}
-.ft-domain{font-family:var(--fm);font-size:.65rem;color:var(--gold);letter-spacing:.08em}
-
-/* ══════════════════════════════════════════
-   REVEAL ANIMATION
-══════════════════════════════════════════ */
-.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
-.reveal.vis{opacity:1;transform:translateY(0)}
-
-/* ══════════════════════════════════════════
-   RESPONSIVE
-══════════════════════════════════════════ */
-/* Tablet */
-@media(max-width:1024px){
-  .ft-grid{grid-template-columns:1fr 1fr}
-  .about-grid{grid-template-columns:1fr;text-align:center}
-  .about-frame{max-width:220px}
-  .pillars{grid-template-columns:1fr 1fr}
-  .sec-desc{margin:0 auto}
-  .contact-grid{grid-template-columns:1fr}
-}
-
-/* Mobile */
-@media(max-width:768px){
-  .nav-links{display:none}
-  .hamburger{display:flex}
-
-  .cta-grid{grid-template-columns:1fr 1fr}
-  .cta-row2{grid-template-columns:repeat(2,1fr)}
-  .cta-row3{grid-template-columns:repeat(2,1fr)}
-
-  .about-grid{grid-template-columns:1fr}
-  .about-frame{max-width:180px}
-
-  .sec-label{justify-content:center}
-  .sec-h2{text-align:center}
-  .ft-grid{grid-template-columns:1fr 1fr}
-}
-
-/* Small Mobile */
-@media(max-width:480px){
-  .cta-row2,.cta-row3{grid-template-columns:repeat(2,1fr)}
-  .hero-stats{gap:1.2rem}
-  .ft-grid{grid-template-columns:1fr}
-  .brands-grid{grid-template-columns:repeat(2,1fr)}
-  .ch-grid{grid-template-columns:repeat(2,1fr)}
-  .fab-line{width:46px;height:46px;font-size:1.3rem}
-  .fab-wa{width:40px;height:40px;font-size:1.1rem}
-}
-
-/* TV / Large */
-@media(min-width:1600px){
-  html{font-size:18px}
-  .container{max-width:1440px}
-  .universe{width:420px;height:420px}
-}
-
-@media(prefers-reduced-motion:reduce){
-  *{animation:none!important;transition:none!important}
-}
-</style>
-</head>
-<body>
-
-<canvas id="galaxy"></canvas>
-
-<!-- ══ NAV ══ -->
-<nav id="nav">
-  <div class="container">
-    <div class="nav-wrap">
-      <div class="nav-brand">
-        <img src="https://raw.githubusercontent.com/Chai147258/LUNGCHAI-CHAIYO-ALL/main/images/logo-all.jpg"
-             alt="Logo" class="nav-logo-img" onerror="this.style.display='none'">
-        <div class="nav-title">ลุงชัย ไชโย ออล<small>LUNGCHAI CHAIYO ALL</small></div>
-      </div>
-      <ul class="nav-links">
-        <li><a href="#about">เกี่ยวกับ</a></li>
-        <li><a href="#brands">แบรนด์</a></li>
-        <li><a href="#services">บริการ</a></li>
-        <li><a href="/catalog.html">สินค้า</a></li>
-        <li><a href="/portfolio.html">ผลงาน</a></li>
-        <li><a href="#channels">ช่องทาง</a></li>
-        <li><a href="/member.html">สมาชิก</a></li>
-        <li><a href="#contact">ติดต่อ</a></li>
-        <li><a href="/inquiry.html" class="nav-cta-pill">📋 ขอใบเสนอราคา</a></li>
-      </ul>
-      <button class="hamburger" id="hbg" aria-label="เมนู">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </div>
-</nav>
-
-<!-- ══ MOBILE MENU ══ -->
-<div class="mob-menu" id="mob">
-  <button class="mob-close" id="mob-close">✕</button>
-  <a href="#about"        onclick="closeMenu()">เกี่ยวกับเรา</a>
-  <a href="#brands"       onclick="closeMenu()">แบรนด์</a>
-  <a href="#services"     onclick="closeMenu()">บริการ</a>
-  <a href="/catalog.html" onclick="closeMenu()">สินค้า</a>
-  <a href="/portfolio.html" onclick="closeMenu()">ผลงาน</a>
-  <a href="#channels"     onclick="closeMenu()">ช่องทาง</a>
-  <a href="/member.html"  onclick="closeMenu()">สมาชิก</a>
-  <a href="#contact"      onclick="closeMenu()">ติดต่อ</a>
-  <a href="/inquiry.html" style="color:var(--gold)" onclick="closeMenu()">📋 ขอใบเสนอราคา</a>
-</div>
-
-<!-- ══ HERO ══ -->
-<section class="hero" id="home">
-
-  <!-- Universe Logo -->
-  <div class="universe reveal">
-    <div class="u-ring u-ring-1"></div>
-    <div class="u-ring u-ring-2"></div>
-    <div class="u-ring u-ring-3"></div>
-    <div class="u-ring u-ring-4"></div>
-    <img src="https://raw.githubusercontent.com/Chai147258/LUNGCHAI-CHAIYO-ALL/main/images/logo-all.jpg"
-         alt="Lungchai Logo" class="u-logo"
-         onerror="this.style.background='rgba(201,168,76,.15)'">
-    <div class="orbit-dot od1"></div>
-    <div class="orbit-dot od2"></div>
-    <div class="orbit-dot od3"></div>
-  </div>
-
-  <!-- Text -->
-  <p class="hero-eyebrow reveal">ONE STOP INDUSTRIAL SUPPLY & SERVICE</p>
-  <h1 class="hero-h1 reveal">
-    ลุงชัย <span class="g">ไชโย</span> <span class="o">ออล</span>
-  </h1>
-  <p class="hero-sub reveal">Lungchai Chaiyo All</p>
-  <p class="hero-desc reveal">
-    ครบ จบ ทุกความต้องการของโรงงานและธุรกิจ<br>
-    IT • ไฟฟ้า • PPE • เครื่องมือช่าง • วัสดุอุตสาหกรรม<br>
-    ค้าส่ง • ค้าปลีก • ออนไลน์ • บริการหลังการขาย
-  </p>
-
-  <!-- ── CTA CONSOLE PANEL ── -->
-  <div class="cta-panel reveal">
-    <!-- Row 1 — 2 primary -->
-    <div class="cta-grid">
-      <a href="/inquiry.html" class="cta-btn cta-primary">
-        <span class="btn-icon">📋</span>
-        <span class="btn-txt">ขอใบเสนอราคา</span>
-      </a>
-      <a href="/catalog.html" class="cta-btn cta-primary">
-        <span class="btn-icon">🛒</span>
-        <span class="btn-txt">สินค้าทั้งหมด</span>
-      </a>
-    </div>
-
-    <!-- Row 2 — 4 -->
-    <div class="cta-row2">
-      <a href="/services.html" class="cta-btn">
-        <span class="btn-icon">🔧</span>
-        <span class="btn-txt">บริการซ่อม<br>ทั้งหมด</span>
-      </a>
-      <a href="/portfolio.html" class="cta-btn">
-        <span class="btn-icon">🏆</span>
-        <span class="btn-txt">ผลงานที่<br>ผ่านมา</span>
-      </a>
-      <a href="/reviews.html" class="cta-btn">
-        <span class="btn-icon">⭐</span>
-        <span class="btn-txt">รีวิวจาก<br>ลูกค้า</span>
-      </a>
-      <a href="/track.html" class="cta-btn">
-        <span class="btn-icon">📡</span>
-        <span class="btn-txt">เช็ค&ติดตาม<br>งาน</span>
-      </a>
-    </div>
-
-    <!-- Row 3 — 4 -->
-    <div class="cta-row3" style="margin-bottom:0">
-      <a href="/about.html" class="cta-btn">
-        <span class="btn-icon">🏗️</span>
-        <span class="btn-txt">โครงสร้าง<br>องค์กร</span>
-      </a>
-      <a href="#contact" class="cta-btn">
-        <span class="btn-icon">📍</span>
-        <span class="btn-txt">แผนที่ตั้ง</span>
-      </a>
-      <a href="https://maps.app.goo.gl/eayqd3619xcgLWFd8" target="_blank" class="cta-btn">
-        <span class="btn-icon">🗺️</span>
-        <span class="btn-txt">เช็คระยะ<br>ทาง</span>
-      </a>
-      <a href="https://line.me/R/ti/p/@971yzyyd" target="_blank" class="cta-btn cta-line-hl">
-        <span class="btn-icon">💬</span>
-        <span class="btn-txt">ติดต่อ<br>สอบถาม</span>
-      </a>
-    </div>
-  </div>
-
-  <!-- Stats -->
-  <div class="hero-stats reveal">
-    <div class="stat-item">
-      <span class="stat-num">10+</span>
-      <span class="stat-lbl">หมวดสินค้า</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-num">7</span>
-      <span class="stat-lbl">แบรนด์</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-num">8</span>
-      <span class="stat-lbl">ช่องทางขาย</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-num">24/7</span>
-      <span class="stat-lbl">พร้อมให้บริการ</span>
-    </div>
-  </div>
-
-</section>
-
-<!-- ══ QUICK FINDER — SEARCH / REPAIR / TECHNICIAN ══ -->
-<section class="finder-sec reveal" id="finder">
-  <div class="container">
-    <div class="finder-panel">
-      <div class="finder-tabs" role="tablist">
-        <button type="button" class="finder-tab active" data-mode="search" onclick="setFinderMode('search')">
-          <span class="ft-ic">🔍</span><span>ค้นหาบริการ/สินค้า</span>
-        </button>
-        <button type="button" class="finder-tab" data-mode="repair" onclick="setFinderMode('repair')">
-          <span class="ft-ic">🛠️</span><span>แจ้งซ่อมด่วน</span>
-        </button>
-        <button type="button" class="finder-tab" data-mode="tech" onclick="setFinderMode('tech')">
-          <span class="ft-ic">👨‍🔧</span><span>หาช่างใกล้คุณ</span>
-        </button>
-      </div>
-      <form class="finder-form" id="finderForm" onsubmit="return submitFinder(event)">
-        <span class="finder-ic">🔍</span>
-        <input type="text" id="finderInput" class="finder-input" autocomplete="off"
-               placeholder="ค้นหาบริการซ่อม เช่น ซ่อมพริ้นเตอร์ เปลี่ยนหมึก ซ่อมมอเตอร์...">
-        <button type="submit" class="finder-btn" id="finderBtn">ค้นหา →</button>
-      </form>
-      <div class="finder-tags">
-        <span class="finder-tags-lbl">ยอดนิยม:</span>
-        <a onclick="quickFind('ซ่อมพริ้นเตอร์')">ซ่อมพริ้นเตอร์</a>
-        <a onclick="quickFind('ซ่อมมอเตอร์')">ซ่อมมอเตอร์</a>
-        <a onclick="quickFind('กล้องวงจรปิด')">กล้องวงจรปิด</a>
-        <a onclick="quickFind('ซ่อมคอมพิวเตอร์')">ซ่อมคอมพิวเตอร์</a>
-        <a onclick="quickFind('เครื่องปรับอากาศ')">แอร์/เครื่องปรับอากาศ</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- TICKER -->
-<div class="ticker-wrap">
-  <div class="ticker-track">
-    <span class="ticker-item">💻 IT & Computer</span>
-    <span class="ticker-item">🖨️ ซ่อมเครื่องพิมพ์</span>
-    <span class="ticker-item">⚡ อุปกรณ์ไฟฟ้าโรงงาน</span>
-    <span class="ticker-item">🔩 ซ่อมมอเตอร์ไฟฟ้า</span>
-    <span class="ticker-item">🦺 PPE Safety</span>
-    <span class="ticker-item">🛠️ เครื่องมือช่าง</span>
-    <span class="ticker-item">🏭 One Stop Industrial</span>
-    <span class="ticker-item">🛍️ Shopee & Lazada</span>
-    <span class="ticker-item">💻 IT & Computer</span>
-    <span class="ticker-item">🖨️ ซ่อมเครื่องพิมพ์</span>
-    <span class="ticker-item">⚡ อุปกรณ์ไฟฟ้าโรงงาน</span>
-    <span class="ticker-item">🔩 ซ่อมมอเตอร์ไฟฟ้า</span>
-    <span class="ticker-item">🦺 PPE Safety</span>
-    <span class="ticker-item">🛠️ เครื่องมือช่าง</span>
-    <span class="ticker-item">🏭 One Stop Industrial</span>
-    <span class="ticker-item">🛍️ Shopee & Lazada</span>
-  </div>
-</div>
-
-<!-- ══ ABOUT ══ -->
-<section id="about" class="sec sec-alt">
-  <div class="container">
-    <div class="about-grid">
-      <div class="reveal" style="display:flex;justify-content:center">
-        <div style="position:relative">
-          <div class="about-frame">
-            <img src="https://raw.githubusercontent.com/Chai147258/LUNGCHAI-CHAIYO-ALL/main/images/logo-all.jpg"
-                 alt="Lungchai" onerror="this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:4rem\'>🏭</div>'">
-          </div>
-          <div class="about-badge">
-            <div class="about-badge-n">10+</div>
-            <div class="about-badge-t">ปีประสบการณ์</div>
-          </div>
-        </div>
-      </div>
-      <div class="reveal">
-        <p class="sec-label">ABOUT US</p>
-        <h2 class="sec-h2">ลุงชัย ไชโย<br><span>Lungchai Industrial</span></h2>
-        <p class="about-tagline">One Stop Industrial Supply & Service</p>
-        <p class="about-p">ลุงชัย ไชโย ออล คือผู้จัดหาสินค้าอุตสาหกรรมครบวงจร ตั้งแต่อุปกรณ์ IT คอมพิวเตอร์ เครื่องพิมพ์ ไปจนถึงอุปกรณ์ไฟฟ้าโรงงาน มอเตอร์ไฟฟ้า เครื่องมือช่าง และ PPE ความปลอดภัย</p>
-        <p class="about-p">เราให้บริการทั้งค้าส่ง ค้าปลีก และออนไลน์ พร้อมทีมช่างผู้เชี่ยวชาญด้านซ่อมบำรุงและให้คำปรึกษา เพื่อตอบสนองทุกความต้องการของโรงงานและธุรกิจ</p>
-        <div class="pillars">
-          <div class="pillar"><span class="pillar-icon">🏆</span><span class="pillar-txt">คุณภาพมาตรฐาน</span></div>
-          <div class="pillar"><span class="pillar-icon">🚚</span><span class="pillar-txt">จัดส่งรวดเร็ว</span></div>
-          <div class="pillar"><span class="pillar-icon">🔧</span><span class="pillar-txt">บริการหลังการขาย</span></div>
-          <div class="pillar"><span class="pillar-icon">💰</span><span class="pillar-txt">ราคายุติธรรม</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ BRANDS ══ -->
-<section id="brands" class="sec">
-  <div class="container">
-    <div class="reveal" style="margin-bottom:2.5rem;text-align:center">
-      <p class="sec-label" style="justify-content:center">OUR BRANDS</p>
-      <h2 class="sec-h2">7 <span>แบรนด์</span>ในเครือ</h2>
-    </div>
-    <div class="brands-grid">
-      <div class="brand-item reveal">
-        <div class="brand-ring"><img src="https://raw.githubusercontent.com/Chai147258/LUNGCHAI-CHAIYO-ALL/main/images/logo-all.jpg" alt="All" onerror="this.parentElement.textContent='🏭'"></div>
-        <div class="brand-name">ลุงชัย ไชโย ออล</div>
-        <div class="brand-sub">Flagship<br>Industrial Supply</div>
-      </div>
-      <div class="brand-item reveal">
-        <div class="brand-ring" style="border-color:#4A90D9;box-shadow:0 0 16px rgba(74,144,217,.3)">
-          <img src="https://raw.githubusercontent.com/Chai147258/LUNGCHAI-CHAIYO-ALL/main/images/Logo-ff.jpg" alt="Farm IT" onerror="this.parentElement.textContent='🌐'">
-        </div>
-        <div class="brand-name">Network Farm IT</div>
-        <div class="brand-sub">IT Solution<br>Network & CCTV</div>
-      </div>
-      <div class="brand-item reveal">
-        <div class="brand-ring" style="border-color:#9B59B6;box-shadow:0 0 16px rgba(155,89,182,.3)">
-          <span style="font-size:2rem">🏗️</span>
-        </div>
-        <div class="brand-name">Lungchai Factories</div>
-        <div class="brand-sub">B2B Industrial<br>PPE • Motor • Tools</div>
-      </div>
-      <div class="brand-item reveal">
-        <div class="brand-ring" style="border-color:#E74C3C;box-shadow:0 0 16px rgba(231,76,60,.3)">
-          <span style="font-size:2rem">🔧</span>
-        </div>
-        <div class="brand-name">ลุงชัย บริการ</div>
-        <div class="brand-sub">Repair Service<br>ซ่อม • ติดตั้ง</div>
-      </div>
-      <div class="brand-item reveal">
-        <div class="brand-ring" style="border-color:#5CB85C;box-shadow:0 0 16px rgba(92,184,92,.3)">
-          <img src="https://raw.githubusercontent.com/Chai147258/LUNGCHAI-CHAIYO-ALL/main/images/logo-farm.jpg" alt="Eco" onerror="this.parentElement.textContent='🌿'">
-        </div>
-        <div class="brand-name">ลุงชัย รักษ์โลก</div>
-        <div class="brand-sub">Eco & Green<br>ยั่งยืน</div>
-      </div>
-      <div class="brand-item reveal">
-        <div class="brand-ring" style="border-color:#E8A838;box-shadow:0 0 16px rgba(232,168,56,.3)">
-          <span style="font-size:2rem">🎁</span>
-        </div>
-        <div class="brand-name">ลุงชัย ของฝาก</div>
-        <div class="brand-sub">OTOP & Souvenir<br>ของขึ้นชื่อ</div>
-      </div>
-      <div class="brand-item reveal">
-        <div class="brand-ring" style="border-color:#E91E8C;box-shadow:0 0 16px rgba(233,30,140,.3)">
-          <span style="font-size:2rem">👗</span>
-        </div>
-        <div class="brand-name">ลุงชัย ไชโย</div>
-        <div class="brand-sub">Fashion<br>เสื้อผ้าสไตล์ไทย</div>
-      </div>
-      <div class="brand-item reveal">
-        <div class="brand-ring" style="border-color:#1ABC9C;box-shadow:0 0 16px rgba(26,188,156,.3)">
-          <span style="font-size:2rem">🛒</span>
-        </div>
-        <div class="brand-name">Lungchai Markat</div>
-        <div class="brand-sub">Online Market<br>ค้าส่ง • Wholesale</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ SERVICES ══ -->
-<section id="services" class="sec sec-alt">
-  <div class="container">
-    <div class="reveal" style="margin-bottom:2.5rem">
-      <p class="sec-label">OUR SERVICES</p>
-      <h2 class="sec-h2">บริการ<span>ของเรา</span></h2>
-      <p class="sec-desc">ครบทุกด้านสำหรับโรงงาน ธุรกิจ และบุคคลทั่วไป</p>
-    </div>
-    <div class="svc-grid">
-      <div class="svc-card reveal"><div class="svc-n">01</div><div class="svc-icon">💻</div><div class="svc-name">IT & Computer<span class="svc-en">Information Technology</span></div><p class="svc-desc">จำหน่ายคอมพิวเตอร์ โน้ตบุ๊ค เครือข่าย IT Solutions ครบวงจร</p><div class="svc-tags"><span class="tag">Computer</span><span class="tag">Network</span><span class="tag">IT</span></div></div>
-      <div class="svc-card reveal"><div class="svc-n">02</div><div class="svc-icon">🖨️</div><div class="svc-name">ซ่อมเครื่องพิมพ์<span class="svc-en">Printer Repair</span></div><p class="svc-desc">ซ่อมทุกยี่ห้อ จำหน่ายหมึก อะไหล่ รับซ่อมนอกสถานที่</p><div class="svc-tags"><span class="tag">Printer</span><span class="tag">Ink</span><span class="tag">On-site</span></div></div>
-      <div class="svc-card reveal"><div class="svc-n">03</div><div class="svc-icon">⚡</div><div class="svc-name">อุปกรณ์ไฟฟ้า<span class="svc-en">Electrical Equipment</span></div><p class="svc-desc">อุปกรณ์ไฟฟ้าโรงงาน พัดลมอุตสาหกรรม สาย สวิตช์ ครบ</p><div class="svc-tags"><span class="tag">Electrical</span><span class="tag">Fan</span><span class="tag">Cable</span></div></div>
-      <div class="svc-card reveal"><div class="svc-n">04</div><div class="svc-icon">🔩</div><div class="svc-name">ซ่อมมอเตอร์<span class="svc-en">Motor Repair</span></div><p class="svc-desc">ซ่อมพันขดลวดมอเตอร์ ไดนาโม ปั๊มน้ำ สำหรับโรงงาน</p><div class="svc-tags"><span class="tag">Motor</span><span class="tag">Dynamo</span><span class="tag">Pump</span></div></div>
-      <div class="svc-card reveal"><div class="svc-n">05</div><div class="svc-icon">🦺</div><div class="svc-name">PPE & Safety<span class="svc-en">Personal Protective</span></div><p class="svc-desc">หมวก ถุงมือ รองเท้าเซฟตี้ ชุดป้องกัน ตามมาตรฐาน</p><div class="svc-tags"><span class="tag">Helmet</span><span class="tag">Gloves</span><span class="tag">Safety</span></div></div>
-      <div class="svc-card reveal"><div class="svc-n">06</div><div class="svc-icon">🛍️</div><div class="svc-name">ค้าส่ง & ออนไลน์<span class="svc-en">Wholesale & Online</span></div><p class="svc-desc">ค้าส่ง ค้าปลีก และออนไลน์ผ่าน Shopee, Lazada, TikTok</p><div class="svc-tags"><span class="tag">Shopee</span><span class="tag">Lazada</span><span class="tag">TikTok</span></div></div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ CHANNELS ══ -->
-<section id="channels" class="sec">
-  <div class="container">
-    <div class="reveal" style="margin-bottom:2.5rem;text-align:center">
-      <p class="sec-label" style="justify-content:center">SALES CHANNELS</p>
-      <h2 class="sec-h2" style="text-align:center">ช่องทาง<span>ซื้อขาย</span></h2>
-      <p class="sec-desc" style="margin:0 auto">เลือกช่องทางที่สะดวก — พร้อมบริการทุกแพลตฟอร์ม</p>
-    </div>
-    <div class="ch-grid">
-      <a href="https://line.me/R/ti/p/@971yzyyd" target="_blank" class="ch-card ch-line reveal"><div class="ch-icon">💬</div><div class="ch-name">LINE OA</div><div class="ch-sub">@971yzyyd</div></a>
-      <a href="https://www.facebook.com/lungchaishop1" target="_blank" class="ch-card ch-fb reveal"><div class="ch-icon">📘</div><div class="ch-name">Facebook</div><div class="ch-sub">Lungchai Shop</div></a>
-      <a href="https://collshp.com/run00?view=storefront" target="_blank" class="ch-card ch-shopee reveal"><div class="ch-icon">🛒</div><div class="ch-name">Shopee</div><div class="ch-sub">ร้านค้าออนไลน์</div></a>
-      <a href="https://s.lazada.co.th/s.Z7iuvG" target="_blank" class="ch-card ch-lazada reveal"><div class="ch-icon">🏪</div><div class="ch-name">Lazada</div><div class="ch-sub">สั่งซื้อออนไลน์</div></a>
-      <a href="https://www.tiktok.com/@lungchai147258" target="_blank" class="ch-card ch-tiktok reveal"><div class="ch-icon">🎵</div><div class="ch-name">TikTok</div><div class="ch-sub">@lungchai147258</div></a>
-      <a href="https://www.instagram.com/lungchaimarket" target="_blank" class="ch-card ch-ig reveal"><div class="ch-icon">📸</div><div class="ch-name">Instagram</div><div class="ch-sub">@lungchaimarket</div></a>
-      <a href="https://youtube.com/@chai147258" target="_blank" class="ch-card ch-yt reveal"><div class="ch-icon">▶️</div><div class="ch-name">YouTube</div><div class="ch-sub">@chai147258</div></a>
-      <a href="https://wa.me/qr/QXD7536TVAPHG1" target="_blank" class="ch-card ch-wa reveal"><div class="ch-icon">📱</div><div class="ch-name">WhatsApp</div><div class="ch-sub">ลุงชัย</div></a>
-    </div>
-  </div>
-</section>
-
-<!-- ══ CONTACT ══ -->
-<section id="contact" class="sec sec-alt">
-  <div class="container">
-    <div class="reveal" style="margin-bottom:2.5rem">
-      <p class="sec-label">CONTACT US</p>
-      <h2 class="sec-h2">ติดต่อ<span>เรา</span></h2>
-      <p class="sec-desc">พร้อมให้บริการและตอบคำถามทุกวัน</p>
-    </div>
-    <div class="contact-grid">
-      <div class="reveal">
-        <div class="map-wrap">
-          <iframe src="https://maps.google.com/maps?q=lungchai+chaiyo&output=embed&z=15" allowfullscreen loading="lazy"></iframe>
-        </div>
-        <div class="map-btns" style="margin-top:.75rem">
-          <a href="https://maps.app.goo.gl/eayqd3619xcgLWFd8" target="_blank" class="map-btn">📍 แผนที่ 1</a>
-          <a href="https://maps.app.goo.gl/4sUbVC4DiohHpyKH8" target="_blank" class="map-btn">📍 แผนที่ 2</a>
-          <a href="https://maps.app.goo.gl/eayqd3619xcgLWFd8" target="_blank" class="map-btn">🗺️ เช็คระยะทาง</a>
-        </div>
-      </div>
-      <div class="cinfo reveal">
-        <div class="cinfo-item"><span class="cinfo-icon">📍</span><div><div class="cinfo-lbl">ที่อยู่</div><div class="cinfo-val">ลุงชัย ไชโย ออล — ดูแผนที่ด้านซ้าย</div></div></div>
-        <div class="cinfo-item"><span class="cinfo-icon">💬</span><div><div class="cinfo-lbl">LINE OA (แนะนำ)</div><div class="cinfo-val">@971yzyyd — ลุงชัย ไชโย ออล</div></div></div>
-        <div class="cinfo-item"><span class="cinfo-icon">🕐</span><div><div class="cinfo-lbl">เวลาทำการ</div><div class="cinfo-val">จันทร์–เสาร์: 08:00–18:00<br>ออนไลน์: ทุกวัน 24 ชั่วโมง</div></div></div>
-        <div class="cinfo-item"><span class="cinfo-icon">🌐</span><div><div class="cinfo-lbl">เว็บไซต์</div><div class="cinfo-val">lungchaichaiyo.shop</div></div></div>
-        <div class="contact-btns">
-          <a href="https://line.me/R/ti/p/@971yzyyd" target="_blank" class="cb cb-line">💬 LINE OA</a>
-          <a href="https://wa.me/qr/QXD7536TVAPHG1" target="_blank" class="cb cb-wa">📱 WhatsApp</a>
-          <a href="https://www.facebook.com/lungchaishop1" target="_blank" class="cb cb-fb">📘 Facebook</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ FOOTER ══ -->
-<footer>
-  <div class="container">
-    <div class="ft-grid">
-      <div>
-        <div class="ft-logos">
-          <img src="https://raw.githubusercontent.com/Chai147258/LUNGCHAI-CHAIYO-ALL/main/images/logo-all.jpg" class="ft-logo" alt="All" onerror="this.style.display='none'">
-          <img src="https://raw.githubusercontent.com/Chai147258/LUNGCHAI-CHAIYO-ALL/main/images/logo-farm.jpg" class="ft-logo" style="border-color:#5CB85C" alt="Farm" onerror="this.style.display='none'">
-          <img src="https://raw.githubusercontent.com/Chai147258/LUNGCHAI-CHAIYO-ALL/main/images/Logo-ff.jpg" class="ft-logo" style="border-color:#4A90D9" alt="FF" onerror="this.style.display='none'">
-        </div>
-        <div class="ft-brand-name">ลุงชัย ไชโย ออล</div>
-        <p class="ft-brand-sub">Lungchai Industrial Supply & Service<br>One Stop ทุกความต้องการของโรงงาน</p>
-        <p class="ft-tag">IT • ELECTRICAL • PPE • TOOLS • WHOLESALE</p>
-      </div>
-      <div>
-        <div class="ft-h">บริการ</div>
-        <ul class="ft-links">
-          <li><a href="#">💻 IT & Computer</a></li>
-          <li><a href="#">🖨️ ซ่อมเครื่องพิมพ์</a></li>
-          <li><a href="#">⚡ อุปกรณ์ไฟฟ้า</a></li>
-          <li><a href="#">🔩 ซ่อมมอเตอร์</a></li>
-          <li><a href="#">🦺 PPE Safety</a></li>
-        </ul>
-      </div>
-      <div>
-        <div class="ft-h">ช้อปออนไลน์</div>
-        <ul class="ft-links">
-          <li><a href="https://line.me/R/ti/p/@971yzyyd" target="_blank">💬 LINE OA</a></li>
-          <li><a href="https://collshp.com/run00?view=storefront" target="_blank">🛒 Shopee</a></li>
-          <li><a href="https://s.lazada.co.th/s.Z7iuvG" target="_blank">🏪 Lazada</a></li>
-          <li><a href="https://www.tiktok.com/@lungchai147258" target="_blank">🎵 TikTok</a></li>
-          <li><a href="https://www.facebook.com/lungchaishop1" target="_blank">📘 Facebook</a></li>
-        </ul>
-      </div>
-      <div>
-        <div class="ft-h">ติดตาม</div>
-        <ul class="ft-links">
-          <li><a href="https://youtube.com/@chai147258" target="_blank">▶️ YouTube</a></li>
-          <li><a href="https://www.instagram.com/lungchaimarket" target="_blank">📸 Instagram</a></li>
-          <li><a href="https://wa.me/qr/QXD7536TVAPHG1" target="_blank">📱 WhatsApp</a></li>
-          <li><a href="https://maps.app.goo.gl/eayqd3619xcgLWFd8" target="_blank">📍 Google Maps</a></li>
-          <li><a href="/member.html">👤 สมาชิก</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="ft-bottom">
-      <span class="ft-copy">© 2025 ลุงชัย ไชโย ออล — Lungchai Chaiyo All. สงวนลิขสิทธิ์</span>
-      <span class="ft-domain">lungchaichaiyo.shop</span>
-    </div>
-  </div>
-</footer>
-
-<!-- ══ FLOATING QUICK CONTACT ══ -->
-<div class="fab-wrap">
-  <a href="https://wa.me/qr/QXD7536TVAPHG1" target="_blank" class="fab fab-wa" aria-label="WhatsApp" title="WhatsApp">📱</a>
-  <a href="https://line.me/R/ti/p/@971yzyyd" target="_blank" class="fab fab-line" aria-label="LINE OA" title="แชท LINE OA">💬</a>
-</div>
-
-<!-- ══ SCRIPTS ══ -->
+<html lang="th"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ลุงชัย ไชโย ออล - Lungchai Chaiyo All | Industrial Supply &amp; Service</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Anuphan:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script>
-/* ─────────────────────────────────────────
-   GALAXY CANVAS — Stars + Nebula + Comets
-───────────────────────────────────────── */
-(function(){
-  const C = document.getElementById('galaxy');
-  const ctx = C.getContext('2d');
-  let W, H, stars = [], comets = [], frame = 0;
-
-  function resize(){
-    W = C.width  = window.innerWidth;
-    H = C.height = window.innerHeight;
-    initStars();
-  }
-
-  function initStars(){
-    stars = [];
-    // Dust layer — many tiny
-    for(let i=0;i<400;i++) stars.push({
-      x:Math.random()*W, y:Math.random()*H,
-      r:Math.random()*.7+.1, a:Math.random(),
-      da:(Math.random()-.5)*.003, type:'d'
-    });
-    // Mid stars
-    for(let i=0;i<150;i++) stars.push({
-      x:Math.random()*W, y:Math.random()*H,
-      r:Math.random()*1.4+.5, a:Math.random(),
-      da:(Math.random()-.5)*.005,
-      type: Math.random()>.75?'g':'w'   // g=gold w=white
-    });
-    // Bright stars with cross flare
-    for(let i=0;i<22;i++) stars.push({
-      x:Math.random()*W, y:Math.random()*H,
-      r:Math.random()*2+1.2, a:Math.random(),
-      da:(Math.random()-.5)*.003,
-      type:'b', gold:Math.random()>.45
-    });
-  }
-
-  function spawnComet(){
-    if(comets.length<6 && Math.random()<.006){
-      const fromLeft = Math.random()>.5;
-      comets.push({
-        x: fromLeft ? -60 : W+60,
-        y: Math.random()*H*.65,
-        vx: fromLeft ? 5+Math.random()*5 : -(5+Math.random()*5),
-        vy: .6+Math.random()*1.8,
-        life:1,
-        tail:140+Math.random()*180,
-        gold:Math.random()>.35
-      });
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'space-dark': '#0c0c0c',
+            'industrial-gold': '#FFD700',
+            'cyber-amber': '#FFBF00',
+            'orbital-bronze': '#CD7F32',
+            'surface-bright': 'rgba(255, 215, 0, 0.12)',
+          },
+          fontFamily: {
+            sans: ['Anuphan', 'Space Grotesk', 'sans-serif'],
+          },
+        }
+      }
     }
-  }
+  </script>
+<style data-purpose="animations">
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+    }
+    .animate-float { animation: float 6s ease-in-out infinite; }
 
-  function draw(){
-    frame++;
-    ctx.clearRect(0,0,W,H);
+    @keyframes pulse-glow {
+      0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.4)); }
+      50% { filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8)); }
+    }
+    .glow-gold { animation: pulse-glow 3s infinite; }
 
-    /* 1. Nebula layers — brighter */
-    const nebulae=[
-      {cx:.12,cy:.18,rx:W*.45,ry:H*.38,col:'40,25,180',a:.22},
-      {cx:.82,cy:.72,rx:W*.5, ry:H*.4, col:'90,15,160',a:.18},
-      {cx:.5, cy:.45,rx:W*.6, ry:H*.55,col:'0,70,200', a:.14},
-      {cx:.05,cy:.85,rx:W*.35,ry:H*.3, col:'0,160,200',a:.12},
-      {cx:.92,cy:.08,rx:W*.3, ry:H*.25,col:'180,15,70', a:.13},
-      {cx:.5, cy:.5, rx:W*.3, ry:H*.3, col:'80,40,255', a:.1},
-    ];
-    nebulae.forEach(n=>{
-      const g=ctx.createRadialGradient(n.cx*W,n.cy*H,0,n.cx*W,n.cy*H,Math.max(n.rx,n.ry));
-      g.addColorStop(0,`rgba(${n.col},${n.a})`);
-      g.addColorStop(.5,`rgba(${n.col},${n.a*.4})`);
-      g.addColorStop(1,`rgba(${n.col},0)`);
-      ctx.save();
-      ctx.scale(1,n.ry/n.rx);
-      ctx.beginPath();
-      ctx.arc(n.cx*W,(n.cy*H)*(n.rx/n.ry),n.rx,0,Math.PI*2);
-      ctx.fillStyle=g;ctx.fill();
-      ctx.restore();
-    });
+    .glass-morphism {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 215, 0, 0.15);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+    }
+    
+    .sun-flare-hover {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .sun-flare-hover:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px 5px rgba(255, 215, 0, 0.6), 0 0 40px 10px rgba(255, 191, 0, 0.2);
+      color: black !important;
+    }
 
-    /* 2. Stars */
-    stars.forEach(s=>{
-      s.a+=s.da;
-      if(s.a<=0||s.a>=1) s.da*=-1;
-      if(s.type==='d'){
-        ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-        ctx.fillStyle=`rgba(200,200,240,${s.a*.3})`;ctx.fill();
-      } else if(s.type==='g'){
-        ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-        ctx.fillStyle=`rgba(201,168,76,${s.a*.8})`;ctx.fill();
-      } else if(s.type==='w'){
-        ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-        ctx.fillStyle=`rgba(210,220,255,${s.a*.65})`;ctx.fill();
-      } else if(s.type==='b'){
-        const col=s.gold?'201,168,76':'210,225,255';
-        const al=s.a*.95;
-        /* core */
-        ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-        ctx.fillStyle=`rgba(${col},${al})`;ctx.fill();
-        /* halo */
-        const h2=ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*6);
-        h2.addColorStop(0,`rgba(${col},${al*.5})`);
-        h2.addColorStop(1,`rgba(${col},0)`);
-        ctx.beginPath();ctx.arc(s.x,s.y,s.r*6,0,Math.PI*2);
-        ctx.fillStyle=h2;ctx.fill();
-        /* cross flare */
-        ctx.save();ctx.globalAlpha=al*.4;
-        ctx.strokeStyle=`rgba(${col},1)`;ctx.lineWidth=.6;
-        const fl=s.r*10;
-        ctx.beginPath();
-        ctx.moveTo(s.x-fl,s.y);ctx.lineTo(s.x+fl,s.y);
-        ctx.moveTo(s.x,s.y-fl);ctx.lineTo(s.x,s.y+fl);
-        ctx.stroke();ctx.restore();
+    .nav-link {
+      transition: all 0.3s ease;
+    }
+    .nav-link:hover {
+      color: #FFD700;
+      text-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
+      transform: scale(1.05);
+    }
+
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: radial-gradient(circle at center, #1a1a1a 0%, #0c0c0c 100%);
+    }
+
+    .nebula-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: 
+        radial-gradient(circle at 20% 30%, rgba(205, 127, 50, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(255, 191, 0, 0.05) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    /* Mobile Menu styles */
+    #mobile-menu {
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    #mobile-menu.hidden-menu {
+      transform: translateX(100%);
+    }
+    
+    /* Accessibility: prevent scroll when menu open */
+    body.menu-open {
+      overflow: hidden;
+    }
+  </style>
+<style>
+    #bg-canvas {
+      background: radial-gradient(circle at center, #001a33 0%, #020308 100%) !important;
+      overflow: hidden;
+    }
+    #bg-canvas::before,
+    #bg-canvas::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        radial-gradient(2px 2px at 20px 30px, #00a3ff, rgba(0,0,0,0)),
+        radial-gradient(3px 3px at 40px 70px, #00ffff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 50px 160px, #00a3ff, rgba(0,0,0,0)),
+        radial-gradient(4px 4px at 90px 40px, #00ffff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 130px 80px, #00a3ff, rgba(0,0,0,0));
+      background-repeat: repeat;
+      background-size: 200px 200px;
+      opacity: 0.4;
+      animation: star-twinkle 4s infinite alternate;
+    }
+    #bg-canvas::after {
+      background-size: 350px 350px;
+      background-image: 
+        radial-gradient(4px 4px at 10px 10px, #00a3ff, rgba(0,0,0,0)),
+        radial-gradient(6px 6px at 150px 150px, #00ffff, rgba(0,0,0,0)),
+        radial-gradient(3px 3px at 250px 50px, #00a3ff, rgba(0,0,0,0));
+      opacity: 0.2;
+      animation: star-twinkle 7s infinite alternate-reverse;
+      filter: blur(1px);
+    }
+    @keyframes star-twinkle {
+      0% { opacity: 0.2; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.05); }
+      100% { opacity: 0.3; transform: scale(1); }
+    }
+    .nebula-overlay {
+      background: radial-gradient(circle at 50% 50%, rgba(0, 163, 255, 0.08) 0%, transparent 70%) !important;
+    }
+</style><style>#bg-canvas::before { background-image: radial-gradient(2px 2px at 20px 30px, #a855f7, rgba(0,0,0,0)), radial-gradient(3px 3px at 40px 70px, #ffffff, rgba(0,0,0,0)), radial-gradient(2px 2px at 50px 160px, #d8b4fe, rgba(0,0,0,0)), radial-gradient(4px 4px at 90px 40px, #ffffff, rgba(0,0,0,0)), radial-gradient(2px 2px at 130px 80px, #a855f7, rgba(0,0,0,0)) !important; } #bg-canvas::after { background-image: radial-gradient(4px 4px at 10px 10px, #d8b4fe, rgba(0,0,0,0)), radial-gradient(6px 6px at 150px 150px, #ffffff, rgba(0,0,0,0)), radial-gradient(3px 3px at 250px 50px, #a855f7, rgba(0,0,0,0)) !important; }</style></head>
+<body class="bg-space-dark text-white selection:bg-industrial-gold/30 overflow-x-hidden" style="font-size: 110%;">
+<div class="nebula-overlay" style="background: radial-gradient(circle at 50% 50%, rgba(147, 51, 234, 0.12) 0%, transparent 70%) !important;"></div>
+<div id="bg-canvas" style="background: radial-gradient(circle at center, #2d004d 0%, #020308 100%) !important; overflow: hidden; z-index: 0;"></div>
+<!-- BEGIN: MainHeader -->
+<header class="fixed top-0 left-0 w-full transition-all duration-300 z-10" data-purpose="navigation">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4 flex justify-between items-center backdrop-blur-md border-b border-white/5 bg-black/20">
+<div class="flex items-center space-x-2">
+<div class="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-cyber-amber to-orbital-bronze rounded-full flex items-center justify-center font-bold text-space-dark shadow-[0_0_15px_rgba(255,191,0,0.3)] text-sm md:text-base">
+          7
+        </div>
+<div class="flex flex-col leading-none">
+<span class="text-base md:text-lg font-bold tracking-tight text-white">ลุงชัย ไชโย ออล</span>
+<span class="text-[8px] md:text-[10px] opacity-90 uppercase tracking-widest text-industrial-gold/80">Lungchai Chaiyo All</span>
+</div>
+</div>
+<!-- Desktop Navigation -->
+<nav class="hidden lg:flex items-center space-x-4 xl:space-x-6 text-xs xl:text-sm font-medium">
+<a class="nav-link text-white/90" href="#">เกี่ยวกับ</a>
+<a class="nav-link text-white/90" href="#">แบรนด์</a>
+<a class="nav-link text-white/90" href="#">บริการ</a>
+<a class="nav-link text-white/90" href="#">สินค้า</a>
+<a class="nav-link text-white/90" href="#">ผลงาน</a>
+<a class="nav-link text-white/90" href="#">ช่องทาง</a>
+<a class="nav-link text-white/90" href="#">สมาชิก</a>
+<a class="nav-link text-white/90" href="#">ติดต่อ</a>
+<button class="bg-industrial-gold text-black px-4 py-2 rounded-lg font-bold flex items-center gap-2 sun-flare-hover transition-all">
+<span>📋</span>
+          ขอใบเสนอราคา
+        </button>
+</nav>
+<!-- Mobile & Tablet Menu Toggle -->
+<button aria-label="Toggle Menu" class="lg:hidden flex items-center justify-center p-2 rounded-lg text-industrial-gold hover:bg-white/5 transition-colors" onclick="toggleMenu()">
+<svg class="w-7 h-7" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+</svg>
+</button>
+</div>
+<!-- Mobile Side Menu Overlay -->
+<div class="fixed inset-0 z-50 lg:hidden hidden-menu" id="mobile-menu">
+<div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="toggleMenu()"></div>
+<div class="absolute top-0 right-0 h-full w-72 bg-space-dark border-l border-industrial-gold/20 p-6 flex flex-col shadow-2xl overflow-y-auto">
+<div class="flex justify-between items-center mb-10">
+<div class="flex items-center space-x-2">
+<div class="w-8 h-8 bg-industrial-gold rounded-full flex items-center justify-center font-bold text-space-dark text-xs">7</div>
+<span class="text-sm font-bold text-white uppercase tracking-tighter">Navigation</span>
+</div>
+<button aria-label="Close Menu" class="text-industrial-gold p-2 hover:rotate-90 transition-transform duration-300" onclick="toggleMenu()">
+<svg class="w-7 h-7" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+</svg>
+</button>
+</div>
+<nav class="flex flex-col space-y-2">
+<a class="py-4 border-b border-white/5 text-lg font-semibold text-white/90 flex items-center justify-between group hover:text-industrial-gold transition-colors" href="#">
+            เกี่ยวกับเรา <span class="text-industrial-gold opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+</a>
+<a class="py-4 border-b border-white/5 text-lg font-semibold text-white/90 flex items-center justify-between group hover:text-industrial-gold transition-colors" href="#">
+            แบรนด์ <span class="text-industrial-gold opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+</a>
+<a class="py-4 border-b border-white/5 text-lg font-semibold text-white/90 flex items-center justify-between group hover:text-industrial-gold transition-colors" href="#">
+            บริการของเรา <span class="text-industrial-gold opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+</a>
+<a class="py-4 border-b border-white/5 text-lg font-semibold text-white/90 flex items-center justify-between group hover:text-industrial-gold transition-colors" href="#">
+            สินค้า <span class="text-industrial-gold opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+</a>
+<a class="py-4 border-b border-white/5 text-lg font-semibold text-white/90 flex items-center justify-between group hover:text-industrial-gold transition-colors" href="#">
+            ผลงาน <span class="text-industrial-gold opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+</a>
+<a class="py-4 border-b border-white/5 text-lg font-semibold text-white/90 flex items-center justify-between group hover:text-industrial-gold transition-colors" href="#">
+            สมาชิก <span class="text-industrial-gold opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+</a>
+<a class="py-4 border-b border-white/5 text-lg font-semibold text-white/90 flex items-center justify-between group hover:text-industrial-gold transition-colors" href="#">
+            ติดต่อเรา <span class="text-industrial-gold opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+</a>
+<div class="pt-8">
+<button class="w-full bg-industrial-gold text-black py-4 rounded-xl font-bold flex items-center justify-center gap-3 shadow-[0_10px_20px_-5px_rgba(255,215,0,0.3)] hover:scale-[1.02] active:scale-95 transition-all">
+<span class="text-xl">📋</span>
+              ขอใบเสนอราคา
+            </button>
+</div>
+<div class="pt-10 flex flex-col items-center gap-4 text-center opacity-60">
+<p class="text-[10px] uppercase tracking-[0.2em] text-white">One Stop Industrial Service</p>
+<div class="flex gap-4">
+<span class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-xs">FB</span>
+<span class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-xs">LN</span>
+<span class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-xs">YT</span>
+</div>
+</div>
+</nav>
+</div>
+</div>
+</header>
+<!-- END: MainHeader -->
+<main class="relative pt-20 md:pt-28 pb-10 md:pb-20 overflow-hidden">
+<!-- BEGIN: Hero Branding Section -->
+<section class="max-w-5xl mx-auto text-center px-4 mb-8 md:mb-12">
+<div class="relative inline-block mb-6 md:mb-8 animate-float">
+<div class="absolute -inset-6 md:-inset-10 blur-[40px] md:blur-[80px] rounded-full bg-industrial-gold/20"></div>
+<div class="relative z-10 mx-auto w-40 h-40 md:w-64 md:h-64 flex items-center justify-center">
+<img alt="Saturn Logo" class="w-full h-full object-contain brightness-110 sepia-[0.6] saturate-[2] hue-rotate-[-10deg]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2banl4t23Oypi0l14L3BbOs5WQvOVJ56MFOBtOxW6QKONBhmOtHVUFW8-wVw0fBzE_qhlw0qiA7XETSr3lGJH81ivfe3QyV0gHUlcvx8bOMwYqRZi9wMqsSMxoxCxNan4vTg223nN8oB4Jr-APk4U46bqNM-k7bbNMemBfqMxaYLqF1Q5w7YRYJvIL7OvNwgTN-_LtAZlYu9uIeEqbQfnpV3AywsTZviNNdw4ta29hkJ11W6sgMerTTCRB8D2a0iUnr3ux-lqfnYd"/>
+</div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 w-full">
+<span class="bg-gradient-to-r from-amber-600 to-yellow-500 px-4 md:px-6 py-1 md:py-2 rounded text-lg md:text-2xl font-bold border border-white/20 shadow-2xl text-black">เข้าสู่ไซน์</span>
+</div>
+</div>
+<div class="space-y-3 md:space-y-4">
+<p class="text-[10px] md:text-xs uppercase tracking-[0.2em] md:tracking-[0.4em] text-cyber-amber font-bold">One Stop Industrial Supply &amp; Service</p>
+<h1 class="text-3xl sm:text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-white via-industrial-gold to-orbital-bronze drop-shadow-[0_0_10px_rgba(255,215,0,0.3)] leading-tight">
+          ลุงชัย ไชโย ออล
+        </h1>
+<h2 class="text-sm md:text-xl font-medium text-white/90 tracking-widest uppercase">Lungchai Chaiyo All</h2>
+<div class="mt-4 md:mt-6 space-y-1 text-xs md:text-base text-white/80 font-medium max-w-2xl mx-auto px-4">
+<p>ครบ จบ ทุกความต้องการของโรงงานและธุรกิจ</p>
+<p class="hidden sm:block">IT • ไฟฟ้า • PPE • เครื่องมือช่าง • วัสดุอุตสาหกรรม</p>
+<p class="sm:hidden">IT • ไฟฟ้า • PPE • เครื่องมือช่าง</p>
+<p>ค้าส่ง • ค้าปลีก • ออนไลน์ • บริการหลังการขาย</p>
+</div>
+</div>
+</section>
+<!-- END: Hero Branding Section -->
+<!-- BEGIN: Search Hub -->
+<section class="max-w-4xl mx-auto px-4 mb-8 md:mb-16" data-purpose="search-interface">
+<div class="glass-morphism rounded-2xl p-4 md:p-6 relative overflow-hidden">
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-2 md:gap-3 mb-4 md:mb-6">
+<button class="flex items-center justify-center gap-2 py-3 border border-industrial-gold/50 rounded-xl bg-industrial-gold/10 text-xs md:text-sm font-bold text-industrial-gold sun-flare-hover">
+<span>🔍</span> ค้นหาบริการ/สินค้า
+          </button>
+<button class="flex items-center justify-center gap-2 py-3 border border-white/10 rounded-xl bg-white/5 hover:bg-white/10 text-xs md:text-sm font-bold text-white sun-flare-hover">
+<span>🛠️</span> แจ้งซ่อมด่วน
+          </button>
+<button class="flex items-center justify-center gap-2 py-3 border border-white/10 rounded-xl bg-white/5 hover:bg-white/10 text-xs md:text-sm font-bold text-white sun-flare-hover">
+<span>👩‍🔧</span> หาช่างใกล้คุณ
+          </button>
+</div>
+<div class="flex flex-col md:flex-row items-stretch bg-black/60 border border-industrial-gold/20 rounded-xl p-1 gap-1">
+<div class="flex items-center flex-1">
+<div class="pl-4 text-industrial-gold/70">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<input class="w-full bg-transparent border-none focus:ring-0 text-white placeholder-white/30 text-xs md:text-sm py-3 px-3" placeholder="ค้นหาบริการซ่อม เช่น ซ่อมพริ้นเตอร์ เปลี่ยนหมึก..." type="text"/>
+</div>
+<button class="bg-industrial-gold text-black px-6 md:px-8 py-3 rounded-lg font-bold flex items-center justify-center gap-1 sun-flare-hover text-sm">
+            ค้นหา <span class="hidden md:inline transition-transform">→</span>
+</button>
+</div>
+<div class="mt-4 flex flex-wrap gap-2 items-center text-[10px] md:text-xs font-medium text-white/70">
+<span>ยอดนิยม :</span>
+<a class="px-3 py-1 border border-white/20 rounded-full hover:bg-industrial-gold/20 hover:text-industrial-gold transition-colors" href="#">ซ่อมพริ้นเตอร์</a>
+<a class="px-3 py-1 border border-white/20 rounded-full hover:bg-industrial-gold/20 hover:text-industrial-gold transition-colors" href="#">ซ่อมมอเตอร์</a>
+<a class="px-3 py-1 border border-white/20 rounded-full hover:bg-industrial-gold/20 hover:text-industrial-gold transition-colors" href="#">กล้องวงจรปิด</a>
+<a class="px-3 py-1 border border-white/20 rounded-full hover:bg-industrial-gold/20 hover:text-industrial-gold transition-colors" href="#">ซ่อมคอมฯ</a>
+</div>
+</div>
+</section>
+<!-- END: Search Hub -->
+<!-- BEGIN: Service Grid -->
+<section class="max-w-4xl mx-auto px-4" data-purpose="action-buttons">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+<button class="glass-morphism h-24 md:h-28 rounded-xl flex flex-col items-center justify-center gap-2 hover:bg-industrial-gold/10 sun-flare-hover group">
+<div class="text-2xl md:text-3xl bg-industrial-gold/10 p-2 rounded-lg group-hover:scale-110 transition-transform">📋</div>
+<span class="text-xs md:text-sm font-bold tracking-wide text-white">ขอใบเสนอราคา</span>
+</button>
+<button class="glass-morphism h-24 md:h-28 rounded-xl flex flex-col items-center justify-center gap-2 hover:bg-industrial-gold/10 sun-flare-hover group">
+<div class="text-2xl md:text-3xl bg-industrial-gold/10 p-2 rounded-lg group-hover:scale-110 transition-transform">🛒</div>
+<span class="text-xs md:text-sm font-bold tracking-wide text-white">สินค้าทั้งหมด</span>
+</button>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+<div class="glass-morphism p-3 md:p-4 rounded-xl flex flex-col items-center text-center gap-2 cursor-pointer hover:bg-industrial-gold/10 transition-all sun-flare-hover">
+<span class="text-xl md:text-2xl">🔧</span>
+<span class="text-[10px] md:text-[11px] font-bold leading-tight text-white">บริการซ่อม<br/>ทั้งหมด</span>
+</div>
+<div class="glass-morphism p-3 md:p-4 rounded-xl flex flex-col items-center text-center gap-2 cursor-pointer hover:bg-industrial-gold/10 transition-all sun-flare-hover">
+<span class="text-xl md:text-2xl text-industrial-gold">🏆</span>
+<span class="text-[10px] md:text-[11px] font-bold leading-tight text-white">ผลงานที่<br/>ผ่านมา</span>
+</div>
+<div class="glass-morphism p-3 md:p-4 rounded-xl flex flex-col items-center text-center gap-2 cursor-pointer hover:bg-industrial-gold/10 transition-all sun-flare-hover">
+<span class="text-xl md:text-2xl text-industrial-gold">⭐</span>
+<span class="text-[10px] md:text-[11px] font-bold leading-tight text-white">รีวิวจาก<br/>ลูกค้า</span>
+</div>
+<div class="glass-morphism p-3 md:p-4 rounded-xl flex flex-col items-center text-center gap-2 cursor-pointer hover:bg-industrial-gold/10 transition-all sun-flare-hover">
+<span class="text-xl md:text-2xl text-industrial-gold">📡</span>
+<span class="text-[10px] md:text-[11px] font-bold leading-tight text-white">เช็คติดตาม<br/>งาน</span>
+</div>
+<div class="glass-morphism p-3 md:p-4 rounded-xl flex flex-col items-center text-center gap-2 cursor-pointer hover:bg-industrial-gold/10 transition-all sun-flare-hover">
+<span class="text-xl md:text-2xl text-industrial-gold">🏗️</span>
+<span class="text-[10px] md:text-[11px] font-bold leading-tight text-white">โครงสร้าง<br/>องค์กร</span>
+</div>
+<div class="glass-morphism p-3 md:p-4 rounded-xl flex flex-col items-center text-center gap-2 cursor-pointer hover:bg-industrial-gold/10 transition-all sun-flare-hover">
+<span class="text-xl md:text-2xl text-amber-500">📍</span>
+<span class="text-[10px] md:text-[11px] font-bold leading-tight text-white">แผนที่ตั้ง</span>
+</div>
+<div class="glass-morphism p-3 md:p-4 rounded-xl flex flex-col items-center text-center gap-2 cursor-pointer hover:bg-industrial-gold/10 transition-all sun-flare-hover">
+<span class="text-xl md:text-2xl text-industrial-gold">🗺️</span>
+<span class="text-[10px] md:text-[11px] font-bold leading-tight text-white">เช็คระยะ<br/>ทาง</span>
+</div>
+<div class="glass-morphism p-3 md:p-4 rounded-xl flex flex-col items-center text-center gap-2 cursor-pointer border border-industrial-gold/40 hover:bg-industrial-gold/20 transition-all glow-gold sun-flare-hover">
+<span class="text-xl md:text-2xl">💬</span>
+<span class="text-[10px] md:text-[11px] font-bold leading-tight text-white">ติดต่อ<br/>สอบถาม</span>
+</div>
+</div>
+</section>
+<!-- END: Service Grid -->
+<!-- BEGIN: Stats Footer -->
+<section class="max-w-4xl mx-auto px-4 mt-12 md:mt-20" data-purpose="company-stats">
+<div class="grid grid-cols-2 md:flex md:flex-wrap md:justify-center gap-8 md:gap-24 text-center">
+<div>
+<div class="text-2xl md:text-4xl font-bold text-industrial-gold drop-shadow-[0_0_10px_rgba(255,215,0,0.5)]">10+</div>
+<div class="text-[8px] md:text-[10px] uppercase font-bold tracking-widest text-white/60">หมวดสินค้า</div>
+</div>
+<div>
+<div class="text-2xl md:text-4xl font-bold text-industrial-gold drop-shadow-[0_0_10px_rgba(255,215,0,0.5)]">7</div>
+<div class="text-[8px] md:text-[10px] uppercase font-bold tracking-widest text-white/60">แบรนด์</div>
+</div>
+<div>
+<div class="text-2xl md:text-4xl font-bold text-industrial-gold drop-shadow-[0_0_10px_rgba(255,215,0,0.5)]">8</div>
+<div class="text-[8px] md:text-[10px] uppercase font-bold tracking-widest text-white/60">ช่องทางขาย</div>
+</div>
+<div>
+<div class="text-2xl md:text-4xl font-bold text-industrial-gold drop-shadow-[0_0_10px_rgba(255,215,0,0.5)]">24/7</div>
+<div class="text-[8px] md:text-[10px] uppercase font-bold tracking-widest text-white/60">พร้อมให้บริการ</div>
+</div>
+</div>
+</section>
+<!-- END: Stats Footer -->
+</main>
+<!-- BEGIN: Floating Contact -->
+<!-- END: Floating Contact -->
+<script>
+    function toggleMenu() {
+      const menu = document.getElementById('mobile-menu');
+      const body = document.body;
+      const isHidden = menu.classList.contains('hidden-menu');
+      
+      if (isHidden) {
+        menu.classList.remove('hidden-menu');
+        body.classList.add('menu-open');
+      } else {
+        menu.classList.add('hidden-menu');
+        body.classList.remove('menu-open');
+      }
+    }
+
+    // Close menu on resize if switching to desktop
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 1024) {
+        const menu = document.getElementById('mobile-menu');
+        if (!menu.classList.contains('hidden-menu')) {
+          toggleMenu();
+        }
       }
     });
 
-    /* 3. Comets */
-    spawnComet();
-    comets=comets.filter(c=>c.life>0 && c.x>-300 && c.x<W+300);
-    comets.forEach(c=>{
-      const col=c.gold?'255,220,80':'180,210,255';
-      const steps=c.tail/Math.max(Math.abs(c.vx),1);
-      const grd=ctx.createLinearGradient(
-        c.x-c.vx*steps, c.y-c.vy*steps, c.x, c.y
-      );
-      grd.addColorStop(0,`rgba(${col},0)`);
-      grd.addColorStop(.6,`rgba(${col},${c.life*.25})`);
-      grd.addColorStop(1,`rgba(${col},${c.life})`);
-      ctx.beginPath();
-      ctx.strokeStyle=grd;ctx.lineWidth=2;
-      ctx.moveTo(c.x-c.vx*steps,c.y-c.vy*steps);
-      ctx.lineTo(c.x,c.y);ctx.stroke();
-      /* head glow */
-      const hg=ctx.createRadialGradient(c.x,c.y,0,c.x,c.y,8);
-      hg.addColorStop(0,`rgba(${col},${c.life})`);
-      hg.addColorStop(1,`rgba(${col},0)`);
-      ctx.beginPath();ctx.arc(c.x,c.y,8,0,Math.PI*2);
-      ctx.fillStyle=hg;ctx.fill();
-
-      c.x+=c.vx; c.y+=c.vy; c.life-=.007;
+    window.addEventListener('scroll', () => {
+      const header = document.querySelector('header');
+      const container = header.querySelector('div');
+      if (window.scrollY > 20) {
+        container.classList.add('bg-black/80', 'backdrop-blur-xl', 'border-industrial-gold/20');
+      } else {
+        container.classList.remove('bg-black/80', 'backdrop-blur-xl', 'border-industrial-gold/20');
+      }
     });
-
-    requestAnimationFrame(draw);
-  }
-
-  window.addEventListener('resize',resize);
-  resize(); draw();
-})();
-
-/* ─────────────────────────────────────────
-   QUICK FINDER — search / repair / technician
-───────────────────────────────────────── */
-let finderMode = 'search';
-const FINDER_COPY = {
-  search:{ph:'ค้นหาบริการซ่อม เช่น ซ่อมพริ้นเตอร์ เปลี่ยนหมึก ซ่อมมอเตอร์...', btn:'ค้นหา →'},
-  repair:{ph:'อธิบายอาการเสีย เช่น "เครื่องปริ้นกระดาษติดบ่อย"...', btn:'แจ้งซ่อมด่วน →'},
-  tech:{ph:'ระบุงานที่ต้องการช่าง เช่น "ช่างไฟฟ้าโรงงาน"...', btn:'หาช่าง →'}
-};
-function setFinderMode(m){
-  finderMode = m;
-  document.querySelectorAll('.finder-tab').forEach(t=>t.classList.toggle('active', t.dataset.mode===m));
-  const input = document.getElementById('finderInput');
-  const btn = document.getElementById('finderBtn');
-  input.placeholder = FINDER_COPY[m].ph;
-  btn.textContent = FINDER_COPY[m].btn;
-  input.focus();
-}
-function submitFinder(e){
-  e.preventDefault();
-  goFind(document.getElementById('finderInput').value.trim());
-  return false;
-}
-function quickFind(val){
-  document.getElementById('finderInput').value = val;
-  goFind(val);
-}
-function goFind(val){
-  const q = val ? ('?q=' + encodeURIComponent(val)) : '';
-  window.location.href = '/services.html' + q;
-}
-
-/* ─────────────────────────────────────────
-   NAV SCROLL
-───────────────────────────────────────── */
-const nav=document.getElementById('nav');
-window.addEventListener('scroll',()=>{
-  nav.classList.toggle('solid',window.scrollY>60);
-},{passive:true});
-
-/* ─────────────────────────────────────────
-   HAMBURGER / MOBILE MENU
-───────────────────────────────────────── */
-const hbg=document.getElementById('hbg');
-const mob=document.getElementById('mob');
-hbg.addEventListener('click',()=>{
-  hbg.classList.toggle('open');
-  mob.classList.toggle('open');
-  document.body.style.overflow=mob.classList.contains('open')?'hidden':'';
-});
-document.getElementById('mob-close').addEventListener('click',()=>{
-  hbg.classList.remove('open');
-  mob.classList.remove('open');
-  document.body.style.overflow='';
-});
-function closeMenu(){
-  hbg.classList.remove('open');
-  mob.classList.remove('open');
-  document.body.style.overflow='';
-}
-
-/* ─────────────────────────────────────────
-   SCROLL REVEAL
-───────────────────────────────────────── */
-const io=new IntersectionObserver(entries=>{
-  entries.forEach((e,i)=>{
-    if(e.isIntersecting){
-      const delay=e.target.dataset.delay||0;
-      setTimeout(()=>e.target.classList.add('vis'),+delay);
-      io.unobserve(e.target);
-    }
-  });
-},{threshold:.1,rootMargin:'0px 0px -30px 0px'});
-
-document.querySelectorAll('.reveal').forEach((el,i)=>{
-  el.dataset.delay = (i%6)*70;
-  io.observe(el);
-});
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/supabase.js"></script>
-<script src="js/service.js"></script>
-
-</body>
-</html>
+  </script>
+<div class="fixed right-4 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-3 p-2 glass-morphism rounded-full border border-industrial-gold/30 shadow-2xl">
+<a class="w-8 h-8 flex items-center justify-center rounded-full bg-industrial-gold/10 text-industrial-gold hover:bg-industrial-gold hover:text-black transition-all duration-300 glow-gold group" href="#">
+<span class="material-symbols-outlined text-lg">call</span>
+</a>
+<a class="w-8 h-8 flex items-center justify-center rounded-full bg-industrial-gold/10 text-industrial-gold hover:bg-industrial-gold hover:text-black transition-all duration-300 glow-gold group" href="#">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.814 4.269 8.846 10.036 9.608.391.084.922.258 1.057.592.121.303.079.778.039 1.085l-.171 1.027c-.053.303-.242 1.185 1.039.646 1.281-.54 6.913-4.071 9.428-6.969 1.726-1.921 2.571-3.978 2.571-5.989z"></path></svg>
+</a>
+<a class="w-8 h-8 flex items-center justify-center rounded-full bg-industrial-gold/10 text-industrial-gold hover:bg-industrial-gold hover:text-black transition-all duration-300 glow-gold group" href="#">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.46 12.22l-1.17 1.17c-.2.2-.51.2-.71 0l-2.58-2.58-2.58 2.58c-.2.2-.51.2-.71 0l-1.17-1.17c-.2-.2-.2-.51 0-.71l2.58-2.58-2.58-2.58c-.2-.2-.2-.51 0-.71l1.17-1.17c.2-.2.51-.2.71 0l2.58 2.58 2.58-2.58c.2-.2.51-.2.71 0l1.17 1.17c.2.2.2.51 0 .71l-2.58 2.58 2.58 2.58c.2.2.2.51 0 .71z"></path></svg>
+</a>
+<a class="w-8 h-8 flex items-center justify-center rounded-full bg-industrial-gold/10 text-industrial-gold hover:bg-industrial-gold hover:text-black transition-all duration-300 glow-gold group" href="#">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.17-2.89-.6-4.09-1.47-.88-.64-1.61-1.47-2.11-2.44v10.17c.03 1.43-.35 2.94-1.2 4.03-1.33 1.71-3.64 2.47-5.75 2.01-2.33-.51-4.15-2.68-4.21-5.06-.03-2.31 1.51-4.53 3.76-5.06.94-.22 1.95-.1 2.84.31V8.55c-1.57-.24-3.23-.04-4.6.79-1.88 1.12-2.97 3.35-2.7 5.53.22 2.15 1.69 4.08 3.74 4.73 2.01.63 4.33.04 5.75-1.57.99-1.13 1.39-2.66 1.31-4.16V.02z"></path></svg>
+</a>
+<a class="w-8 h-8 flex items-center justify-center rounded-full bg-industrial-gold/10 text-industrial-gold hover:bg-industrial-gold hover:text-black transition-all duration-300 glow-gold group" href="#">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
+</a>
+<a class="w-8 h-8 flex items-center justify-center rounded-full bg-industrial-gold/10 text-industrial-gold hover:bg-industrial-gold hover:text-black transition-all duration-300 glow-gold group" href="#">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M12 0C5.373 0 0 4.974 0 11.111c0 3.498 1.744 6.614 4.469 8.654V24l4.088-2.242c1.012.28 2.089.431 3.205.431 6.627 0 12-4.975 12-11.111C23.762 4.974 18.389 0 12 0zm1.159 14.963l-3.048-3.252-5.939 3.252 6.525-6.92 3.117 3.252 5.866-3.252-6.521 6.92z"></path></svg>
+</a>
+<a class="w-8 h-8 flex items-center justify-center rounded-full bg-industrial-gold/10 text-industrial-gold hover:bg-industrial-gold hover:text-black transition-all duration-300 glow-gold group" href="#">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.668-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"></path></svg>
+</a>
+<a class="w-8 h-8 flex items-center justify-center rounded-full bg-industrial-gold/10 text-industrial-gold hover:bg-industrial-gold hover:text-black transition-all duration-300 glow-gold group" href="#">
+<div class="relative">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.814 4.269 8.846 10.036 9.608.391.084.922.258 1.057.592.121.303.079.778.039 1.085l-.171 1.027c-.053.303-.242 1.185 1.039.646 1.281-.54 6.913-4.071 9.428-6.969 1.726-1.921 2.571-3.978 2.571-5.989z"></path></svg>
+<span class="absolute -top-1 -right-1 w-2 h-2 bg-industrial-gold rounded-full border border-black"></span>
+</div>
+</a>
+</div></body></html>
