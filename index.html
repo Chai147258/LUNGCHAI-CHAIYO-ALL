@@ -596,25 +596,62 @@ LUNGCHAI CHAIYO ALL<br/>
 <script type="module">
 
 import { createClient } 
-from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
 
-const supabaseUrl =
-'https://hkwqrllqzfzsbsxqgaoo.supabase.co'
+const SUPABASE_URL =
+"https://hkwqrllqzfzsbsxqgaoo.supabase.co";
 
 
-const supabaseKey =
-'YOUR_ANON_KEY'
+const SUPABASE_ANON_KEY =
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhrd3FybGxxemZ6c2JzeHFnYW9vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzNzIzNjAsImV4cCI6MjA5Njk0ODM2MH0.kPT_UY0-2-0cbDlGwya24DnOLJXA-XJGMdM6SIm7Rew";
 
 
-const supabase =
+const supabaseClient =
 createClient(
-supabaseUrl,
-supabaseKey
-)
+SUPABASE_URL,
+SUPABASE_ANON_KEY
+);
 
 
-window.supabase = supabase
+console.log("Supabase Connected");
+
+
+// Hero CMS
+
+async function loadCompany(){
+
+const {data,error}=await supabaseClient
+.from("cms_company_profile")
+.select("*")
+.single();
+
+
+if(error){
+console.error(error);
+return;
+}
+
+
+const title =
+document.getElementById("hero-title");
+
+const desc =
+document.getElementById("hero-description");
+
+
+if(title)
+title.textContent=data.hero_title;
+
+
+if(desc)
+desc.textContent=data.hero_description;
+
+
+}
+
+
+loadCompany();
 
 </script>
 </body></html>
