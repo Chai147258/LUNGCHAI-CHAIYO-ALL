@@ -69,7 +69,6 @@
       width: 100%;
       height: 100%;
       z-index: -1;
-      background: radial-gradient(circle at center, #1a1a1a 0%, #0c0c0c 100%);
     }
 
     .nebula-overlay {
@@ -79,9 +78,6 @@
       width: 100%;
       height: 100%;
       z-index: -1;
-      background: 
-        radial-gradient(circle at 20% 30%, rgba(205, 127, 50, 0.05) 0%, transparent 50%),
-        radial-gradient(circle at 80% 70%, rgba(255, 191, 0, 0.05) 0%, transparent 50%);
       pointer-events: none;
     }
 
@@ -97,10 +93,17 @@
     body.menu-open {
       overflow: hidden;
     }
+
+    @keyframes star-twinkle {
+      0% { opacity: 0.2; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.05); }
+      100% { opacity: 0.3; transform: scale(1); }
+    }
   </style>
 <style>
+    /* Global Background Styles - Light Purple & Black Cosmic Theme */
     #bg-canvas {
-      background: radial-gradient(circle at center, #001a33 0%, #020308 100%) !important;
+      background: radial-gradient(circle at center, #3d0066 0%, #020308 100%) !important;
       overflow: hidden;
     }
     #bg-canvas::before,
@@ -111,39 +114,37 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-image: 
-        radial-gradient(2px 2px at 20px 30px, #00a3ff, rgba(0,0,0,0)),
-        radial-gradient(3px 3px at 40px 70px, #00ffff, rgba(0,0,0,0)),
-        radial-gradient(2px 2px at 50px 160px, #00a3ff, rgba(0,0,0,0)),
-        radial-gradient(4px 4px at 90px 40px, #00ffff, rgba(0,0,0,0)),
-        radial-gradient(2px 2px at 130px 80px, #00a3ff, rgba(0,0,0,0));
       background-repeat: repeat;
-      background-size: 200px 200px;
-      opacity: 0.4;
       animation: star-twinkle 4s infinite alternate;
+    }
+    #bg-canvas::before {
+      background-size: 200px 200px;
+      background-image: 
+        radial-gradient(2px 2px at 20px 30px, #c084fc, rgba(0,0,0,0)),
+        radial-gradient(3px 3px at 40px 70px, #ffffff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 50px 160px, #e9d5ff, rgba(0,0,0,0)),
+        radial-gradient(4px 4px at 90px 40px, #ffffff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 130px 80px, #c084fc, rgba(0,0,0,0));
+      opacity: 0.4;
     }
     #bg-canvas::after {
       background-size: 350px 350px;
       background-image: 
-        radial-gradient(4px 4px at 10px 10px, #00a3ff, rgba(0,0,0,0)),
-        radial-gradient(6px 6px at 150px 150px, #00ffff, rgba(0,0,0,0)),
-        radial-gradient(3px 3px at 250px 50px, #00a3ff, rgba(0,0,0,0));
+        radial-gradient(4px 4px at 10px 10px, #e9d5ff, rgba(0,0,0,0)),
+        radial-gradient(6px 6px at 150px 150px, #ffffff, rgba(0,0,0,0)),
+        radial-gradient(3px 3px at 250px 50px, #c084fc, rgba(0,0,0,0));
       opacity: 0.2;
       animation: star-twinkle 7s infinite alternate-reverse;
       filter: blur(1px);
     }
-    @keyframes star-twinkle {
-      0% { opacity: 0.2; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(1.05); }
-      100% { opacity: 0.3; transform: scale(1); }
-    }
     .nebula-overlay {
-      background: radial-gradient(circle at 50% 50%, rgba(0, 163, 255, 0.08) 0%, transparent 70%) !important;
+      background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.15) 0%, transparent 70%) !important;
     }
-</style><style>#bg-canvas::before { background-image: radial-gradient(2px 2px at 20px 30px, #a855f7, rgba(0,0,0,0)), radial-gradient(3px 3px at 40px 70px, #ffffff, rgba(0,0,0,0)), radial-gradient(2px 2px at 50px 160px, #d8b4fe, rgba(0,0,0,0)), radial-gradient(4px 4px at 90px 40px, #ffffff, rgba(0,0,0,0)), radial-gradient(2px 2px at 130px 80px, #a855f7, rgba(0,0,0,0)) !important; } #bg-canvas::after { background-image: radial-gradient(4px 4px at 10px 10px, #d8b4fe, rgba(0,0,0,0)), radial-gradient(6px 6px at 150px 150px, #ffffff, rgba(0,0,0,0)), radial-gradient(3px 3px at 250px 50px, #a855f7, rgba(0,0,0,0)) !important; }</style></head>
+</style>
+</head>
 <body class="bg-space-dark text-white selection:bg-industrial-gold/30 overflow-x-hidden" style="font-size: 110%;">
-<div class="nebula-overlay" style="background: radial-gradient(circle at 50% 50%, rgba(147, 51, 234, 0.12) 0%, transparent 70%) !important;"></div>
-<div id="bg-canvas" style="background: radial-gradient(circle at center, #2d004d 0%, #020308 100%) !important; overflow: hidden; z-index: 0;"></div>
+<div class="nebula-overlay"></div>
+<div id="bg-canvas"></div>
 <!-- BEGIN: MainHeader -->
 <header class="fixed top-0 left-0 w-full transition-all duration-300 z-10" data-purpose="navigation">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4 flex justify-between items-center backdrop-blur-md border-b border-white/5 bg-black/20">
@@ -238,7 +239,7 @@
 <!-- BEGIN: Hero Branding Section -->
 <section class="max-w-5xl mx-auto text-center px-4 mb-8 md:mb-12">
 <div class="relative inline-block mb-6 md:mb-8 animate-float">
-<div class="absolute -inset-6 md:-inset-10 blur-[40px] md:blur-[80px] rounded-full bg-industrial-gold/20"></div>
+<div class="absolute -inset-6 md:-inset-10 blur-[40px] md:blur-[80px] rounded-full bg-purple-500/10"></div>
 <div class="relative z-10 mx-auto w-40 h-40 md:w-64 md:h-64 flex items-center justify-center">
 <img alt="Saturn Logo" class="w-full h-full object-contain brightness-110 sepia-[0.6] saturate-[2] hue-rotate-[-10deg]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2banl4t23Oypi0l14L3BbOs5WQvOVJ56MFOBtOxW6QKONBhmOtHVUFW8-wVw0fBzE_qhlw0qiA7XETSr3lGJH81ivfe3QyV0gHUlcvx8bOMwYqRZi9wMqsSMxoxCxNan4vTg223nN8oB4Jr-APk4U46bqNM-k7bbNMemBfqMxaYLqF1Q5w7YRYJvIL7OvNwgTN-_LtAZlYu9uIeEqbQfnpV3AywsTZviNNdw4ta29hkJ11W6sgMerTTCRB8D2a0iUnr3ux-lqfnYd"/>
 </div>
@@ -365,9 +366,67 @@
 </div>
 </div>
 </section>
+<section class="max-w-4xl mx-auto px-4 mt-16 md:mt-24 mb-12 md:mb-20" data-purpose="app-download">
+<div class="glass-morphism rounded-2xl p-8 md:p-12 text-center relative overflow-hidden">
+<div class="absolute -top-24 -left-24 w-48 h-48 bg-purple-500/10 blur-[60px] rounded-full"></div>
+<div class="absolute -bottom-24 -right-24 w-48 h-48 bg-purple-500/10 blur-[60px] rounded-full"></div>
+<h2 class="text-2xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-industrial-gold to-white drop-shadow-[0_0_15px_rgba(255,215,0,0.4)] mb-8 tracking-tight">
+      ดาวน์โหลดแอปพลิเคชัน
+    </h2>
+<div class="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6">
+<a class="w-full sm:w-auto flex items-center gap-3 px-6 py-3 rounded-xl border border-industrial-gold/30 bg-black/40 backdrop-blur-md hover:bg-industrial-gold/10 hover:border-industrial-gold/60 transition-all duration-300 sun-flare-hover group" href="#">
+<svg class="w-8 h-8 text-white group-hover:text-industrial-gold transition-colors" fill="currentColor" viewbox="0 0 384 512">
+<path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"></path>
+</svg>
+<div class="text-left">
+<div class="text-[10px] uppercase tracking-widest text-white/60 leading-none mb-1">Download on the</div>
+<div class="text-lg font-bold text-white leading-none">App Store</div>
+</div>
+</a>
+<a class="w-full sm:w-auto flex items-center gap-3 px-6 py-3 rounded-xl border border-industrial-gold/30 bg-black/40 backdrop-blur-md hover:bg-industrial-gold/10 hover:border-industrial-gold/60 transition-all duration-300 sun-flare-hover group" href="#">
+<svg class="w-8 h-8 text-white group-hover:text-industrial-gold transition-colors" fill="currentColor" viewbox="0 0 512 512">
+<path d="M325.3 234.3L104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6l-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"></path>
+</svg>
+<div class="text-left">
+<div class="text-[10px] uppercase tracking-widest text-white/60 leading-none mb-1">Get it on</div>
+<div class="text-lg font-bold text-white leading-none">Google Play</div>
+</div>
+</a>
+</div>
+</div>
+</section>
 <!-- END: Stats Footer -->
 </main>
 <!-- BEGIN: Floating Contact -->
+<div class="fixed right-4 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-3 p-2 glass-morphism rounded-full border border-industrial-gold/30 shadow-2xl">
+<a class="w-8 h-8 flex items-center justify-center rounded-full bg-industrial-gold/10 text-industrial-gold hover:bg-industrial-gold hover:text-black transition-all duration-300 glow-gold group" href="#">
+<span class="material-symbols-outlined text-lg">call</span>
+</a>
+<a class="w-8 h-8 flex items-center justify-center rounded-full bg-industrial-gold/10 text-industrial-gold hover:bg-industrial-gold hover:text-black transition-all duration-300 glow-gold group" href="#">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.814 4.269 8.846 10.036 9.608.391.084.922.258 1.057.592.121.303.079.778.039 1.085l-.171 1.027c-.053.303-.242 1.185 1.039.646 1.281-.54 6.913-4.071 9.428-6.969 1.726-1.921 2.571-3.978 2.571-5.989z"></path></svg>
+</a>
+<a class="w-8 h-8 flex items-center justify-center rounded-full bg-industrial-gold/10 text-industrial-gold hover:bg-industrial-gold hover:text-black transition-all duration-300 glow-gold group" href="#">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.46 12.22l-1.17 1.17c-.2.2-.51.2-.71 0l-2.58-2.58-2.58 2.58c-.2.2-.51.2-.71 0l-1.17-1.17c-.2-.2-.2-.51 0-.71l2.58-2.58-2.58-2.58c-.2-.2-.2-.51 0-.71l1.17-1.17c.2-.2.51-.2.71 0l2.58 2.58 2.58-2.58c.2-.2.51-.2.71 0l1.17 1.17c.2.2.2.51 0 .71l-2.58 2.58 2.58 2.58c.2.2.2.51 0 .71z"></path></svg>
+</a>
+<a class="w-8 h-8 flex items-center justify-center rounded-full bg-industrial-gold/10 text-industrial-gold hover:bg-industrial-gold hover:text-black transition-all duration-300 glow-gold group" href="#">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.17-2.89-.6-4.09-1.47-.88-.64-1.61-1.47-2.11-2.44v10.17c.03 1.43-.35 2.94-1.2 4.03-1.33 1.71-3.64 2.47-5.75 2.01-2.33-.51-4.15-2.68-4.21-5.06-.03-2.31 1.51-4.53 3.76-5.06.94-.22 1.95-.1 2.84.31V8.55c-1.57-.24-3.23-.04-4.6.79-1.88 1.12-2.97 3.35-2.7 5.53.22 2.15 1.69 4.08 3.74 4.73 2.01.63 4.33.04 5.75-1.57.99-1.13 1.39-2.66 1.31-4.16V.02z"></path></svg>
+</a>
+<a class="w-8 h-8 flex items-center justify-center rounded-full bg-industrial-gold/10 text-industrial-gold hover:bg-industrial-gold hover:text-black transition-all duration-300 glow-gold group" href="#">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
+</a>
+<a class="w-8 h-8 flex items-center justify-center rounded-full bg-industrial-gold/10 text-industrial-gold hover:bg-industrial-gold hover:text-black transition-all duration-300 glow-gold group" href="#">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M12 0C5.373 0 0 4.974 0 11.111c0 3.498 1.744 6.614 4.469 8.654V24l4.088-2.242c1.012.28 2.089.431 3.205.431 6.627 0 12-4.975 12-11.111C23.762 4.974 18.389 0 12 0zm1.159 14.963l-3.048-3.252-5.939 3.252 6.525-6.92 3.117 3.252 5.866-3.252-6.521 6.92z"></path></svg>
+</a>
+<a class="w-8 h-8 flex items-center justify-center rounded-full bg-industrial-gold/10 text-industrial-gold hover:bg-industrial-gold hover:text-black transition-all duration-300 glow-gold group" href="#">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.668-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"></path></svg>
+</a>
+<a class="w-8 h-8 flex items-center justify-center rounded-full bg-industrial-gold/10 text-industrial-gold hover:bg-industrial-gold hover:text-black transition-all duration-300 glow-gold group" href="#">
+<div class="relative">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.814 4.269 8.846 10.036 9.608.391.084.922.258 1.057.592.121.303.079.778.039 1.085l-.171 1.027c-.053.303-.242 1.185 1.039.646 1.281-.54 6.913-4.071 9.428-6.969 1.726-1.921 2.571-3.978 2.571-5.989z"></path></svg>
+<span class="absolute -top-1 -right-1 w-2 h-2 bg-industrial-gold rounded-full border border-black"></span>
+</div>
+</a>
+</div>
 <!-- END: Floating Contact -->
 <script>
     function toggleMenu() {
@@ -404,32 +463,4 @@
       }
     });
   </script>
-<div class="fixed right-4 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-3 p-2 glass-morphism rounded-full border border-industrial-gold/30 shadow-2xl">
-<a class="w-8 h-8 flex items-center justify-center rounded-full bg-industrial-gold/10 text-industrial-gold hover:bg-industrial-gold hover:text-black transition-all duration-300 glow-gold group" href="#">
-<span class="material-symbols-outlined text-lg">call</span>
-</a>
-<a class="w-8 h-8 flex items-center justify-center rounded-full bg-industrial-gold/10 text-industrial-gold hover:bg-industrial-gold hover:text-black transition-all duration-300 glow-gold group" href="#">
-<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.814 4.269 8.846 10.036 9.608.391.084.922.258 1.057.592.121.303.079.778.039 1.085l-.171 1.027c-.053.303-.242 1.185 1.039.646 1.281-.54 6.913-4.071 9.428-6.969 1.726-1.921 2.571-3.978 2.571-5.989z"></path></svg>
-</a>
-<a class="w-8 h-8 flex items-center justify-center rounded-full bg-industrial-gold/10 text-industrial-gold hover:bg-industrial-gold hover:text-black transition-all duration-300 glow-gold group" href="#">
-<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.46 12.22l-1.17 1.17c-.2.2-.51.2-.71 0l-2.58-2.58-2.58 2.58c-.2.2-.51.2-.71 0l-1.17-1.17c-.2-.2-.2-.51 0-.71l2.58-2.58-2.58-2.58c-.2-.2-.2-.51 0-.71l1.17-1.17c.2-.2.51-.2.71 0l2.58 2.58 2.58-2.58c.2-.2.51-.2.71 0l1.17 1.17c.2.2.2.51 0 .71l-2.58 2.58 2.58 2.58c.2.2.2.51 0 .71z"></path></svg>
-</a>
-<a class="w-8 h-8 flex items-center justify-center rounded-full bg-industrial-gold/10 text-industrial-gold hover:bg-industrial-gold hover:text-black transition-all duration-300 glow-gold group" href="#">
-<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.17-2.89-.6-4.09-1.47-.88-.64-1.61-1.47-2.11-2.44v10.17c.03 1.43-.35 2.94-1.2 4.03-1.33 1.71-3.64 2.47-5.75 2.01-2.33-.51-4.15-2.68-4.21-5.06-.03-2.31 1.51-4.53 3.76-5.06.94-.22 1.95-.1 2.84.31V8.55c-1.57-.24-3.23-.04-4.6.79-1.88 1.12-2.97 3.35-2.7 5.53.22 2.15 1.69 4.08 3.74 4.73 2.01.63 4.33.04 5.75-1.57.99-1.13 1.39-2.66 1.31-4.16V.02z"></path></svg>
-</a>
-<a class="w-8 h-8 flex items-center justify-center rounded-full bg-industrial-gold/10 text-industrial-gold hover:bg-industrial-gold hover:text-black transition-all duration-300 glow-gold group" href="#">
-<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
-</a>
-<a class="w-8 h-8 flex items-center justify-center rounded-full bg-industrial-gold/10 text-industrial-gold hover:bg-industrial-gold hover:text-black transition-all duration-300 glow-gold group" href="#">
-<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M12 0C5.373 0 0 4.974 0 11.111c0 3.498 1.744 6.614 4.469 8.654V24l4.088-2.242c1.012.28 2.089.431 3.205.431 6.627 0 12-4.975 12-11.111C23.762 4.974 18.389 0 12 0zm1.159 14.963l-3.048-3.252-5.939 3.252 6.525-6.92 3.117 3.252 5.866-3.252-6.521 6.92z"></path></svg>
-</a>
-<a class="w-8 h-8 flex items-center justify-center rounded-full bg-industrial-gold/10 text-industrial-gold hover:bg-industrial-gold hover:text-black transition-all duration-300 glow-gold group" href="#">
-<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.668-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"></path></svg>
-</a>
-<a class="w-8 h-8 flex items-center justify-center rounded-full bg-industrial-gold/10 text-industrial-gold hover:bg-industrial-gold hover:text-black transition-all duration-300 glow-gold group" href="#">
-<div class="relative">
-<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.814 4.269 8.846 10.036 9.608.391.084.922.258 1.057.592.121.303.079.778.039 1.085l-.171 1.027c-.053.303-.242 1.185 1.039.646 1.281-.54 6.913-4.071 9.428-6.969 1.726-1.921 2.571-3.978 2.571-5.989z"></path></svg>
-<span class="absolute -top-1 -right-1 w-2 h-2 bg-industrial-gold rounded-full border border-black"></span>
-</div>
-</a>
-</div></body></html>
+</body></html>
