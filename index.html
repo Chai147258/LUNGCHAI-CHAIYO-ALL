@@ -593,4 +593,28 @@ LUNGCHAI CHAIYO ALL<br/>
             });
         });
 </script>
+<script type="module">
+
+import { createClient } 
+from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+
+const supabaseUrl =
+'https://hkwqrllqzfzsbsxqgaoo.supabase.co'
+
+
+const supabaseKey =
+'YOUR_ANON_KEY'
+
+
+const supabase =
+createClient(
+supabaseUrl,
+supabaseKey
+)
+
+
+window.supabase = supabase
+
+</script>
 </body></html>
