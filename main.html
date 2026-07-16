@@ -1108,7 +1108,7 @@ footer{
         <span class="btn-icon">⭐</span>
         <span class="btn-txt">รีวิวจาก<br>ลูกค้า</span>
       </a>
-      <a href="/track.html" class="cta-btn">
+      <a href="/service-request.html" class="cta-btn">
         <span class="btn-icon">📡</span>
         <span class="btn-txt">เช็ค&ติดตาม<br>งาน</span>
       </a>
@@ -1116,7 +1116,7 @@ footer{
 
     <!-- Row 3 — 4 -->
     <div class="cta-row3" style="margin-bottom:0">
-      <a href="/about.html" class="cta-btn">
+      <a href="#about" class="cta-btn">
         <span class="btn-icon">🏗️</span>
         <span class="btn-txt">โครงสร้าง<br>องค์กร</span>
       </a>
@@ -1402,11 +1402,11 @@ footer{
       <div>
         <div class="ft-h">บริการ</div>
         <ul class="ft-links">
-          <li><a href="#">💻 IT & Computer</a></li>
-          <li><a href="#">🖨️ ซ่อมเครื่องพิมพ์</a></li>
-          <li><a href="#">⚡ อุปกรณ์ไฟฟ้า</a></li>
-          <li><a href="#">🔩 ซ่อมมอเตอร์</a></li>
-          <li><a href="#">🦺 PPE Safety</a></li>
+          <li><a href="#services">💻 IT & Computer</a></li>
+          <li><a href="#services">🖨️ ซ่อมเครื่องพิมพ์</a></li>
+          <li><a href="#services">⚡ อุปกรณ์ไฟฟ้า</a></li>
+          <li><a href="#services">🔩 ซ่อมมอเตอร์</a></li>
+          <li><a href="#services">🦺 PPE Safety</a></li>
         </ul>
       </div>
       <div>
@@ -1622,7 +1622,13 @@ function quickFind(val){
 }
 function goFind(val){
   const q = val ? ('?q=' + encodeURIComponent(val)) : '';
-  window.location.href = '/services.html' + q;
+  if(finderMode === 'repair'){
+    window.location.href = '/service-request.html';
+  } else if(finderMode === 'tech'){
+    window.location.href = '/technician-finder.html';
+  } else {
+    window.location.href = '/services.html' + q;
+  }
 }
 
 /* ─────────────────────────────────────────
