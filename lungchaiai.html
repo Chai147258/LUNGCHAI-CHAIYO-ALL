@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ลุงชัย AI — Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Space+Mono&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#02020C;
+    --void-2:#0A0A18;
+    --gold:#C9A84C;
+    --gold-soft:#E4CE87;
+    --ink:#EDEBE2;
+    --dim:#8B8A9A;
+    --glass:rgba(255,255,255,0.04);
+    --glass-brd:rgba(201,168,76,0.28);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;height:100%;background:var(--void);color:var(--ink);font-family:'Chakra Petch',sans-serif;overflow-x:hidden;}
+
+  .stage{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 20px;text-align:center;}
+  .stage::before{
+    content:"";position:fixed;inset:0;
+    background:
+      radial-gradient(ellipse at 20% 15%, rgba(201,168,76,0.10), transparent 55%),
+      radial-gradient(ellipse at 80% 85%, rgba(120,90,220,0.08), transparent 55%),
+      var(--void);
+    z-index:-1;
+  }
+  .eyebrow{font-family:'Space Mono',monospace;letter-spacing:.35em;font-size:11px;color:var(--gold);text-transform:uppercase;margin-bottom:18px;}
+  h1{font-size:clamp(28px,6vw,52px);margin:0 0 12px;font-weight:700;letter-spacing:.01em;}
+  h1 span{color:var(--gold);}
+  .sub{max-width:520px;color:var(--dim);font-size:15px;line-height:1.7;margin-bottom:6px;}
+  .badge{margin-top:28px;font-family:'Space Mono',monospace;font-size:12px;color:var(--dim);border:1px solid var(--glass-brd);padding:8px 16px;border-radius:100px;}
+
+  /* ---- floating launcher ---- */
+  .launcher{
+    position:fixed;bottom:24px;right:24px;z-index:40;
+    width:64px;height:64px;border-radius:50%;
+    background:linear-gradient(155deg,#1a1830,var(--void-2));
+    border:1px solid var(--gold);
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;box-shadow:0 6px 30px rgba(201,168,76,0.25);
+    transition:transform .25s ease;
+  }
+  .launcher:hover{transform:scale(1.06);}
+  .launcher::after{
+    content:"";position:absolute;inset:-6px;border-radius:50%;
+    border:1px solid rgba(201,168,76,0.4);
+    animation:pulse 2.4s ease-out infinite;
+  }
+  @keyframes pulse{0%{transform:scale(.9);opacity:.8;}100%{transform:scale(1.35);opacity:0;}}
+  .launcher svg{width:26px;height:26px;stroke:var(--gold-soft);}
+
+  /* ---- chat panel ---- */
+  .panel{
+    position:fixed;bottom:24px;right:24px;z-index:50;
+    width:min(380px,92vw);height:min(600px,78vh);
+    background:linear-gradient(180deg,rgba(15,14,28,0.97),rgba(6,6,14,0.98));
+    border:1px solid var(--glass-brd);border-radius:20px;
+    display:flex;flex-direction:column;overflow:hidden;
+    box-shadow:0 20px 60px rgba(0,0,0,0.6);
+    backdrop-filter:blur(18px);
+    opacity:0;transform:translateY(16px) scale(.98);pointer-events:none;
+    transition:opacity .22s ease, transform .22s ease;
+  }
+  .panel.open{opacity:1;transform:translateY(0) scale(1);pointer-events:auto;}
+
+  .panel-head{
+    padding:16px 18px;display:flex;align-items:center;gap:10px;
+    border-bottom:1px solid rgba(201,168,76,0.18);
+    background:rgba(201,168,76,0.04);
+  }
+  .avatar{width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 35% 30%,var(--gold-soft),var(--gold) 60%,#7a5f1c);flex-shrink:0;}
+  .panel-head h3{margin:0;font-size:15px;font-weight:600;}
+  .panel-head p{margin:0;font-size:11px;color:var(--dim);font-family:'Space Mono',monospace;}
+  .status-dot{width:7px;height:7px;border-radius:50%;background:#4ADE80;display:inline-block;margin-right:5px;box-shadow:0 0 6px #4ADE80;}
+  .close-btn{margin-left:auto;background:none;border:none;color:var(--dim);cursor:pointer;font-size:20px;line-height:1;padding:4px;}
+  .close-btn:hover{color:var(--ink);}
+
+  .messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;}
+  .messages::-webkit-scrollbar{width:5px;}
+  .messages::-webkit-scrollbar-thumb{background:rgba(201,168,76,0.3);border-radius:10px;}
+
+  .msg{max-width:84%;padding:10px 13px;border-radius:14px;font-size:13.5px;line-height:1.6;white-space:pre-wrap;}
+  .msg.bot{align-self:flex-start;background:var(--glass);border:1px solid rgba(255,255,255,0.06);border-bottom-left-radius:4px;}
+  .msg.user{align-self:flex-end;background:linear-gradient(135deg,var(--gold),#a9843a);color:#1a1408;border-bottom-right-radius:4px;font-weight:500;}
+  .msg.typing{display:flex;gap:4px;align-items:center;padding:12px 14px;}
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:blink 1.2s infinite;}
+  .dot:nth-child(2){animation-delay:.2s;}
+  .dot:nth-child(3){animation-delay:.4s;}
+  @keyframes blink{0%,80%,100%{opacity:.25;}40%{opacity:1;}}
+
+  .suggestions{display:flex;flex-wrap:wrap;gap:6px;padding:0 16px 12px;}
+  .chip{font-family:'Space Mono',monospace;font-size:11px;color:var(--gold-soft);border:1px solid rgba(201,168,76,0.35);padding:6px 10px;border-radius:100px;cursor:pointer;background:rgba(201,168,76,0.06);white-space:nowrap;}
+  .chip:hover{background:rgba(201,168,76,0.15);}
+
+  .input-row{display:flex;gap:8px;padding:12px;border-top:1px solid rgba(201,168,76,0.15);}
+  .input-row input{
+    flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
+    border-radius:12px;padding:11px 14px;color:var(--ink);font-family:'Chakra Petch',sans-serif;font-size:13.5px;outline:none;
+  }
+  .input-row input:focus{border-color:var(--gold);}
+  .icon-btn{width:40px;height:40px;border-radius:12px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.03);color:var(--dim);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .icon-btn.mic.recording{background:rgba(220,60,60,0.18);border-color:#e05353;color:#ff8080;}
+  .icon-btn.send{background:linear-gradient(135deg,var(--gold),#a9843a);border:none;color:#1a1408;}
+  .icon-btn svg{width:17px;height:17px;}
+
+  .foot-note{font-family:'Space Mono',monospace;font-size:9.5px;color:#4a4958;text-align:center;padding:6px 0 10px;}
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="eyebrow">Lungchai Chaiyo Group · Prototype</div>
+  <h1>ลุงชัย <span>AI</span></h1>
+  <p class="sub">ผู้ช่วยอัจฉริยะประจำเว็บไซต์ lungchaichaiyo.shop — คุยได้หลายภาษา ประเมินราคาเบื้องต้น ค้นหาบริการ/สินค้า และแนะนำการติดต่อขั้นถัดไป</p>
+  <div class="badge">คลิกไอคอนแชทมุมขวาล่างเพื่อทดลองคุยได้เลย</div>
+</div>
+
+<!-- Launcher -->
+<div class="launcher" id="launcher" aria-label="เปิดแชทลุงชัย AI">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.4A8.5 8.5 0 0 1 4 12a8.38 8.38 0 0 1 8.4-8.5A8.5 8.5 0 0 1 21 11.5z"/><path d="M8 10h.01M12 10h.01M16 10h.01"/></svg>
+</div>
+
+<!-- Chat Panel -->
+<div class="panel" id="panel">
+  <div class="panel-head">
+    <div class="avatar"></div>
+    <div>
+      <h3>ลุงชัย AI</h3>
+      <p><span class="status-dot"></span>Lungchai Chaiyo Group · Online</p>
+    </div>
+    <button class="close-btn" id="closeBtn">×</button>
+  </div>
+
+  <div class="messages" id="messages"></div>
+
+  <div class="suggestions" id="suggestions">
+    <div class="chip" data-q="อินเทอร์เน็ตหลุดบ่อย ประเมินราคาซ่อมให้หน่อย">อินเทอร์เน็ตหลุดบ่อย ราคาเท่าไหร่?</div>
+    <div class="chip" data-q="มีบริการติดตั้งกล้องวงจรปิดไหม ราคาเริ่มต้นเท่าไหร่">ติดตั้งกล้องวงจรปิด</div>
+    <div class="chip" data-q="Do you offer network maintenance for factories?">Ask in English</div>
+  </div>
+
+  <div class="input-row">
+    <input id="textInput" type="text" placeholder="พิมพ์คำถามของคุณ..." autocomplete="off">
+    <button class="icon-btn mic" id="micBtn" title="พูดแทนพิมพ์">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/></svg>
+    </button>
+    <button class="icon-btn send" id="sendBtn" title="ส่ง">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+  <div class="foot-note">Prototype · ข้อมูลราคาเป็นการประเมินเบื้องต้นเท่านั้น</div>
+</div>
+
+<script>
+const SUPABASE_URL = "https://hkwqrllqzfzsbsxqgaoo.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhrd3FybGxxemZ6c2JzeHFnYW9vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzNzIzNjAsImV4cCI6MjA5Njk0ODM2MH0.kPT_UY0-2-0cbDlGwya24DnOLJXA-XJGMdM6SIm7Rew";
+const CHAT_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/lungchai-ai-chat`;
+
+const launcher = document.getElementById('launcher');
+const panel = document.getElementById('panel');
+const closeBtn = document.getElementById('closeBtn');
+const messagesEl = document.getElementById('messages');
+const textInput = document.getElementById('textInput');
+const sendBtn = document.getElementById('sendBtn');
+const micBtn = document.getElementById('micBtn');
+const suggestions = document.getElementById('suggestions');
+
+let history = [];        // {role, content} for Claude API
+let sessionId = null;
+
+launcher.addEventListener('click', () => {
+  panel.classList.add('open');
+  if (messagesEl.children.length === 0) {
+    addMsg('bot', 'สวัสดีครับ ผมลุงชัย AI 🙏 ผู้ช่วยประจำ Lungchai Chaiyo Group\nถามได้เลยเรื่องบริการ ซ่อม/ติดตั้ง IT, กล้องวงจรปิด, เครือข่าย, งานโรงงาน หรือให้ผมประเมินราคาเบื้องต้นก็ได้ครับ (พิมพ์ได้ทุกภาษา)');
+  }
+});
+closeBtn.addEventListener('click', () => panel.classList.remove('open'));
+
+suggestions.addEventListener('click', (e) => {
+  const chip = e.target.closest('.chip');
+  if (!chip) return;
+  textInput.value = chip.dataset.q;
+  handleSend();
+});
+
+sendBtn.addEventListener('click', handleSend);
+textInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleSend(); });
+
+function addMsg(role, text) {
+  const el = document.createElement('div');
+  el.className = 'msg ' + role;
+  el.textContent = text;
+  messagesEl.appendChild(el);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+  return el;
+}
+
+function addTyping() {
+  const el = document.createElement('div');
+  el.className = 'msg bot typing';
+  el.id = 'typingIndicator';
+  el.innerHTML = '<span class="dot"></span><span class="dot"></span><span class="dot"></span>';
+  messagesEl.appendChild(el);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+function removeTyping() {
+  const el = document.getElementById('typingIndicator');
+  if (el) el.remove();
+}
+
+async function handleSend() {
+  const text = textInput.value.trim();
+  if (!text) return;
+  textInput.value = "";
+  addMsg('user', text);
+  addTyping();
+
+  try {
+    const response = await fetch(CHAT_FUNCTION_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
+      },
+      body: JSON.stringify({
+        message: text,
+        history: history,
+        session_id: sessionId
+      })
+    });
+    const data = await response.json();
+    removeTyping();
+
+    if (!response.ok || data.error) {
+      addMsg('bot', 'ขออภัยครับ ระบบขัดข้องเล็กน้อย รบกวนลองใหม่อีกครั้ง หรือติดต่อทีมงานผ่านเว็บไซต์ได้เลยครับ');
+      console.error('lungchai-ai-chat error:', data.error || response.statusText);
+      return;
+    }
+
+    if (data.session_id) sessionId = data.session_id;
+    addMsg('bot', data.reply);
+    history.push({ role: 'user', content: text });
+    history.push({ role: 'assistant', content: data.reply });
+  } catch (err) {
+    removeTyping();
+    addMsg('bot', 'ขออภัยครับ เชื่อมต่อระบบไม่สำเร็จ รบกวนลองใหม่อีกครั้งครับ 🙏');
+  }
+}
+
+// ---- Voice input (Web Speech API, Chrome/Android/iOS Safari support varies) ----
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognizing = false;
+let recognizer = null;
+if (SpeechRecognition) {
+  recognizer = new SpeechRecognition();
+  recognizer.lang = 'th-TH';
+  recognizer.interimResults = false;
+  recognizer.maxAlternatives = 1;
+  recognizer.onresult = (e) => {
+    textInput.value = e.results[0][0].transcript;
+  };
+  recognizer.onend = () => { recognizing = false; micBtn.classList.remove('recording'); };
+  micBtn.addEventListener('click', () => {
+    if (recognizing) { recognizer.stop(); return; }
+    recognizing = true;
+    micBtn.classList.add('recording');
+    recognizer.start();
+  });
+} else {
+  micBtn.addEventListener('click', () => alert('เบราว์เซอร์นี้ยังไม่รองรับการพูดสั่งงาน กรุณาพิมพ์ข้อความแทนครับ'));
+}
+</script>
+</body>
+</html>
