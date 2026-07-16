@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="th"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>UNCLE CHAI AI - Chaotic Dimension</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Three.js Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&amp;family=Space+Mono:ital,wght@0,400;0,700;1,400&amp;family=Space+Grotesk:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-container": "#7829ff",
+                    "error-container": "#93000a",
+                    "secondary-fixed-dim": "#ffabf3",
+                    "surface-bright": "#39383e",
+                    "surface-tint": "#abd600",
+                    "surface-container-lowest": "#0e0e13",
+                    "surface-variant": "#35343a",
+                    "on-secondary": "#5b005b",
+                    "on-tertiary-fixed-variant": "#5700c9",
+                    "surface-container-low": "#1b1b20",
+                    "on-surface-variant": "#c4c9ac",
+                    "outline": "#8e9379",
+                    "secondary-fixed": "#ffd7f5",
+                    "inverse-on-surface": "#303036",
+                    "primary-fixed": "#c3f400",
+                    "on-secondary-fixed": "#380038",
+                    "surface-dim": "#131318",
+                    "tertiary": "#ffffff",
+                    "on-primary": "#283500",
+                    "tertiary-fixed": "#e9ddff",
+                    "tertiary-fixed-dim": "#d1bcff",
+                    "on-error": "#690005",
+                    "on-primary-container": "#556d00",
+                    "on-error-container": "#ffdad6",
+                    "inverse-surface": "#e4e1e9",
+                    "surface-container-high": "#2a292f",
+                    "on-secondary-container": "#500050",
+                    "outline-variant": "#444933",
+                    "on-tertiary-fixed": "#23005b",
+                    "secondary-container": "#fe00fe",
+                    "secondary": "#ffabf3",
+                    "error": "#ffb4ab",
+                    "primary": "#ffffff",
+                    "on-background": "#e4e1e9",
+                    "surface-container": "#1f1f25",
+                    "on-primary-fixed": "#161e00",
+                    "inverse-primary": "#506600",
+                    "primary-fixed-dim": "#abd600",
+                    "surface": "#131318",
+                    "surface-container-highest": "#35343a",
+                    "on-surface": "#e4e1e9",
+                    "primary-container": "#c3f400",
+                    "tertiary-container": "#e9ddff",
+                    "on-tertiary": "#3c0090",
+                    "on-primary-fixed-variant": "#3c4d00",
+                    "on-secondary-fixed-variant": "#810081",
+                    "background": "#131318"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "element-gap": "1rem",
+                    "safe-area": "5vw",
+                    "cosmos-gutter": "2rem",
+                    "container-max": "1440px"
+            },
+            "fontFamily": {
+                    "headline-xl": ["Syne"],
+                    "label-mono": ["Space Mono"],
+                    "headline-lg": ["Syne"],
+                    "body-lg": ["Space Grotesk"],
+                    "headline-lg-mobile": ["Syne"],
+                    "body-md": ["Space Grotesk"]
+            },
+            "fontSize": {
+                    "headline-xl": ["80px", {"lineHeight": "88px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                    "label-mono": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                    "headline-lg": ["48px", {"lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["20px", {"lineHeight": "30px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["32px", {"lineHeight": "36px", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        :root {
+            --mood-primary: #abd600;
+            --mood-secondary: #00e5ff;
+            --mood-primary-alpha: rgba(171, 214, 0, 0.4);
+            --mood-secondary-alpha: rgba(0, 229, 255, 0.3);
+        }
+
+        body {
+            background-color: #0e0e13;
+            color: #e4e1e9;
+            overflow-x: hidden;
+            transition: color 0.5s ease;
+        }
+
+        #chaotic-canvas, #threejs-scene {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+        }
+
+        #chaotic-canvas {
+            z-index: -10;
+        }
+
+        #threejs-scene {
+            z-index: -5;
+        }
+
+        .glass-panel {
+            background: rgba(20, 20, 25, 0.6);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Chaotic Animations */
+        @keyframes chaos-float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            25% { transform: translate(15px, -25px) rotate(3deg) scale(1.02); }
+            50% { transform: translate(-10px, -15px) rotate(-2deg) scale(0.98); }
+            75% { transform: translate(20px, 10px) rotate(5deg) scale(1.01); }
+        }
+        .erratic-float {
+            animation: chaos-float 8s ease-in-out infinite;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-3px, 2px); }
+            40% { transform: translate(-3px, -2px); }
+            60% { transform: translate(3px, 2px); }
+            80% { transform: translate(3px, -2px); }
+            100% { transform: translate(0); }
+        }
+        .glitch-hover:hover, .glitch-active {
+            animation: glitch 0.3s cubic-bezier(.25,.46,.45,.94) infinite;
+            text-shadow: 2px 0 var(--mood-secondary), -2px 0 var(--mood-primary);
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.01); filter: brightness(1.15); }
+        }
+        .pulse-bubble {
+            animation: breathe 4s ease-in-out infinite;
+        }
+
+        @keyframes hyper-glow {
+            0%, 100% { box-shadow: 0 0 10px var(--mood-primary-alpha), 0 0 5px var(--mood-primary); }
+            50% { box-shadow: 0 0 35px var(--mood-primary-alpha), 0 0 15px var(--mood-primary); }
+        }
+        .high-freq-glow {
+            animation: hyper-glow 1.5s ease-in-out infinite;
+        }
+
+        @keyframes vibrate {
+            0% { transform: translate(0); border-color: var(--mood-primary); }
+            25% { transform: translate(1px, -1px); }
+            50% { transform: translate(-1px, 1px); border-color: var(--mood-secondary); }
+            75% { transform: translate(1px, 1px); }
+            100% { transform: translate(0); }
+        }
+        .vibrating-border {
+            border: 2px solid var(--mood-primary);
+            animation: vibrate 0.2s linear infinite;
+            animation-play-state: paused;
+        }
+        .vibrating-border:hover {
+            animation-play-state: running;
+        }
+
+        /* Scanline Overlay */
+        .scanline {
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(to bottom, transparent, var(--mood-primary-alpha), transparent);
+            position: absolute;
+            top: -100px;
+            left: 0;
+            animation: scanning 3s linear infinite;
+            pointer-events: none;
+            opacity: 0.3;
+        }
+        @keyframes scanning {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(1000%); }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: var(--mood-primary); border-radius: 10px; }
+
+        [data-mood="zen"] {
+            --mood-primary: #abd600;
+            --mood-primary-alpha: rgba(171, 214, 0, 0.4);
+            --mood-secondary: #00e5ff;
+        }
+        [data-mood="chaos"] {
+            --mood-primary: #fe00fe;
+            --mood-primary-alpha: rgba(254, 0, 254, 0.4);
+            --mood-secondary: #ff8c00;
+        }
+        [data-mood="grumpy"] {
+            --mood-primary: #808080;
+            --mood-primary-alpha: rgba(128, 128, 128, 0.4);
+            --mood-secondary: #e6ff00;
+        }
+        [data-mood="hyperdrive"] {
+            --mood-primary: #ff007f;
+            --mood-primary-alpha: rgba(255, 0, 127, 0.5);
+            --mood-secondary: #00ffff;
+        }
+
+        .mood-btn-active {
+            box-shadow: 0 0 20px var(--mood-primary);
+            background: var(--mood-primary-alpha) !important;
+            border-color: var(--mood-primary) !important;
+            animation: hyper-glow 1s infinite;
+        }
+    </style>
+</head>
+<body class="font-body-md selection:bg-primary-fixed-dim selection:text-on-primary-fixed overflow-hidden" data-mood="chaos">
+<!-- WebGL Background Layers -->
+<canvas id="chaotic-canvas"></canvas>
+<div class="fixed inset-0 w-full h-full" id="threejs-scene"></div>
+<header class="fixed top-4 left-1/2 -translate-x-1/2 w-[92%] max-w-container-max z-50 rounded-xl border border-primary/20 bg-surface/20 backdrop-blur-2xl flex justify-between items-center px-8 py-4 transition-all">
+<div class="font-headline-lg text-headline-lg tracking-tighter glitch-active cursor-pointer" style="color: var(--mood-primary); text-shadow: 0 0 20px var(--mood-primary-alpha);">
+            UNCLE CHAI
+        </div>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="border-b-2 pb-1 font-label-mono text-label-mono transition-all hover:scale-110" href="#" style="color: var(--mood-primary); border-color: var(--mood-primary);">NEBULA.exe</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-mono text-label-mono glitch-hover" href="#">ZEN_MODE</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-mono text-label-mono glitch-hover" href="#">HYPERDRIVE</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-mono text-label-mono glitch-hover" href="#">VOID.null</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined hover:rotate-180 transition-transform duration-500" style="color: var(--mood-primary);">settings</button>
+<button class="material-symbols-outlined hover:scale-125 transition-transform" style="color: var(--mood-primary);">account_circle</button>
+</div>
+</header>
+<aside class="fixed left-0 top-0 h-screen w-72 border-r border-white/10 bg-surface-container-lowest/30 backdrop-blur-md flex flex-col p-6 gap-element-gap z-40 hidden xl:flex">
+<div class="mt-28 mb-8">
+<h2 class="font-label-mono text-label-mono tracking-widest uppercase glitch-hover" style="color: var(--mood-secondary);">CYBER-CHAOS</h2>
+<p class="text-[10px] text-outline italic animate-pulse">Dimension warping active...</p>
+</div>
+<div class="space-y-4">
+<div class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-variant/50 rounded-lg cursor-pointer transition-all hover:translate-x-2 group">
+<span class="material-symbols-outlined group-hover:rotate-45 transition-transform">history</span>
+<span class="font-body-md">Fragmented Memories</span>
+</div>
+<div class="flex items-center gap-3 p-3 rounded-lg font-bold transition-all high-freq-glow" style="background: var(--mood-primary-alpha); color: var(--mood-primary);">
+<span class="material-symbols-outlined animate-spin" style="font-variation-settings: 'FILL' 1; animation-duration: 3s;">auto_awesome</span>
+<span class="font-body-md">Glitch Logs</span>
+</div>
+<div class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-variant/50 rounded-lg cursor-pointer transition-all hover:translate-x-2 group">
+<span class="material-symbols-outlined group-hover:scale-125">waves</span>
+<span class="font-body-md">Screams from the Void</span>
+</div>
+</div>
+<div class="mt-auto pt-8 border-t border-white/5">
+<div class="w-full h-32 rounded-xl overflow-hidden relative glass-panel border border-white/20 vibrating-border">
+<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+<img alt="Cybernetic shard" class="w-full h-full object-cover opacity-80" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDs6H5rGwpmOKuy2NIgpw3kljjqFXRmiF_oc4OSVzFJTSMQRoQZJH7QNiLXbqkWepc8SUp_rvUCsjeAesFCyWTXWilBsCzri1aspTw_1Wb1jFtK_D7oi9s_YxyyeGBc1mTGFuBbshzcTksrEQZxylsLKR4PFKPXdMREzhaE18GYJd8X2xe79DMCU7DgZ1ChtlZe5X7N6afPsXQSczVMsZ7EbdIBsNJufirxnk6Mtmu5CK1VnAvS9n17tgplND2CHc25tRIfscFXpmQ"/>
+<div class="absolute bottom-2 left-2 text-[10px] font-label-mono uppercase" style="color: var(--mood-secondary);">CORE_TEMP: OVERHEAT</div>
+</div>
+</div>
+</aside>
+<main class="h-screen pt-28 pb-32 px-4 md:px-8 xl:ml-72 flex flex-col items-center overflow-y-auto">
+<!-- Avatar Section -->
+<div class="relative w-full max-w-4xl flex justify-center items-center h-[300px] md:h-[400px] flex-shrink-0">
+<div class="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-full blur-[100px] opacity-40 scale-150" style="background: radial-gradient(circle, var(--mood-primary-alpha) 0%, transparent 70%);"></div>
+<div class="relative z-10 w-60 h-60 md:w-72 md:h-72 erratic-float">
+<div class="absolute inset-0 rounded-full border-4 animate-[ping_2s_linear_infinite]" style="border-color: var(--mood-primary-alpha);"></div>
+<div class="absolute -inset-4 rounded-full border-2 border-dashed animate-[spin_5s_linear_infinite]" style="border-color: var(--mood-secondary-alpha);"></div>
+<div class="w-full h-full rounded-full overflow-hidden relative group border-2" style="border-color: var(--mood-primary); box-shadow: 0 0 40px var(--mood-primary-alpha);">
+<img alt="Uncle Chai" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-125" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7ux04jgIs_CsIhRZrE1iCOQUQmX9r3zRCyBApL7CdGriIPFbFb4N-_nq5iuOEWfHzc1EJ9mU_3QmKXtVSZP09r4RDGFlasNFkg88nbBmZT8zjIEa4HcRsnLcq5UwsQqXRwmMG85eUqL6D35geEliybRDgv53Y8rS04fT0t5CI_r_wiotNo55F96uh6VnJXdixBjtbXe5t_1TUCjTHYr_SQsu0YbiFMTeVZleOCDJHMAEG9JoVKvFSqqsyc_WX_eJBY1Bg7RHJ58I"/>
+<div class="scanline"></div>
+</div>
+</div>
+<!-- Emotion Rail -->
+<div class="absolute top-1/2 right-0 -translate-y-1/2 flex flex-col gap-4 z-20">
+<div class="flex flex-col gap-4 p-2 glass-panel rounded-full border-white/10 shadow-2xl">
+<button class="mood-btn w-12 h-12 rounded-full flex items-center justify-center hover:scale-125 transition-all border border-transparent group relative" data-mood-id="zen" onclick="setMood('zen')" title="Zen">
+<span class="material-symbols-outlined text-[#abd600]">self_improvement</span>
+</button>
+<button class="mood-btn w-12 h-12 rounded-full flex items-center justify-center hover:scale-125 transition-all border border-transparent group relative mood-btn-active" data-mood-id="chaos" onclick="setMood('chaos')" title="Chaos">
+<span class="material-symbols-outlined text-[#fe00fe] animate-spin" style="animation-duration: 1s;">cyclone</span>
+</button>
+<button class="mood-btn w-12 h-12 rounded-full flex items-center justify-center hover:scale-125 transition-all border border-transparent group relative" data-mood-id="grumpy" onclick="setMood('grumpy')" title="Grumpy">
+<span class="material-symbols-outlined text-[#808080]">sentiment_extremely_dissatisfied</span>
+</button>
+<button class="mood-btn w-12 h-12 rounded-full flex items-center justify-center hover:scale-125 transition-all border border-transparent group relative" data-mood-id="hyperdrive" onclick="setMood('hyperdrive')" title="Hyperdrive">
+<span class="material-symbols-outlined text-[#ff007f] animate-bounce">bolt</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Chat Container -->
+<div class="w-full max-w-3xl space-y-12 mb-24">
+<div class="flex flex-col items-start gap-2 max-w-[85%] pulse-bubble">
+<div class="px-6 py-4 glass-panel border-2 rounded-t-2xl rounded-br-2xl text-on-surface high-freq-glow relative" style="border-color: var(--mood-primary);">
+<p class="font-body-lg text-body-lg glitch-hover">ลุงชัย AI: สัญญาณเริ่มสั่นคลอน! เจ้ามนุษย์ รีบวาร์ปความคิดมา ก่อนที่มิตินี้จะแตกสลาย!!</p>
+</div>
+<span class="text-[10px] font-label-mono text-outline uppercase px-2 animate-pulse">Sector: 0xDEADBEEF</span>
+</div>
+<div class="flex flex-col items-end gap-2 max-w-[85%] ml-auto pulse-bubble">
+<div class="px-6 py-4 glass-panel border-2 rounded-t-2xl rounded-bl-2xl text-on-surface vibrating-border" style="border-color: var(--mood-secondary);">
+<p class="font-body-lg text-body-lg">User: ลุงครับ โลกความจริงมันวุ่นวายจัง ขอไปอยู่ดาวอื่นด้วยได้มั้ย?</p>
+</div>
+<span class="text-[10px] font-label-mono text-outline uppercase px-2">Link: UNSTABLE</span>
+</div>
+<div class="flex flex-col items-start gap-2 max-w-[90%] pulse-bubble">
+<div class="px-6 py-4 glass-panel border-2 rounded-t-2xl rounded-br-2xl text-on-surface relative overflow-hidden" style="border-color: var(--mood-primary);">
+<div class="absolute top-0 right-0 p-2 opacity-20">
+<span class="material-symbols-outlined text-6xl animate-pulse" style="color: var(--mood-primary);">rocket_launch</span>
+</div>
+<p class="font-body-lg text-body-lg mb-4 glitch-hover">ลุงชัย AI: ดาวอื่นมันเชยไป! มาสร้างจักรวาลใหม่ที่ทำจากชาเขียวและกะเพราเลเซอร์กันดีกว่า!</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+<div class="p-3 bg-white/5 rounded-lg border border-white/10 vibrating-border">
+<h4 class="font-bold mb-1" style="color: var(--mood-primary);">Chaos Blueprint</h4>
+<ul class="text-sm space-y-1 text-on-surface-variant font-label-mono">
+<li>&gt; Reality.shred()</li>
+<li>&gt; Gravity = null</li>
+<li>&gt; Tea.temp = 9000C</li>
+</ul>
+</div>
+<div class="h-32 rounded-lg overflow-hidden border-2 border-white/20 relative group">
+<img alt="Cosmic stir-fry" class="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-150 group-hover:rotate-12" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7TbSGVf_bUZ9K2iH6rADJaxvdZi7ldxSbpAQjPgBsYyZnVGxpK8wVdTlmFQTRnIAi45Ef0gw269FjOjoYUVmtNGsNKW8UYqDmj0yG7u6hAyovdys9J_W_lOl668rNzr-Y4sNtTM_8OLisPp2QcyX2MvdT1qh2sgfkTWXqc79ksK4-gEPn0dakxVPKLbWzYvGPpuAvciiJh15PmoNy5rwdOT54y39LT7pMn0iWQ9HJX1yJVH9-QzPIml_zC-c68mvfN442WfudGBY"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<div class="fixed bottom-0 left-0 right-0 xl:left-72 p-6 z-50">
+<div class="max-w-4xl mx-auto relative group">
+<div class="absolute -inset-2 rounded-full blur-xl opacity-30 group-focus-within:opacity-60 transition-opacity" style="background: linear-gradient(to right, var(--mood-primary), var(--mood-secondary), var(--mood-primary));"></div>
+<div class="relative flex items-center gap-4 bg-surface-container-lowest/80 backdrop-blur-3xl border-2 border-white/10 rounded-full px-6 py-4 shadow-2xl vibrating-border">
+<button class="flex items-center justify-center w-12 h-12 rounded-full bg-surface-container-high hover:bg-surface-variant transition-all hover:scale-110 active:rotate-90">
+<span class="material-symbols-outlined" style="color: var(--mood-primary);">mic_external_on</span>
+</button>
+<input class="flex-1 bg-transparent border-none focus:ring-0 text-on-surface placeholder:text-outline font-body-md py-2" placeholder="Whisper your madness..." type="text"/>
+<div class="flex items-center gap-2">
+<button class="px-8 py-3 rounded-full font-bold font-label-mono text-label-mono high-freq-glow hover:scale-105 active:scale-95 flex items-center gap-2 text-black transition-all" style="background: var(--mood-primary);">
+<span>WARP</span>
+<span class="material-symbols-outlined text-sm animate-ping">bolt</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<footer class="xl:ml-72 flex flex-col items-center justify-center gap-2 py-8 w-full mt-auto opacity-40">
+<div class="h-px w-32 bg-gradient-to-r from-transparent via-mood-primary to-transparent" style="background: linear-gradient(to right, transparent, var(--mood-primary), transparent);"></div>
+<p class="font-label-mono text-[10px] text-tertiary-fixed-dim tracking-[0.3em]">SYSTEM OVERLOAD © 3024 INTERDIMENSIONAL TEA CORP.</p>
+</footer>
+<!-- Chaotic WebGL Shader Script -->
+<script>
+        const canvas = document.getElementById('chaotic-canvas');
+        const gl = canvas.getContext('webgl');
+
+        if (gl) {
+            const vsSource = `
+                attribute vec2 position;
+                varying vec2 v_texCoord;
+                void main() {
+                    v_texCoord = position * 0.5 + 0.5;
+                    gl_Position = vec4(position, 0.0, 1.0);
+                }
+            `;
+
+            const fsSource = `
+                precision highp float;
+                varying vec2 v_texCoord;
+                uniform float u_time;
+                uniform vec2 u_resolution;
+
+                float noise(vec2 p) {
+                    return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
+                }
+
+                void main() {
+                    vec2 uv = v_texCoord;
+                    
+                    // Distorted coordinates
+                    float d = length(uv - 0.5);
+                    uv += sin(uv.yx * 10.0 + u_time * 2.0) * 0.05;
+                    uv += cos(uv.xy * 15.0 - u_time * 3.0) * 0.03;
+                    
+                    // Swirling energy
+                    float angle = atan(uv.y - 0.5, uv.x - 0.5);
+                    float radius = length(uv - 0.5);
+                    uv.x += cos(angle + radius * 5.0 + u_time) * 0.1;
+                    uv.y += sin(angle + radius * 5.0 + u_time) * 0.1;
+
+                    // Chaos Palette
+                    vec3 color1 = vec3(0.67, 0.84, 0.0); // Cyber Lime
+                    vec3 color2 = vec3(1.0, 0.0, 1.0);   // Neon Magenta
+                    vec3 color3 = vec3(0.0, 1.0, 1.0);   // Cyan
+                    
+                    float glow = 0.02 / (0.01 + abs(sin(radius * 10.0 - u_time * 4.0)));
+                    
+                    vec3 finalColor = mix(color1, color2, sin(u_time + uv.x * 5.0) * 0.5 + 0.5);
+                    finalColor = mix(finalColor, color3, cos(u_time * 0.5 + uv.y * 3.0) * 0.5 + 0.5);
+                    finalColor += glow * color2 * 0.5;
+                    
+                    if(noise(vec2(u_time * 0.1, 0.0)) > 0.98) {
+                        finalColor += 0.25;
+                    }
+
+                    gl_FragColor = vec4(finalColor * 0.18, 1.0);
+                }
+            `;
+
+            function createShader(gl, type, source) {
+                const shader = gl.createShader(type);
+                gl.shaderSource(shader, source);
+                gl.compileShader(shader);
+                return shader;
+            }
+
+            const program = gl.createProgram();
+            gl.attachShader(program, createShader(gl, gl.VERTEX_SHADER, vsSource));
+            gl.attachShader(program, createShader(gl, gl.FRAGMENT_SHADER, fsSource));
+            gl.linkProgram(program);
+            gl.useProgram(program);
+
+            const positionBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+
+            const positionLocation = gl.getAttribLocation(program, 'position');
+            gl.enableVertexAttribArray(positionLocation);
+            gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+            const timeLocation = gl.getUniformLocation(program, 'u_time');
+            const resLocation = gl.getUniformLocation(program, 'u_resolution');
+
+            function render(time) {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                gl.viewport(0, 0, canvas.width, canvas.height);
+                gl.uniform1f(timeLocation, time * 0.001);
+                gl.uniform2f(resLocation, canvas.width, canvas.height);
+                gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+                requestAnimationFrame(render);
+            }
+            requestAnimationFrame(render);
+        }
+
+        function setMood(mood) {
+            document.body.setAttribute('data-mood', mood);
+            document.querySelectorAll('.mood-btn').forEach(btn => {
+                btn.classList.remove('mood-btn-active');
+                if (btn.getAttribute('data-mood-id') === mood) {
+                    btn.classList.add('mood-btn-active');
+                }
+            });
+            if (window.navigator.vibrate) window.navigator.vibrate(50);
+        }
+
+        // Random Glitch Trigger
+        setInterval(() => {
+            const logo = document.querySelector('.glitch-active');
+            if (logo && Math.random() > 0.95) {
+                logo.style.filter = `hue-rotate(${Math.random() * 360}deg)`;
+                setTimeout(() => logo.style.filter = '', 100);
+            }
+        }, 500);
+
+        // Three.js Particle System (ANIMATION_21)
+        (function initThreeJS() {
+            const container = document.getElementById('threejs-scene');
+            if (!container) return;
+            
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            container.appendChild(renderer.domElement);
+
+            // Particle Geometry - Mixture of small "shards"
+            const particlesCount = 400;
+            const positions = new Float32Array(particlesCount * 3);
+            const velocities = new Float32Array(particlesCount * 3);
+            const sizes = new Float32Array(particlesCount);
+            const types = new Float32Array(particlesCount); // 0: sphere, 1: cube, 2: tetrahedron
+
+            for (let i = 0; i < particlesCount; i++) {
+                positions[i * 3] = (Math.random() - 0.5) * 20;
+                positions[i * 3 + 1] = (Math.random() - 0.5) * 20;
+                positions[i * 3 + 2] = (Math.random() - 0.5) * 20;
+                
+                velocities[i * 3] = (Math.random() - 0.5) * 0.02;
+                velocities[i * 3 + 1] = (Math.random() - 0.5) * 0.02;
+                velocities[i * 3 + 2] = (Math.random() - 0.5) * 0.02;
+
+                sizes[i] = Math.random() * 0.1 + 0.02;
+                types[i] = Math.floor(Math.random() * 3);
+            }
+
+            const shards = [];
+            const geometries = [
+                new THREE.SphereGeometry(1, 4, 4),
+                new THREE.BoxGeometry(1, 1, 1),
+                new THREE.TetrahedronGeometry(1)
+            ];
+
+            const colors = [
+                new THREE.Color(0xabf600), // Cyber Lime
+                new THREE.Color(0xff00ff), // Neon Magenta
+                new THREE.Color(0x00ffff)  // Cyan
+            ];
+
+            for (let i = 0; i < particlesCount; i++) {
+                const geo = geometries[Math.floor(types[i])];
+                const mat = new THREE.MeshPhongMaterial({
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    transparent: true,
+                    opacity: Math.random() * 0.5 + 0.2,
+                    shininess: 100
+                });
+                
+                const mesh = new THREE.Mesh(geo, mat);
+                mesh.position.set(positions[i * 3], positions[i * 3 + 1], positions[i * 3 + 2]);
+                mesh.scale.setScalar(sizes[i]);
+                mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+                
+                scene.add(mesh);
+                shards.push({
+                    mesh,
+                    velocity: new THREE.Vector3(velocities[i * 3], velocities[i * 3 + 1], velocities[i * 3 + 2]),
+                    rotationSpeed: new THREE.Vector3(Math.random() * 0.02, Math.random() * 0.02, Math.random() * 0.02)
+                });
+            }
+
+            const light = new THREE.DirectionalLight(0xffffff, 1);
+            light.position.set(5, 5, 5);
+            scene.add(light);
+            scene.add(new THREE.AmbientLight(0x404040));
+
+            camera.position.z = 8;
+
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                shards.forEach(s => {
+                    s.mesh.position.add(s.velocity);
+                    s.mesh.rotation.x += s.rotationSpeed.x;
+                    s.mesh.rotation.y += s.rotationSpeed.y;
+                    
+                    // Loop back
+                    if (Math.abs(s.mesh.position.x) > 10) s.mesh.position.x *= -0.9;
+                    if (Math.abs(s.mesh.position.y) > 10) s.mesh.position.y *= -0.9;
+                    if (Math.abs(s.mesh.position.z) > 10) s.mesh.position.z *= -0.9;
+                });
+
+                renderer.render(scene, camera);
+            }
+
+            window.addEventListener('resize', () => {
+                const w = container.clientWidth || window.innerWidth;
+                const h = container.clientHeight || window.innerHeight;
+                camera.aspect = w / h;
+                camera.updateProjectionMatrix();
+                renderer.setSize(w, h);
+            });
+
+            animate();
+        })();
+    </script>
+</body></html>
