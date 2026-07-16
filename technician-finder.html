@@ -70,7 +70,11 @@
   </div>
 </main>
 
-<footer class="text-center text-[11px] text-white/30 py-10">© 2026 LUNGCHAI CHAIYO ALL — เครือข่ายช่างมืออาชีพ</footer>
+<footer class="text-center text-[11px] text-white/30 py-10">
+  © 2026 LUNGCHAI CHAIYO ALL — เครือข่ายช่างมืออาชีพ
+  <span class="mx-2">·</span>
+  <a href="technician-portal.html" class="text-white/40 hover:text-[#b8fc4b]">สำหรับช่าง: เข้าสู่ระบบรับงาน</a>
+</footer>
 
 <script>
 const SB_URL = 'https://hkwqrllqzfzsbsxqgaoo.supabase.co';
@@ -156,7 +160,7 @@ document.getElementById('searchInput').addEventListener('input', renderGrid);
 (async function init(){
   renderChips();
   try{
-    TECHS = await sbFetch('technicians?select=*&active=eq.true&order=full_name.asc');
+    TECHS = await sbFetch('technicians?select=id,full_name,phone,line_id,skill,photo_url&active=eq.true&order=full_name.asc');
   }catch(e){
     console.error(e);
     TECHS = [];
