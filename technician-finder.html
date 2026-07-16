@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>ช่างซ่อมใกล้ฉัน | LUNGCHAI CHAIYO ALL</title>
+<meta name="description" content="ค้นหาช่างซ่อมมืออาชีพของ LUNGCHAI CHAIYO ALL ทั้ง IT เครือข่าย เครื่องพิมพ์ กล้องวงจรปิด และไฟฟ้าโรงงาน">
+<link rel="icon" href="images/logo-all.jpg">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Anuphan:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<style>
+  body{background:#0c0c0c;color:#e1e1ed;font-family:'Anuphan',sans-serif;}
+  h1,h2,h3,.font-head{font-family:'Space Grotesk',sans-serif;}
+  .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;}
+  .glass{background:rgba(255,255,255,.03);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.1);}
+  .nebula{position:fixed;inset:0;z-index:-1;pointer-events:none;}
+  .nebula div{position:absolute;border-radius:9999px;filter:blur(90px);opacity:.28;}
+  input,select{background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.12);color:#fff;}
+  input:focus,select:focus{outline:none;border-color:#b8fc4b;}
+  input::placeholder{color:#6b6b76;}
+  .chip{transition:.2s;cursor:pointer;}
+  .chip.active{background:#b8fc4b;color:#000;border-color:#b8fc4b;}
+  .tech-card{transition:.25s;}
+  .tech-card:hover{transform:translateY(-4px);border-color:rgba(184,252,75,.4);}
+</style>
+</head>
+<body>
+<div class="nebula"><div class="w-96 h-96 bg-purple-900 top-10 left-10"></div><div class="w-96 h-96 bg-blue-900 bottom-10 right-10"></div></div>
+
+<header class="sticky top-0 z-50 bg-black/80 backdrop-blur-md border-b border-white/10">
+  <div class="max-w-6xl mx-auto px-5 py-3 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-2">
+      <img src="images/logo-all.jpg" class="w-9 h-9 rounded-lg object-cover border border-[#b8fc4b]/40" alt="logo">
+      <span class="font-head font-bold text-sm text-[#b8fc4b]">LUNGCHAI CHAIYO ALL</span>
+    </a>
+    <div class="flex items-center gap-4">
+      <a href="service-request.html" class="text-xs text-white/60 hover:text-[#b8fc4b] hidden sm:flex items-center gap-1">
+        <span class="material-symbols-outlined text-base">confirmation_number</span> แจ้งซ่อม
+      </a>
+      <a href="index.html" class="text-xs text-white/60 hover:text-[#b8fc4b] flex items-center gap-1">
+        <span class="material-symbols-outlined text-base">arrow_back</span> หน้าแรก
+      </a>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-6xl mx-auto px-5 py-10">
+  <div class="text-center mb-8">
+    <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full glass text-[10px] tracking-widest uppercase text-[#98cbff] mb-4">
+      <span class="w-1.5 h-1.5 rounded-full bg-[#b8fc4b] animate-pulse"></span> Technician Directory
+    </div>
+    <h1 class="font-head text-3xl sm:text-4xl font-bold text-white mb-2">ช่างซ่อมใกล้ฉัน</h1>
+    <p class="text-white/50 text-sm max-w-lg mx-auto">เลือกช่างผู้เชี่ยวชาญตามงานที่ต้องการ ติดต่อได้โดยตรง หรือส่งคำขอผ่านระบบแจ้งซ่อม</p>
+  </div>
+
+  <!-- Search + filter -->
+  <div class="glass rounded-2xl p-4 mb-6">
+    <div class="relative mb-4">
+      <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-white/40">search</span>
+      <input id="searchInput" type="text" class="w-full rounded-xl pl-12 pr-4 py-3 text-sm" placeholder="ค้นหาชื่อช่าง หรือทักษะ เช่น เครื่องพิมพ์, กล้องวงจรปิด...">
+    </div>
+    <div id="skillChips" class="flex flex-wrap gap-2"></div>
+  </div>
+
+  <div id="techGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+  <div id="emptyState" class="hidden text-center py-16">
+    <span class="material-symbols-outlined text-5xl text-white/20 mb-3 block">engineering</span>
+    <p class="text-white/40">ไม่พบช่างที่ตรงกับเงื่อนไข</p>
+  </div>
+</main>
+
+<footer class="text-center text-[11px] text-white/30 py-10">© 2026 LUNGCHAI CHAIYO ALL — เครือข่ายช่างมืออาชีพ</footer>
+
+<script>
+const SB_URL = 'https://hkwqrllqzfzsbsxqgaoo.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhrd3FybGxxemZ6c2JzeHFnYW9vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzNzIzNjAsImV4cCI6MjA5Njk0ODM2MH0.kPT_UY0-2-0cbDlGwya24DnOLJXA-XJGMdM6SIm7Rew';
+
+let TECHS = [];
+let activeSkill = 'all';
+
+async function sbFetch(path){
+  const res = await fetch(`${SB_URL}/rest/v1/${path}`, { headers:{ 'apikey':SB_KEY, 'Authorization':`Bearer ${SB_KEY}` } });
+  if(!res.ok) throw new Error('fetch failed '+res.status);
+  return res.json();
+}
+
+const SKILL_GROUPS = [
+  { key:'all', label:'ทั้งหมด', icon:'apps' },
+  { key:'it', label:'IT & Network', icon:'computer', match:['it','network','computer','server'] },
+  { key:'printer', label:'เครื่องพิมพ์', icon:'print', match:['printer','เครื่องพิมพ์','scanner'] },
+  { key:'cctv', label:'กล้องวงจรปิด', icon:'videocam', match:['cctv','กล้อง','access'] },
+  { key:'electrical', label:'ไฟฟ้า/โรงงาน', icon:'bolt', match:['ไฟฟ้า','มอเตอร์','โรงงาน'] },
+];
+
+function renderChips(){
+  const el = document.getElementById('skillChips');
+  el.innerHTML = SKILL_GROUPS.map(g => `
+    <button class="chip ${g.key===activeSkill?'active':''} px-4 py-2 rounded-full text-xs font-bold border border-white/15 text-white/70 flex items-center gap-1.5" data-key="${g.key}">
+      <span class="material-symbols-outlined text-sm">${g.icon}</span> ${g.label}
+    </button>
+  `).join('');
+  el.querySelectorAll('.chip').forEach(btn=>{
+    btn.addEventListener('click', ()=>{ activeSkill = btn.dataset.key; renderChips(); renderGrid(); });
+  });
+}
+
+function matchesSkillGroup(techSkill, key){
+  if(key === 'all') return true;
+  const group = SKILL_GROUPS.find(g=>g.key===key);
+  const skillLower = (techSkill||'').toLowerCase();
+  return group.match.some(m => skillLower.includes(m.toLowerCase()));
+}
+
+function renderGrid(){
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  const filtered = TECHS.filter(t => {
+    const matchesSearch = !q || t.full_name.toLowerCase().includes(q) || (t.skill||'').toLowerCase().includes(q);
+    const matchesSkill = matchesSkillGroup(t.skill, activeSkill);
+    return matchesSearch && matchesSkill;
+  });
+
+  const grid = document.getElementById('techGrid');
+  document.getElementById('emptyState').classList.toggle('hidden', filtered.length > 0);
+
+  grid.innerHTML = filtered.map(t => {
+    const skills = (t.skill||'').split(',').map(s=>s.trim()).filter(Boolean);
+    const initials = t.full_name.replace(/^ช่าง[\s-]*/,'').trim().charAt(0) || 'ช';
+    return `
+    <div class="tech-card glass rounded-2xl p-6 border border-white/10">
+      <div class="flex items-center gap-4 mb-4">
+        <div class="w-14 h-14 rounded-full bg-gradient-to-br from-[#b8fc4b]/30 to-[#98cbff]/20 flex items-center justify-center text-xl font-bold text-white flex-shrink-0">
+          ${t.photo_url ? `<img src="${t.photo_url}" class="w-full h-full rounded-full object-cover">` : initials}
+        </div>
+        <div>
+          <h3 class="font-head font-bold text-white text-base leading-tight">${t.full_name}</h3>
+          <span class="inline-flex items-center gap-1 text-[11px] text-[#b8fc4b] mt-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#b8fc4b]"></span> พร้อมรับงาน
+          </span>
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-1.5 mb-5 min-h-[26px]">
+        ${skills.map(s=>`<span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-white/60">${s}</span>`).join('')}
+      </div>
+      <div class="flex gap-2">
+        ${t.phone ? `<a href="tel:${t.phone.replace(/-/g,'')}" class="flex-1 text-center bg-white/10 hover:bg-white/15 transition text-white text-xs font-bold py-2.5 rounded-xl flex items-center justify-center gap-1.5"><span class="material-symbols-outlined text-base">call</span> โทร</a>` : ''}
+        ${t.line_id ? `<a href="https://line.me/ti/p/~${t.line_id.replace('@','')}" target="_blank" rel="noopener" class="flex-1 text-center bg-[#06C755]/20 hover:bg-[#06C755]/30 transition text-[#06C755] text-xs font-bold py-2.5 rounded-xl flex items-center justify-center gap-1.5"><span class="material-symbols-outlined text-base">chat</span> LINE</a>` : ''}
+      </div>
+      <a href="service-request.html" class="mt-2 block text-center bg-[#ffcc00] text-black text-xs font-bold py-2.5 rounded-xl hover:brightness-95 transition">แจ้งซ่อมกับช่างท่านนี้</a>
+    </div>`;
+  }).join('');
+}
+
+document.getElementById('searchInput').addEventListener('input', renderGrid);
+
+(async function init(){
+  renderChips();
+  try{
+    TECHS = await sbFetch('technicians?select=*&active=eq.true&order=full_name.asc');
+  }catch(e){
+    console.error(e);
+    TECHS = [];
+  }
+  renderGrid();
+})();
+</script>
+</body>
+</html>
