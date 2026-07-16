@@ -1,119 +1,301 @@
 <!DOCTYPE html>
 <html lang="th">
-
 <head>
-
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-
-<title>แจ้งซ่อม IT | ลุงชัย ไชโย</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>แจ้งซ่อม-ติดตามงาน | LUNGCHAI CHAIYO ALL</title>
+<meta name="description" content="แจ้งซ่อมออนไลน์และติดตามสถานะงานซ่อมของคุณแบบเรียลไทม์ กับ LUNGCHAI CHAIYO ALL">
+<link rel="icon" href="images/logo-all.jpg">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Anuphan:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 <style>
-
-body{
-font-family:Arial;
-background:#f5f7fa;
-padding:20px;
-}
-
-.box{
-max-width:500px;
-margin:auto;
-background:white;
-padding:25px;
-border-radius:10px;
-}
-
-input,textarea,select{
-
-width:100%;
-padding:10px;
-margin:8px 0;
-
-}
-
-button{
-
-background:#0066ff;
-color:white;
-border:0;
-padding:12px;
-width:100%;
-border-radius:5px;
-
-}
-
+  body{background:#0c0c0c;color:#e1e1ed;font-family:'Anuphan',sans-serif;}
+  h1,h2,h3,.font-head{font-family:'Space Grotesk',sans-serif;}
+  .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;}
+  .glass{background:rgba(255,255,255,.03);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.1);}
+  .nebula{position:fixed;inset:0;z-index:-1;pointer-events:none;}
+  .nebula div{position:absolute;border-radius:9999px;filter:blur(90px);opacity:.28;}
+  input,textarea,select{background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.12);color:#fff;}
+  input:focus,textarea:focus,select:focus{outline:none;border-color:#b8fc4b;}
+  input::placeholder,textarea::placeholder{color:#6b6b76;}
+  .tab-btn.active{background:#b8fc4b;color:#000;}
+  .status-dot{width:10px;height:10px;border-radius:9999px;}
+  .spin{animation:spin 1s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
 </style>
-
 </head>
-
-
 <body>
+<div class="nebula"><div class="w-96 h-96 bg-purple-900 top-10 left-10"></div><div class="w-96 h-96 bg-blue-900 bottom-10 right-10"></div></div>
 
+<header class="sticky top-0 z-50 bg-black/80 backdrop-blur-md border-b border-white/10">
+  <div class="max-w-5xl mx-auto px-5 py-3 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-2">
+      <img src="images/logo-all.jpg" class="w-9 h-9 rounded-lg object-cover border border-[#b8fc4b]/40" alt="logo">
+      <span class="font-head font-bold text-sm text-[#b8fc4b]">LUNGCHAI CHAIYO ALL</span>
+    </a>
+    <a href="index.html" class="text-xs text-white/60 hover:text-[#b8fc4b] flex items-center gap-1">
+      <span class="material-symbols-outlined text-base">arrow_back</span> หน้าแรก
+    </a>
+  </div>
+</header>
 
-<div class="box">
+<main class="max-w-3xl mx-auto px-5 py-10">
+  <div class="text-center mb-8">
+    <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full glass text-[10px] tracking-widest uppercase text-[#98cbff] mb-4">
+      <span class="w-1.5 h-1.5 rounded-full bg-[#b8fc4b] animate-pulse"></span> Service Ticket System
+    </div>
+    <h1 class="font-head text-3xl sm:text-4xl font-bold text-white mb-2">แจ้งซ่อม &amp; ติดตามงาน</h1>
+    <p class="text-white/50 text-sm">สร้าง Ticket แจ้งซ่อมออนไลน์ หรือกรอกเลขติดตามงานเพื่อเช็คสถานะล่าสุด</p>
+  </div>
 
-<h2>
-🔧 แจ้งซ่อม IT
-</h2>
+  <!-- TABS -->
+  <div class="flex gap-2 mb-6 glass p-1.5 rounded-2xl max-w-md mx-auto">
+    <button id="tabNewBtn" onclick="switchTab('new')" class="tab-btn active flex-1 py-2.5 rounded-xl text-sm font-bold transition-all">แจ้งซ่อมใหม่</button>
+    <button id="tabTrackBtn" onclick="switchTab('track')" class="tab-btn flex-1 py-2.5 rounded-xl text-sm font-bold text-white/70 transition-all">ติดตามงาน</button>
+  </div>
 
+  <!-- ============ NEW REQUEST FORM ============ -->
+  <section id="panelNew" class="glass rounded-3xl p-6 sm:p-8">
+    <form id="requestForm" class="space-y-4">
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label class="text-xs text-white/50 mb-1 block">ชื่อ-นามสกุล *</label>
+          <input required name="customer_name" type="text" class="w-full rounded-xl px-4 py-3 text-sm" placeholder="ชื่อผู้แจ้ง">
+        </div>
+        <div>
+          <label class="text-xs text-white/50 mb-1 block">เบอร์โทรศัพท์ *</label>
+          <input required name="phone" type="tel" class="w-full rounded-xl px-4 py-3 text-sm" placeholder="08X-XXX-XXXX">
+        </div>
+      </div>
 
-<input id="name"
-placeholder="ชื่อผู้แจ้ง">
+      <div>
+        <label class="text-xs text-white/50 mb-1 block">ประเภทบริการ</label>
+        <select name="service_id" id="serviceSelect" class="w-full rounded-xl px-4 py-3 text-sm">
+          <option value="">— เลือกประเภทบริการ (ถ้าทราบ) —</option>
+        </select>
+      </div>
 
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label class="text-xs text-white/50 mb-1 block">ประเภทอุปกรณ์</label>
+          <input name="device_type" type="text" class="w-full rounded-xl px-4 py-3 text-sm" placeholder="เช่น เครื่องพิมพ์ Canon, กล้องวงจรปิด">
+        </div>
+        <div class="flex items-end pb-1">
+          <label class="flex items-center gap-2 text-sm text-white/70 cursor-pointer">
+            <input name="is_express" type="checkbox" class="w-4 h-4 rounded accent-[#b8fc4b]"> ต้องการบริการด่วน (Express)
+          </label>
+        </div>
+      </div>
 
-<input id="phone"
-placeholder="เบอร์โทร">
+      <div>
+        <label class="text-xs text-white/50 mb-1 block">รายละเอียดอาการ / ปัญหา *</label>
+        <textarea required name="note" rows="3" class="w-full rounded-xl px-4 py-3 text-sm" placeholder="อธิบายอาการเสีย หรือสิ่งที่ต้องการให้ช่างดำเนินการ"></textarea>
+      </div>
 
+      <div>
+        <label class="text-xs text-white/50 mb-1 block">สถานที่ให้บริการ (ถ้าต้องออกหน้างาน)</label>
+        <input name="address" type="text" class="w-full rounded-xl px-4 py-3 text-sm" placeholder="ที่อยู่ / สถานที่">
+      </div>
 
-<select id="device">
+      <button type="submit" id="submitBtn" class="w-full bg-[#ffcc00] text-black font-bold py-3.5 rounded-xl hover:brightness-95 transition flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined">confirmation_number</span> ส่งคำขอแจ้งซ่อม
+      </button>
+      <p class="text-[11px] text-white/40 text-center">เมื่อส่งสำเร็จ ระบบจะให้ "เลขติดตามงาน" กรุณาบันทึกไว้เพื่อเช็คสถานะ</p>
+    </form>
 
-<option>
-Computer
-</option>
+    <!-- Success result -->
+    <div id="successBox" class="hidden text-center py-6">
+      <div class="w-16 h-16 rounded-full bg-[#b8fc4b]/10 flex items-center justify-center mx-auto mb-4">
+        <span class="material-symbols-outlined text-[#b8fc4b] text-4xl">task_alt</span>
+      </div>
+      <h3 class="font-head text-xl font-bold text-white mb-2">ส่งคำขอสำเร็จ!</h3>
+      <p class="text-white/50 text-sm mb-4">กรุณาบันทึกเลขติดตามงานนี้ไว้</p>
+      <div class="glass rounded-2xl py-4 px-6 inline-flex items-center gap-3 mb-6">
+        <span id="resultNumber" class="font-head text-2xl font-bold text-[#ffcc00] tracking-wider"></span>
+        <button onclick="copyTrackingNumber()" class="text-white/50 hover:text-white" aria-label="คัดลอก">
+          <span class="material-symbols-outlined">content_copy</span>
+        </button>
+      </div>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <button onclick="goTrackWithResult()" class="glass px-6 py-3 rounded-xl font-bold hover:bg-white/10 transition">ติดตามสถานะตอนนี้</button>
+        <button onclick="resetForm()" class="glass px-6 py-3 rounded-xl font-bold hover:bg-white/10 transition">แจ้งซ่อมรายการใหม่</button>
+      </div>
+    </div>
+  </section>
 
-<option>
-Notebook
-</option>
+  <!-- ============ TRACKING ============ -->
+  <section id="panelTrack" class="glass rounded-3xl p-6 sm:p-8 hidden">
+    <form id="trackForm" class="grid sm:grid-cols-[1fr_1fr_auto] gap-3 mb-2">
+      <input required id="trackNumber" type="text" class="rounded-xl px-4 py-3 text-sm" placeholder="เลขติดตามงาน เช่น SR260716-1234">
+      <input required id="trackPhone" type="tel" class="rounded-xl px-4 py-3 text-sm" placeholder="เบอร์โทรที่ใช้แจ้ง">
+      <button type="submit" class="bg-[#98cbff] text-black font-bold px-6 py-3 rounded-xl hover:brightness-95 transition flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined">search</span> ค้นหา
+      </button>
+    </form>
+    <p class="text-[11px] text-white/40 mb-4">กรอกเลขติดตามงานคู่กับเบอร์โทรที่ใช้แจ้งซ่อม เพื่อความปลอดภัยของข้อมูล</p>
 
-<option>
-Printer
-</option>
+    <div id="trackResult"></div>
+  </section>
+</main>
 
-<option>
-Network
-</option>
+<footer class="text-center text-[11px] text-white/30 py-10">© 2026 LUNGCHAI CHAIYO ALL — ระบบแจ้งซ่อมออนไลน์</footer>
 
-<option>
-CCTV
-</option>
+<script>
+const SB_URL = 'https://hkwqrllqzfzsbsxqgaoo.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhrd3FybGxxemZ6c2JzeHFnYW9vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzNzIzNjAsImV4cCI6MjA5Njk0ODM2MH0.kPT_UY0-2-0cbDlGwya24DnOLJXA-XJGMdM6SIm7Rew';
 
-</select>
+async function sbFetch(path, opts={}){
+  const res = await fetch(`${SB_URL}/rest/v1/${path}`, {
+    ...opts,
+    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type':'application/json', 'Prefer': opts.prefer || 'return=representation', ...(opts.headers||{}) }
+  });
+  if(!res.ok){ const t = await res.text(); throw new Error(t || ('HTTP '+res.status)); }
+  return res.json();
+}
 
+let lastTrackingNumber = '';
 
+// Load service dropdown
+(async function loadServices(){
+  try{
+    const services = await sbFetch('services?select=id,name&is_active=eq.true&order=name.asc');
+    const sel = document.getElementById('serviceSelect');
+    services.forEach(s=>{
+      const opt = document.createElement('option');
+      opt.value = s.id; opt.textContent = s.name;
+      sel.appendChild(opt);
+    });
+  }catch(e){ console.warn('load services failed', e); }
+})();
 
-<textarea
-id="problem"
-placeholder="อาการเสีย">
-</textarea>
+function switchTab(tab){
+  const isNew = tab === 'new';
+  document.getElementById('tabNewBtn').classList.toggle('active', isNew);
+  document.getElementById('tabTrackBtn').classList.toggle('active', !isNew);
+  document.getElementById('panelNew').classList.toggle('hidden', !isNew);
+  document.getElementById('panelTrack').classList.toggle('hidden', isNew);
+}
 
+document.getElementById('requestForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="material-symbols-outlined spin">progress_activity</span> กำลังส่ง...';
+  const fd = new FormData(e.target);
+  const payload = {
+    customer_name: fd.get('customer_name'),
+    phone: fd.get('phone'),
+    service_id: fd.get('service_id') || null,
+    device_type: fd.get('device_type') || null,
+    is_express: fd.get('is_express') === 'on',
+    note: fd.get('note'),
+    address: fd.get('address') || null,
+    channel: 'website'
+  };
+  try{
+    const result = await sbFetch('service_requests', { method:'POST', body: JSON.stringify(payload) });
+    const row = result[0];
+    lastTrackingNumber = row.request_number;
+    document.getElementById('resultNumber').textContent = row.request_number;
+    e.target.classList.add('hidden');
+    document.getElementById('successBox').classList.remove('hidden');
+  }catch(err){
+    alert('ส่งคำขอไม่สำเร็จ กรุณาลองใหม่อีกครั้ง\n'+err.message);
+  }finally{
+    btn.disabled = false;
+    btn.innerHTML = '<span class="material-symbols-outlined">confirmation_number</span> ส่งคำขอแจ้งซ่อม';
+  }
+});
 
-<button onclick="sendRequest()">
+function copyTrackingNumber(){
+  navigator.clipboard.writeText(lastTrackingNumber);
+  const btn = event.currentTarget;
+  const original = btn.innerHTML;
+  btn.innerHTML = '<span class="material-symbols-outlined text-[#b8fc4b]">check</span>';
+  setTimeout(()=> btn.innerHTML = original, 1500);
+}
 
-ส่งแจ้งซ่อม
+function resetForm(){
+  document.getElementById('requestForm').reset();
+  document.getElementById('requestForm').classList.remove('hidden');
+  document.getElementById('successBox').classList.add('hidden');
+}
 
-</button>
+function goTrackWithResult(){
+  switchTab('track');
+  document.getElementById('trackNumber').value = lastTrackingNumber;
+}
 
+const STATUS_MAP = {
+  pending: {label:'รอดำเนินการ', color:'#ffcc00', icon:'schedule'},
+  accepted: {label:'รับงานแล้ว', color:'#98cbff', icon:'thumb_up'},
+  assigned: {label:'มอบหมายช่างแล้ว', color:'#98cbff', icon:'engineering'},
+  in_progress: {label:'กำลังดำเนินการ', color:'#98cbff', icon:'construction'},
+  completed: {label:'เสร็จสิ้น', color:'#b8fc4b', icon:'task_alt'},
+  cancelled: {label:'ยกเลิก', color:'#ff6b6b', icon:'cancel'}
+};
 
-</div>
-
-
-
-<script type="module"
-src="service-request.js">
+document.getElementById('trackForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const num = document.getElementById('trackNumber').value.trim();
+  const phone = document.getElementById('trackPhone').value.trim();
+  const resultBox = document.getElementById('trackResult');
+  resultBox.innerHTML = '<div class="text-center py-8 text-white/40 text-sm">กำลังค้นหา...</div>';
+  try{
+    const rows = await sbFetch('rpc/track_service_request', {
+      method:'POST',
+      body: JSON.stringify({ p_request_number: num, p_phone: phone })
+    });
+    if(!rows || rows.length === 0){
+      resultBox.innerHTML = `<div class="text-center py-8">
+        <span class="material-symbols-outlined text-4xl text-white/20 mb-2 block">search_off</span>
+        <p class="text-white/50 text-sm">ไม่พบข้อมูล กรุณาตรวจสอบเลขติดตามงานและเบอร์โทรอีกครั้ง</p>
+      </div>`;
+      return;
+    }
+    const r = rows[0];
+    const st = STATUS_MAP[r.status] || {label: r.status, color:'#fff', icon:'info'};
+    const updates = (r.updates || []).slice().reverse();
+    resultBox.innerHTML = `
+      <div class="border-t border-white/10 pt-6 mt-2">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <p class="text-xs text-white/40">เลขติดตามงาน</p>
+            <p class="font-head text-lg font-bold text-white">${r.request_number}</p>
+          </div>
+          <div class="flex items-center gap-2 px-4 py-2 rounded-full" style="background:${st.color}22;border:1px solid ${st.color}55;">
+            <span class="material-symbols-outlined text-base" style="color:${st.color}">${st.icon}</span>
+            <span class="text-sm font-bold" style="color:${st.color}">${st.label}</span>
+          </div>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-4 text-sm mb-6">
+          <div><p class="text-white/40 text-xs">ผู้แจ้ง</p><p class="text-white">${r.customer_name||'-'}</p></div>
+          <div><p class="text-white/40 text-xs">บริการ</p><p class="text-white">${r.service_name || r.device_type || '-'}</p></div>
+          <div><p class="text-white/40 text-xs">ช่างผู้รับผิดชอบ</p><p class="text-white">${r.technician_name ? (r.technician_name + (r.technician_phone ? ' · '+r.technician_phone : '')) : 'ยังไม่ได้มอบหมาย'}</p></div>
+          <div><p class="text-white/40 text-xs">แจ้งเมื่อ</p><p class="text-white">${new Date(r.created_at).toLocaleString('th-TH')}</p></div>
+        </div>
+        <p class="text-xs text-white/40 mb-3 uppercase tracking-wider">ไทม์ไลน์สถานะ</p>
+        <div class="space-y-3">
+          ${updates.map((u,i)=>`
+            <div class="flex gap-3">
+              <div class="flex flex-col items-center">
+                <div class="status-dot" style="background:${i===0?'#b8fc4b':'#555'}"></div>
+                ${i<updates.length-1 ? '<div class="w-px flex-1 bg-white/10 my-1"></div>' : ''}
+              </div>
+              <div class="pb-3">
+                <p class="text-sm text-white">${(STATUS_MAP[u.status]||{label:u.status}).label}</p>
+                <p class="text-xs text-white/40">${u.note||''} · ${new Date(u.created_at).toLocaleString('th-TH')}</p>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }catch(err){
+    resultBox.innerHTML = `<div class="text-center py-8 text-red-400 text-sm">เกิดข้อผิดพลาด: ${err.message}</div>`;
+  }
+});
 </script>
-
-
 </body>
-
 </html>
