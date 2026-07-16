@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>CMS Login</title>
+</head>
+<body>
+
+<h2>CMS Login</h2>
+
+<form id="loginForm">
+  <input
+    type="email"
+    id="email"
+    placeholder="Email"
+    required
+  />
+
+  <br><br>
+
+  <input
+    type="password"
+    id="password"
+    placeholder="Password"
+    required
+  />
+
+  <br><br>
+
+  <button type="submit">
+    Login
+  </button>
+
+  <p id="msg"></p>
+</form>
+
+<script type="module">
+
+import { createClient }
+from "https://esm.sh/@supabase/supabase-js@2";
+
+const supabase = createClient(
+  "https://hkwqrllqzfzsbsxqgaoo.supabase.co",
+  "YOUR_SUPABASE_ANON_KEY"
+);
+
+const form = document.getElementById("loginForm");
+
+form.addEventListener("submit", async (e)=>{
+
+e.preventDefault();
+
+const email =
+document.getElementById("email").value;
+
+const password =
+document.getElementById("password").value;
+
+const { error } =
+await supabase.auth.signInWithPassword({
+
+email,
+password
+
+});
+
+if(error){
+
+document.getElementById("msg").innerText =
+error.message;
+
+return;
+
+}
+
+window.location.href="/admin/";
+
+});
+
+</script>
+
+</body>
+</html>
