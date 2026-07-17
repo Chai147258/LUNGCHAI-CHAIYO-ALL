@@ -3,8 +3,8 @@ import { createClient } from "jsr:@supabase/supabase-js@2";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-const ANTHROPIC_API_KEY = Deno.env.get("ANTHROPIC_API_KEY");
-const ANTHROPIC_MODEL = "claude-sonnet-5";
+const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY");
+const GEMINI_MODEL = "gemini-2.5-flash"; // free-tier eligible as of mid-2026
 
 const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
 
@@ -120,8 +120,8 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
-    if (!ANTHROPIC_API_KEY) {
-      return json({ error: "ANTHROPIC_API_KEY ยังไม่ได้ตั้งค่าใน Supabase secrets" }, 500);
+    if (!GEMINI_API_KEY) {
+      return json({ error: "GEMINI_API_KEY ยังไม่ได้ตั้งค่าใน Supabase secrets" }, 500);
     }
 
     const body = await req.json().catch(() => ({}));
@@ -147,35 +147,40 @@ Deno.serve(async (req: Request) => {
     }
 
     const context = await buildKnowledgeContext();
-    const messages = [...history, { role: "user", content: message }];
 
-    const aiRes = await fetch("https://api.anthropic.com/v1/messages", {
+    // Gemini uses role "model" instead of "assistant", and contents/parts instead of messages/content
+    const contents = [...history, { role: "user", content: message }].map(
+      (m: { role: string; content: string }) => ({
+        role: m.role === "assistant" ? "model" : "user",
+        parts: [{ text: m.content }],
+      }),
+    );
+
+    const geminiUrl =
+      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
+
+    const aiRes = await fetch(geminiUrl, {
       method: "POST",
-      headers: {
-        "content-type": "application/json",
-        "x-api-key": ANTHROPIC_API_KEY,
-        "anthropic-version": "2023-06-01",
-      },
+      headers: { "content-type": "application/json" },
       body: JSON.stringify({
-        model: ANTHROPIC_MODEL,
-        max_tokens: 1000,
-        system: buildSystemPrompt(context),
-        messages,
+        system_instruction: { parts: [{ text: buildSystemPrompt(context) }] },
+        contents,
+        generationConfig: { maxOutputTokens: 1000 },
       }),
     });
 
     if (!aiRes.ok) {
       const errText = await aiRes.text();
-      console.error("Anthropic API error:", errText);
+      console.error("Gemini API error:", errText);
       return json({ error: "AI request failed", detail: errText }, 502);
     }
 
     const aiData = await aiRes.json();
-    const reply = (aiData.content ?? [])
-      .filter((b: { type: string }) => b.type === "text")
-      .map((b: { text: string }) => b.text)
-      .join("\n")
-      .trim() || "ขออภัยครับ ตอนนี้ระบบขัดข้องเล็กน้อย รบกวนลองใหม่อีกครั้งครับ";
+    const reply =
+      (aiData.candidates?.[0]?.content?.parts ?? [])
+        .map((p: { text?: string }) => p.text ?? "")
+        .join("\n")
+        .trim() || "ขออภัยครับ ตอนนี้ระบบขัดข้องเล็กน้อย รบกวนลองใหม่อีกครั้งครับ";
 
     if (sessionId) {
       await supabase.from("ai_chat_messages").insert({ session_id: sessionId, sender: "bot", message: reply });
