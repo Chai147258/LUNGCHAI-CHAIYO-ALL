@@ -315,39 +315,12 @@
 </div>
 </div>
 <!-- Chat Container -->
-<div class="w-full max-w-3xl space-y-12 mb-24">
+<div class="w-full max-w-3xl space-y-12 mb-24" id="chat-messages">
 <div class="flex flex-col items-start gap-2 max-w-[85%] pulse-bubble">
 <div class="px-6 py-4 glass-panel border-2 rounded-t-2xl rounded-br-2xl text-on-surface high-freq-glow relative" style="border-color: var(--mood-primary);">
-<p class="font-body-lg text-body-lg glitch-hover">ลุงชัย AI: สัญญาณเริ่มสั่นคลอน! เจ้ามนุษย์ รีบวาร์ปความคิดมา ก่อนที่มิตินี้จะแตกสลาย!!</p>
+<p class="font-body-lg text-body-lg glitch-hover">ลุงชัย AI: สัญญาณเริ่มมั่นคง! ถามได้เลยครับเรื่องบริการซ่อม/ติดตั้ง IT, กล้องวงจรปิด, เครือข่าย, งานโรงงาน — ให้ผมประเมินราคาเบื้องต้นก็ได้ (พิมพ์ได้ทุกภาษา 🌐)</p>
 </div>
-<span class="text-[10px] font-label-mono text-outline uppercase px-2 animate-pulse">Sector: 0xDEADBEEF</span>
-</div>
-<div class="flex flex-col items-end gap-2 max-w-[85%] ml-auto pulse-bubble">
-<div class="px-6 py-4 glass-panel border-2 rounded-t-2xl rounded-bl-2xl text-on-surface vibrating-border" style="border-color: var(--mood-secondary);">
-<p class="font-body-lg text-body-lg">User: ลุงครับ โลกความจริงมันวุ่นวายจัง ขอไปอยู่ดาวอื่นด้วยได้มั้ย?</p>
-</div>
-<span class="text-[10px] font-label-mono text-outline uppercase px-2">Link: UNSTABLE</span>
-</div>
-<div class="flex flex-col items-start gap-2 max-w-[90%] pulse-bubble">
-<div class="px-6 py-4 glass-panel border-2 rounded-t-2xl rounded-br-2xl text-on-surface relative overflow-hidden" style="border-color: var(--mood-primary);">
-<div class="absolute top-0 right-0 p-2 opacity-20">
-<span class="material-symbols-outlined text-6xl animate-pulse" style="color: var(--mood-primary);">rocket_launch</span>
-</div>
-<p class="font-body-lg text-body-lg mb-4 glitch-hover">ลุงชัย AI: ดาวอื่นมันเชยไป! มาสร้างจักรวาลใหม่ที่ทำจากชาเขียวและกะเพราเลเซอร์กันดีกว่า!</p>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-<div class="p-3 bg-white/5 rounded-lg border border-white/10 vibrating-border">
-<h4 class="font-bold mb-1" style="color: var(--mood-primary);">Chaos Blueprint</h4>
-<ul class="text-sm space-y-1 text-on-surface-variant font-label-mono">
-<li>&gt; Reality.shred()</li>
-<li>&gt; Gravity = null</li>
-<li>&gt; Tea.temp = 9000C</li>
-</ul>
-</div>
-<div class="h-32 rounded-lg overflow-hidden border-2 border-white/20 relative group">
-<img alt="Cosmic stir-fry" class="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-150 group-hover:rotate-12" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7TbSGVf_bUZ9K2iH6rADJaxvdZi7ldxSbpAQjPgBsYyZnVGxpK8wVdTlmFQTRnIAi45Ef0gw269FjOjoYUVmtNGsNKW8UYqDmj0yG7u6hAyovdys9J_W_lOl668rNzr-Y4sNtTM_8OLisPp2QcyX2MvdT1qh2sgfkTWXqc79ksK4-gEPn0dakxVPKLbWzYvGPpuAvciiJh15PmoNy5rwdOT54y39LT7pMn0iWQ9HJX1yJVH9-QzPIml_zC-c68mvfN442WfudGBY"/>
-</div>
-</div>
-</div>
+<span class="text-[10px] font-label-mono text-outline uppercase px-2 animate-pulse">Sector: ONLINE</span>
 </div>
 </div>
 </main>
@@ -355,12 +328,12 @@
 <div class="max-w-4xl mx-auto relative group">
 <div class="absolute -inset-2 rounded-full blur-xl opacity-30 group-focus-within:opacity-60 transition-opacity" style="background: linear-gradient(to right, var(--mood-primary), var(--mood-secondary), var(--mood-primary));"></div>
 <div class="relative flex items-center gap-4 bg-surface-container-lowest/80 backdrop-blur-3xl border-2 border-white/10 rounded-full px-6 py-4 shadow-2xl vibrating-border">
-<button class="flex items-center justify-center w-12 h-12 rounded-full bg-surface-container-high hover:bg-surface-variant transition-all hover:scale-110 active:rotate-90">
+<button class="flex items-center justify-center w-12 h-12 rounded-full bg-surface-container-high hover:bg-surface-variant transition-all hover:scale-110 active:rotate-90" id="chat-mic-btn">
 <span class="material-symbols-outlined" style="color: var(--mood-primary);">mic_external_on</span>
 </button>
-<input class="flex-1 bg-transparent border-none focus:ring-0 text-on-surface placeholder:text-outline font-body-md py-2" placeholder="Whisper your madness..." type="text"/>
+<input class="flex-1 bg-transparent border-none focus:ring-0 text-on-surface placeholder:text-outline font-body-md py-2" id="chat-input" placeholder="ถามลุงชัยได้เลย... (Whisper your madness)" type="text"/>
 <div class="flex items-center gap-2">
-<button class="px-8 py-3 rounded-full font-bold font-label-mono text-label-mono high-freq-glow hover:scale-105 active:scale-95 flex items-center gap-2 text-black transition-all" style="background: var(--mood-primary);">
+<button class="px-8 py-3 rounded-full font-bold font-label-mono text-label-mono high-freq-glow hover:scale-105 active:scale-95 flex items-center gap-2 text-black transition-all" id="chat-send-btn" style="background: var(--mood-primary);">
 <span>WARP</span>
 <span class="material-symbols-outlined text-sm animate-ping">bolt</span>
 </button>
@@ -589,4 +562,122 @@
             animate();
         })();
     </script>
+<!-- ลุงชัย AI — real chat logic (talks to the lungchai-ai-chat Supabase Edge Function) -->
+<script>
+    (function () {
+        const SUPABASE_URL = "https://hkwqrllqzfzsbsxqgaoo.supabase.co";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhrd3FybGxxemZ6c2JzeHFnYW9vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzNzIzNjAsImV4cCI6MjA5Njk0ODM2MH0.kPT_UY0-2-0cbDlGwya24DnOLJXA-XJGMdM6SIm7Rew";
+        const CHAT_FUNCTION_URL = SUPABASE_URL + "/functions/v1/lungchai-ai-chat";
+
+        const chatMessages = document.getElementById("chat-messages");
+        const chatInput = document.getElementById("chat-input");
+        const chatSendBtn = document.getElementById("chat-send-btn");
+        const chatMicBtn = document.getElementById("chat-mic-btn");
+        const mainScroll = document.querySelector("main");
+
+        let chatHistory = [];
+        let chatSessionId = null;
+
+        function scrollToBottom() {
+            if (mainScroll) mainScroll.scrollTop = mainScroll.scrollHeight;
+        }
+
+        function addBubble(role, text) {
+            const isUser = role === "user";
+            const wrap = document.createElement("div");
+            wrap.className = "flex flex-col " + (isUser ? "items-end ml-auto" : "items-start") + " gap-2 max-w-[85%] pulse-bubble";
+
+            const inner = document.createElement("div");
+            inner.className = "px-6 py-4 glass-panel border-2 text-on-surface rounded-t-2xl " + (isUser ? "rounded-bl-2xl" : "rounded-br-2xl");
+            inner.style.borderColor = isUser ? "var(--mood-secondary)" : "var(--mood-primary)";
+
+            const p = document.createElement("p");
+            p.className = "font-body-lg text-body-lg";
+            p.style.whiteSpace = "pre-wrap";
+            p.textContent = text;
+
+            inner.appendChild(p);
+            wrap.appendChild(inner);
+            chatMessages.appendChild(wrap);
+            scrollToBottom();
+            return wrap;
+        }
+
+        function addTyping() {
+            const wrap = document.createElement("div");
+            wrap.className = "flex flex-col items-start gap-2 max-w-[85%] pulse-bubble";
+            wrap.id = "chat-typing";
+            const inner = document.createElement("div");
+            inner.className = "px-6 py-4 glass-panel border-2 rounded-t-2xl rounded-br-2xl flex gap-1";
+            inner.style.borderColor = "var(--mood-primary)";
+            inner.innerHTML = '<span class="w-2 h-2 rounded-full animate-bounce" style="background:var(--mood-primary);"></span><span class="w-2 h-2 rounded-full animate-bounce" style="background:var(--mood-primary);animation-delay:.15s;"></span><span class="w-2 h-2 rounded-full animate-bounce" style="background:var(--mood-primary);animation-delay:.3s;"></span>';
+            wrap.appendChild(inner);
+            chatMessages.appendChild(wrap);
+            scrollToBottom();
+            return wrap;
+        }
+        function removeTyping() {
+            const el = document.getElementById("chat-typing");
+            if (el) el.remove();
+        }
+
+        async function sendChat() {
+            const text = chatInput.value.trim();
+            if (!text) return;
+            chatInput.value = "";
+            addBubble("user", text);
+            addTyping();
+
+            try {
+                const res = await fetch(CHAT_FUNCTION_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        apikey: SUPABASE_ANON_KEY,
+                        Authorization: "Bearer " + SUPABASE_ANON_KEY
+                    },
+                    body: JSON.stringify({ message: text, history: chatHistory, session_id: chatSessionId })
+                });
+                const data = await res.json();
+                removeTyping();
+
+                if (!res.ok || data.error) {
+                    addBubble("assistant", "ขออภัยครับ ระบบขัดข้องเล็กน้อย รบกวนลองใหม่อีกครั้ง หรือติดต่อทีมงานผ่านเว็บไซต์ได้เลยครับ");
+                    console.error("lungchai-ai-chat error:", data.error || res.statusText);
+                    return;
+                }
+                if (data.session_id) chatSessionId = data.session_id;
+                addBubble("assistant", data.reply);
+                chatHistory.push({ role: "user", content: text });
+                chatHistory.push({ role: "assistant", content: data.reply });
+            } catch (err) {
+                removeTyping();
+                addBubble("assistant", "ขออภัยครับ เชื่อมต่อระบบไม่สำเร็จ รบกวนลองใหม่อีกครั้งครับ 🙏");
+            }
+        }
+
+        chatSendBtn.addEventListener("click", sendChat);
+        chatInput.addEventListener("keydown", function (e) { if (e.key === "Enter") sendChat(); });
+
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognizing = false;
+        if (SpeechRecognition) {
+            const recognizer = new SpeechRecognition();
+            recognizer.lang = "th-TH";
+            recognizer.interimResults = false;
+            recognizer.onresult = function (e) { chatInput.value = e.results[0][0].transcript; };
+            recognizer.onend = function () { recognizing = false; chatMicBtn.classList.remove("high-freq-glow"); };
+            chatMicBtn.addEventListener("click", function () {
+                if (recognizing) { recognizer.stop(); return; }
+                recognizing = true;
+                chatMicBtn.classList.add("high-freq-glow");
+                recognizer.start();
+            });
+        } else {
+            chatMicBtn.addEventListener("click", function () {
+                alert("เบราว์เซอร์นี้ยังไม่รองรับการพูดสั่งงาน กรุณาพิมพ์ข้อความแทนครับ");
+            });
+        }
+    })();
+</script>
 </body></html>
