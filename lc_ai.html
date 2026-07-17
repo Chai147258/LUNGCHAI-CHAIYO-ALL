@@ -642,8 +642,7 @@
                 removeTyping();
 
                 if (!res.ok || data.error) {
-                    var debugDetail = (data.detail || "").toString().slice(0, 300);
-                    addBubble("assistant", "⚠️ [DEBUG] " + (data.error || res.statusText) + (debugDetail ? "\n" + debugDetail : ""));
+                    addBubble("assistant", "ขออภัยครับ ระบบขัดข้องเล็กน้อย รบกวนลองใหม่อีกครั้ง หรือติดต่อทีมงานผ่านเว็บไซต์ได้เลยครับ");
                     console.error("lungchai-ai-chat error:", data.error || res.statusText, data.detail);
                     return;
                 }
