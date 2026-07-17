@@ -331,6 +331,9 @@
 <button class="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-surface-container-high hover:bg-surface-variant transition-all hover:scale-110 active:rotate-90 flex-shrink-0" id="chat-mic-btn">
 <span class="material-symbols-outlined" style="color: var(--mood-primary);">mic_external_on</span>
 </button>
+<button class="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-surface-container-high hover:bg-surface-variant transition-all hover:scale-110 flex-shrink-0" id="chat-location-btn" title="แชร์ตำแหน่งเพื่อคำนวณค่าเดินทาง">
+<span class="material-symbols-outlined" style="color: var(--mood-primary);">near_me</span>
+</button>
 <input class="flex-1 min-w-0 bg-transparent border-none focus:ring-0 text-on-surface placeholder:text-outline font-body-md text-sm sm:text-base py-2" id="chat-input" placeholder="ถามลุงชัยได้เลย..." type="text"/>
 <div class="flex items-center gap-2 flex-shrink-0">
 <button class="px-4 py-2 sm:px-8 sm:py-3 rounded-full font-bold font-label-mono text-label-mono high-freq-glow hover:scale-105 active:scale-95 flex items-center gap-2 text-black transition-all" id="chat-send-btn" style="background: var(--mood-primary);">
@@ -573,7 +576,24 @@
         const chatInput = document.getElementById("chat-input");
         const chatSendBtn = document.getElementById("chat-send-btn");
         const chatMicBtn = document.getElementById("chat-mic-btn");
+        const chatLocationBtn = document.getElementById("chat-location-btn");
         const mainScroll = document.querySelector("main");
+
+        // Shop reference point: Nong Yai, Nong Yai District, Chonburi 20190
+        const SHOP_LAT = 13.14;
+        const SHOP_LNG = 101.39;
+
+        function haversineKm(lat1, lon1, lat2, lon2) {
+            const R = 6371;
+            const toRad = function (d) { return (d * Math.PI) / 180; };
+            const dLat = toRad(lat2 - lat1);
+            const dLon = toRad(lon2 - lon1);
+            const a =
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        }
 
         let chatHistory = [];
         let chatSessionId = null;
@@ -621,10 +641,10 @@
             if (el) el.remove();
         }
 
-        async function sendChat() {
-            const text = chatInput.value.trim();
+        async function sendChat(overrideText) {
+            const text = (typeof overrideText === "string" ? overrideText : chatInput.value).trim();
             if (!text) return;
-            chatInput.value = "";
+            if (typeof overrideText !== "string") chatInput.value = "";
             addBubble("user", text);
             addTyping();
 
@@ -656,8 +676,32 @@
             }
         }
 
-        chatSendBtn.addEventListener("click", sendChat);
+        chatSendBtn.addEventListener("click", function () { sendChat(); });
         chatInput.addEventListener("keydown", function (e) { if (e.key === "Enter") sendChat(); });
+
+        chatLocationBtn.addEventListener("click", function () {
+            if (!navigator.geolocation) {
+                addBubble("assistant", "เบราว์เซอร์นี้ไม่รองรับการแชร์ตำแหน่งครับ พิมพ์บอกพื้นที่/ระยะทางโดยประมาณแทนได้เลยครับ");
+                return;
+            }
+            chatLocationBtn.disabled = true;
+            chatLocationBtn.classList.add("animate-pulse");
+            navigator.geolocation.getCurrentPosition(
+                function (pos) {
+                    chatLocationBtn.disabled = false;
+                    chatLocationBtn.classList.remove("animate-pulse");
+                    const distKm = haversineKm(SHOP_LAT, SHOP_LNG, pos.coords.latitude, pos.coords.longitude);
+                    const rounded = Math.round(distKm * 10) / 10;
+                    sendChat("📍 แชร์ตำแหน่ง GPS แล้ว: ห่างจากร้านประมาณ " + rounded + " กม. (วัดเส้นตรง) กรุณาใช้ระยะทางนี้คำนวณค่าเดินทางให้เลยครับ");
+                },
+                function () {
+                    chatLocationBtn.disabled = false;
+                    chatLocationBtn.classList.remove("animate-pulse");
+                    addBubble("assistant", "ไม่สามารถเข้าถึงตำแหน่งได้ครับ (อาจไม่ได้อนุญาต) รบกวนพิมพ์บอกพื้นที่/ระยะทางโดยประมาณแทนได้เลยครับ");
+                },
+                { enableHighAccuracy: true, timeout: 10000 }
+            );
+        });
 
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         let recognizing = false;
