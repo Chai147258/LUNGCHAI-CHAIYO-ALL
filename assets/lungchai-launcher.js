@@ -11,11 +11,11 @@
   if (/lc_ai\.html/i.test(location.pathname) || document.getElementById("lcai-launch-root")) return;
 
   var CSS = "\
-#lcai-launch-btn{position:fixed;bottom:24px;right:24px;z-index:999997;width:60px;height:60px;border-radius:50%;background:linear-gradient(155deg,#1a1830,#0A0A18);border:1px solid #C9A84C;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 30px rgba(201,168,76,0.3);transition:transform .2s ease;}\
+#lcai-launch-btn{position:fixed;bottom:24px;right:24px;z-index:999997;width:60px;height:60px;border-radius:50%;background:#0A0A18;border:1px solid #C9A84C;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 30px rgba(201,168,76,0.3);transition:transform .2s ease;overflow:hidden;}\
 #lcai-launch-btn:hover{transform:scale(1.07);}\
-#lcai-launch-btn::after{content:\"\";position:absolute;inset:-6px;border-radius:50%;border:1px solid rgba(201,168,76,0.4);animation:lcai-launch-pulse 2.4s ease-out infinite;}\
+#lcai-launch-btn::after{content:\"\";position:absolute;inset:-6px;border-radius:50%;border:1px solid rgba(201,168,76,0.4);animation:lcai-launch-pulse 2.4s ease-out infinite;pointer-events:none;}\
 @keyframes lcai-launch-pulse{0%{transform:scale(.9);opacity:.8;}100%{transform:scale(1.4);opacity:0;}}\
-#lcai-launch-btn svg{width:26px;height:26px;stroke:#E4CE87;}\
+#lcai-launch-btn img{width:100%;height:100%;object-fit:cover;border-radius:50%;}\
 #lcai-launch-overlay{position:fixed;inset:0;z-index:999998;background:#02020C;opacity:0;pointer-events:none;transition:opacity .25s ease;}\
 #lcai-launch-overlay.lcai-launch-open{opacity:1;pointer-events:auto;}\
 #lcai-launch-overlay iframe{width:100%;height:100%;border:0;display:block;}\
@@ -31,7 +31,7 @@
   root.id = "lcai-launch-root";
   root.innerHTML =
     '<div id="lcai-launch-btn" aria-label="เปิดแชทลุงชัย AI">' +
-      '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.4A8.5 8.5 0 0 1 4 12a8.38 8.38 0 0 1 8.4-8.5A8.5 8.5 0 0 1 21 11.5z"/><path d="M8 10h.01M12 10h.01M16 10h.01"/></svg>' +
+      '<img src="/images/logo-all.jpg" alt="ลุงชัย AI" />' +
     "</div>" +
     '<div id="lcai-launch-overlay"></div>';
   document.body.appendChild(root);

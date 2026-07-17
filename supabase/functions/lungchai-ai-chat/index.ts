@@ -157,11 +157,14 @@ Deno.serve(async (req: Request) => {
     );
 
     const geminiUrl =
-      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
+      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
 
     const aiRes = await fetch(geminiUrl, {
       method: "POST",
-      headers: { "content-type": "application/json" },
+      headers: {
+        "content-type": "application/json",
+        "x-goog-api-key": GEMINI_API_KEY,
+      },
       body: JSON.stringify({
         system_instruction: { parts: [{ text: buildSystemPrompt(context) }] },
         contents,
