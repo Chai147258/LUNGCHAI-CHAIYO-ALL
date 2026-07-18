@@ -252,7 +252,14 @@
 <a class="text-on-surface-variant hover:text-primary transition-colors font-label-mono text-label-mono glitch-hover" href="#">HYPERDRIVE</a>
 <a class="text-on-surface-variant hover:text-primary transition-colors font-label-mono text-label-mono glitch-hover" href="#">VOID.null</a>
 </nav>
-<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 sm:gap-4">
+<a class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full border font-label-mono text-[11px] uppercase tracking-wide hover:scale-105 transition-all" href="https://line.me/R/ti/p/@971yzyyd" target="_blank" rel="noopener" style="border-color: var(--mood-primary); color: var(--mood-primary);">
+<span class="material-symbols-outlined text-base">support_agent</span>
+คุยกับพนักงาน
+</a>
+<a class="flex sm:hidden items-center justify-center w-9 h-9 rounded-full border" href="https://line.me/R/ti/p/@971yzyyd" target="_blank" rel="noopener" aria-label="คุยกับพนักงาน" style="border-color: var(--mood-primary); color: var(--mood-primary);">
+<span class="material-symbols-outlined text-lg">support_agent</span>
+</a>
 <button class="material-symbols-outlined hover:rotate-180 transition-transform duration-500" style="color: var(--mood-primary);">settings</button>
 <button class="material-symbols-outlined hover:scale-125 transition-transform" style="color: var(--mood-primary);">account_circle</button>
 </div>
@@ -579,22 +586,6 @@
         const chatLocationBtn = document.getElementById("chat-location-btn");
         const mainScroll = document.querySelector("main");
 
-        // Shop reference point: Nong Yai, Nong Yai District, Chonburi 20190
-        const SHOP_LAT = 13.14;
-        const SHOP_LNG = 101.39;
-
-        function haversineKm(lat1, lon1, lat2, lon2) {
-            const R = 6371;
-            const toRad = function (d) { return (d * Math.PI) / 180; };
-            const dLat = toRad(lat2 - lat1);
-            const dLon = toRad(lon2 - lon1);
-            const a =
-                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            return R * c;
-        }
-
         let chatHistory = [];
         let chatSessionId = null;
 
@@ -641,11 +632,13 @@
             if (el) el.remove();
         }
 
-        async function sendChat(overrideText) {
+        async function sendChat(overrideText, location) {
             const text = (typeof overrideText === "string" ? overrideText : chatInput.value).trim();
-            if (!text) return;
+            if (!text && !location) return;
             if (typeof overrideText !== "string") chatInput.value = "";
-            addBubble("user", text);
+
+            const userLabel = location ? "📍 กำลังส่งตำแหน่งของคุณ..." : text;
+            const userBubble = addBubble("user", userLabel);
             addTyping();
 
             try {
@@ -656,7 +649,7 @@
                         apikey: SUPABASE_ANON_KEY,
                         Authorization: "Bearer " + SUPABASE_ANON_KEY
                     },
-                    body: JSON.stringify({ message: text, history: chatHistory, session_id: chatSessionId })
+                    body: JSON.stringify({ message: text, history: chatHistory, session_id: chatSessionId, location: location || undefined })
                 });
                 const data = await res.json();
                 removeTyping();
@@ -667,8 +660,18 @@
                     return;
                 }
                 if (data.session_id) chatSessionId = data.session_id;
+
+                let historyText = text;
+                if (location && data.distance_km != null) {
+                    const sourceLabel = data.distance_source === "road" ? "ระยะทางถนนจริง" : "ระยะทางเส้นตรง (ประมาณ)";
+                    const displayText = "📍 แชร์ตำแหน่งแล้ว: ห่างจากร้านประมาณ " + data.distance_km + " กม. (" + sourceLabel + ")";
+                    const pEl = userBubble.querySelector("p");
+                    if (pEl) pEl.textContent = displayText;
+                    historyText = displayText;
+                }
+
                 addBubble("assistant", data.reply);
-                chatHistory.push({ role: "user", content: text });
+                chatHistory.push({ role: "user", content: historyText });
                 chatHistory.push({ role: "assistant", content: data.reply });
             } catch (err) {
                 removeTyping();
@@ -690,9 +693,7 @@
                 function (pos) {
                     chatLocationBtn.disabled = false;
                     chatLocationBtn.classList.remove("animate-pulse");
-                    const distKm = haversineKm(SHOP_LAT, SHOP_LNG, pos.coords.latitude, pos.coords.longitude);
-                    const rounded = Math.round(distKm * 10) / 10;
-                    sendChat("📍 แชร์ตำแหน่ง GPS แล้ว: ห่างจากร้านประมาณ " + rounded + " กม. (วัดเส้นตรง) กรุณาใช้ระยะทางนี้คำนวณค่าเดินทางให้เลยครับ");
+                    sendChat("", { lat: pos.coords.latitude, lng: pos.coords.longitude });
                 },
                 function () {
                     chatLocationBtn.disabled = false;
