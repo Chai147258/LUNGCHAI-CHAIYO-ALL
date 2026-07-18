@@ -158,11 +158,31 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
+    const body = await req.json().catch(() => ({}));
+
+    // --- Feedback submission (👍/👎 on a specific AI reply) — bypasses the AI call entirely ---
+    if (body.feedback) {
+      const fb = body.feedback;
+      const messageId = typeof fb.message_id === "string" ? fb.message_id : null;
+      const rating = fb.rating === 1 || fb.rating === -1 ? fb.rating : null;
+      if (!messageId || rating === null) {
+        return json({ error: "message_id and rating (1 or -1) are required" }, 400);
+      }
+      const comment = typeof fb.comment === "string" ? fb.comment.slice(0, 1000) : null;
+      const { error: fbError } = await supabase
+        .from("ai_feedback")
+        .insert({ conversation_id: messageId, rating, comment });
+      if (fbError) {
+        console.error("ai_feedback insert error:", fbError);
+        return json({ error: "Failed to save feedback" }, 500);
+      }
+      return json({ ok: true });
+    }
+
     if (!GEMINI_API_KEY) {
       return json({ error: "GEMINI_API_KEY ยังไม่ได้ตั้งค่าใน Supabase secrets" }, 500);
     }
 
-    const body = await req.json().catch(() => ({}));
     const history = Array.isArray(body.history) ? body.history : [];
     let sessionId = typeof body.session_id === "string" ? body.session_id : null;
 
@@ -235,13 +255,20 @@ Deno.serve(async (req: Request) => {
         .join("\n")
         .trim() || "ขออภัยครับ ตอนนี้ระบบขัดข้องเล็กน้อย รบกวนลองใหม่อีกครั้งครับ";
 
+    let botMessageId: string | null = null;
     if (sessionId) {
-      await supabase.from("ai_chat_messages").insert({ session_id: sessionId, sender: "bot", message: reply });
+      const { data: botMsgData } = await supabase
+        .from("ai_chat_messages")
+        .insert({ session_id: sessionId, sender: "bot", message: reply })
+        .select("id")
+        .single();
+      botMessageId = botMsgData?.id ?? null;
     }
 
     return json({
       reply,
       session_id: sessionId,
+      message_id: botMessageId,
       distance_km: distanceInfo?.km ?? null,
       distance_source: distanceInfo?.source ?? null,
     });

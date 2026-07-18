@@ -593,7 +593,7 @@
             if (mainScroll) mainScroll.scrollTop = mainScroll.scrollHeight;
         }
 
-        function addBubble(role, text) {
+        function addBubble(role, text, messageId) {
             const isUser = role === "user";
             const wrap = document.createElement("div");
             wrap.className = "flex flex-col " + (isUser ? "items-end ml-auto" : "items-start") + " gap-2 max-w-[92%] sm:max-w-[85%] pulse-bubble";
@@ -609,6 +609,50 @@
 
             inner.appendChild(p);
             wrap.appendChild(inner);
+
+            if (!isUser && messageId) {
+                const fbRow = document.createElement("div");
+                fbRow.className = "flex gap-2 px-1";
+
+                const upBtn = document.createElement("button");
+                upBtn.className = "text-lg opacity-60 hover:opacity-100 hover:scale-125 transition-all";
+                upBtn.textContent = "👍";
+                upBtn.title = "คำตอบนี้ช่วยได้";
+
+                const downBtn = document.createElement("button");
+                downBtn.className = "text-lg opacity-60 hover:opacity-100 hover:scale-125 transition-all";
+                downBtn.textContent = "👎";
+                downBtn.title = "คำตอบนี้ไม่ตรงจุด";
+
+                function submitFeedback(rating) {
+                    upBtn.disabled = true;
+                    downBtn.disabled = true;
+                    upBtn.style.opacity = rating === 1 ? "1" : "0.3";
+                    downBtn.style.opacity = rating === -1 ? "1" : "0.3";
+                    const thanks = document.createElement("span");
+                    thanks.className = "font-label-mono text-[10px] uppercase self-center";
+                    thanks.style.color = "var(--mood-primary)";
+                    thanks.textContent = "ขอบคุณสำหรับความคิดเห็น";
+                    fbRow.appendChild(thanks);
+
+                    fetch(CHAT_FUNCTION_URL, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            apikey: SUPABASE_ANON_KEY,
+                            Authorization: "Bearer " + SUPABASE_ANON_KEY
+                        },
+                        body: JSON.stringify({ feedback: { message_id: messageId, rating } })
+                    }).catch(function () { /* best-effort, ignore network errors */ });
+                }
+
+                upBtn.addEventListener("click", function () { submitFeedback(1); });
+                downBtn.addEventListener("click", function () { submitFeedback(-1); });
+                fbRow.appendChild(upBtn);
+                fbRow.appendChild(downBtn);
+                wrap.appendChild(fbRow);
+            }
+
             chatMessages.appendChild(wrap);
             scrollToBottom();
             return wrap;
@@ -670,7 +714,7 @@
                     historyText = displayText;
                 }
 
-                addBubble("assistant", data.reply);
+                addBubble("assistant", data.reply, data.message_id);
                 chatHistory.push({ role: "user", content: historyText });
                 chatHistory.push({ role: "assistant", content: data.reply });
             } catch (err) {
