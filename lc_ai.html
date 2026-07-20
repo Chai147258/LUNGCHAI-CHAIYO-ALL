@@ -110,6 +110,10 @@
             transition: color 0.5s ease;
         }
 
+        .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .quick-chip:active { transform: scale(0.95); }
+
         #chaotic-canvas, #threejs-scene {
             position: fixed;
             inset: 0;
@@ -264,6 +268,10 @@
 <button class="material-symbols-outlined hover:scale-125 transition-transform" style="color: var(--mood-primary);">account_circle</button>
 </div>
 </header>
+<div class="fixed top-24 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel border backdrop-blur-xl transition-all" id="tech-status-badge" style="border-color: var(--mood-primary); color: var(--mood-primary);">
+<span class="w-2 h-2 rounded-full bg-current animate-pulse flex-shrink-0"></span>
+<span class="font-label-mono text-[10px] sm:text-[11px] uppercase tracking-wide whitespace-nowrap" id="tech-status-text">กำลังตรวจสอบสถานะช่าง...</span>
+</div>
 <aside class="fixed left-0 top-0 h-screen w-72 border-r border-white/10 bg-surface-container-lowest/30 backdrop-blur-md flex flex-col p-6 gap-element-gap z-40 hidden xl:flex">
 <div class="mt-28 mb-8">
 <h2 class="font-label-mono text-label-mono tracking-widest uppercase glitch-hover" style="color: var(--mood-secondary);">CYBER-CHAOS</h2>
@@ -332,6 +340,14 @@
 </div>
 </main>
 <div class="fixed bottom-0 left-0 right-0 xl:left-72 p-3 sm:p-6 z-50">
+<div class="max-w-4xl mx-auto mb-2 flex gap-2 overflow-x-auto no-scrollbar px-1" id="quick-replies">
+<button class="quick-chip flex-shrink-0 px-3 py-1.5 rounded-full border font-label-mono text-[11px] sm:text-xs whitespace-nowrap glass-panel hover:scale-105 active:scale-95 transition-all" data-text="เรียกช่างด่วนหน้างานเลยครับ" style="border-color: var(--mood-secondary); color: var(--mood-secondary);">🔧 เรียกช่าง</button>
+<button class="quick-chip flex-shrink-0 px-3 py-1.5 rounded-full border font-label-mono text-[11px] sm:text-xs whitespace-nowrap glass-panel hover:scale-105 active:scale-95 transition-all" data-text="ตอนนี้มีช่างว่างไหมครับ อยากหาช่าง" style="border-color: var(--mood-secondary); color: var(--mood-secondary);">🔍 หาช่าง</button>
+<button class="quick-chip flex-shrink-0 px-3 py-1.5 rounded-full border font-label-mono text-[11px] sm:text-xs whitespace-nowrap glass-panel hover:scale-105 active:scale-95 transition-all" data-text="ค่าซ่อมประมาณเท่าไหร่ครับ" style="border-color: var(--mood-secondary); color: var(--mood-secondary);">💰 ค่าซ่อม</button>
+<button class="quick-chip flex-shrink-0 px-3 py-1.5 rounded-full border font-label-mono text-[11px] sm:text-xs whitespace-nowrap glass-panel hover:scale-105 active:scale-95 transition-all" data-text="ค่าบริการคิดยังไงบ้างครับ มีค่าอะไรบวกเพิ่มไหม" style="border-color: var(--mood-secondary); color: var(--mood-secondary);">💳 ค่าบริการ</button>
+<button class="quick-chip flex-shrink-0 px-3 py-1.5 rounded-full border font-label-mono text-[11px] sm:text-xs whitespace-nowrap glass-panel hover:scale-105 active:scale-95 transition-all" data-text="อยากนัดหมายช่างเข้าไปดูหน้างาน" style="border-color: var(--mood-secondary); color: var(--mood-secondary);">📅 นัดหมาย</button>
+<button class="quick-chip flex-shrink-0 px-3 py-1.5 rounded-full border font-label-mono text-[11px] sm:text-xs whitespace-nowrap glass-panel hover:scale-105 active:scale-95 transition-all" data-text="ขอเบอร์ติดต่อร้านหน่อยครับ" style="border-color: var(--mood-secondary); color: var(--mood-secondary);">📞 ติดต่อร้าน</button>
+</div>
 <div class="max-w-4xl mx-auto relative group">
 <div class="absolute -inset-2 rounded-full blur-xl opacity-30 group-focus-within:opacity-60 transition-opacity" style="background: linear-gradient(to right, var(--mood-primary), var(--mood-secondary), var(--mood-primary));"></div>
 <div class="relative flex items-center gap-2 sm:gap-4 bg-surface-container-lowest/80 backdrop-blur-3xl border-2 border-white/10 rounded-full px-3 py-2 sm:px-6 sm:py-4 shadow-2xl vibrating-border">
@@ -725,6 +741,41 @@
 
         chatSendBtn.addEventListener("click", function () { sendChat(); });
         chatInput.addEventListener("keydown", function (e) { if (e.key === "Enter") sendChat(); });
+
+        // Quick-reply keyword chips — tappable at any point during the chat, not just on open
+        document.querySelectorAll(".quick-chip").forEach(function (chip) {
+            chip.addEventListener("click", function () {
+                sendChat(chip.dataset.text);
+            });
+        });
+
+        // Live "ช่างพร้อมให้บริการ" badge — reflects the same active=true technicians
+        // roster used by technician-finder.html and the AI chat context, so it never
+        // drifts out of sync with reality.
+        async function loadTechStatus() {
+            const badgeWrap = document.getElementById("tech-status-badge");
+            const badgeText = document.getElementById("tech-status-text");
+            if (!badgeWrap || !badgeText) return;
+            try {
+                const res = await fetch(SUPABASE_URL + "/rest/v1/technicians?select=id&active=eq.true", {
+                    headers: { apikey: SUPABASE_ANON_KEY, Authorization: "Bearer " + SUPABASE_ANON_KEY }
+                });
+                const data = await res.json();
+                const count = Array.isArray(data) ? data.length : 0;
+                if (count > 0) {
+                    badgeText.textContent = "ช่างพร้อมให้บริการ (" + count + " คน)";
+                    badgeWrap.style.borderColor = "var(--mood-primary)";
+                    badgeWrap.style.color = "var(--mood-primary)";
+                } else {
+                    badgeText.textContent = "ยังไม่มีช่างว่างขณะนี้ ทีมงานจะติดต่อกลับ";
+                    badgeWrap.style.borderColor = "#ff6b6b";
+                    badgeWrap.style.color = "#ff6b6b";
+                }
+            } catch (err) {
+                badgeText.textContent = "ช่างพร้อมให้บริการ";
+            }
+        }
+        loadTechStatus();
 
         chatLocationBtn.addEventListener("click", function () {
             if (!navigator.geolocation) {
