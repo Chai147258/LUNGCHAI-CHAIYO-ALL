@@ -56,7 +56,26 @@ LUNGCHAI CHAIYO ALL Technician Platform
 
 
 <script>
+<script>
 
+// 👇 วางตรงนี้
+const SUPABASE_URL =
+"https://hkwqrllqzfzsbsxqgaoo.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_3yamPZ1ivFIRA9iALsSy3w_F1Q-mjr5";
+
+const supabaseClient =
+supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+// Step 4.1
+// รับ GPS ลูกค้าจากมือถือ
+
+const result =
+document.getElementById("result");
 
 // Step 4.1
 // รับ GPS ลูกค้าจากมือถือ
