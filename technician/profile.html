@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>โปรไฟล์ช่าง | LUNGCHAI CHAIYO ALL</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 
 <style>
 
@@ -30,6 +32,7 @@ body{
     box-shadow:0 3px 10px #ddd;
 }
 
+
 .avatar{
     width:120px;
     height:120px;
@@ -37,24 +40,26 @@ body{
     object-fit:cover;
 }
 
-h2{
-    margin-bottom:5px;
-}
 
 .rating{
     color:#ff9800;
-    font-size:20px;
+    font-size:22px;
 }
 
+
 .skill span{
+
     display:inline-block;
     background:#e8f5e9;
     padding:6px 10px;
     border-radius:20px;
     margin:3px;
+
 }
 
+
 .slot{
+
     display:inline-block;
     background:#4caf50;
     color:white;
@@ -62,11 +67,17 @@ h2{
     border-radius:8px;
     margin:5px;
     cursor:pointer;
+
 }
 
-.slot.disabled{
-    background:#aaa;
+
+.review{
+
+    border-bottom:1px solid #ddd;
+    padding:10px 0;
+
 }
+
 
 button{
 
@@ -77,11 +88,24 @@ button{
     background:#0066ff;
     color:white;
     font-size:18px;
-    cursor:pointer;
 
 }
 
+
+.contact a{
+
+display:inline-block;
+margin:5px;
+padding:10px;
+background:#eee;
+border-radius:8px;
+text-decoration:none;
+
+}
+
+
 </style>
+
 
 </head>
 
@@ -93,7 +117,7 @@ button{
 
 
 <div class="card" id="profile">
-กำลังโหลดข้อมูล...
+กำลังโหลดข้อมูลช่าง...
 </div>
 
 
@@ -109,6 +133,8 @@ button{
 
 </div>
 
+
+
 <div class="card">
 
 <h3>
@@ -121,12 +147,16 @@ button{
 
 </div>
 
+
+
 <button onclick="booking()">
 จองช่าง
 </button>
 
 
 </div>
+
+
 
 
 
@@ -154,6 +184,8 @@ let selectedSlot=null;
 
 
 
+// โหลด Profile
+
 async function loadProfile(){
 
 
@@ -163,12 +195,21 @@ window.location.search
 ).get("id");
 
 
+if(!technician_id){
+
+document.getElementById("profile")
+.innerHTML="ไม่พบรหัสช่าง";
+
+return;
+
+}
+
+
+
 const {data,error}=
 
 await supabaseClient
-.from(
-"technician_public_profile"
-)
+.from("technician_public_profile")
 .select("*")
 .eq(
 "technician_uuid",
@@ -179,6 +220,8 @@ technician_id
 
 
 if(error){
+
+console.log(error);
 
 document.getElementById("profile")
 .innerHTML=
@@ -192,6 +235,7 @@ return;
 
 document.getElementById("profile")
 .innerHTML=`
+
 
 <img class="avatar"
 src="${data.photo_url || '/images/default-tech.png'}">
@@ -208,7 +252,9 @@ ${data.business_name || ''}
 
 
 <div class="rating">
+
 ⭐ ${data.avg_rating}
+
 </div>
 
 
@@ -223,28 +269,80 @@ ${data.business_name || ''}
 
 
 <p>
-📍 รับงานรัศมี 
-${data.service_radius_km}
-กม.
+📍 รับงานรัศมี ${data.service_radius_km || 0} กม.
 </p>
+
 
 
 <div class="skill">
 
-${data.skill || ''}
+${formatSkill(data.skill)}
 
 </div>
+
+
+
+<p>
+
+${data.description || ''}
+
+</p>
+
+
+
+<div class="contact">
+
+${data.phone ?
+`<a href="tel:${data.phone}">
+โทร
+</a>`:''}
+
+
+${data.line_id ?
+`<a href="https://line.me/ti/p/~${data.line_id}">
+LINE
+</a>`:''}
+
+
+</div>
+
 
 `;
 
 
-
 loadSlots();
+
+loadReviews();
+
 
 }
 
 
 
+
+// แสดง Skill
+
+function formatSkill(skill){
+
+
+if(!skill)
+return "";
+
+
+return skill
+.split(",")
+.map(
+s=>`<span>${s.trim()}</span>`
+)
+.join("");
+
+}
+
+
+
+
+
+// โหลด Slot
 
 async function loadSlots(){
 
@@ -252,9 +350,7 @@ async function loadSlots(){
 const {data,error}=
 
 await supabaseClient
-.from(
-"appointment_slots"
-)
+.from("appointment_slots")
 .select("*")
 .eq(
 "technician_uuid",
@@ -272,9 +368,12 @@ technician_id
 
 if(error){
 
+console.log(error);
+
 return;
 
 }
+
 
 
 let html="";
@@ -286,12 +385,14 @@ data.forEach(slot=>{
 html +=`
 
 <div class="slot"
+
 onclick="
 selectSlot(
 '${slot.id}',
 '${slot.work_date}',
 '${slot.slot_time}'
 )
+
 ">
 
 ${slot.work_date}
@@ -305,12 +406,19 @@ ${slot.slot_time}
 });
 
 
+
 document.getElementById("slots")
-.innerHTML=html || "ไม่มีเวลาว่าง";
+.innerHTML =
+html || "ไม่มีเวลาว่าง";
+
 
 }
 
 
+
+
+
+// เลือก Slot
 
 function selectSlot(
 id,
@@ -321,9 +429,9 @@ time
 
 selectedSlot={
 
-id:id,
-date:date,
-time:time
+id,
+date,
+time
 
 };
 
@@ -336,6 +444,107 @@ alert(
 }
 
 
+
+
+// โหลดรีวิวจริง
+
+async function loadReviews(){
+
+
+const {data,error}=
+
+await supabaseClient
+.from("technician_public_reviews")
+.select("*")
+.eq(
+"technician_id",
+technician_id
+)
+.order(
+"created_at",
+{
+ascending:false
+}
+);
+
+
+
+if(error){
+
+console.log(error);
+
+return;
+
+}
+
+
+
+let html="";
+
+
+
+if(!data.length){
+
+html="ยังไม่มีรีวิว";
+
+}
+
+else{
+
+
+data.forEach(r=>{
+
+
+html +=`
+
+<div class="review">
+
+<b>
+${r.customer_name}
+</b>
+
+
+<div>
+${"⭐".repeat(r.rating)}
+</div>
+
+
+<p>
+${r.comment || ""}
+</p>
+
+
+<small>
+${new Date(
+r.created_at
+)
+.toLocaleDateString("th-TH")}
+</small>
+
+
+</div>
+
+
+`;
+
+});
+
+
+}
+
+
+
+document.getElementById("reviews")
+.innerHTML=html;
+
+
+}
+
+
+
+
+
+// ไปหน้า Booking
 
 function booking(){
 
@@ -352,23 +561,9 @@ return;
 
 
 
-window.location.href=
-
-`/booking/index.html?
-technician_uuid=${technician_id}
-&work_date=${selectedSlot.date}
-&slot_time=${selectedSlot.time}`;
-
-
-}
-
-
-
-loadProfile();
-
-
-</script>
-
-
-</body>
-</html>
+window.location.href =
+"/booking/index.html?"
++
+"technician_uuid="
++technician_id
++
