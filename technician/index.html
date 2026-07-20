@@ -171,6 +171,547 @@ alert(
 
 </script>
 
+<script>
+
+const SUPABASE_URL =
+"https://ใส่-project-url.supabase.co";
+
+
+const SUPABASE_KEY =
+"ใส่-anon-public-key";
+
+
+const supabaseClient =
+supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
+
+let technician_id = null;
+let selectedSlot = null;
+
+
+
+console.log("PROFILE JS START");
+
+
+
+// =======================
+// LOAD PROFILE
+// =======================
+
+async function loadProfile(){
+
+
+technician_id =
+new URLSearchParams(
+window.location.search
+).get("id");
+
+
+console.log(
+"TECHNICIAN ID:",
+technician_id
+);
+
+
+
+if(!technician_id){
+
+document.getElementById("profile")
+.innerHTML =
+"ไม่พบรหัสช่าง";
+
+return;
+
+}
+
+
+
+const result =
+await supabaseClient
+
+.from("technician_public_profile")
+
+.select("*")
+
+.eq(
+"technician_uuid",
+technician_id
+)
+
+.single();
+
+
+
+console.log(
+"SUPABASE RESULT:",
+result
+);
+
+
+
+const data = result.data;
+const error = result.error;
+
+
+
+if(error){
+
+
+document.getElementById("profile")
+.innerHTML =
+
+`
+<h3>
+เกิดข้อผิดพลาด
+</h3>
+
+<p>
+${error.message}
+</p>
+`;
+
+return;
+
+}
+
+
+
+
+document.getElementById("profile")
+.innerHTML =
+
+`
+
+<img class="avatar"
+
+src="${data.photo_url || '/images/default-tech.png'}">
+
+
+<h2>
+${data.full_name || ''}
+</h2>
+
+
+<p>
+${data.business_name || ''}
+</p>
+
+
+<div class="rating">
+
+⭐ ${data.avg_rating || 0}
+
+</div>
+
+
+<p>
+รีวิว ${data.total_reviews || 0} รายการ
+</p>
+
+
+<p>
+งานสำเร็จ ${data.completed_jobs || 0} งาน
+</p>
+
+
+<p>
+📍 รับงานรัศมี
+${data.service_radius_km || 0}
+กม.
+</p>
+
+
+<div class="skill">
+
+${formatSkill(data.skill)}
+
+</div>
+
+
+<p>
+${data.description || ''}
+</p>
+
+
+<div class="contact">
+
+
+${data.phone ?
+
+`
+<a href="tel:${data.phone}">
+📞 โทร
+</a>
+`
+:''}
+
+
+
+${data.line_id ?
+
+`
+<a href="https://line.me/ti/p/~${data.line_id}">
+LINE
+</a>
+`
+:''}
+
+
+</div>
+
+`;
+
+
+
+loadSlots();
+
+loadReviews();
+
+
+}
+
+
+
+// =======================
+// FORMAT SKILL
+// =======================
+
+function formatSkill(skill){
+
+
+if(!skill)
+return "";
+
+
+return skill
+
+.split(",")
+
+.map(
+item =>
+`
+<span>
+${item.trim()}
+</span>
+`
+)
+
+.join("");
+
+}
+
+
+
+
+
+// =======================
+// LOAD SLOT
+// =======================
+
+async function loadSlots(){
+
+
+const {data,error}=
+
+await supabaseClient
+
+.from("appointment_slots")
+
+.select("*")
+
+.eq(
+"technician_uuid",
+technician_id
+)
+
+.eq(
+"status",
+"available"
+)
+
+.order(
+"work_date"
+);
+
+
+
+if(error){
+
+console.log(error);
+
+return;
+
+}
+
+
+
+let html="";
+
+
+data.forEach(slot=>{
+
+
+html +=
+
+`
+
+<div class="slot"
+
+onclick="selectSlot(
+'${slot.id}',
+'${slot.work_date}',
+'${slot.slot_time}'
+)">
+
+
+${slot.work_date}
+
+<br>
+
+${slot.slot_time}
+
+
+</div>
+
+`;
+
+});
+
+
+
+document.getElementById("slots")
+
+.innerHTML =
+
+html || "ไม่มีเวลาว่าง";
+
+
+}
+
+
+
+
+
+// =======================
+// SELECT SLOT
+// =======================
+
+function selectSlot(
+id,
+date,
+time
+){
+
+
+selectedSlot = {
+
+id:id,
+date:date,
+time:time
+
+};
+
+
+alert(
+"เลือกเวลา "
++
+date
++
+" "
++
+time
+);
+
+
+}
+
+
+
+
+
+// =======================
+// LOAD REVIEWS
+// =======================
+
+async function loadReviews(){
+
+
+const {data,error}=
+
+await supabaseClient
+
+.from(
+"technician_public_reviews"
+)
+
+.select("*")
+
+.eq(
+"technician_id",
+technician_id
+)
+
+.order(
+"created_at",
+{
+ascending:false
+}
+);
+
+
+
+if(error){
+
+console.log(error);
+
+return;
+
+}
+
+
+
+let html="";
+
+
+
+if(!data || data.length===0){
+
+
+html =
+"ยังไม่มีรีวิว";
+
+
+}
+
+else{
+
+
+data.forEach(r=>{
+
+
+html +=
+
+`
+
+<div class="review">
+
+
+<b>
+${r.customer_name}
+</b>
+
+
+<div>
+
+${"⭐".repeat(
+Number(r.rating)
+)}
+
+</div>
+
+
+<p>
+
+${r.comment || ''}
+
+</p>
+
+
+<small>
+
+${new Date(
+r.created_at
+)
+.toLocaleDateString("th-TH")}
+
+</small>
+
+
+</div>
+
+`;
+
+});
+
+
+}
+
+
+
+document.getElementById("reviews")
+
+.innerHTML = html;
+
+
+}
+
+
+
+
+
+// =======================
+// BOOKING
+// =======================
+
+function booking(){
+
+
+if(!selectedSlot){
+
+
+alert(
+"กรุณาเลือกเวลานัดหมาย"
+);
+
+
+return;
+
+
+}
+
+
+
+window.location.href =
+
+"/booking/index.html"
+
++
+
+"?technician_uuid="
+
++
+
+technician_id
+
++
+
+"&work_date="
+
++
+
+selectedSlot.date
+
++
+
+"&slot_time="
+
++
+
+selectedSlot.time;
+
+
+}
+
+
+
+
+loadProfile();
+
+
+</script>
 
 </body>
 </html>
