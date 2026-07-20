@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ช่างใกล้ฉัน | LUNGCHAI CHAIYO ALL</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    padding:20px;
+    background:#f5f5f5;
+}
+
+button{
+    padding:12px 18px;
+    border-radius:8px;
+    border:0;
+    cursor:pointer;
+    background:#111;
+    color:white;
+}
+
+.card{
+    background:white;
+    padding:15px;
+    margin-top:15px;
+    border-radius:12px;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>🔧 ค้นหาช่างใกล้คุณ</h1>
+
+<p>
+LUNGCHAI CHAIYO ALL Technician Platform
+</p>
+
+
+<button id="locationBtn">
+📍 ใช้ตำแหน่งของฉัน
+</button>
+
+
+<div id="result" class="card">
+รอค้นหาตำแหน่ง...
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<script>
+
+
+// Step 4.1
+// รับ GPS ลูกค้าจากมือถือ
+
+
+const result =
+document.getElementById("result");
+
+
+
+function showLocation(lat,lng){
+
+result.innerHTML = `
+
+<h3>
+📍 ตำแหน่งลูกค้า
+</h3>
+
+Latitude:
+${lat}
+
+<br>
+
+Longitude:
+${lng}
+
+<br><br>
+
+พร้อมค้นหาช่างใกล้คุณ
+
+`;
+
+}
+
+
+
+
+document
+.getElementById("locationBtn")
+.onclick=function(){
+
+
+if(!navigator.geolocation){
+
+alert(
+"อุปกรณ์ไม่รองรับ GPS"
+);
+
+return;
+
+}
+
+
+
+navigator.geolocation.getCurrentPosition(
+
+function(position){
+
+
+const lat =
+position.coords.latitude;
+
+
+const lng =
+position.coords.longitude;
+
+
+
+showLocation(
+lat,
+lng
+);
+
+
+
+},
+
+
+function(){
+
+alert(
+"ไม่สามารถรับตำแหน่งได้"
+);
+
+
+}
+
+);
+
+
+};
+
+
+
+</script>
+
+
+</body>
+</html>
