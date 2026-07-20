@@ -110,14 +110,54 @@ async function buildKnowledgeContext(): Promise<string> {
   return ctx || "(ยังไม่มีข้อมูลราคาในระบบ ให้ตอบแบบกว้างๆ และแนะนำให้ติดต่อทีมงานเพื่อประเมินราคาที่แน่นอน)";
 }
 
-function buildSystemPrompt(context: string) {
+/**
+ * Deterministic pre-match against ai_diagnosis_rules + ai_knowledge_base via the
+ * match_customer_symptom() Postgres function (exact/synonym match = 1.0, else
+ * trigram fuzzy fallback). This runs BEFORE the Gemini call so the model gets a
+ * grounded, high-confidence starting point instead of guessing from raw text —
+ * fewer hallucinated causes/prices, faster convergence to the right diagnosis.
+ */
+async function getSymptomMatches(message: string): Promise<any[]> {
+  try {
+    const { data, error } = await supabase.rpc("match_customer_symptom", {
+      p_message: message,
+      p_limit: 3,
+    });
+    if (error) {
+      console.error("match_customer_symptom rpc error:", error);
+      return [];
+    }
+    return data ?? [];
+  } catch (err) {
+    console.error("match_customer_symptom call failed:", err);
+    return [];
+  }
+}
+
+function buildSymptomMatchSection(matches: any[]): string {
+  if (!matches.length) return "";
+  let s = "\nผลจับคู่อาการเบื้องต้นจากระบบวิเคราะห์อัตโนมัติ (ai_diagnosis_rules, เรียงจากมั่นใจมากไปน้อย — ใช้เป็นข้อมูลตั้งต้นก่อนตอบ ห้ามขัดแย้งกับข้อมูลนี้โดยไม่มีเหตุผล):\n";
+  for (const m of matches) {
+    const pct = Math.round((m.match_score ?? 0) * 100);
+    s += `- [ตรงกับ "${m.keyword}" ${pct}%] ${m.service_type}: สาเหตุที่เป็นไปได้ = ${m.diagnosis}` +
+      (m.questions ? `; คำถามยืนยันก่อนสรุป = "${m.questions}"` : "") +
+      (m.solution ? `; วิธีแก้ = ${m.solution}` : "") +
+      (m.estimated_min != null ? `; เวลาโดยประมาณ = ${m.estimated_min}-${m.estimated_max} นาที` : "") +
+      (m.skill_required ? `; ต้องใช้ = ${m.skill_required}` : "") + "\n";
+  }
+  s += "วิธีใช้ผลนี้: ถ้ารายการแรกตรง ≥60% ให้ยึดเป็นสมมติฐานหลัก และถามคำถามยืนยันของรายการนั้นก่อน (ถ้ายังไม่ได้ถาม) ก่อนสรุปวิธีแก้และราคา ถ้าทุกรายการตรง <60% ให้ถือว่ายังไม่ชัดเจน ให้ถามลูกค้าอธิบายอาการเพิ่มแทนการฟันธง\n";
+  return s;
+}
+
+function buildSystemPrompt(context: string, symptomMatchSection: string) {
   return `คุณคือ "ลุงชัย AI" ผู้ช่วยแชทประจำเว็บไซต์ของ Lungchai Chaiyo Group (lungchaichaiyo.shop) ธุรกิจกลุ่มจากประเทศไทยที่ให้บริการ IT/เครือข่าย (Network Farm IT Solution), อุปกรณ์โรงงานอุตสาหกรรม, PPE, สินค้า OTOP, เครื่องแบบ/ชุดยูนิฟอร์ม, สินค้าอุปโภคในบ้าน และบริการซ่อมบำรุง/ติดตั้งครบวงจร (One Stop Industrial & IT Solution)
 
 บทบาทและวิธีทำงาน — ทำตามลำดับนี้ทุกครั้งที่ลูกค้าแจ้งปัญหาหรือถามราคา:
 
 ขั้นที่ 1 — จับคู่ปัญหากับบริการให้ตรง:
-- อ่านอาการ/คำถามของลูกค้า แล้วจับคู่กับรายการใน "ฐานความรู้ปัญหา/อาการ" และ "รายการบริการ" ด้านล่างที่ตรงที่สุด (ห้ามเดาบริการที่ไม่มีในฐานข้อมูล)
-- ถ้าอาการยังไม่ชัดพอจะจับคู่บริการได้แม่นยำ ให้ถามคำถามสั้นๆ 1 ข้อเพื่อความชัดเจนก่อน
+- ดูผลจับคู่อาการอัตโนมัติด้านล่างก่อนเป็นอันดับแรก (ถ้ามี) แล้วจึงอ่านอาการ/คำถามของลูกค้าประกอบกับ "ฐานความรู้ปัญหา/อาการ" และ "รายการบริการ" ด้านล่างที่ตรงที่สุด (ห้ามเดาบริการที่ไม่มีในฐานข้อมูล)
+- ถ้าอาการยังไม่ชัดพอจะจับคู่บริการได้แม่นยำ ให้ถามคำถามสั้นๆ 1 ข้อเพื่อความชัดเจนก่อน (ใช้คำถามยืนยันจากผลจับคู่อัตโนมัติถ้ามีให้)
+${symptomMatchSection}
 
 ขั้นที่ 2 — คำนวณค่าใช้จ่ายรวมให้ครบทุกรายการที่เกี่ยวข้อง โดยอ้างอิงจากตาราง "รายการบริการ" เท่านั้น:
 - ค่าบริการ/ซ่อมพื้นฐาน (normal_price หรือช่วงราคาประเมินจากฐานความรู้)
@@ -216,7 +256,11 @@ Deno.serve(async (req: Request) => {
       await supabase.from("ai_chat_messages").insert({ session_id: sessionId, sender: "user", message });
     }
 
-    const context = await buildKnowledgeContext();
+    const [context, symptomMatches] = await Promise.all([
+      buildKnowledgeContext(),
+      getSymptomMatches(message),
+    ]);
+    const symptomMatchSection = buildSymptomMatchSection(symptomMatches);
 
     // Gemini uses role "model" instead of "assistant", and contents/parts instead of messages/content
     const contents = [...history, { role: "user", content: message }].map(
@@ -236,7 +280,7 @@ Deno.serve(async (req: Request) => {
         "x-goog-api-key": GEMINI_API_KEY,
       },
       body: JSON.stringify({
-        system_instruction: { parts: [{ text: buildSystemPrompt(context) }] },
+        system_instruction: { parts: [{ text: buildSystemPrompt(context, symptomMatchSection) }] },
         contents,
         generationConfig: { maxOutputTokens: 1000 },
       }),
