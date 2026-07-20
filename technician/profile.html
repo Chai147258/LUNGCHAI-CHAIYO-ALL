@@ -10,29 +10,16 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 
-const SUPABASE_URL =
-"https://ใส่-project-url.supabase.co";
+const SUPABASE_URL = "https://hkwqrllqzfzsbsxqgaoo.supabase.co";
 
+const SUPABASE_KEY = "sb_publishable_3yamPZ1ivFIRA9iALsSy3w_F1Q-mjr5";
 
-const SUPABASE_KEY =
-"ใส่-anon-public-key";
-
-
-const supabaseClient =
-supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY
-);
-
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let technician_id = null;
 let selectedSlot = null;
 
-
-
 console.log("PROFILE JS START");
-
-
 
 // =======================
 // LOAD PROFILE
@@ -40,209 +27,76 @@ console.log("PROFILE JS START");
 
 async function loadProfile(){
 
+  technician_id = new URLSearchParams(window.location.search).get("id");
 
-technician_id =
-new URLSearchParams(
-window.location.search
-).get("id");
+  console.log("TECHNICIAN ID:", technician_id);
 
+  if(!technician_id){
+    document.getElementById("profile").innerHTML = "ไม่พบรหัสช่าง";
+    return;
+  }
 
-console.log(
-"TECHNICIAN ID:",
-technician_id
-);
+  const result = await supabaseClient
+    .from("technician_public_profile")
+    .select("*")
+    .eq("technician_uuid", technician_id)
+    .single();
 
+  console.log("SUPABASE RESULT:", result);
 
+  const data = result.data;
+  const error = result.error;
 
-if(!technician_id){
+  if(error){
+    document.getElementById("profile").innerHTML = `
+      <h3>เกิดข้อผิดพลาด</h3>
+      <p>${error.message}</p>
+    `;
+    return;
+  }
 
-document.getElementById("profile")
-.innerHTML =
-"ไม่พบรหัสช่าง";
+  document.getElementById("profile").innerHTML = `
+    <img class="avatar" src="${data.photo_url || '/images/default-tech.png'}">
+    <h2>${data.full_name || ''}</h2>
+    <p>${data.business_name || ''}</p>
+    
+    <div class="rating">
+      ⭐ ${data.avg_rating || 0}
+    </div>
+    
+    <p>รีวิว ${data.total_reviews || 0} รายการ</p>
+    <p>งานสำเร็จ ${data.completed_jobs || 0} งาน</p>
+    <p>📍 รับงานรัศมี ${data.service_radius_km || 0} กม.</p>
+    
+    <div class="skill">
+      ${formatSkill(data.skill)}
+    </div>
+    
+    <p>${data.description || ''}</p>
+    
+    <div class="contact">
+      ${data.phone ? `<a href="tel:${data.phone}">📞 โทร</a>` : ''}
+      ${data.line_id ? `<a href="https://line.me/ti/p/~${data.line_id}">LINE</a>` : ''}
+    </div>
+  `;
 
-return;
-
-}
-
-
-
-const result =
-await supabaseClient
-
-.from("technician_public_profile")
-
-.select("*")
-
-.eq(
-"technician_uuid",
-technician_id
-)
-
-.single();
-
-
-
-console.log(
-"SUPABASE RESULT:",
-result
-);
-
-
-
-const data = result.data;
-const error = result.error;
-
-
-
-if(error){
-
-
-document.getElementById("profile")
-.innerHTML =
-
-`
-<h3>
-เกิดข้อผิดพลาด
-</h3>
-
-<p>
-${error.message}
-</p>
-`;
-
-return;
+  loadSlots();
+  loadReviews();
 
 }
-
-
-
-
-document.getElementById("profile")
-.innerHTML =
-
-`
-
-<img class="avatar"
-
-src="${data.photo_url || '/images/default-tech.png'}">
-
-
-<h2>
-${data.full_name || ''}
-</h2>
-
-
-<p>
-${data.business_name || ''}
-</p>
-
-
-<div class="rating">
-
-⭐ ${data.avg_rating || 0}
-
-</div>
-
-
-<p>
-รีวิว ${data.total_reviews || 0} รายการ
-</p>
-
-
-<p>
-งานสำเร็จ ${data.completed_jobs || 0} งาน
-</p>
-
-
-<p>
-📍 รับงานรัศมี
-${data.service_radius_km || 0}
-กม.
-</p>
-
-
-<div class="skill">
-
-${formatSkill(data.skill)}
-
-</div>
-
-
-<p>
-${data.description || ''}
-</p>
-
-
-<div class="contact">
-
-
-${data.phone ?
-
-`
-<a href="tel:${data.phone}">
-📞 โทร
-</a>
-`
-:''}
-
-
-
-${data.line_id ?
-
-`
-<a href="https://line.me/ti/p/~${data.line_id}">
-LINE
-</a>
-`
-:''}
-
-
-</div>
-
-`;
-
-
-
-loadSlots();
-
-loadReviews();
-
-
-}
-
-
 
 // =======================
 // FORMAT SKILL
 // =======================
 
 function formatSkill(skill){
-
-
-if(!skill)
-return "";
-
-
-return skill
-
-.split(",")
-
-.map(
-item =>
-`
-<span>
-${item.trim()}
-</span>
-`
-)
-
-.join("");
-
+  if(!skill) return "";
+  
+  return skill
+    .split(",")
+    .map(item => `<span>${item.trim()}</span>`)
+    .join("");
 }
-
-
-
-
 
 // =======================
 // LOAD SLOT
@@ -250,124 +104,42 @@ ${item.trim()}
 
 async function loadSlots(){
 
+  const {data, error} = await supabaseClient
+    .from("appointment_slots")
+    .select("*")
+    .eq("technician_uuid", technician_id)
+    .eq("status", "available")
+    .order("work_date");
 
-const {data,error}=
+  if(error){
+    console.log(error);
+    return;
+  }
 
-await supabaseClient
+  let html = "";
 
-.from("appointment_slots")
+  data.forEach(slot => {
+    html += `
+      <div class="slot" onclick="selectSlot('${slot.id}', '${slot.work_date}', '${slot.slot_time}')">
+        ${slot.work_date}
+        <br>
+        ${slot.slot_time}
+      </div>
+    `;
+  });
 
-.select("*")
-
-.eq(
-"technician_uuid",
-technician_id
-)
-
-.eq(
-"status",
-"available"
-)
-
-.order(
-"work_date"
-);
-
-
-
-if(error){
-
-console.log(error);
-
-return;
+  document.getElementById("slots").innerHTML = html || "ไม่มีเวลาว่าง";
 
 }
-
-
-
-let html="";
-
-
-data.forEach(slot=>{
-
-
-html +=
-
-`
-
-<div class="slot"
-
-onclick="selectSlot(
-'${slot.id}',
-'${slot.work_date}',
-'${slot.slot_time}'
-)">
-
-
-${slot.work_date}
-
-<br>
-
-${slot.slot_time}
-
-
-</div>
-
-`;
-
-});
-
-
-
-document.getElementById("slots")
-
-.innerHTML =
-
-html || "ไม่มีเวลาว่าง";
-
-
-}
-
-
-
-
 
 // =======================
 // SELECT SLOT
 // =======================
 
-function selectSlot(
-id,
-date,
-time
-){
-
-
-selectedSlot = {
-
-id:id,
-date:date,
-time:time
-
-};
-
-
-alert(
-"เลือกเวลา "
-+
-date
-+
-" "
-+
-time
-);
-
-
+function selectSlot(id, date, time){
+  selectedSlot = { id, date, time };
+  alert("เลือกเวลา " + date + " " + time);
 }
-
-
-
-
 
 // =======================
 // LOAD REVIEWS
@@ -375,178 +147,57 @@ time
 
 async function loadReviews(){
 
+  const {data, error} = await supabaseClient
+    .from("technician_public_reviews")
+    .select("*")
+    .eq("technician_id", technician_id)
+    .order("created_at", { ascending: false });
 
-const {data,error}=
+  if(error){
+    console.log(error);
+    return;
+  }
 
-await supabaseClient
+  let html = "";
 
-.from(
-"technician_public_reviews"
-)
+  if(!data || data.length === 0){
+    html = "ยังไม่มีรีวิว";
+  } else {
+    data.forEach(r => {
+      html += `
+        <div class="review">
+          <b>${r.customer_name}</b>
+          <div>
+            ${"⭐".repeat(Number(r.rating))}
+          </div>
+          <p>${r.comment || ''}</p>
+          <small>${new Date(r.created_at).toLocaleDateString("th-TH")}</small>
+        </div>
+      `;
+    });
+  }
 
-.select("*")
-
-.eq(
-"technician_id",
-technician_id
-)
-
-.order(
-"created_at",
-{
-ascending:false
-}
-);
-
-
-
-if(error){
-
-console.log(error);
-
-return;
-
-}
-
-
-
-let html="";
-
-
-
-if(!data || data.length===0){
-
-
-html =
-"ยังไม่มีรีวิว";
-
+  document.getElementById("reviews").innerHTML = html;
 
 }
-
-else{
-
-
-data.forEach(r=>{
-
-
-html +=
-
-`
-
-<div class="review">
-
-
-<b>
-${r.customer_name}
-</b>
-
-
-<div>
-
-${"⭐".repeat(
-Number(r.rating)
-)}
-
-</div>
-
-
-<p>
-
-${r.comment || ''}
-
-</p>
-
-
-<small>
-
-${new Date(
-r.created_at
-)
-.toLocaleDateString("th-TH")}
-
-</small>
-
-
-</div>
-
-`;
-
-});
-
-
-}
-
-
-
-document.getElementById("reviews")
-
-.innerHTML = html;
-
-
-}
-
-
-
-
 
 // =======================
 // BOOKING
 // =======================
 
 function booking(){
+  if(!selectedSlot){
+    alert("กรุณาเลือกเวลานัดหมาย");
+    return;
+  }
 
-
-if(!selectedSlot){
-
-
-alert(
-"กรุณาเลือกเวลานัดหมาย"
-);
-
-
-return;
-
-
+  window.location.href = "/booking/index.html" +
+    "?technician_uuid=" + technician_id +
+    "&work_date=" + selectedSlot.date +
+    "&slot_time=" + selectedSlot.time;
 }
-
-
-
-window.location.href =
-
-"/booking/index.html"
-
-+
-
-"?technician_uuid="
-
-+
-
-technician_id
-
-+
-
-"&work_date="
-
-+
-
-selectedSlot.date
-
-+
-
-"&slot_time="
-
-+
-
-selectedSlot.time;
-
-
-}
-
-
-
 
 loadProfile();
-
 
 </script>
 
@@ -572,7 +223,6 @@ body{
     box-shadow:0 3px 10px #ddd;
 }
 
-
 .avatar{
     width:120px;
     height:120px;
@@ -580,26 +230,20 @@ body{
     object-fit:cover;
 }
 
-
 .rating{
     color:#ff9800;
     font-size:22px;
 }
 
-
 .skill span{
-
     display:inline-block;
     background:#e8f5e9;
     padding:6px 10px;
     border-radius:20px;
     margin:3px;
-
 }
 
-
 .slot{
-
     display:inline-block;
     background:#4caf50;
     color:white;
@@ -607,20 +251,14 @@ body{
     border-radius:8px;
     margin:5px;
     cursor:pointer;
-
 }
-
 
 .review{
-
     border-bottom:1px solid #ddd;
     padding:10px 0;
-
 }
 
-
 button{
-
     width:100%;
     padding:15px;
     border:0;
@@ -628,482 +266,48 @@ button{
     background:#0066ff;
     color:white;
     font-size:18px;
-
 }
-
 
 .contact a{
-
-display:inline-block;
-margin:5px;
-padding:10px;
-background:#eee;
-border-radius:8px;
-text-decoration:none;
-
+    display:inline-block;
+    margin:5px;
+    padding:10px;
+    background:#eee;
+    border-radius:8px;
+    text-decoration:none;
 }
-
 
 </style>
 
-
 </head>
-
 
 <body>
 
-
 <div class="container">
 
+  <div class="card" id="profile">
+    กำลังโหลดข้อมูลช่าง...
+  </div>
 
-<div class="card" id="profile">
-กำลังโหลดข้อมูลช่าง...
-</div>
+  <div class="card">
+    <h3>เวลารับงาน</h3>
+    <div id="slots">
+      กำลังโหลด Slot...
+    </div>
+  </div>
 
+  <div class="card">
+    <h3>รีวิวลูกค้า</h3>
+    <div id="reviews">
+      กำลังโหลดรีวิว...
+    </div>
+  </div>
 
-<div class="card">
-
-<h3>
-เวลารับงาน
-</h3>
-
-<div id="slots">
-กำลังโหลด Slot...
-</div>
-
-</div>
-
-
-
-<div class="card">
-
-<h3>
-รีวิวลูกค้า
-</h3>
-
-<div id="reviews">
-กำลังโหลดรีวิว...
-</div>
+  <button onclick="booking()">
+    จองช่าง
+  </button>
 
 </div>
 
-
-
-<button onclick="booking()">
-จองช่าง
-</button>
-
-
-</div>
-
-
-
-
-
-<script>
-
-
-const SUPABASE_URL =
-"YOUR_SUPABASE_URL";
-
-
-const SUPABASE_KEY =
-"YOUR_SUPABASE_ANON_KEY";
-
-
-const supabaseClient =
-supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY
-);
-
-
-
-let technician_id=null;
-let selectedSlot=null;
-
-
-
-// โหลด Profile
-
-async function loadProfile(){
-
-
-technician_id =
-new URLSearchParams(
-window.location.search
-).get("id");
-
-
-if(!technician_id){
-
-document.getElementById("profile")
-.innerHTML="ไม่พบรหัสช่าง";
-
-return;
-
-}
-
-
-
-const {data,error}=
-
-await supabaseClient
-.from("technician_public_profile")
-.select("*")
-.eq(
-"technician_uuid",
-technician_id
-)
-.single();
-
-
-
-if(error){
-
-console.log(error);
-
-document.getElementById("profile")
-.innerHTML=
-"ไม่พบข้อมูลช่าง";
-
-return;
-
-}
-
-
-
-document.getElementById("profile")
-.innerHTML=`
-
-
-<img class="avatar"
-src="${data.photo_url || '/images/default-tech.png'}">
-
-
-<h2>
-${data.full_name}
-</h2>
-
-
-<p>
-${data.business_name || ''}
-</p>
-
-
-<div class="rating">
-
-⭐ ${data.avg_rating}
-
-</div>
-
-
-<p>
-รีวิว ${data.total_reviews} รายการ
-</p>
-
-
-<p>
-งานสำเร็จ ${data.completed_jobs} งาน
-</p>
-
-
-<p>
-📍 รับงานรัศมี ${data.service_radius_km || 0} กม.
-</p>
-
-
-
-<div class="skill">
-
-${formatSkill(data.skill)}
-
-</div>
-
-
-
-<p>
-
-${data.description || ''}
-
-</p>
-
-
-
-<div class="contact">
-
-${data.phone ?
-`<a href="tel:${data.phone}">
-โทร
-</a>`:''}
-
-
-${data.line_id ?
-`<a href="https://line.me/ti/p/~${data.line_id}">
-LINE
-</a>`:''}
-
-
-</div>
-
-
-`;
-
-
-loadSlots();
-
-loadReviews();
-
-
-}
-
-
-
-
-// แสดง Skill
-
-function formatSkill(skill){
-
-
-if(!skill)
-return "";
-
-
-return skill
-.split(",")
-.map(
-s=>`<span>${s.trim()}</span>`
-)
-.join("");
-
-}
-
-
-
-
-
-// โหลด Slot
-
-async function loadSlots(){
-
-
-const {data,error}=
-
-await supabaseClient
-.from("appointment_slots")
-.select("*")
-.eq(
-"technician_uuid",
-technician_id
-)
-.eq(
-"status",
-"available"
-)
-.order(
-"work_date"
-);
-
-
-
-if(error){
-
-console.log(error);
-
-return;
-
-}
-
-
-
-let html="";
-
-
-data.forEach(slot=>{
-
-
-html +=`
-
-<div class="slot"
-
-onclick="
-selectSlot(
-'${slot.id}',
-'${slot.work_date}',
-'${slot.slot_time}'
-)
-
-">
-
-${slot.work_date}
-<br>
-${slot.slot_time}
-
-</div>
-
-`;
-
-});
-
-
-
-document.getElementById("slots")
-.innerHTML =
-html || "ไม่มีเวลาว่าง";
-
-
-}
-
-
-
-
-
-// เลือก Slot
-
-function selectSlot(
-id,
-date,
-time
-){
-
-
-selectedSlot={
-
-id,
-date,
-time
-
-};
-
-
-alert(
-"เลือกเวลา "+date+" "+time
-);
-
-
-}
-
-
-
-
-// โหลดรีวิวจริง
-
-async function loadReviews(){
-
-
-const {data,error}=
-
-await supabaseClient
-.from("technician_public_reviews")
-.select("*")
-.eq(
-"technician_id",
-technician_id
-)
-.order(
-"created_at",
-{
-ascending:false
-}
-);
-
-
-
-if(error){
-
-console.log(error);
-
-return;
-
-}
-
-
-
-let html="";
-
-
-
-if(!data.length){
-
-html="ยังไม่มีรีวิว";
-
-}
-
-else{
-
-
-data.forEach(r=>{
-
-
-html +=`
-
-<div class="review">
-
-<b>
-${r.customer_name}
-</b>
-
-
-<div>
-${"⭐".repeat(r.rating)}
-</div>
-
-
-<p>
-${r.comment || ""}
-</p>
-
-
-<small>
-${new Date(
-r.created_at
-)
-.toLocaleDateString("th-TH")}
-</small>
-
-
-</div>
-
-
-`;
-
-});
-
-
-}
-
-
-
-document.getElementById("reviews")
-.innerHTML=html;
-
-
-}
-
-
-
-
-
-// ไปหน้า Booking
-
-function booking(){
-
-
-if(!selectedSlot){
-
-alert(
-"กรุณาเลือกเวลานัดหมาย"
-);
-
-return;
-
-}
-
-
-
-window.location.href =
-"/booking/index.html?"
-+
-"technician_uuid="
-+technician_id
-+
+</body>
+</html>
