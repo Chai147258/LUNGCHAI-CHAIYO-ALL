@@ -82,7 +82,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(2,2,12,.96);
 .card:hover{border-color:rgba(201,168,76,.4);transform:translateY(-4px);box-shadow:0 10px 32px rgba(0,0,0,.45),0 0 20px rgba(201,168,76,.08)}
 .card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transition:transform var(--t);transform-origin:left}
 .card:hover::before{transform:scaleX(1)}
-.c-img{aspect-ratio:1;background:var(--deep);display:flex;align-items:center;justify-content:center;font-size:2.6rem}
+.c-img{aspect-ratio:1;background:var(--deep);display:flex;align-items:center;justify-content:center;font-size:2.6rem;overflow:hidden}
+.c-img img{width:100%;height:100%;object-fit:cover}
 .c-body{padding:.85rem .95rem 1rem}
 .c-cat{font-family:var(--fm);font-size:.56rem;letter-spacing:.06em;color:var(--gold-dim);margin-bottom:.3rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .c-name{font-family:var(--fc);font-size:.82rem;font-weight:700;color:var(--white);margin-bottom:.55rem;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.3em}
@@ -114,7 +115,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(2,2,12,.96);
 .modal::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
 .m-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--steel);font-size:1.4rem;cursor:pointer;z-index:1}
 .m-close:hover{color:var(--gold)}
-.m-img{aspect-ratio:16/9;background:var(--deep);display:flex;align-items:center;justify-content:center;font-size:4.5rem;border-radius:16px 16px 0 0}
+.m-img{aspect-ratio:16/9;background:var(--deep);display:flex;align-items:center;justify-content:center;font-size:4.5rem;border-radius:16px 16px 0 0;overflow:hidden}
+.m-img img{width:100%;height:100%;object-fit:cover}
 .m-body{padding:1.6rem}
 .m-cat{font-family:var(--fm);font-size:.6rem;letter-spacing:.1em;color:var(--gold);margin-bottom:.4rem}
 .m-name{font-family:var(--fc);font-size:1.1rem;font-weight:700;color:var(--white);margin-bottom:1rem;line-height:1.3}
@@ -255,6 +257,8 @@ async function loadData(){
       name: p.name,
       price: parseFloat(p.price),
       icon: p.thumbnail_icon || p.categories?.icon || '📦',
+      thumbUrl: p.thumb_path ? `${SB_URL}/storage/v1/object/public/products/${p.thumb_path}` : null,
+      imageUrl: p.image_path ? `${SB_URL}/storage/v1/object/public/products/${p.image_path}` : null,
       catSlug: p.categories?.slug || 'other',
       catName: p.categories?.icon ? `${p.categories.icon} ${p.categories.name}` : (p.categories?.name || 'อื่นๆ'),
       groupId: p.categories?.group_id || null
@@ -343,7 +347,7 @@ function render(){
   } else {
     grid.innerHTML = pageItems.map(p => `
       <div class="card" onclick="openModal(${p.id})">
-        <div class="c-img"><span>${p.icon}</span></div>
+        <div class="c-img">${p.thumbUrl ? `<img src="${p.thumbUrl}" alt="${p.name}" loading="lazy">` : `<span>${p.icon}</span>`}</div>
         <div class="c-body">
           <div class="c-cat">${p.catName}</div>
           <div class="c-name">${p.name}</div>
@@ -397,7 +401,7 @@ function openModal(id){
   if(!p) return;
   document.getElementById('modal-c').innerHTML = `
     <button class="m-close" onclick="closeModal()">✕</button>
-    <div class="m-img"><span>${p.icon}</span></div>
+    <div class="m-img">${p.imageUrl ? `<img src="${p.imageUrl}" alt="${p.name}">` : `<span>${p.icon}</span>`}</div>
     <div class="m-body">
       <div class="m-cat">${p.catName}</div>
       <div class="m-name">${p.name}</div>
