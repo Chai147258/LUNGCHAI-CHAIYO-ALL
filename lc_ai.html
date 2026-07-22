@@ -785,22 +785,47 @@
         const SHOP_FALLBACK_LAT = 13.14, SHOP_FALLBACK_LNG = 101.39;
         let locationMap = null;
         let locationMarker = null;
+        let shopMarker = null;
+        let distanceLine = null;
+
+        function refreshDistanceLine() {
+            const custPos = locationMarker.getLatLng();
+            const shopPos = shopMarker.getLatLng();
+            if (distanceLine) locationMap.removeLayer(distanceLine);
+            distanceLine = L.polyline([shopPos, custPos], { color: "#ff5da2", weight: 2, dashArray: "6,6" }).addTo(locationMap);
+        }
 
         function ensureLocationMap(centerLat, centerLng) {
             if (!locationMap) {
-                locationMap = L.map("location-map", { zoomControl: true }).setView([centerLat, centerLng], 15);
+                locationMap = L.map("location-map", { zoomControl: true }).setView([centerLat, centerLng], 14);
                 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
                     attribution: "&copy; OpenStreetMap contributors",
                 }).addTo(locationMap);
+
+                // 🏠 ร้านลุงชัย — จุดอ้างอิงคงที่ ไม่สามารถลากได้
+                const shopIcon = L.divIcon({
+                    className: "",
+                    html: '<div style="background:#7c3aed;width:14px;height:14px;border-radius:50%;border:2px solid white;box-shadow:0 0 6px rgba(124,58,237,.8)"></div>',
+                    iconSize: [14, 14],
+                });
+                shopMarker = L.marker([SHOP_FALLBACK_LAT, SHOP_FALLBACK_LNG], { icon: shopIcon, interactive: false }).addTo(locationMap);
+                shopMarker.bindTooltip("🏠 ร้านลุงชัย ไชโย ออล", { permanent: false, direction: "top" });
+
                 locationMarker = L.marker([centerLat, centerLng], { draggable: true }).addTo(locationMap);
+                locationMarker.bindTooltip("📍 ตำแหน่งของคุณ (ลากปรับได้)", { permanent: false, direction: "top" });
+                locationMarker.on("drag", refreshDistanceLine);
                 locationMarker.on("dragend", updateHintFromMarker);
                 locationMap.on("click", function (e) {
                     locationMarker.setLatLng(e.latlng);
+                    refreshDistanceLine();
                     updateHintFromMarker();
                 });
+                refreshDistanceLine();
+                locationMap.fitBounds(L.latLngBounds([shopMarker.getLatLng(), locationMarker.getLatLng()]), { padding: [40, 40] });
             } else {
-                locationMap.setView([centerLat, centerLng], 15);
                 locationMarker.setLatLng([centerLat, centerLng]);
+                refreshDistanceLine();
+                locationMap.fitBounds(L.latLngBounds([shopMarker.getLatLng(), locationMarker.getLatLng()]), { padding: [40, 40] });
             }
             // Leaflet needs a resize nudge since the modal was just made visible
             setTimeout(function () { locationMap.invalidateSize(); }, 150);
@@ -833,13 +858,23 @@
         function openLocationModal() {
             locationModal.classList.remove("hidden");
             locationModal.classList.add("flex");
-            if (navigator.geolocation) {
+            const isSecureContext = window.isSecureContext;
+            if (navigator.geolocation && isSecureContext) {
                 navigator.geolocation.getCurrentPosition(
                     function (pos) { ensureLocationMap(pos.coords.latitude, pos.coords.longitude); },
                     function () { ensureLocationMap(SHOP_FALLBACK_LAT, SHOP_FALLBACK_LNG); },
                     { enableHighAccuracy: true, timeout: 8000 }
                 );
             } else {
+                // เว็บไซต์นี้ยังไม่ได้เปิดใช้ HTTPS ทำให้เบราว์เซอร์ไม่อนุญาตให้ขอ GPS อัตโนมัติ
+                // ให้ลูกค้าลากหมุดเองแทน (ยังคงบันทึกพิกัด+คำนวณระยะทางได้ตามปกติ)
+                if (!isSecureContext) {
+                    ensureLocationMap(SHOP_FALLBACK_LAT, SHOP_FALLBACK_LNG);
+                    setTimeout(function () {
+                        locationMapHint.textContent = "⚠️ เว็บไซต์นี้ยังไม่รองรับ HTTPS จึงขอ GPS อัตโนมัติไม่ได้ — กรุณาลากหมุดสีชมพูไปยังตำแหน่งของคุณแทนครับ";
+                    }, 400);
+                    return;
+                }
                 ensureLocationMap(SHOP_FALLBACK_LAT, SHOP_FALLBACK_LNG);
             }
         }
