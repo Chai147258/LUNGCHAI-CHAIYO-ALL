@@ -5,6 +5,8 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>ลุงชัย AI - Lungchai Chaiyo Group</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <!-- Three.js Library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&amp;family=Space+Mono:ital,wght@0,400;0,700;1,400&amp;family=Space+Grotesk:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>
@@ -777,26 +779,91 @@
         }
         loadTechStatus();
 
+        // ---- 📍 Location pin modal (Leaflet, no API key needed) ----
+        const locationModal = document.getElementById("location-modal");
+        const locationMapHint = document.getElementById("location-map-hint");
+        const SHOP_FALLBACK_LAT = 13.14, SHOP_FALLBACK_LNG = 101.39;
+        let locationMap = null;
+        let locationMarker = null;
+
+        function ensureLocationMap(centerLat, centerLng) {
+            if (!locationMap) {
+                locationMap = L.map("location-map", { zoomControl: true }).setView([centerLat, centerLng], 15);
+                L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                    attribution: "&copy; OpenStreetMap contributors",
+                }).addTo(locationMap);
+                locationMarker = L.marker([centerLat, centerLng], { draggable: true }).addTo(locationMap);
+                locationMarker.on("dragend", updateHintFromMarker);
+                locationMap.on("click", function (e) {
+                    locationMarker.setLatLng(e.latlng);
+                    updateHintFromMarker();
+                });
+            } else {
+                locationMap.setView([centerLat, centerLng], 15);
+                locationMarker.setLatLng([centerLat, centerLng]);
+            }
+            // Leaflet needs a resize nudge since the modal was just made visible
+            setTimeout(function () { locationMap.invalidateSize(); }, 150);
+            updateHintFromMarker();
+        }
+
+        async function reverseGeocode(lat, lng) {
+            try {
+                const res = await fetch(
+                    `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=17&addressdetails=0`,
+                    { headers: { Accept: "application/json" } }
+                );
+                if (!res.ok) return null;
+                const data = await res.json();
+                return data?.display_name || null;
+            } catch (err) {
+                return null;
+            }
+        }
+
+        async function updateHintFromMarker() {
+            const pos = locationMarker.getLatLng();
+            locationMapHint.textContent = "กำลังค้นหาที่อยู่...";
+            const address = await reverseGeocode(pos.lat, pos.lng);
+            locationMapHint.textContent = address
+                ? "📍 " + address
+                : `พิกัด: ${pos.lat.toFixed(5)}, ${pos.lng.toFixed(5)}`;
+        }
+
+        function openLocationModal() {
+            locationModal.classList.remove("hidden");
+            locationModal.classList.add("flex");
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function (pos) { ensureLocationMap(pos.coords.latitude, pos.coords.longitude); },
+                    function () { ensureLocationMap(SHOP_FALLBACK_LAT, SHOP_FALLBACK_LNG); },
+                    { enableHighAccuracy: true, timeout: 8000 }
+                );
+            } else {
+                ensureLocationMap(SHOP_FALLBACK_LAT, SHOP_FALLBACK_LNG);
+            }
+        }
+
+        function closeLocationModal() {
+            locationModal.classList.add("hidden");
+            locationModal.classList.remove("flex");
+        }
+
+        document.getElementById("location-modal-close").addEventListener("click", closeLocationModal);
+        document.getElementById("location-modal-cancel").addEventListener("click", closeLocationModal);
+        document.getElementById("location-modal-confirm").addEventListener("click", async function () {
+            const pos = locationMarker.getLatLng();
+            const address = await reverseGeocode(pos.lat, pos.lng);
+            closeLocationModal();
+            sendChat("", { lat: pos.lat, lng: pos.lng, address: address || undefined });
+        });
+
         chatLocationBtn.addEventListener("click", function () {
-            if (!navigator.geolocation) {
+            if (!navigator.geolocation && !window.L) {
                 addBubble("assistant", "เบราว์เซอร์นี้ไม่รองรับการแชร์ตำแหน่งครับ พิมพ์บอกพื้นที่/ระยะทางโดยประมาณแทนได้เลยครับ");
                 return;
             }
-            chatLocationBtn.disabled = true;
-            chatLocationBtn.classList.add("animate-pulse");
-            navigator.geolocation.getCurrentPosition(
-                function (pos) {
-                    chatLocationBtn.disabled = false;
-                    chatLocationBtn.classList.remove("animate-pulse");
-                    sendChat("", { lat: pos.coords.latitude, lng: pos.coords.longitude });
-                },
-                function () {
-                    chatLocationBtn.disabled = false;
-                    chatLocationBtn.classList.remove("animate-pulse");
-                    addBubble("assistant", "ไม่สามารถเข้าถึงตำแหน่งได้ครับ (อาจไม่ได้อนุญาต) รบกวนพิมพ์บอกพื้นที่/ระยะทางโดยประมาณแทนได้เลยครับ");
-                },
-                { enableHighAccuracy: true, timeout: 10000 }
-            );
+            openLocationModal();
         });
 
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -820,4 +887,25 @@
         }
     })();
 </script>
+<!-- 📍 Location pin modal: lets the customer see and drag their pin on a real map before sharing it -->
+<div id="location-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+  <div class="w-full max-w-md glass-panel border-2 rounded-2xl overflow-hidden" style="border-color: var(--mood-primary);">
+    <div class="px-4 py-3 border-b border-white/10 flex items-center justify-between">
+      <div class="font-label-mono text-sm" style="color: var(--mood-primary);">📍 ปักหมุดตำแหน่งของคุณ</div>
+      <button id="location-modal-close" class="material-symbols-outlined text-white/60 hover:text-white">close</button>
+    </div>
+    <div id="location-map" class="w-full h-72 bg-black/40"></div>
+    <div class="px-4 py-3 text-xs text-white/60" id="location-map-hint">
+      ลากหมุดเพื่อปรับตำแหน่งให้ตรงจุด แล้วกดยืนยันครับ
+    </div>
+    <div class="px-4 pb-4 flex gap-2">
+      <button id="location-modal-cancel" class="flex-1 py-2.5 rounded-full border border-white/20 text-white/70 font-label-mono text-xs hover:bg-white/5 transition">
+        ยกเลิก
+      </button>
+      <button id="location-modal-confirm" class="flex-1 py-2.5 rounded-full font-bold font-label-mono text-xs text-black transition hover:scale-[1.02]" style="background: var(--mood-primary);">
+        ยืนยันตำแหน่งนี้
+      </button>
+    </div>
+  </div>
+</div>
 </body></html>
