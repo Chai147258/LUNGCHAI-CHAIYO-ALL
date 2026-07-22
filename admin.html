@@ -498,6 +498,11 @@ tbody tr:hover{background:rgba(201,168,76,.04)}
             <option value="false">ปิดใช้งาน</option>
           </select>
         </div>
+        <div class="form-group full">
+          <label>รูปสินค้า (จะย่อขนาดอัตโนมัติ)</label>
+          <input type="file" id="pf-image" accept="image/*" onchange="previewProductImage(event)">
+          <div id="pf-image-preview" style="margin-top:8px;"></div>
+        </div>
       </div>
     </div>
     <div class="modal-foot">
@@ -896,6 +901,85 @@ function renderMiniPager(elId, totalPages, current, onGo){
   el.innerHTML = html;
 }
 
+// ═══════════════════════════════════════
+// PRODUCT IMAGE: client-side resize + upload
+// ═══════════════════════════════════════
+let pendingProductImageFile = null;
+
+function resizeImage(file, maxSize = 1000, quality = 0.8){
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const reader = new FileReader();
+    reader.onload = (e) => { img.src = e.target.result; };
+    reader.onerror = reject;
+    img.onload = () => {
+      let { width, height } = img;
+      if (width > height && width > maxSize) {
+        height = Math.round(height * (maxSize / width));
+        width = maxSize;
+      } else if (height > maxSize) {
+        width = Math.round(width * (maxSize / height));
+        height = maxSize;
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+      canvas.toBlob(
+        (blob) => resolve(new File([blob], file.name.replace(/\.[^.]+$/, '') + '.webp', { type: 'image/webp' })),
+        'image/webp',
+        quality
+      );
+    };
+    img.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function previewProductImage(event){
+  const file = event.target.files[0];
+  if(!file) return;
+  if(!file.type.startsWith('image/')){ toast('กรุณาเลือกไฟล์รูปภาพ','err'); event.target.value=''; return; }
+  pendingProductImageFile = file;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    document.getElementById('pf-image-preview').innerHTML =
+      `<img src="${e.target.result}" style="max-width:160px;max-height:160px;border-radius:8px;object-fit:cover;">`;
+  };
+  reader.readAsDataURL(file);
+}
+
+async function uploadProductImageIfNeeded(productId){
+  if(!pendingProductImageFile) return;
+  const file = pendingProductImageFile;
+  try{
+    const [mainFile, thumbFile] = await Promise.all([
+      resizeImage(file, 1000, 0.8),
+      resizeImage(file, 300, 0.8)
+    ]);
+    const mainPath  = `products/${productId}-${Date.now()}.webp`;
+    const thumbPath = `products/thumb-${productId}-${Date.now()}.webp`;
+    const [mainUp, thumbUp] = await Promise.all([
+      sb.storage.from('products').upload(mainPath, mainFile, { cacheControl: '3600', upsert: true }),
+      sb.storage.from('products').upload(thumbPath, thumbFile, { cacheControl: '3600', upsert: true })
+    ]);
+    if(mainUp.error || thumbUp.error){
+      toast('อัปโหลดรูปไม่สำเร็จ: ' + (mainUp.error?.message || thumbUp.error?.message), 'err');
+      return;
+    }
+    await sb.from('products').update({ image_path: mainPath, thumb_path: thumbPath }).eq('id', productId);
+  } catch(err){
+    toast('ย่อ/อัปโหลดรูปไม่สำเร็จ: ' + err.message, 'err');
+  } finally {
+    pendingProductImageFile = null;
+  }
+}
+
+function productImageUrl(path){
+  if(!path) return null;
+  return sb.storage.from('products').getPublicUrl(path).data.publicUrl;
+}
+
 function openProductModal(){
   document.getElementById('product-modal-title').textContent = 'เพิ่มสินค้า';
   document.getElementById('pf-id').value = '';
@@ -904,6 +988,9 @@ function openProductModal(){
   document.getElementById('pf-icon').value = '📦';
   document.getElementById('pf-active').value = 'true';
   document.getElementById('pf-category').innerHTML = allCategories.map(c=>`<option value="${c.id}">${c.icon} ${c.name}</option>`).join('');
+  document.getElementById('pf-image').value = '';
+  document.getElementById('pf-image-preview').innerHTML = '';
+  pendingProductImageFile = null;
   openModalEl('product-modal');
 }
 
@@ -917,6 +1004,12 @@ function editProduct(id){
   document.getElementById('pf-icon').value = p.thumbnail_icon || '📦';
   document.getElementById('pf-active').value = String(p.is_active);
   document.getElementById('pf-category').innerHTML = allCategories.map(c=>`<option value="${c.id}" ${c.id===p.category_id?'selected':''}>${c.icon} ${c.name}</option>`).join('');
+  document.getElementById('pf-image').value = '';
+  pendingProductImageFile = null;
+  const existingUrl = productImageUrl(p.thumb_path || p.image_path);
+  document.getElementById('pf-image-preview').innerHTML = existingUrl
+    ? `<img src="${existingUrl}" style="max-width:160px;max-height:160px;border-radius:8px;object-fit:cover;">`
+    : '';
   openModalEl('product-modal');
 }
 
@@ -934,11 +1027,13 @@ async function saveProduct(){
   if(id){
     const { error } = await sb.from('products').update(payload).eq('id', id);
     if(error){ toast(error.message,'err'); return; }
+    await uploadProductImageIfNeeded(id);
     await logAction('update','products',id, payload.name);
     toast('อัปเดตสินค้าสำเร็จ');
   } else {
     const { data, error } = await sb.from('products').insert(payload).select().single();
     if(error){ toast(error.message,'err'); return; }
+    await uploadProductImageIfNeeded(data.id);
     await logAction('create','products',data.id, payload.name);
     toast('เพิ่มสินค้าสำเร็จ');
   }
