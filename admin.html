@@ -235,6 +235,7 @@ tbody tr:hover{background:rgba(201,168,76,.04)}
       <button class="sb-link" data-page="members" onclick="goPage('members')"><span class="ico">👥</span> สมาชิก</button>
       <button class="sb-link" data-page="businesses" onclick="goPage('businesses')"><span class="ico">🏢</span> แบรนด์ในเครือ</button>
       <button class="sb-link" data-page="technicians" onclick="goPage('technicians')"><span class="ico">👨‍🔧</span> ช่างเทคนิค</button>
+      <button class="sb-link" data-page="partner_apps" onclick="goPage('partner_apps')"><span class="ico">📝</span> ใบสมัครช่าง <span class="sb-badge" id="badge-apps" style="display:none">0</span></button>
 
       <div class="sb-section-lbl">ระบบ</div>
       <button class="sb-link" data-page="logs" onclick="goPage('logs')"><span class="ico">📜</span> Activity Logs</button>
@@ -446,6 +447,27 @@ tbody tr:hover{background:rgba(201,168,76,.04)}
         </div>
       </div>
 
+      <!-- ═══ PAGE: PARTNER APPLICATIONS ═══ -->
+      <div class="page" id="page-partner_apps">
+        <div class="panel">
+          <div class="panel-head">
+            <div><div class="panel-title">📝 ใบสมัครช่างเครือข่าย</div><div class="panel-sub" id="apps-count">กำลังโหลด...</div></div>
+            <select class="tb-search" id="apps-filter-status" onchange="loadPartnerApps()" style="width:160px">
+              <option value="pending">รอตรวจสอบ</option>
+              <option value="approved">อนุมัติแล้ว</option>
+              <option value="rejected">ปฏิเสธแล้ว</option>
+              <option value="">ทั้งหมด</option>
+            </select>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>เลขที่ใบสมัคร</th><th>ชื่อ-นามสกุล</th><th>เบอร์โทร</th><th>ทักษะ</th><th>พื้นที่</th><th>สถานะ</th><th>วันที่สมัคร</th><th>จัดการ</th></tr></thead>
+              <tbody id="apps-tbody"><tr><td colspan="8" class="loading-row">⏳ กำลังโหลด...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
       <!-- ═══ PAGE: LOGS ═══ -->
       <div class="page" id="page-logs">
         <div class="panel">
@@ -460,6 +482,22 @@ tbody tr:hover{background:rgba(201,168,76,.04)}
       </div>
 
     </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PARTNER APPLICATION REVIEW MODAL
+═══════════════════════════════════ -->
+<div class="modal-ov" id="app-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title" id="app-modal-title">รายละเอียดใบสมัคร</div>
+      <button class="modal-close" onclick="closeModal('app-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="app-modal-body">
+      <div class="loading-row">⏳ กำลังโหลด...</div>
+    </div>
+    <div class="modal-foot" id="app-modal-foot"></div>
   </div>
 </div>
 
@@ -663,7 +701,7 @@ async function doLogin(){
     .eq('id', data.user.id)
     .single();
 
-  if(profErr || !profile || !['admin','staff'].includes(profile.member_type)){
+  if(profErr || !profile || !['admin','staff'].includes(profile.role)){
     errEl.textContent = '⛔ บัญชีนี้ไม่มีสิทธิ์เข้าใช้งาน Admin Panel';
     errEl.classList.add('show');
     await sb.auth.signOut();
@@ -687,7 +725,7 @@ async function checkSession(){
   if(!session) return;
 
   const { data: profile } = await sb.from('profiles').select('*').eq('id', session.user.id).single();
-  if(profile && ['admin','staff'].includes(profile.member_type)){
+  if(profile && ['admin','staff'].includes(profile.role)){
     currentProfile = profile;
     showAdminShell();
   }
@@ -697,9 +735,10 @@ function showAdminShell(){
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('admin-shell').classList.add('active');
   document.getElementById('sb-user-name').textContent = currentProfile.full_name || 'Admin';
-  document.getElementById('sb-user-role').textContent = currentProfile.member_type.toUpperCase();
+  document.getElementById('sb-user-role').textContent = currentProfile.role.toUpperCase();
   document.getElementById('sb-user-av').textContent = (currentProfile.full_name || 'A')[0].toUpperCase();
   loadDashboard();
+  refreshAppsBadge();
 }
 
 // ═══════════════════════════════════════
@@ -721,7 +760,7 @@ const PAGE_TITLES = {
   dashboard: '📊 Dashboard', products: '📦 สินค้า', categories: '🗂️ หมวดหมู่สินค้า',
   services: '🔧 บริการซ่อม', orders: '🛒 ออเดอร์', service_requests: '📋 คำขอใช้บริการ',
   contacts: '💬 ข้อความติดต่อ', members: '👥 สมาชิก', businesses: '🏢 แบรนด์ในเครือ',
-  technicians: '👨‍🔧 ช่างเทคนิค', logs: '📜 Activity Logs'
+  technicians: '👨‍🔧 ช่างเทคนิค', partner_apps: '📝 ใบสมัครช่าง', logs: '📜 Activity Logs'
 };
 
 const loadedPages = new Set();
@@ -736,7 +775,8 @@ function goPage(page){
   const loaders = {
     products: loadProducts, categories: loadCategories, services: loadServices,
     orders: loadOrders, service_requests: loadServiceRequests, contacts: loadContacts,
-    members: loadMembers, businesses: loadBusinesses, technicians: loadTechnicians, logs: loadLogs
+    members: loadMembers, businesses: loadBusinesses, technicians: loadTechnicians,
+    partner_apps: loadPartnerApps, logs: loadLogs
   };
   if(loaders[page]) loaders[page]();
 }
@@ -1378,7 +1418,7 @@ async function loadMembers(){
     <tr>
       <td>${m.full_name||'-'}</td>
       <td class="cell-muted">${m.phone||'-'}</td>
-      <td>${m.member_type==='admin'||m.member_type==='staff' ? `<span class="badge badge-admin">${typeLabel[m.member_type]}</span>` : (typeLabel[m.member_type]||m.member_type)}</td>
+      <td>${m.role==='admin'||m.role==='staff' ? `<span class="badge badge-admin">${typeLabel[m.role]}</span>` : (typeLabel[m.role]||m.role)}</td>
       <td class="cell-num">${m.points||0}</td>
       <td class="cell-muted">${fmtDate(m.created_at)}</td>
     </tr>`).join('');
@@ -1417,11 +1457,119 @@ async function loadTechnicians(){
   }
   tbody.innerHTML = data.map(t => `
     <tr>
-      <td>${t.name}</td>
+      <td>${t.full_name}</td>
       <td class="cell-muted">${t.phone||'-'}</td>
       <td class="cell-muted">${t.skill||'-'}</td>
-      <td>${t.status==='available' ? '<span class="badge badge-active">ว่าง</span>' : '<span class="badge badge-inactive">ไม่ว่าง</span>'}</td>
+      <td>${t.active ? '<span class="badge badge-active">พร้อมรับงาน</span>' : '<span class="badge badge-inactive">ปิดรับงาน</span>'}</td>
     </tr>`).join('');
+}
+
+// ═══════════════════════════════════════
+// PARTNER APPLICATIONS (technician recruitment)
+// ═══════════════════════════════════════
+let APPS_CACHE = [];
+
+async function refreshAppsBadge(){
+  const { count } = await sb.from('partner_registrations').select('id', { count:'exact', head:true }).eq('status','pending');
+  const badge = document.getElementById('badge-apps');
+  if(count > 0){ badge.style.display = 'inline-block'; badge.textContent = count; }
+  else { badge.style.display = 'none'; }
+}
+
+async function loadPartnerApps(){
+  const status = document.getElementById('apps-filter-status').value;
+  const { data, error } = await sb.rpc('admin_list_partner_registrations', { p_status: status || null });
+  if(error){ toast(error.message, 'err'); return; }
+  APPS_CACHE = data || [];
+  document.getElementById('apps-count').textContent = `รวม ${APPS_CACHE.length} ใบสมัคร`;
+  const tbody = document.getElementById('apps-tbody');
+  if(!APPS_CACHE.length){
+    tbody.innerHTML = '<tr><td colspan="8" class="empty-row">ไม่พบใบสมัคร</td></tr>';
+    return;
+  }
+  const statusBadgeMap = { pending:'<span class="badge badge-pending">รอตรวจสอบ</span>', approved:'<span class="badge badge-active">อนุมัติแล้ว</span>', rejected:'<span class="badge badge-cancel">ปฏิเสธแล้ว</span>' };
+  tbody.innerHTML = APPS_CACHE.map(a => `
+    <tr>
+      <td class="cell-muted">${a.registration_no||'-'}</td>
+      <td>${a.full_name}</td>
+      <td class="cell-muted">${a.phone||'-'}</td>
+      <td class="cell-muted" style="max-width:200px;white-space:normal">${(a.skills||[]).join(', ')||'-'}</td>
+      <td class="cell-muted">${a.district||''} ${a.province||''}</td>
+      <td>${statusBadgeMap[a.status]||a.status}</td>
+      <td class="cell-muted">${fmtDate(a.created_at)}</td>
+      <td><button class="btn btn-outline btn-sm" onclick="openAppModal('${a.id}')">ดูรายละเอียด</button></td>
+    </tr>`).join('');
+  refreshAppsBadge();
+}
+
+async function signedDocUrl(path){
+  if(!path) return null;
+  const { data, error } = await sb.storage.from('documents').createSignedUrl(path, 600);
+  if(error){ console.warn(error); return null; }
+  return data.signedUrl;
+}
+
+async function openAppModal(id){
+  const a = APPS_CACHE.find(x => x.id === id);
+  if(!a) return;
+  openModalEl('app-modal');
+  document.getElementById('app-modal-title').textContent = `ใบสมัคร ${a.registration_no || ''}`;
+  document.getElementById('app-modal-body').innerHTML = '<div class="loading-row">⏳ กำลังโหลดเอกสาร...</div>';
+  document.getElementById('app-modal-foot').innerHTML = '';
+
+  const [idCardUrl, portraitUrl] = await Promise.all([signedDocUrl(a.id_card_path), signedDocUrl(a.portrait_path)]);
+
+  document.getElementById('app-modal-body').innerHTML = `
+    <div class="form-grid">
+      <div class="form-group"><label>ชื่อ-นามสกุล</label><div>${a.full_name}</div></div>
+      <div class="form-group"><label>ชื่อร้าน/ธุรกิจ</label><div>${a.business_name||'-'}</div></div>
+      <div class="form-group"><label>เบอร์โทร</label><div>${a.phone||'-'}</div></div>
+      <div class="form-group"><label>LINE ID</label><div>${a.line_id||'-'}</div></div>
+      <div class="form-group"><label>อีเมล</label><div>${a.email||'-'}</div></div>
+      <div class="form-group"><label>ทักษะ</label><div>${(a.skills||[]).join(', ')||'-'}</div></div>
+      <div class="form-group full"><label>ที่อยู่</label><div>${a.address||'-'} ${a.subdistrict||''} ${a.district||''} ${a.province||''}</div></div>
+      <div class="form-group"><label>พิกัด</label><div class="cell-muted">${a.latitude||'-'}, ${a.longitude||'-'}</div></div>
+      <div class="form-group"><label>บัญชีธนาคาร</label><div class="cell-muted">${a.bank_name||'-'} • ${a.bank_account_no||'-'} • ${a.bank_account_name||'-'}</div></div>
+      <div class="form-group full"><label>หมายเหตุจากผู้สมัคร</label><div class="cell-muted">${a.note||'-'}</div></div>
+      <div class="form-group"><label>บัตรประชาชน</label>
+        ${idCardUrl ? `<a href="${idCardUrl}" target="_blank"><img src="${idCardUrl}" style="width:100%;border-radius:8px;border:1px solid rgba(201,168,76,.2)"></a>` : '<div class="cell-muted">ไม่มีไฟล์</div>'}
+      </div>
+      <div class="form-group"><label>รูปถ่ายหน้าตรง</label>
+        ${portraitUrl ? `<a href="${portraitUrl}" target="_blank"><img src="${portraitUrl}" style="width:100%;border-radius:8px;border:1px solid rgba(201,168,76,.2)"></a>` : '<div class="cell-muted">ไม่มีไฟล์</div>'}
+      </div>
+    </div>
+    ${a.status === 'rejected' && a.reject_reason ? `<div class="panel" style="margin-top:1rem;border-color:rgba(231,76,60,.3)"><b style="color:#E74C3C">เหตุผลที่ปฏิเสธ:</b> ${a.reject_reason}</div>` : ''}
+  `;
+
+  if(a.status === 'pending'){
+    document.getElementById('app-modal-foot').innerHTML = `
+      <button class="btn btn-red" onclick="rejectApp('${a.id}')">✕ ปฏิเสธ</button>
+      <button class="btn btn-gold" onclick="approveApp('${a.id}')">✓ อนุมัติเป็นช่าง</button>
+    `;
+  }
+}
+
+async function approveApp(id){
+  if(!confirm('ยืนยันอนุมัติใบสมัครนี้เป็นช่างเครือข่าย? ระบบจะสร้างบัญชีช่างและ PIN เข้าระบบให้อัตโนมัติ')) return;
+  const { data, error } = await sb.rpc('approve_partner_registration', { p_registration_id: id });
+  if(error){ toast(error.message, 'err'); return; }
+  if(!data.success){ toast(data.message, 'err'); return; }
+  await logAction('approve','partner_registrations', id, `technician_id=${data.technician_id}`);
+  closeModal('app-modal');
+  alert(`อนุมัติสำเร็จ!\n\nแจ้งช่างให้เข้าสู่ระบบที่ /technician/technician-portal.html\nเบอร์: ${data.phone}\nPIN เข้าระบบ: ${data.login_pin}\n\n(กรุณาแจ้ง PIN นี้ให้ช่างทางโทรศัพท์/LINE เท่านั้น ไม่ส่งผ่านช่องทางสาธารณะ)`);
+  loadPartnerApps();
+  loadTechnicians();
+}
+
+async function rejectApp(id){
+  const reason = prompt('ระบุเหตุผลที่ปฏิเสธใบสมัครนี้ (ผู้สมัครจะไม่เห็นข้อความนี้ในระบบปัจจุบัน แต่เก็บไว้เป็นบันทึกภายใน):');
+  if(reason === null) return;
+  const { data, error } = await sb.rpc('reject_partner_registration', { p_registration_id: id, p_reason: reason });
+  if(error){ toast(error.message, 'err'); return; }
+  await logAction('reject','partner_registrations', id, reason);
+  toast('ปฏิเสธใบสมัครแล้ว');
+  closeModal('app-modal');
+  loadPartnerApps();
 }
 
 // ═══════════════════════════════════════
