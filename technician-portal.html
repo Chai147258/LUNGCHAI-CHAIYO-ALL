@@ -81,6 +81,13 @@
       </button>
     </div>
 
+    <div class="mb-8 hidden" id="offersSection">
+      <h2 class="font-head text-sm font-bold text-[#ff6ec7] uppercase tracking-widest mb-3 flex items-center gap-2">
+        <span class="material-symbols-outlined text-base">near_me</span> ระบบแนะนำส่งงานให้คุณ (<span id="offerCount">0</span>)
+      </h2>
+      <div id="offerJobs" class="grid sm:grid-cols-2 gap-4"></div>
+    </div>
+
     <div class="mb-8">
       <h2 class="font-head text-sm font-bold text-[#ffcc00] uppercase tracking-widest mb-3 flex items-center gap-2">
         <span class="material-symbols-outlined text-base">inbox</span> งานที่รอรับ (<span id="availCount">0</span>)
@@ -140,12 +147,14 @@ function showDashboard(){
   document.getElementById('techSkill').textContent = session.skill || '';
   renderHeaderActions();
   loadJobs();
+  startOfferPolling();
 }
 
 function showLogin(){
   document.getElementById('loginView').classList.remove('hidden');
   document.getElementById('dashboardView').classList.add('hidden');
   renderHeaderActions();
+  if(offerPollTimer){ clearInterval(offerPollTimer); offerPollTimer = null; }
 }
 
 document.getElementById('loginForm').addEventListener('submit', async (e)=>{
@@ -234,6 +243,83 @@ function jobCard(job, bucket){
       ${actions}
     </div>
   `;
+}
+
+function fmtCountdown(ms){
+  if(ms <= 0) return 'หมดเวลา';
+  const s = Math.floor(ms/1000);
+  return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+}
+
+function offerCard(o){
+  const expressTag = o.is_express ? `<span class="text-[10px] px-2 py-0.5 rounded-full bg-red-500/20 text-red-400 font-bold">ด่วน</span>` : '';
+  return `
+    <div class="job-card glass rounded-2xl p-5 border border-[#ff6ec7]/30" data-offer-id="${o.offer_id}" data-expires="${o.expires_at}">
+      <div class="flex items-start justify-between mb-2">
+        <span class="font-head font-bold text-[#ff6ec7] text-sm">${o.request_number}</span>
+        <span class="text-[11px] font-bold text-white/70 countdown">--:--</span>
+      </div>
+      ${expressTag}
+      <p class="text-white font-bold text-sm mb-1 mt-1">${o.device_type || 'งานซ่อมทั่วไป'}</p>
+      <p class="text-white/50 text-xs mb-3 line-clamp-2">${o.note || ''}</p>
+      <div class="space-y-1 mb-3 text-xs text-white/40">
+        <p class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm">person</span> ${o.customer_name || '-'} · ${o.phone || '-'}</p>
+        <p class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm">distance</span> ห่างจากคุณประมาณ ${o.distance_km ?? '-'} กม.</p>
+        <p class="flex items-center gap-1.5 text-[#b8fc4b] font-bold"><span class="material-symbols-outlined text-sm">payments</span> ค่าตอบแทนรวมโดยประมาณ ${o.fee_total ?? '-'} บาท</p>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="respondOffer('${o.offer_id}', true)" class="flex-1 bg-[#b8fc4b] text-black text-xs font-bold py-2.5 rounded-xl hover:brightness-95 transition flex items-center justify-center gap-1.5">
+          <span class="material-symbols-outlined text-base">check_circle</span> รับงานนี้
+        </button>
+        <button onclick="respondOffer('${o.offer_id}', false)" class="px-3 bg-white/10 text-white/60 text-xs font-bold py-2.5 rounded-xl hover:bg-red-500/20 hover:text-red-400 transition">
+          <span class="material-symbols-outlined text-base">close</span>
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function tickOfferCountdowns(){
+  document.querySelectorAll('#offerJobs [data-offer-id]').forEach(card => {
+    const el = card.querySelector('.countdown');
+    const ms = new Date(card.dataset.expires).getTime() - Date.now();
+    el.textContent = fmtCountdown(ms);
+    if(ms <= 0) loadOffers();
+  });
+}
+setInterval(tickOfferCountdowns, 1000);
+
+async function loadOffers(){
+  if(!session) return;
+  try{
+    const rows = await rpc('technician_get_offers', { p_token: session.token });
+    document.getElementById('offerCount').textContent = rows.length;
+    document.getElementById('offerJobs').innerHTML = rows.map(offerCard).join('');
+    document.getElementById('offersSection').classList.toggle('hidden', rows.length === 0);
+    tickOfferCountdowns();
+  }catch(err){
+    if(!String(err.message).includes('invalid or expired session')){
+      console.error('loadOffers', err.message);
+    }
+  }
+}
+
+async function respondOffer(offerId, accept){
+  try{
+    const result = await rpc('respond_to_job_offer', { p_token: session.token, p_offer_id: offerId, p_accept: accept });
+    if(!result.ok){
+      alert(accept ? 'รับงานไม่สำเร็จ: งานนี้อาจถูกยกเลิกหรือหมดเวลาแล้ว' : 'ดำเนินการไม่สำเร็จ');
+    }
+    loadOffers();
+    loadJobs();
+  }catch(err){ alert('เกิดข้อผิดพลาด: ' + err.message); }
+}
+
+let offerPollTimer = null;
+function startOfferPolling(){
+  loadOffers();
+  if(offerPollTimer) clearInterval(offerPollTimer);
+  offerPollTimer = setInterval(loadOffers, 8000);
 }
 
 async function loadJobs(){
