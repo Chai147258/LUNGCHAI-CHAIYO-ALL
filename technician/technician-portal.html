@@ -104,6 +104,20 @@
       <div id="myJobs" class="grid sm:grid-cols-2 gap-4"></div>
       <p id="mineEmpty" class="hidden text-white/30 text-sm text-center py-8">คุณยังไม่มีงานที่กำลังดำเนินการ</p>
     </div>
+
+    <div class="mt-8">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="font-head text-sm font-bold text-[#b8fc4b] uppercase tracking-widest flex items-center gap-2">
+          <span class="material-symbols-outlined text-base">photo_library</span> ผลงานของฉัน
+        </h2>
+        <label class="glass px-3 py-1.5 rounded-lg text-xs font-bold text-white/70 hover:text-[#b8fc4b] cursor-pointer flex items-center gap-1">
+          <span class="material-symbols-outlined text-base">add_a_photo</span> เพิ่มรูป
+          <input type="file" accept="image/*" class="hidden" id="portfolioInput" onchange="uploadPortfolioPhoto(this)">
+        </label>
+      </div>
+      <div id="portfolioGrid" class="grid grid-cols-3 gap-2"></div>
+      <p id="portfolioEmpty" class="hidden text-white/30 text-sm text-center py-8">อัปโหลดรูปผลงานที่ผ่านมา ให้ลูกค้าเห็นก่อนเลือกคุณ</p>
+    </div>
   </section>
 
 </main>
@@ -148,6 +162,7 @@ function showDashboard(){
   document.getElementById('techSkill').textContent = session.skill || '';
   renderHeaderActions();
   loadJobs();
+  loadPortfolio();
   startOfferPolling();
 }
 
@@ -321,6 +336,70 @@ function startOfferPolling(){
   loadOffers();
   if(offerPollTimer) clearInterval(offerPollTimer);
   offerPollTimer = setInterval(loadOffers, 8000);
+}
+
+// ═══ PORTFOLIO ═══
+function resizeImage(file, maxDim){
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const reader = new FileReader();
+    reader.onload = e => { img.src = e.target.result; };
+    img.onload = () => {
+      let { width, height } = img;
+      if(width > height && width > maxDim){ height *= maxDim/width; width = maxDim; }
+      else if(height > maxDim){ width *= maxDim/height; height = maxDim; }
+      const canvas = document.createElement('canvas');
+      canvas.width = width; canvas.height = height;
+      canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+      canvas.toBlob(blob => resolve(blob), 'image/jpeg', 0.85);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function portfolioCard(p){
+  return `
+    <div class="relative aspect-square rounded-lg overflow-hidden bg-white/5 group">
+      <img src="${p.photo_url}" class="w-full h-full object-cover">
+      <button onclick="deletePortfolioPhoto('${p.id}')" class="absolute top-1 right-1 bg-black/70 rounded-full w-6 h-6 flex items-center justify-center text-white/80 hover:text-red-400 opacity-0 group-hover:opacity-100 transition">
+        <span class="material-symbols-outlined text-sm">delete</span>
+      </button>
+    </div>`;
+}
+
+async function loadPortfolio(){
+  if(!session) return;
+  try{
+    const rows = await rpc('technician_get_my_portfolio', { p_token: session.token });
+    document.getElementById('portfolioGrid').innerHTML = rows.map(portfolioCard).join('');
+    document.getElementById('portfolioEmpty').classList.toggle('hidden', rows.length > 0);
+  }catch(err){ console.error('loadPortfolio', err.message); }
+}
+
+async function uploadPortfolioPhoto(input){
+  const file = input.files[0];
+  if(!file || !session) return;
+  try{
+    const blob = await resizeImage(file, 1280);
+    const path = `portfolio/${session.technician_id}/${Date.now()}.jpg`;
+    const upRes = await fetch(`${SB_URL}/storage/v1/object/technicians/${path}`, {
+      method: 'POST',
+      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'image/jpeg' },
+      body: blob
+    });
+    if(!upRes.ok) throw new Error('อัปโหลดรูปไม่สำเร็จ');
+    const publicUrl = `${SB_URL}/storage/v1/object/public/technicians/${path}`;
+    await rpc('technician_add_portfolio_photo', { p_token: session.token, p_photo_url: publicUrl, p_caption: null });
+    loadPortfolio();
+  }catch(err){ alert('เกิดข้อผิดพลาด: ' + err.message); }
+  finally{ input.value = ''; }
+}
+
+async function deletePortfolioPhoto(id){
+  if(!confirm('ลบรูปนี้ออกจากผลงานของคุณ?')) return;
+  await rpc('technician_delete_portfolio_photo', { p_token: session.token, p_photo_id: id });
+  loadPortfolio();
 }
 
 async function loadJobs(){
