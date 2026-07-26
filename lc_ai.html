@@ -741,12 +741,103 @@
             }
         }
 
+        function starsHtml(n){
+            const full = Math.round(n||0);
+            let out = "";
+            for (let i=0;i<5;i++){
+                out += '<span class="material-symbols-outlined" style="font-size:14px;color:' + (i<full?'#ffcc00':'rgba(255,255,255,.15)') + '">star</span>';
+            }
+            return out;
+        }
+
+        function addTechCardsBubble(list) {
+            const wrap = document.createElement("div");
+            wrap.className = "flex flex-col items-start gap-2 max-w-[92%] sm:max-w-[85%] pulse-bubble";
+
+            const inner = document.createElement("div");
+            inner.className = "px-3 py-3 sm:px-4 sm:py-4 glass-panel border-2 text-on-surface rounded-t-2xl rounded-br-2xl";
+            inner.style.borderColor = "var(--mood-primary)";
+
+            if (!list.length) {
+                inner.innerHTML = '<p class="font-body-lg text-sm">ตอนนี้ยังไม่มีช่างว่างครับ ทีมงานจะติดต่อกลับโดยเร็วที่สุด 🙏</p>';
+                wrap.appendChild(inner);
+                chatMessages.appendChild(wrap);
+                scrollToBottom();
+                return;
+            }
+
+            const title = document.createElement("p");
+            title.className = "font-label-mono text-[11px] uppercase mb-3 opacity-70";
+            title.textContent = "ช่างพร้อมให้บริการตอนนี้ (" + list.length + ")";
+            inner.appendChild(title);
+
+            const cardsWrap = document.createElement("div");
+            cardsWrap.className = "flex flex-col gap-2";
+
+            list.forEach(function (t) {
+                const skills = (t.skill || "").split(",").map(function(s){return s.trim();}).filter(Boolean).slice(0, 3);
+                const card = document.createElement("div");
+                card.className = "flex items-center gap-3 p-2.5 rounded-xl";
+                card.style.background = "rgba(255,255,255,.04)";
+                card.style.border = "1px solid rgba(255,255,255,.08)";
+
+                const photoSrc = t.photo_url ? (t.photo_url.indexOf("http") === 0 ? t.photo_url : "/" + t.photo_url) : "";
+                card.innerHTML =
+                    '<div style="width:44px;height:44px;border-radius:50%;overflow:hidden;flex-shrink:0;background:linear-gradient(135deg,rgba(184,252,75,.3),rgba(152,203,255,.2));display:flex;align-items:center;justify-content:center;font-weight:700;">' +
+                        (photoSrc ? '<img src="' + photoSrc + '" style="width:100%;height:100%;object-fit:cover">' : (t.full_name||"ช").charAt(0)) +
+                    '</div>' +
+                    '<div class="flex-1 min-w-0">' +
+                        '<p class="font-bold text-sm truncate">' + t.full_name + '</p>' +
+                        '<div class="flex items-center gap-1">' + starsHtml(t.avg_rating) + '<span class="text-[10px] opacity-50">(' + t.total_reviews + ')</span></div>' +
+                        '<div class="flex flex-wrap gap-1 mt-1">' + skills.map(function(s){ return '<span class="text-[9px] px-1.5 py-0.5 rounded-full" style="background:rgba(255,255,255,.06);opacity:.7">' + s + '</span>'; }).join("") + '</div>' +
+                    '</div>' +
+                    '<button class="text-[10px] font-bold px-2.5 py-2 rounded-lg flex-shrink-0" style="background:var(--mood-primary);color:#000" data-tech-id="' + t.technician_id + '">เลือก</button>';
+
+                card.querySelector("button").addEventListener("click", function () {
+                    window.top.location.href = "/technician/technician-profile.html?id=" + t.technician_id;
+                });
+                cardsWrap.appendChild(card);
+            });
+
+            inner.appendChild(cardsWrap);
+
+            const linkRow = document.createElement("p");
+            linkRow.className = "text-[11px] mt-3 opacity-60";
+            linkRow.innerHTML = 'หรือดูช่างทั้งหมดที่ <a href="/technician/find-technician.html" target="_top" style="color:var(--mood-primary);text-decoration:underline">หาช่างใกล้ฉัน</a>';
+            inner.appendChild(linkRow);
+
+            wrap.appendChild(inner);
+            chatMessages.appendChild(wrap);
+            scrollToBottom();
+        }
+
+        async function showAvailableTechnicians() {
+            addBubble("user", "🔍 หาช่าง");
+            addTyping();
+            try {
+                const res = await fetch(SUPABASE_URL + "/rest/v1/rpc/list_available_technicians", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", apikey: SUPABASE_ANON_KEY, Authorization: "Bearer " + SUPABASE_ANON_KEY }
+                });
+                const list = await res.json();
+                removeTyping();
+                addTechCardsBubble(Array.isArray(list) ? list : []);
+            } catch (err) {
+                removeTyping();
+                addBubble("assistant", "ขออภัยครับ โหลดรายชื่อช่างไม่สำเร็จ ลองใหม่อีกครั้ง หรือดูที่หน้าหาช่างใกล้ฉันได้เลยครับ");
+            }
+        }
+
         chatSendBtn.addEventListener("click", function () { sendChat(); });
         chatInput.addEventListener("keydown", function (e) { if (e.key === "Enter") sendChat(); });
 
         // Quick-reply keyword chips — tappable at any point during the chat, not just on open
         document.querySelectorAll(".quick-chip").forEach(function (chip) {
             chip.addEventListener("click", function () {
+                if (chip.dataset.text === "ตอนนี้มีช่างว่างไหมครับ อยากหาช่าง") {
+                    showAvailableTechnicians();
+                    return;
+                }
                 sendChat(chip.dataset.text);
             });
         });
