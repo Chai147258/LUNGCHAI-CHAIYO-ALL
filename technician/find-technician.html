@@ -274,8 +274,9 @@ async function renderTechList(excludeId){
       <div class="flex flex-wrap gap-1 mb-3">
         ${skills.map(s=>`<span class="text-[10px] px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-white/50">${s}</span>`).join('')}
       </div>
-      <div class="flex items-center justify-between">
-        <p class="text-xs text-white/50">ค่าใช้จ่ายประเมิน <span class="text-[#b8fc4b] font-bold text-sm">${fee.total} บาท</span> ขึ้นไป</p>
+      <div class="flex items-center justify-between gap-2">
+        <p class="text-xs text-white/50">ประเมิน <span class="text-[#b8fc4b] font-bold text-sm">${fee.total} บาท</span> ขึ้นไป</p>
+        <a href="technician-profile.html?id=${t.technician_id}" onclick="event.stopPropagation()" class="text-[10px] text-white/40 underline">ดูโปรไฟล์</a>
         <span class="text-xs bg-[#b8fc4b] text-black font-bold px-3 py-1.5 rounded-lg">เลือก</span>
       </div>
     </div>`;
