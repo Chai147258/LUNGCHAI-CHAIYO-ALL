@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>หาช่างใกล้ฉัน | LUNGCHAI CHAIYO ALL</title>
+<meta name="description" content="แจ้งปัญหา ระบบจับคู่ช่างที่ใกล้คุณที่สุดให้อัตโนมัติ พร้อมราคาประเมินก่อนตัดสินใจ">
+<link rel="icon" href="../images/logo-all.jpg">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Anuphan:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<style>
+  body{background:#0c0c0c;color:#e1e1ed;font-family:'Anuphan',sans-serif;}
+  h1,h2,h3,.font-head{font-family:'Space Grotesk',sans-serif;}
+  .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;}
+  .glass{background:rgba(255,255,255,.03);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.1);}
+  .nebula{position:fixed;inset:0;z-index:-1;pointer-events:none;}
+  .nebula div{position:absolute;border-radius:9999px;filter:blur(90px);opacity:.28;}
+  input,textarea{background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.12);color:#fff;}
+  input:focus,textarea:focus{outline:none;border-color:#b8fc4b;}
+  input::placeholder,textarea::placeholder{color:#6b6b76;}
+  .chip{cursor:pointer;user-select:none;transition:.15s;}
+  .chip input{display:none;}
+  .chip span{display:flex;flex-direction:column;align-items:center;gap:.3rem;padding:.8rem .5rem;border-radius:1rem;border:1px solid rgba(255,255,255,.12);font-size:.68rem;color:rgba(255,255,255,.6);text-align:center;}
+  .chip input:checked + span{background:#b8fc4b;color:#000;border-color:#b8fc4b;font-weight:700;}
+  .spin{animation:spin 1s linear infinite;}
+  .pulse{animation:pulse 1.5s ease-in-out infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+  .step{display:none;}
+  .step.active{display:block;}
+  .tech-pick{transition:.2s;}
+  .tech-pick:hover{border-color:rgba(184,252,75,.5);transform:translateY(-2px);}
+</style>
+</head>
+<body>
+<div class="nebula"><div class="w-96 h-96 bg-purple-900 top-10 left-10"></div><div class="w-96 h-96 bg-blue-900 bottom-10 right-10"></div></div>
+
+<header class="sticky top-0 z-40 bg-black/80 backdrop-blur-md border-b border-white/10">
+  <div class="max-w-xl mx-auto px-5 py-3 flex items-center justify-between">
+    <a href="../index.html" class="flex items-center gap-2">
+      <img src="../images/logo-all.jpg" class="w-9 h-9 rounded-lg object-cover border border-[#b8fc4b]/40" alt="logo">
+      <span class="font-head font-bold text-sm text-[#b8fc4b]">LUNGCHAI CHAIYO ALL</span>
+    </a>
+    <a href="technician-finder.html" class="text-xs text-white/50 hover:text-[#b8fc4b]">ดูช่างทั้งหมด</a>
+  </div>
+</header>
+
+<main class="max-w-xl mx-auto px-5 py-8">
+
+  <!-- ============ STEP 1: PROBLEM ============ -->
+  <section class="step active" id="step1">
+    <div class="text-center mb-6">
+      <h1 class="font-head text-2xl font-bold text-white mb-1">หาช่างใกล้ฉัน</h1>
+      <p class="text-white/50 text-sm">บอกปัญหาของคุณ ระบบจะจับคู่ช่างที่ใกล้และเหมาะสมที่สุด</p>
+    </div>
+    <div class="glass rounded-2xl p-5 mb-4">
+      <label class="text-xs text-white/50 mb-2 block">งานที่ต้องการ *</label>
+      <div class="grid grid-cols-3 gap-2" id="skillChips"></div>
+    </div>
+    <div class="glass rounded-2xl p-5 mb-4">
+      <label class="text-xs text-white/50 mb-2 block">อธิบายปัญหาเพิ่มเติม (ไม่บังคับ)</label>
+      <textarea id="fNote" rows="2" class="w-full rounded-xl px-4 py-3 text-sm" placeholder="เช่น เครื่องพิมพ์กระดาษติดบ่อย"></textarea>
+      <label class="flex items-center gap-2 mt-3 cursor-pointer">
+        <input type="checkbox" id="fExpress" class="w-4 h-4 accent-[#ffcc00]">
+        <span class="text-xs text-white/70">งานด่วน (มีค่าใช้จ่ายเพิ่มเติม)</span>
+      </label>
+    </div>
+    <button onclick="goStep2()" id="toStep2Btn" class="w-full bg-[#b8fc4b] text-black font-bold py-4 rounded-xl hover:brightness-95 transition flex items-center justify-center gap-2">
+      ถัดไป: ระบุตำแหน่ง <span class="material-symbols-outlined">arrow_forward</span>
+    </button>
+  </section>
+
+  <!-- ============ STEP 2: LOCATION + MATCHING ============ -->
+  <section class="step" id="step2">
+    <button onclick="goStep(1)" class="text-white/40 text-xs mb-4 flex items-center gap-1"><span class="material-symbols-outlined text-base">arrow_back</span> ย้อนกลับ</button>
+    <div id="locateBox" class="text-center py-12">
+      <div class="w-16 h-16 rounded-full bg-[#b8fc4b]/10 flex items-center justify-center mx-auto mb-4">
+        <span class="material-symbols-outlined text-[#b8fc4b] text-3xl">my_location</span>
+      </div>
+      <h2 class="font-head text-lg font-bold text-white mb-2">ขอตำแหน่งของคุณ</h2>
+      <p class="text-white/50 text-sm mb-6">ใช้เพื่อค้นหาช่างที่อยู่ใกล้คุณที่สุดเท่านั้น</p>
+      <button onclick="locateAndSearch()" id="locateBtn" class="bg-[#b8fc4b] text-black font-bold py-3 px-6 rounded-xl">อนุญาตตำแหน่ง & ค้นหาช่าง</button>
+      <p id="locateError" class="hidden text-xs text-red-400 mt-3"></p>
+    </div>
+
+    <div id="resultsBox" class="hidden">
+      <p class="text-xs text-white/40 mb-3" id="resultsSummary"></p>
+      <div id="techList" class="space-y-3"></div>
+      <div id="noResults" class="hidden text-center py-12">
+        <span class="material-symbols-outlined text-4xl text-white/20 mb-2 block">search_off</span>
+        <p class="text-white/40 text-sm">ไม่พบช่างในระยะที่ให้บริการตอนนี้</p>
+        <a href="../service-request.html" class="inline-block mt-4 text-xs text-[#b8fc4b] underline">แจ้งซ่อมแบบทั่วไปแทน</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STEP 3: CONTACT INFO ============ -->
+  <section class="step" id="step3">
+    <button onclick="goStep(2)" class="text-white/40 text-xs mb-4 flex items-center gap-1"><span class="material-symbols-outlined text-base">arrow_back</span> เลือกช่างท่านอื่น</button>
+    <div class="glass rounded-2xl p-5 mb-4" id="selectedTechCard"></div>
+    <div class="glass rounded-2xl p-5 space-y-4">
+      <h2 class="font-head text-sm font-bold text-white/80 uppercase tracking-widest">ข้อมูลติดต่อ</h2>
+      <input required id="cName" class="w-full rounded-xl px-4 py-3 text-sm" placeholder="ชื่อ-นามสกุล *">
+      <input required id="cPhone" type="tel" class="w-full rounded-xl px-4 py-3 text-sm" placeholder="เบอร์โทรศัพท์ *">
+      <input id="cAddress" class="w-full rounded-xl px-4 py-3 text-sm" placeholder="ที่อยู่ / จุดสังเกต (ไม่บังคับ)">
+    </div>
+    <p id="submitError" class="hidden text-xs text-red-400 text-center mt-3"></p>
+    <button onclick="submitRequest()" id="submitBtn" class="w-full mt-4 bg-[#b8fc4b] text-black font-bold py-4 rounded-xl hover:brightness-95 transition flex items-center justify-center gap-2">
+      <span class="material-symbols-outlined">send</span> ส่งให้ช่างท่านนี้
+    </button>
+  </section>
+
+  <!-- ============ STEP 4: WAITING FOR RESPONSE ============ -->
+  <section class="step" id="step4">
+    <div class="text-center py-16">
+      <div class="w-20 h-20 rounded-full bg-[#98cbff]/10 flex items-center justify-center mx-auto mb-5 pulse">
+        <span class="material-symbols-outlined text-[#98cbff] text-4xl">near_me</span>
+      </div>
+      <h1 class="font-head text-xl font-bold text-white mb-2">กำลังส่งงานให้ช่าง...</h1>
+      <p class="text-white/50 text-sm mb-1">เลขที่คำขอ <span id="waitingReqNo" class="text-[#b8fc4b] font-bold"></span></p>
+      <p class="text-white/40 text-xs">รอช่างตอบรับภายใน <span id="waitingCountdown" class="font-bold text-white">3:00</span></p>
+    </div>
+  </section>
+
+  <!-- ============ STEP 5: ACCEPTED ============ -->
+  <section class="step" id="step5">
+    <div class="text-center py-12">
+      <div class="w-20 h-20 rounded-full bg-[#b8fc4b]/10 flex items-center justify-center mx-auto mb-5">
+        <span class="material-symbols-outlined text-[#b8fc4b] text-5xl">task_alt</span>
+      </div>
+      <h1 class="font-head text-2xl font-bold text-white mb-2">ช่างรับงานแล้ว!</h1>
+      <p class="text-white/50 text-sm mb-6">เลขที่คำขอ <span id="acceptedReqNo" class="text-[#b8fc4b] font-bold"></span></p>
+      <div class="glass rounded-2xl p-5 max-w-xs mx-auto text-left">
+        <p class="text-xs text-white/40 mb-1">ช่างของคุณ</p>
+        <p class="font-head font-bold text-white" id="acceptedTechName"></p>
+        <a id="acceptedTechPhone" class="text-[#b8fc4b] text-sm flex items-center gap-1 mt-1"><span class="material-symbols-outlined text-base">call</span> <span></span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STEP 6: EXPIRED / REJECTED ============ -->
+  <section class="step" id="step6">
+    <div class="text-center py-16">
+      <span class="material-symbols-outlined text-4xl text-white/30 mb-3 block">schedule</span>
+      <h2 class="font-head text-lg font-bold text-white mb-2">ช่างท่านนี้ไม่ได้ตอบรับ</h2>
+      <p class="text-white/50 text-sm mb-6">ลองเลือกช่างท่านอื่นที่ใกล้คุณดูครับ</p>
+      <button onclick="backToList()" class="bg-[#b8fc4b] text-black font-bold py-3 px-6 rounded-xl">เลือกช่างท่านอื่น</button>
+    </div>
+  </section>
+
+</main>
+
+<footer class="text-center text-[11px] text-white/30 py-10">© 2026 LUNGCHAI CHAIYO ALL — ระบบจับคู่ช่างอัตโนมัติ</footer>
+
+<script>
+const SB_URL = 'https://hkwqrllqzfzsbsxqgaoo.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhrd3FybGxxemZ6c2JzeHFnYW9vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzNzIzNjAsImV4cCI6MjA5Njk0ODM2MH0.kPT_UY0-2-0cbDlGwya24DnOLJXA-XJGMdM6SIm7Rew';
+
+const SKILLS = [
+  {v:'IT', label:'IT / คอมพิวเตอร์', icon:'computer'},
+  {v:'Network', label:'เครือข่าย/เน็ต', icon:'wifi'},
+  {v:'Printer', label:'ปริ้นเตอร์', icon:'print'},
+  {v:'CCTV', label:'กล้องวงจรปิด', icon:'videocam'},
+  {v:'Electrical', label:'ไฟฟ้า', icon:'bolt'},
+  {v:'แอร์', label:'เครื่องปรับอากาศ', icon:'ac_unit'},
+  {v:'ประปา', label:'ประปา', icon:'plumbing'},
+  {v:'', label:'งานทั่วไป', icon:'build'},
+];
+let selectedSkill = null;
+document.getElementById('skillChips').innerHTML = SKILLS.map((s,i) => `
+  <label class="chip">
+    <input type="radio" name="skill" value="${s.v}" ${i===0?'':''}>
+    <span><span class="material-symbols-outlined text-xl">${s.icon}</span>${s.label}</span>
+  </label>
+`).join('');
+document.querySelectorAll('input[name="skill"]').forEach(el => el.addEventListener('change', () => { selectedSkill = el.value; }));
+
+let coords = { lat: null, lng: null };
+let matchedTechs = [];
+let selectedTech = null;
+let currentRequestId = null;
+let currentOfferId = null;
+let pollTimer = null;
+let countdownTimer = null;
+
+function goStep(n){
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById('step'+n).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function goStep2(){
+  const checked = document.querySelector('input[name="skill"]:checked');
+  if(!checked){ alert('กรุณาเลือกประเภทงาน'); return; }
+  selectedSkill = checked.value;
+  goStep(2);
+}
+
+async function rpc(fn, body){
+  const res = await fetch(`${SB_URL}/rest/v1/rpc/${fn}`, {
+    method: 'POST',
+    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type':'application/json' },
+    body: JSON.stringify(body)
+  });
+  const text = await res.text();
+  let data; try{ data = JSON.parse(text); }catch(e){ data = text; }
+  if(!res.ok) throw new Error(typeof data === 'string' ? data : (data.message || JSON.stringify(data)));
+  return data;
+}
+
+async function insertRow(table, payload){
+  const res = await fetch(`${SB_URL}/rest/v1/${table}`, {
+    method: 'POST',
+    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type':'application/json', 'Prefer':'return=representation' },
+    body: JSON.stringify(payload)
+  });
+  if(!res.ok){ throw new Error(await res.text()); }
+  return res.json();
+}
+
+function locateAndSearch(){
+  const btn = document.getElementById('locateBtn');
+  const errEl = document.getElementById('locateError');
+  errEl.classList.add('hidden');
+  if(!navigator.geolocation){ errEl.textContent = 'อุปกรณ์นี้ไม่รองรับการระบุตำแหน่ง'; errEl.classList.remove('hidden'); return; }
+  btn.disabled = true; btn.innerHTML = '<span class="material-symbols-outlined spin">progress_activity</span> กำลังค้นหา...';
+
+  navigator.geolocation.getCurrentPosition(async pos => {
+    coords.lat = pos.coords.latitude;
+    coords.lng = pos.coords.longitude;
+    try{
+      matchedTechs = await rpc('match_nearby_technicians', { p_lat: coords.lat, p_lng: coords.lng, p_skill: selectedSkill || null, p_max_radius_km: 30 });
+      renderTechList();
+      document.getElementById('locateBox').classList.add('hidden');
+      document.getElementById('resultsBox').classList.remove('hidden');
+    }catch(e){
+      errEl.textContent = 'เกิดข้อผิดพลาด: ' + e.message;
+      errEl.classList.remove('hidden');
+      btn.disabled = false; btn.innerHTML = 'อนุญาตตำแหน่ง & ค้นหาช่าง';
+    }
+  }, err => {
+    errEl.textContent = 'ไม่สามารถระบุตำแหน่งได้ กรุณาอนุญาตการเข้าถึงตำแหน่งในเบราว์เซอร์';
+    errEl.classList.remove('hidden');
+    btn.disabled = false; btn.innerHTML = 'อนุญาตตำแหน่ง & ค้นหาช่าง';
+  });
+}
+
+async function renderTechList(excludeId){
+  const list = matchedTechs.filter(t => t.technician_id !== excludeId);
+  document.getElementById('resultsSummary').textContent = `พบช่าง ${list.length} ท่านในระยะให้บริการ`;
+  const wrap = document.getElementById('techList');
+  const noRes = document.getElementById('noResults');
+  if(!list.length){ wrap.innerHTML=''; noRes.classList.remove('hidden'); return; }
+  noRes.classList.add('hidden');
+
+  wrap.innerHTML = list.map(t => {
+    const fee = calcFeeLocal(t.distance_km, document.getElementById('fExpress').checked);
+    const skills = (t.skill||'').split(',').map(s=>s.trim()).filter(Boolean).slice(0,4);
+    return `
+    <div class="tech-pick glass rounded-2xl p-4 border border-white/10 cursor-pointer" onclick="pickTech('${t.technician_id}')">
+      <div class="flex items-center gap-3 mb-2">
+        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#b8fc4b]/30 to-[#98cbff]/20 flex items-center justify-center font-bold text-white flex-shrink-0 overflow-hidden">
+          ${t.photo_url ? `<img src="${t.photo_url}" class="w-full h-full object-cover">` : (t.full_name||'ช').charAt(0)}
+        </div>
+        <div class="flex-1">
+          <p class="font-head font-bold text-white text-sm">${t.full_name}</p>
+          <p class="text-[11px] text-white/40">${t.business_name||''}</p>
+        </div>
+        <div class="text-right">
+          <p class="text-xs text-[#98cbff] font-bold">${t.distance_km} กม.</p>
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-1 mb-3">
+        ${skills.map(s=>`<span class="text-[10px] px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-white/50">${s}</span>`).join('')}
+      </div>
+      <div class="flex items-center justify-between gap-2">
+        <p class="text-xs text-white/50">ประเมิน <span class="text-[#b8fc4b] font-bold text-sm">${fee.total} บาท</span> ขึ้นไป</p>
+        <a href="technician-profile.html?id=${t.technician_id}" onclick="event.stopPropagation()" class="text-[10px] text-white/40 underline">ดูโปรไฟล์</a>
+        <span class="text-xs bg-[#b8fc4b] text-black font-bold px-3 py-1.5 rounded-lg">เลือก</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// client-side mirror of calculate_service_fee's zone table, for instant display before the real RPC call locks it in
+function calcFeeLocal(distanceKm, isExpress){
+  const zones = [ {s:0,e:10,p:150}, {s:10,e:20,p:300}, {s:20,e:50,p:750}, {s:50,e:null,p:15,extra:true} ];
+  let travel = 0;
+  for(const z of zones){
+    if(distanceKm >= z.s && (z.e === null || distanceKm < z.e)){
+      travel = z.extra ? z.p * distanceKm : z.p;
+    }
+  }
+  const callout = 250;
+  const express = isExpress ? 300 : 0;
+  const subtotal = callout + travel + express;
+  const platform = Math.round(subtotal * 0.30);
+  return { total: subtotal + platform };
+}
+
+function pickTech(id){
+  selectedTech = matchedTechs.find(t => t.technician_id == id);
+  const fee = calcFeeLocal(selectedTech.distance_km, document.getElementById('fExpress').checked);
+  document.getElementById('selectedTechCard').innerHTML = `
+    <div class="flex items-center gap-3">
+      <div class="w-14 h-14 rounded-full bg-gradient-to-br from-[#b8fc4b]/30 to-[#98cbff]/20 flex items-center justify-center font-bold text-white flex-shrink-0 overflow-hidden">
+        ${selectedTech.photo_url ? `<img src="${selectedTech.photo_url}" class="w-full h-full object-cover">` : selectedTech.full_name.charAt(0)}
+      </div>
+      <div class="flex-1">
+        <p class="font-head font-bold text-white">${selectedTech.full_name}</p>
+        <p class="text-xs text-white/40">ห่างจากคุณ ${selectedTech.distance_km} กม. • ประเมิน ${fee.total} บาทขึ้นไป</p>
+      </div>
+    </div>`;
+  goStep(3);
+}
+
+function backToList(){
+  goStep(2);
+  renderTechList(selectedTech ? selectedTech.technician_id : null);
+}
+
+async function submitRequest(){
+  const errEl = document.getElementById('submitError');
+  errEl.classList.add('hidden');
+  const name = document.getElementById('cName').value.trim();
+  const phone = document.getElementById('cPhone').value.trim();
+  if(!name || !phone){ errEl.textContent = 'กรุณากรอกชื่อและเบอร์โทรศัพท์'; errEl.classList.remove('hidden'); return; }
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="material-symbols-outlined spin">progress_activity</span> กำลังส่ง...';
+
+  try{
+    const checked = document.querySelector('input[name="skill"]:checked');
+    const skillLabel = SKILLS.find(s => s.v === (checked?checked.value:''))?.label || 'งานทั่วไป';
+    const rows = await insertRow('service_requests', {
+      customer_name: name,
+      phone: phone,
+      device_type: skillLabel,
+      note: document.getElementById('fNote').value.trim() || null,
+      address: document.getElementById('cAddress').value.trim() || null,
+      is_express: document.getElementById('fExpress').checked,
+      channel: 'nearby-match',
+      customer_lat: coords.lat,
+      customer_lng: coords.lng
+    });
+    const reqId = rows[0].id;
+    currentRequestId = reqId;
+    document.getElementById('waitingReqNo').textContent = rows[0].request_number;
+
+    const offerId = await rpc('create_job_offer', { p_service_request_id: reqId, p_technician_id: parseInt(selectedTech.technician_id) });
+    currentOfferId = offerId;
+
+    goStep(4);
+    startWaiting();
+  }catch(e){
+    errEl.textContent = 'เกิดข้อผิดพลาด: ' + e.message;
+    errEl.classList.remove('hidden');
+  }finally{
+    btn.disabled = false;
+    btn.innerHTML = '<span class="material-symbols-outlined">send</span> ส่งให้ช่างท่านนี้';
+  }
+}
+
+function startWaiting(){
+  let secondsLeft = 180;
+  clearInterval(countdownTimer);
+  countdownTimer = setInterval(() => {
+    secondsLeft--;
+    const m = Math.floor(secondsLeft/60), s = secondsLeft%60;
+    document.getElementById('waitingCountdown').textContent = `${m}:${String(s).padStart(2,'0')}`;
+    if(secondsLeft <= 0) clearInterval(countdownTimer);
+  }, 1000);
+
+  clearInterval(pollTimer);
+  pollTimer = setInterval(async () => {
+    try{
+      const status = await rpc('get_request_dispatch_status', { p_request_id: currentRequestId });
+      if(status.offer_status === 'accepted'){
+        clearInterval(pollTimer); clearInterval(countdownTimer);
+        document.getElementById('acceptedReqNo').textContent = status.request_number;
+        document.getElementById('acceptedTechName').textContent = status.technician_name;
+        const phoneEl = document.getElementById('acceptedTechPhone');
+        phoneEl.href = 'tel:' + (status.technician_phone||'').replace(/-/g,'');
+        phoneEl.querySelector('span').textContent = status.technician_phone || '-';
+        goStep(5);
+      }else if(['rejected','expired','cancelled'].includes(status.offer_status)){
+        clearInterval(pollTimer); clearInterval(countdownTimer);
+        goStep(6);
+      }
+    }catch(e){ console.error('poll error', e); }
+  }, 3000);
+}
+</script>
+<script src="/assets/lungchai-launcher.js" defer></script>
+</body>
+</html>
