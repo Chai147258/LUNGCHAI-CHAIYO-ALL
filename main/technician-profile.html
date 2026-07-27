@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>โปรไฟล์ช่าง | LUNGCHAI CHAIYO ALL</title>
+<link rel="icon" href="../images/logo-all.jpg">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Anuphan:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<style>
+  body{background:#0c0c0c;color:#e1e1ed;font-family:'Anuphan',sans-serif;}
+  h1,h2,h3,.font-head{font-family:'Space Grotesk',sans-serif;}
+  .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;}
+  .glass{background:rgba(255,255,255,.03);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.1);}
+  .nebula{position:fixed;inset:0;z-index:-1;pointer-events:none;}
+  .nebula div{position:absolute;border-radius:9999px;filter:blur(90px);opacity:.28;}
+  .badge-gold{background:linear-gradient(135deg,#ffd76b,#c9a84c);color:#000;}
+  .badge-silver{background:linear-gradient(135deg,#e6e6e6,#b0b0b8);color:#000;}
+  .badge-verified{background:rgba(184,252,75,.15);color:#b8fc4b;border:1px solid rgba(184,252,75,.4);}
+</style>
+</head>
+<body>
+<div class="nebula"><div class="w-96 h-96 bg-purple-900 top-10 left-10"></div><div class="w-96 h-96 bg-blue-900 bottom-10 right-10"></div></div>
+
+<header class="sticky top-0 z-40 bg-black/80 backdrop-blur-md border-b border-white/10">
+  <div class="max-w-xl mx-auto px-5 py-3 flex items-center gap-2">
+    <a href="technician-finder.html" class="text-white/50 hover:text-[#b8fc4b]"><span class="material-symbols-outlined">arrow_back</span></a>
+    <span class="font-head font-bold text-sm text-[#b8fc4b]">โปรไฟล์ช่าง</span>
+  </div>
+</header>
+
+<main class="max-w-xl mx-auto px-5 py-8" id="cardRoot">
+  <div class="text-center py-16"><span class="material-symbols-outlined text-3xl text-white/30 spin" style="display:inline-block">progress_activity</span></div>
+</main>
+
+<script>
+const SB_URL = 'https://hkwqrllqzfzsbsxqgaoo.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhrd3FybGxxemZ6c2JzeHFnYW9vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzNzIzNjAsImV4cCI6MjA5Njk0ODM2MH0.kPT_UY0-2-0cbDlGwya24DnOLJXA-XJGMdM6SIm7Rew';
+
+function stars(n){
+  const full = Math.round(n);
+  return Array.from({length:5}, (_,i) => `<span class="material-symbols-outlined text-base ${i<full?'text-[#ffcc00]':'text-white/15'}">star</span>`).join('');
+}
+function levelBadge(rating, jobs){
+  if(rating >= 4.8 && jobs >= 100) return '<span class="badge-gold text-[10px] font-bold px-2.5 py-1 rounded-full">🏆 GOLD</span>';
+  if(rating >= 4.5) return '<span class="badge-silver text-[10px] font-bold px-2.5 py-1 rounded-full">SILVER</span>';
+  return '<span class="badge-verified text-[10px] font-bold px-2.5 py-1 rounded-full">✓ VERIFIED</span>';
+}
+function timeAgo(iso){
+  const d = Math.floor((Date.now() - new Date(iso).getTime())/86400000);
+  if(d < 1) return 'วันนี้';
+  if(d < 30) return `${d} วันที่แล้ว`;
+  return `${Math.floor(d/30)} เดือนที่แล้ว`;
+}
+
+async function loadCard(){
+  const params = new URLSearchParams(location.search);
+  const id = params.get('id');
+  const root = document.getElementById('cardRoot');
+  if(!id){ root.innerHTML = '<p class="text-center text-white/40 py-16">ไม่พบรหัสช่าง</p>'; return; }
+
+  const res = await fetch(`${SB_URL}/rest/v1/rpc/get_technician_card`, {
+    method:'POST',
+    headers:{'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':'application/json'},
+    body: JSON.stringify({ p_technician_id: parseInt(id) })
+  });
+  const t = await res.json();
+  if(!t.found){ root.innerHTML = '<p class="text-center text-white/40 py-16">ไม่พบข้อมูลช่างท่านนี้</p>'; return; }
+
+  const skills = (t.skill||'').split(',').map(s=>s.trim()).filter(Boolean);
+  document.title = `${t.full_name} | โปรไฟล์ช่าง`;
+
+  root.innerHTML = `
+    <div class="text-center mb-6">
+      <div class="w-24 h-24 rounded-full mx-auto mb-3 overflow-hidden border-2 border-[#b8fc4b]/40 bg-gradient-to-br from-[#b8fc4b]/20 to-[#98cbff]/10 flex items-center justify-center text-3xl font-bold">
+        ${t.photo_url ? `<img src="${t.photo_url.startsWith('http')?t.photo_url:'../'+t.photo_url}" class="w-full h-full object-cover">` : t.full_name.charAt(0)}
+      </div>
+      <h1 class="font-head text-xl font-bold text-white">${t.full_name}</h1>
+      <p class="text-xs text-white/40 mb-2">${t.business_name||''}</p>
+      ${levelBadge(t.avg_rating, t.completed_jobs)}
+      <div class="flex items-center justify-center gap-1 mt-2">
+        ${stars(t.avg_rating)}
+        <span class="text-sm text-white/60 ml-1">${Number(t.avg_rating).toFixed(1)} (${t.total_reviews} รีวิว)</span>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-3 gap-3 mb-6">
+      <div class="glass rounded-xl p-3 text-center">
+        <p class="font-head text-lg font-bold text-[#b8fc4b]">${t.completed_jobs}</p>
+        <p class="text-[10px] text-white/40">งานสำเร็จ</p>
+      </div>
+      <div class="glass rounded-xl p-3 text-center">
+        <p class="font-head text-lg font-bold text-[#98cbff]">${t.experience_years ?? '-'}</p>
+        <p class="text-[10px] text-white/40">ปีประสบการณ์</p>
+      </div>
+      <div class="glass rounded-xl p-3 text-center">
+        <p class="font-head text-lg font-bold text-[#ffcc00]">${t.service_radius_km}</p>
+        <p class="text-[10px] text-white/40">กม. รัศมีบริการ</p>
+      </div>
+    </div>
+
+    ${t.description ? `<div class="glass rounded-2xl p-5 mb-5"><p class="text-sm text-white/70">${t.description}</p></div>` : ''}
+
+    <div class="mb-6">
+      <h2 class="font-head text-xs font-bold text-white/50 uppercase tracking-widest mb-2">ทักษะ/บริการ</h2>
+      <div class="flex flex-wrap gap-2">
+        ${skills.map(s=>`<span class="text-xs px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/60">${s}</span>`).join('')}
+      </div>
+    </div>
+
+    ${t.portfolio.length ? `
+    <div class="mb-6">
+      <h2 class="font-head text-xs font-bold text-white/50 uppercase tracking-widest mb-2">ผลงานที่ผ่านมา</h2>
+      <div class="grid grid-cols-3 gap-2">
+        ${t.portfolio.map(p=>`
+          <a href="${p.photo_url}" target="_blank" class="aspect-square rounded-lg overflow-hidden bg-white/5 block">
+            <img src="${p.photo_url}" class="w-full h-full object-cover" loading="lazy">
+          </a>`).join('')}
+      </div>
+    </div>` : ''}
+
+    <div class="mb-8">
+      <h2 class="font-head text-xs font-bold text-white/50 uppercase tracking-widest mb-2">รีวิวจากลูกค้า (${t.total_reviews})</h2>
+      ${t.reviews.length ? t.reviews.map(r => `
+        <div class="glass rounded-xl p-4 mb-2">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-sm font-bold text-white">${r.customer_name || 'ลูกค้า'}</span>
+            <span class="flex">${stars(r.rating)}</span>
+          </div>
+          ${r.comment ? `<p class="text-xs text-white/60">${r.comment}</p>` : ''}
+          <p class="text-[10px] text-white/30 mt-1">${timeAgo(r.created_at)}</p>
+        </div>`).join('') : '<p class="text-xs text-white/30">ยังไม่มีรีวิว</p>'}
+    </div>
+
+    <a href="find-technician.html" class="w-full bg-[#b8fc4b] text-black font-bold py-4 rounded-xl flex items-center justify-center gap-2">
+      <span class="material-symbols-outlined">near_me</span> เลือกช่างท่านนี้
+    </a>
+  `;
+}
+loadCard();
+</script>
+<script src="/assets/lungchai-launcher.js" defer></script>
+</body>
+</html>
