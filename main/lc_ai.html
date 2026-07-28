@@ -788,8 +788,10 @@
                     '</div>' +
                     '<div class="flex-1 min-w-0">' +
                         '<p class="font-bold text-sm truncate">' + t.full_name + '</p>' +
+                        (t.business_name ? '<p class="text-[10px] opacity-60 truncate">' + t.business_name + '</p>' : '') +
                         '<div class="flex items-center gap-1">' + starsHtml(t.avg_rating) + '<span class="text-[10px] opacity-50">(' + t.total_reviews + ')</span></div>' +
                         '<div class="flex flex-wrap gap-1 mt-1">' + skills.map(function(s){ return '<span class="text-[9px] px-1.5 py-0.5 rounded-full" style="background:rgba(255,255,255,.06);opacity:.7">' + s + '</span>'; }).join("") + '</div>' +
+                        '<p class="text-[9px] opacity-50 mt-1">รับงานสูงสุด ' + (t.max_jobs_per_day||"-") + ' งาน/วัน · รัศมี ' + (t.service_radius_km||"-") + ' กม.</p>' +
                     '</div>' +
                     '<button class="text-[10px] font-bold px-2.5 py-2 rounded-lg flex-shrink-0" style="background:var(--mood-primary);color:#000" data-tech-id="' + t.technician_id + '">เลือก</button>';
 
@@ -842,16 +844,17 @@
             });
         });
 
-        // Live "ช่างพร้อมให้บริการ" badge — reflects the same active=true technicians
-        // roster used by technician-finder.html and the AI chat context, so it never
-        // drifts out of sync with reality.
+        // Live "ช่างพร้อมให้บริการ" badge — now reflects real-time working hours
+        // (technician_weekly_hours) via list_available_technicians, so the badge
+        // never overstates availability outside a technician's actual hours.
         async function loadTechStatus() {
             const badgeWrap = document.getElementById("tech-status-badge");
             const badgeText = document.getElementById("tech-status-text");
             if (!badgeWrap || !badgeText) return;
             try {
-                const res = await fetch(SUPABASE_URL + "/rest/v1/technicians?select=id&active=eq.true", {
-                    headers: { apikey: SUPABASE_ANON_KEY, Authorization: "Bearer " + SUPABASE_ANON_KEY }
+                const res = await fetch(SUPABASE_URL + "/rest/v1/rpc/list_available_technicians", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", apikey: SUPABASE_ANON_KEY, Authorization: "Bearer " + SUPABASE_ANON_KEY }
                 });
                 const data = await res.json();
                 const count = Array.isArray(data) ? data.length : 0;
