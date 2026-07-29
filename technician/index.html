@@ -118,6 +118,37 @@
       <div id="portfolioGrid" class="grid grid-cols-3 gap-2"></div>
       <p id="portfolioEmpty" class="hidden text-white/30 text-sm text-center py-8">อัปโหลดรูปผลงานที่ผ่านมา ให้ลูกค้าเห็นก่อนเลือกคุณ</p>
     </div>
+
+    <!-- ============ MY SETTINGS: SERVICES + WEEKLY HOURS ============ -->
+    <div class="mt-10 border-t border-white/10 pt-6">
+      <h2 class="font-head text-sm font-bold text-[#98cbff] uppercase tracking-widest mb-4 flex items-center gap-2">
+        <span class="material-symbols-outlined text-base">tune</span> ตั้งค่าของฉัน
+      </h2>
+
+      <div class="glass rounded-2xl p-5 mb-6">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="font-head text-sm font-bold text-white flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-base text-[#b8fc4b]">handyman</span> บริการที่ฉันรับทำ
+          </h3>
+          <button onclick="saveServices()" id="saveServicesBtn" class="bg-[#b8fc4b] text-black text-xs font-bold px-4 py-2 rounded-lg hover:brightness-95 transition">บันทึก</button>
+        </div>
+        <p class="text-[11px] text-white/40 mb-3">เลือกบริการที่คุณรับทำ ระบบจะส่งงานที่ตรงกับบริการเหล่านี้ให้คุณก่อน</p>
+        <div id="servicesList" class="grid sm:grid-cols-2 gap-2 max-h-72 overflow-y-auto pr-1">
+          <p class="text-white/30 text-xs text-center py-4 col-span-2">กำลังโหลด...</p>
+        </div>
+      </div>
+
+      <div class="glass rounded-2xl p-5">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="font-head text-sm font-bold text-white flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-base text-[#ffcc00]">schedule</span> วัน-เวลาที่ว่างรับงาน
+          </h3>
+          <button onclick="saveWeeklyHours()" id="saveHoursBtn" class="bg-[#b8fc4b] text-black text-xs font-bold px-4 py-2 rounded-lg hover:brightness-95 transition">บันทึก</button>
+        </div>
+        <p class="text-[11px] text-white/40 mb-3">เปิดวันที่คุณสะดวกรับงาน และกำหนดช่วงเวลา (ปิดไว้ = วันนั้นไม่รับงาน)</p>
+        <div id="weeklyHoursList" class="space-y-2"></div>
+      </div>
+    </div>
   </section>
 
 </main>
@@ -163,7 +194,99 @@ function showDashboard(){
   renderHeaderActions();
   loadJobs();
   loadPortfolio();
+  loadServices();
+  loadWeeklyHours();
   startOfferPolling();
+}
+
+// ============ MY SERVICES ============
+async function loadServices(){
+  const box = document.getElementById('servicesList');
+  try{
+    const rows = await rpc('technician_get_services', { p_token: session.token });
+    if(!rows || rows.length === 0){
+      box.innerHTML = '<p class="text-white/30 text-xs text-center py-4 col-span-2">ยังไม่มีบริการในระบบ</p>';
+      return;
+    }
+    box.innerHTML = rows.map(s => `
+      <label class="flex items-center gap-2 glass rounded-lg px-3 py-2 cursor-pointer text-xs">
+        <input type="checkbox" value="${s.service_id}" ${s.is_offered ? 'checked' : ''} class="service-check w-4 h-4 accent-[#b8fc4b]">
+        <span class="flex-1 text-white/80">${s.service_name}</span>
+        ${s.normal_price ? `<span class="text-white/30">฿${Number(s.normal_price).toLocaleString()}</span>` : ''}
+      </label>
+    `).join('');
+  }catch(err){
+    box.innerHTML = `<p class="text-red-400 text-xs text-center py-4 col-span-2">โหลดไม่สำเร็จ: ${err.message}</p>`;
+  }
+}
+
+async function saveServices(){
+  const btn = document.getElementById('saveServicesBtn');
+  const ids = Array.from(document.querySelectorAll('.service-check:checked')).map(el => parseInt(el.value));
+  btn.disabled = true;
+  btn.textContent = 'กำลังบันทึก...';
+  try{
+    await rpc('technician_set_services', { p_token: session.token, p_service_ids: ids });
+    btn.textContent = 'บันทึกแล้ว ✓';
+  }catch(err){
+    alert('บันทึกไม่สำเร็จ: ' + err.message);
+    btn.textContent = 'บันทึก';
+  }finally{
+    btn.disabled = false;
+    setTimeout(()=>{ btn.textContent = 'บันทึก'; }, 2000);
+  }
+}
+
+// ============ WEEKLY AVAILABILITY ============
+const DAY_NAMES = ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
+
+async function loadWeeklyHours(){
+  const box = document.getElementById('weeklyHoursList');
+  let existing = [];
+  try{
+    const res = await fetch(`${SB_URL}/rest/v1/technician_weekly_hours?technician_id=eq.${session.technician_id}`, {
+      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
+    });
+    existing = res.ok ? await res.json() : [];
+  }catch(e){ console.warn('load weekly hours failed', e); }
+
+  box.innerHTML = DAY_NAMES.map((name, idx) => {
+    const row = existing.find(r => r.day_of_week === idx);
+    const enabled = !!row;
+    const start = row?.start_time?.slice(0,5) || '09:00';
+    const end = row?.end_time?.slice(0,5) || '18:00';
+    return `
+      <div class="flex items-center gap-3 glass rounded-lg px-3 py-2 text-xs day-row" data-day="${idx}">
+        <label class="flex items-center gap-2 w-20 shrink-0">
+          <input type="checkbox" class="day-enable w-4 h-4 accent-[#b8fc4b]" ${enabled ? 'checked':''} onchange="this.closest('.day-row').querySelectorAll('.day-time').forEach(i=>i.disabled=!this.checked)">
+          <span class="text-white/80">${name}</span>
+        </label>
+        <input type="time" class="day-time rounded-lg px-2 py-1 text-xs w-28" value="${start}" ${enabled?'':'disabled'}>
+        <span class="text-white/30">ถึง</span>
+        <input type="time" class="day-time rounded-lg px-2 py-1 text-xs w-28" value="${end}" ${enabled?'':'disabled'}>
+      </div>
+    `;
+  }).join('');
+}
+
+async function saveWeeklyHours(){
+  const btn = document.getElementById('saveHoursBtn');
+  const rows = Array.from(document.querySelectorAll('.day-row')).filter(r => r.querySelector('.day-enable').checked).map(r => {
+    const times = r.querySelectorAll('.day-time');
+    return { day_of_week: parseInt(r.dataset.day), start_time: times[0].value, end_time: times[1].value, is_24h: false };
+  });
+  btn.disabled = true;
+  btn.textContent = 'กำลังบันทึก...';
+  try{
+    await rpc('technician_set_weekly_hours', { p_token: session.token, p_hours: rows });
+    btn.textContent = 'บันทึกแล้ว ✓';
+  }catch(err){
+    alert('บันทึกไม่สำเร็จ: ' + err.message);
+    btn.textContent = 'บันทึก';
+  }finally{
+    btn.disabled = false;
+    setTimeout(()=>{ btn.textContent = 'บันทึก'; }, 2000);
+  }
 }
 
 function showLogin(){
