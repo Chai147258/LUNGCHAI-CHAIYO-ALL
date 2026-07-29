@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>แจ้งร้องเรียน-ติดตามเรื่อง | LUNGCHAI CHAIYO ALL</title>
+<meta name="description" content="แจ้งข้อร้องเรียนเกี่ยวกับบริการหรือช่าง และติดตามสถานะการดำเนินการ กับ LUNGCHAI CHAIYO ALL">
+<link rel="icon" href="/images/logo-all.jpg">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Anuphan:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<style>
+  body{background:#0c0c0c;color:#e1e1ed;font-family:'Anuphan',sans-serif;}
+  h1,h2,h3,.font-head{font-family:'Space Grotesk',sans-serif;}
+  .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;}
+  .glass{background:rgba(255,255,255,.03);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.1);}
+  .nebula{position:fixed;inset:0;z-index:-1;pointer-events:none;}
+  .nebula div{position:absolute;border-radius:9999px;filter:blur(90px);opacity:.28;}
+  input,textarea,select{background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.12);color:#fff;}
+  input:focus,textarea:focus,select:focus{outline:none;border-color:#b8fc4b;}
+  input::placeholder,textarea::placeholder{color:#6b6b76;}
+  .tab-btn.active{background:#b8fc4b;color:#000;}
+  .status-dot{width:10px;height:10px;border-radius:9999px;}
+  .spin{animation:spin 1s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+</style>
+</head>
+<body>
+<div class="nebula"><div class="w-96 h-96 bg-rose-900 top-10 left-10"></div><div class="w-96 h-96 bg-purple-900 bottom-10 right-10"></div></div>
+
+<header class="sticky top-0 z-50 bg-black/80 backdrop-blur-md border-b border-white/10">
+  <div class="max-w-5xl mx-auto px-5 py-3 flex items-center justify-between">
+    <a href="/main/index.html" class="flex items-center gap-2">
+      <img src="/images/logo-all.jpg" class="w-9 h-9 rounded-lg object-cover border border-[#b8fc4b]/40" alt="logo">
+      <span class="font-head font-bold text-sm text-[#b8fc4b]">LUNGCHAI CHAIYO ALL</span>
+    </a>
+    <div class="flex items-center gap-4">
+      <a href="/user/login.html" id="memberLink" class="text-xs text-white/60 hover:text-[#b8fc4b] flex items-center gap-1">
+        <span class="material-symbols-outlined text-base">person</span> สมาชิก
+      </a>
+      <a href="/user/service-request.html" class="text-xs text-white/60 hover:text-[#b8fc4b] flex items-center gap-1">
+        <span class="material-symbols-outlined text-base">build</span> แจ้งซ่อม
+      </a>
+      <a href="/main/index.html" class="text-xs text-white/60 hover:text-[#b8fc4b] flex items-center gap-1">
+        <span class="material-symbols-outlined text-base">arrow_back</span> หน้าแรก
+      </a>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-3xl mx-auto px-5 py-10">
+  <div class="text-center mb-8">
+    <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full glass text-[10px] tracking-widest uppercase text-[#ff9ecb] mb-4">
+      <span class="w-1.5 h-1.5 rounded-full bg-[#ff5f8f] animate-pulse"></span> Complaint Center
+    </div>
+    <h1 class="font-head text-3xl sm:text-4xl font-bold text-white mb-2">แจ้งข้อร้องเรียน</h1>
+    <p class="text-white/50 text-sm">ไม่พึงพอใจบริการ ช่าง หรือคุณภาพงาน แจ้งเราได้ที่นี่ ทีมงานจะตรวจสอบและติดต่อกลับ</p>
+  </div>
+
+  <!-- TABS -->
+  <div class="flex gap-2 mb-6 glass p-1.5 rounded-2xl max-w-md mx-auto">
+    <button id="tabNewBtn" onclick="switchTab('new')" class="tab-btn active flex-1 py-2.5 rounded-xl text-sm font-bold transition-all">แจ้งร้องเรียนใหม่</button>
+    <button id="tabTrackBtn" onclick="switchTab('track')" class="tab-btn flex-1 py-2.5 rounded-xl text-sm font-bold transition-all">ติดตามเรื่อง</button>
+  </div>
+
+  <!-- PANEL: NEW COMPLAINT -->
+  <section id="panelNew" class="glass rounded-3xl p-6 sm:p-8">
+    <form id="complaintForm" class="space-y-4">
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label class="text-xs text-white/60 mb-1 block">ชื่อ-นามสกุล *</label>
+          <input required name="customer_name" type="text" placeholder="ชื่อผู้แจ้ง" class="w-full rounded-xl px-4 py-2.5 text-sm">
+        </div>
+        <div>
+          <label class="text-xs text-white/60 mb-1 block">เบอร์โทร *</label>
+          <input required name="phone" type="tel" placeholder="08xxxxxxxx" class="w-full rounded-xl px-4 py-2.5 text-sm">
+        </div>
+      </div>
+
+      <div>
+        <label class="text-xs text-white/60 mb-1 block">หมวดข้อร้องเรียน *</label>
+        <select required name="category" class="w-full rounded-xl px-4 py-2.5 text-sm">
+          <option value="">-- เลือกหมวด --</option>
+          <option value="พฤติกรรมช่าง">พฤติกรรมช่างไม่เหมาะสม</option>
+          <option value="คุณภาพงาน">คุณภาพงานไม่ได้มาตรฐาน</option>
+          <option value="ราคาไม่ตรง">ราคาไม่ตรงกับที่แจ้งไว้</option>
+          <option value="มาช้า/ผิดนัด">ช่างมาช้า / ผิดนัดหมาย</option>
+          <option value="อื่นๆ">อื่นๆ</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="text-xs text-white/60 mb-1 block">เลขที่ใบงานที่เกี่ยวข้อง (ถ้ามี)</label>
+        <input name="request_number" type="text" placeholder="เช่น SR260729-1234" class="w-full rounded-xl px-4 py-2.5 text-sm">
+      </div>
+
+      <div>
+        <label class="text-xs text-white/60 mb-1 block">หัวข้อ</label>
+        <input name="subject" type="text" placeholder="สรุปสั้นๆ ว่าเกิดอะไรขึ้น" class="w-full rounded-xl px-4 py-2.5 text-sm">
+      </div>
+
+      <div>
+        <label class="text-xs text-white/60 mb-1 block">รายละเอียด *</label>
+        <textarea required name="detail" rows="5" placeholder="อธิบายเหตุการณ์ให้ละเอียดที่สุด เพื่อให้ทีมงานตรวจสอบได้ตรงจุด" class="w-full rounded-xl px-4 py-2.5 text-sm"></textarea>
+      </div>
+
+      <button id="submitBtn" type="submit" class="w-full bg-[#ff5f8f] text-black font-bold py-3 rounded-xl hover:brightness-110 transition flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined text-base">send</span> ส่งเรื่องร้องเรียน
+      </button>
+      <p class="text-[11px] text-white/40 text-center">ทีมงานจะติดต่อกลับภายใน 1-3 วันทำการ ผ่านเบอร์ที่ท่านแจ้งไว้</p>
+    </form>
+
+    <div id="successBox" class="hidden text-center py-8">
+      <div class="w-16 h-16 rounded-full bg-[#ff5f8f]/20 flex items-center justify-center mx-auto mb-4">
+        <span class="material-symbols-outlined text-3xl text-[#ff5f8f]">task_alt</span>
+      </div>
+      <h3 class="font-head text-xl font-bold text-white mb-2">ส่งเรื่องร้องเรียนสำเร็จ</h3>
+      <p class="text-white/50 text-sm mb-4">เลขที่ติดตามเรื่องของท่านคือ</p>
+      <div class="glass rounded-2xl px-6 py-3 inline-block mb-6">
+        <span id="resultNumber" class="font-head text-2xl font-bold text-[#ff5f8f]"></span>
+      </div>
+      <p class="text-[11px] text-white/40">กรุณาบันทึกเลขนี้ไว้พร้อมเบอร์โทรที่แจ้ง เพื่อใช้ติดตามสถานะ</p>
+    </div>
+  </section>
+
+  <!-- PANEL: TRACK -->
+  <section id="panelTrack" class="glass rounded-3xl p-6 sm:p-8 hidden">
+    <form id="trackForm" class="flex flex-col sm:flex-row gap-3 mb-2">
+      <input required name="complaint_no" type="text" placeholder="เลขที่ติดตามเรื่อง เช่น CP260729-1234" class="flex-1 rounded-xl px-4 py-2.5 text-sm">
+      <input required name="phone" type="tel" placeholder="เบอร์โทรที่แจ้งไว้" class="flex-1 rounded-xl px-4 py-2.5 text-sm">
+      <button type="submit" class="bg-[#ff5f8f] text-black font-bold px-6 py-2.5 rounded-xl hover:brightness-110 transition whitespace-nowrap">
+        ตรวจสอบ
+      </button>
+    </form>
+    <p class="text-[11px] text-white/40 mb-4">กรอกเลขติดตามคู่กับเบอร์โทรที่ใช้แจ้ง เพื่อความปลอดภัยของข้อมูล</p>
+
+    <div id="trackResult"></div>
+  </section>
+</main>
+
+<footer class="text-center text-[11px] text-white/30 py-10">© 2026 LUNGCHAI CHAIYO ALL — ระบบร้องเรียนออนไลน์</footer>
+
+<script>
+const SB_URL = 'https://hkwqrllqzfzsbsxqgaoo.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhrd3FybGxxemZ6c2JzeHFnYW9vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzNzIzNjAsImV4cCI6MjA5Njk0ODM2MH0.kPT_UY0-2-0cbDlGwya24DnOLJXA-XJGMdM6SIm7Rew';
+
+async function sbFetch(path, opts={}){
+  const res = await fetch(`${SB_URL}/rest/v1/${path}`, {
+    ...opts,
+    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type':'application/json', 'Prefer': opts.prefer || 'return=representation', ...(opts.headers||{}) }
+  });
+  if(!res.ok){ const t = await res.text(); throw new Error(t || ('HTTP '+res.status)); }
+  return res.json();
+}
+
+// If a member is logged in, greet them + autofill name/phone (page still works without login)
+(async function checkMemberSession(){
+  try{
+    const sb = supabase.createClient(SB_URL, SB_KEY);
+    const {data:{session}} = await sb.auth.getSession();
+    if(!session) return;
+    const {data: member} = await sb.from('members').select('firstname,lastname,phone').eq('id', session.user.id).maybeSingle();
+    const link = document.getElementById('memberLink');
+    if(link) link.innerHTML = '<span class="material-symbols-outlined text-base">account_circle</span> แดชบอร์ด';
+    if(link) link.href = '/user/index.html';
+    if(member){
+      const nameEl = document.querySelector('[name="customer_name"]');
+      const phoneEl = document.querySelector('[name="phone"]');
+      if(nameEl && !nameEl.value) nameEl.value = `${member.firstname||''} ${member.lastname||''}`.trim();
+      if(phoneEl && !phoneEl.value && member.phone) phoneEl.value = member.phone;
+    }
+  }catch(e){ console.warn('member session check failed', e); }
+})();
+
+function switchTab(tab){
+  const isNew = tab === 'new';
+  document.getElementById('tabNewBtn').classList.toggle('active', isNew);
+  document.getElementById('tabTrackBtn').classList.toggle('active', !isNew);
+  document.getElementById('panelNew').classList.toggle('hidden', !isNew);
+  document.getElementById('panelTrack').classList.toggle('hidden', isNew);
+}
+
+document.getElementById('complaintForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="material-symbols-outlined spin">progress_activity</span> กำลังส่ง...';
+  const fd = new FormData(e.target);
+  const payload = {
+    customer_name: fd.get('customer_name'),
+    phone: fd.get('phone'),
+    category: fd.get('category'),
+    request_number: fd.get('request_number') || null,
+    subject: fd.get('subject') || null,
+    detail: fd.get('detail')
+  };
+  try{
+    const result = await sbFetch('complaints', { method:'POST', body: JSON.stringify(payload) });
+    const row = result[0];
+    document.getElementById('resultNumber').textContent = row.complaint_no;
+    e.target.classList.add('hidden');
+    document.getElementById('successBox').classList.remove('hidden');
+  }catch(err){
+    alert('ส่งเรื่องร้องเรียนไม่สำเร็จ กรุณาลองใหม่อีกครั้ง\n'+err.message);
+    btn.disabled = false;
+    btn.innerHTML = '<span class="material-symbols-outlined text-base">send</span> ส่งเรื่องร้องเรียน';
+  }
+});
+
+const STATUS_LABEL = {
+  new: {label:'รับเรื่องแล้ว', color:'#98cbff'},
+  reviewing: {label:'กำลังตรวจสอบ', color:'#fad165'},
+  resolved: {label:'ดำเนินการแล้ว', color:'#b8fc4b'},
+  rejected: {label:'ไม่ดำเนินการ', color:'#ff5f8f'}
+};
+
+document.getElementById('trackForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const resultBox = document.getElementById('trackResult');
+  resultBox.innerHTML = '<p class="text-white/40 text-sm text-center py-4">กำลังค้นหา...</p>';
+  try{
+    const res = await fetch(`${SB_URL}/rest/v1/rpc/track_complaint`, {
+      method: 'POST',
+      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type':'application/json' },
+      body: JSON.stringify({ p_complaint_no: fd.get('complaint_no'), p_phone: fd.get('phone') })
+    });
+    if(!res.ok) throw new Error('ค้นหาไม่สำเร็จ');
+    const rows = await res.json();
+    if(!rows || rows.length === 0){
+      resultBox.innerHTML = '<p class="text-[#ff5f8f] text-sm text-center py-4">ไม่พบข้อมูล กรุณาตรวจสอบเลขที่ติดตามและเบอร์โทรอีกครั้ง</p>';
+      return;
+    }
+    const c = rows[0];
+    const st = STATUS_LABEL[c.status] || {label:c.status, color:'#fff'};
+    resultBox.innerHTML = `
+      <div class="border-t border-white/10 pt-5 mt-2 space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="font-head font-bold text-lg text-white">${c.complaint_no}</span>
+          <span class="flex items-center gap-2 text-sm font-bold" style="color:${st.color}">
+            <span class="status-dot" style="background:${st.color}"></span> ${st.label}
+          </span>
+        </div>
+        <p class="text-xs text-white/40">แจ้งเมื่อ ${new Date(c.created_at).toLocaleString('th-TH')}</p>
+        <div class="glass rounded-xl p-4 space-y-1 text-sm">
+          <p><span class="text-white/40">หมวด:</span> ${c.category||'-'}</p>
+          ${c.subject ? `<p><span class="text-white/40">หัวข้อ:</span> ${c.subject}</p>` : ''}
+          <p><span class="text-white/40">รายละเอียด:</span> ${c.detail}</p>
+          ${c.request_number ? `<p><span class="text-white/40">เลขใบงานที่เกี่ยวข้อง:</span> ${c.request_number}</p>` : ''}
+          ${c.technician_name ? `<p><span class="text-white/40">ช่างที่เกี่ยวข้อง:</span> ${c.technician_name}</p>` : ''}
+        </div>
+        ${c.admin_reply ? `
+        <div class="rounded-xl p-4 text-sm" style="background:rgba(184,252,75,.08);border:1px solid rgba(184,252,75,.25)">
+          <p class="text-[#b8fc4b] font-bold mb-1 flex items-center gap-1"><span class="material-symbols-outlined text-base">support_agent</span> คำตอบจากทีมงาน</p>
+          <p class="text-white/80">${c.admin_reply}</p>
+        </div>` : ''}
+      </div>
+    `;
+  }catch(err){
+    resultBox.innerHTML = `<p class="text-[#ff5f8f] text-sm text-center py-4">เกิดข้อผิดพลาด: ${err.message}</p>`;
+  }
+});
+</script>
+</body>
+</html>
