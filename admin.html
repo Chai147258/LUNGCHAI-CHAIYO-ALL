@@ -1556,7 +1556,7 @@ async function approveApp(id){
   if(!data.success){ toast(data.message, 'err'); return; }
   await logAction('approve','partner_registrations', id, `technician_id=${data.technician_id}`);
   closeModal('app-modal');
-  alert(`อนุมัติสำเร็จ!\n\nแจ้งช่างให้เข้าสู่ระบบที่ /technician/technician-portal.html\nเบอร์: ${data.phone}\nPIN เข้าระบบ: ${data.login_pin}\n\n(กรุณาแจ้ง PIN นี้ให้ช่างทางโทรศัพท์/LINE เท่านั้น ไม่ส่งผ่านช่องทางสาธารณะ)`);
+  alert(`อนุมัติสำเร็จ!\n\nแจ้งช่างให้เข้าสู่ระบบที่ /technician/index.html\nเบอร์: ${data.phone}\nPIN เข้าระบบ: ${data.login_pin}\n\n(กรุณาแจ้ง PIN นี้ให้ช่างทางโทรศัพท์/LINE เท่านั้น ไม่ส่งผ่านช่องทางสาธารณะ)`);
   loadPartnerApps();
   loadTechnicians();
 }
