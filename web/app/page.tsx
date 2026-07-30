@@ -1,8 +1,54 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Script from "next/script";
+import { supabase } from "../lib/supabase";
+
+type LandingSettings = {
+  logo_url: string;
+  youtube_playlist_id: string;
+  chatbot_heading: string;
+  chatbot_subtext: string;
+  register_link: string;
+  login_link: string;
+};
+
+const DEFAULT_SETTINGS: LandingSettings = {
+  logo_url: "/images/logo-all.jpg",
+  youtube_playlist_id: "UUMgf0_HZwMM4ySb_OuPHAkQ",
+  chatbot_heading: "แชทกับผู้ช่วย ลุงชัย",
+  chatbot_subtext: "สอบถามสินค้า บริการ หรือแจ้งซ่อมได้ทันทีผ่านแชทบอทมุมขวาล่าง",
+  register_link: "/register",
+  login_link: "/login",
+};
 
 export default function Home() {
+  const [settings, setSettings] = useState<LandingSettings>(DEFAULT_SETTINGS);
+
+  useEffect(() => {
+    let active = true;
+    supabase
+      .from("landing_page_settings")
+      .select("*")
+      .eq("id", 1)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (active && data) {
+          setSettings({
+            logo_url: data.logo_url ?? DEFAULT_SETTINGS.logo_url,
+            youtube_playlist_id: data.youtube_playlist_id ?? DEFAULT_SETTINGS.youtube_playlist_id,
+            chatbot_heading: data.chatbot_heading ?? DEFAULT_SETTINGS.chatbot_heading,
+            chatbot_subtext: data.chatbot_subtext ?? DEFAULT_SETTINGS.chatbot_subtext,
+            register_link: data.register_link ?? DEFAULT_SETTINGS.register_link,
+            login_link: data.login_link ?? DEFAULT_SETTINGS.login_link,
+          });
+        }
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
   return (
     <>
       {/* STARFIELD / NEBULA BACKGROUND */}
@@ -16,7 +62,7 @@ export default function Home() {
         <div className="flex flex-col items-center gap-4 pt-6">
           <div className="glass-panel w-28 h-28 sm:w-32 sm:h-32 rounded-full flex items-center justify-center overflow-hidden border-2 border-primary/40 shadow-[0_0_60px_rgba(184,252,75,0.25)]">
             <img
-              src="/images/logo-all.jpg"
+              src={settings.logo_url}
               alt="Lungchai Chaiyo All"
               className="w-full h-full object-cover"
             />
@@ -29,14 +75,14 @@ export default function Home() {
         {/* LOGIN / REGISTER */}
         <div className="flex flex-wrap justify-center gap-4">
           <a
-            href="/register"
+            href={settings.register_link}
             className="btn-glossy px-8 py-3 rounded-xl font-bold sun-flare-hover flex items-center gap-2"
           >
             <span className="material-symbols-outlined">person_add</span>
             สมัครสมาชิก
           </a>
           <a
-            href="/login"
+            href={settings.login_link}
             className="btn-glossy-outline px-8 py-3 rounded-xl font-bold sun-flare-hover flex items-center gap-2"
           >
             <span className="material-symbols-outlined">login</span>
@@ -52,7 +98,7 @@ export default function Home() {
           >
             <iframe
               className="absolute inset-0 w-full h-full rounded-2xl"
-              src="https://www.youtube.com/embed/videoseries?list=UUMgf0_HZwMM4ySb_OuPHAkQ"
+              src={`https://www.youtube.com/embed/videoseries?list=${settings.youtube_playlist_id}`}
               title="ลุงชัย ไชโย — YouTube"
               loading="lazy"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -66,11 +112,9 @@ export default function Home() {
         <div className="w-full max-w-3xl glass-panel p-6 rounded-3xl text-center space-y-3">
           <h2 className="font-headline-lg text-lg text-white font-bold flex items-center justify-center gap-2">
             <span className="material-symbols-outlined text-primary">smart_toy</span>
-            แชทกับผู้ช่วย ลุงชัย
+            {settings.chatbot_heading}
           </h2>
-          <p className="text-on-surface-variant text-sm">
-            สอบถามสินค้า บริการ หรือแจ้งซ่อมได้ทันทีผ่านแชทบอทมุมขวาล่าง
-          </p>
+          <p className="text-on-surface-variant text-sm">{settings.chatbot_subtext}</p>
           <div id="chatbot-container" className="min-h-[80px] flex items-center justify-center">
             {/* chatbot widget mounts here via chatbot.js / lungchai-launcher.js */}
           </div>
