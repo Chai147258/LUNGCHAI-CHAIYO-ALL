@@ -1,154 +1,265 @@
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-emerald-950 via-black to-slate-950 text-white">
+    <main className="min-h-screen text-white bg-black overflow-hidden">
+
+      {/* Background */}
+      <div
+        className="
+        fixed inset-0
+        bg-gradient-to-br
+        from-emerald-900
+        via-black
+        to-slate-950
+        -z-10
+        "
+      />
 
       {/* Header */}
-      <header className="flex items-center justify-between p-5 border-b border-white/10">
+      <header
+        className="
+        flex items-center justify-between
+        px-5 py-4
+        backdrop-blur-md
+        bg-white/5
+        border-b border-white/10
+        "
+      >
 
-        {/* Logo */}
-        <div className="font-bold text-xl">
+        <div className="font-bold text-lg md:text-xl">
           🚀 LUNGCHAI CHAIYO ECO Platform
         </div>
 
-        {/* Menu */}
-        <nav className="hidden md:flex gap-5 items-center">
-          <button>🌐 ภาษา</button>
-          <button>เข้าสู่ระบบ</button>
-          <button>สมัครสมาชิก</button>
-          <button>ลืมรหัส</button>
-          <button>☰ เมนู</button>
-        </nav>
+
+        <div className="hidden md:flex gap-5 text-sm">
+
+          <button>
+            🌐 ภาษา
+          </button>
+
+          <button>
+            เข้าสู่ระบบ
+          </button>
+
+          <button>
+            สมัครสมาชิก
+          </button>
+
+          <button>
+            ลืมรหัส
+          </button>
+
+          <button>
+            ☰ เมนู
+          </button>
+
+        </div>
+
+
+        <button className="md:hidden">
+          ☰
+        </button>
 
       </header>
 
 
-      {/* Hero */}
-      <section className="flex flex-col items-center justify-center text-center px-6 py-20">
 
-        <h1 className="text-4xl md:text-6xl font-bold mb-5">
-          One Platform.
+      {/* Hero */}
+      <section
+        className="
+        flex flex-col
+        items-center
+        text-center
+        px-6
+        py-16
+        "
+      >
+
+        <h1
+          className="
+          text-4xl
+          md:text-6xl
+          font-bold
+          leading-tight
+          "
+        >
+
+          LUNGCHAI CHAIYO ALL
+
           <br />
+
+          <span className="text-emerald-400">
+            One Platform.
+          </span>
+
+          <br />
+
           Everything Business.
+
         </h1>
 
-        <p className="text-gray-300 text-lg mb-10">
-          LUNGCHAI CHAIYO ALL
+
+        <p
+          className="
+          mt-6
+          text-gray-300
+          max-w-xl
+          "
+        >
+          เชื่อมต่อสินค้า บริการ เทคโนโลยี
+          และเครือข่ายธุรกิจในแพลตฟอร์มเดียว
         </p>
 
 
+
         {/* Youtube */}
-        <div className="w-full max-w-3xl aspect-video bg-black/40 rounded-2xl border border-white/20 flex items-center justify-center mb-8">
-          <p>
-            🎬 YouTube Channel
-          </p>
+        <div
+          className="
+          mt-10
+          w-full
+          max-w-3xl
+          aspect-video
+          rounded-3xl
+          bg-white/10
+          backdrop-blur
+          border border-white/20
+          flex items-center justify-center
+          "
+        >
+
+          🎬 YouTube Channel
+
         </div>
+
+
 
 
         {/* Main Button */}
-        <button className="bg-emerald-400 text-black font-bold px-10 py-4 rounded-full mb-5 hover:scale-105 transition">
+        <button
+          className="
+          mt-10
+          px-10 py-4
+          rounded-full
+          bg-emerald-400
+          text-black
+          font-bold
+          hover:scale-105
+          transition
+          "
+        >
+
           เข้าสู่เว็บไซต์หลัก
+
         </button>
 
 
-        {/* Service Buttons */}
-        <div className="flex flex-col md:flex-row gap-4">
 
-          <button className="bg-white/10 backdrop-blur px-8 py-4 rounded-xl border border-white/20">
-            🛠 ช่างใกล้ฉัน
+
+        {/* Service Cards */}
+
+        <div
+          className="
+          grid
+          md:grid-cols-2
+          gap-5
+          mt-8
+          w-full
+          max-w-xl
+          "
+        >
+
+
+          <button
+            className="
+            p-6
+            rounded-2xl
+            bg-white/10
+            border border-white/20
+            backdrop-blur
+            hover:bg-white/20
+            "
+          >
+
+            <div className="text-3xl">
+              🛠
+            </div>
+
+            <div className="font-bold mt-2">
+              ช่างใกล้ฉัน
+            </div>
+
+            <div className="text-sm text-gray-300">
+              ค้นหาช่างบริการใกล้พื้นที่
+            </div>
+
           </button>
 
-          <button className="bg-white/10 backdrop-blur px-8 py-4 rounded-xl border border-white/20">
-            📋 แจ้งซ่อม-ติดตามงาน
+
+
+
+          <button
+            className="
+            p-6
+            rounded-2xl
+            bg-white/10
+            border border-white/20
+            backdrop-blur
+            hover:bg-white/20
+            "
+          >
+
+            <div className="text-3xl">
+              📋
+            </div>
+
+            <div className="font-bold mt-2">
+              แจ้งซ่อม-ติดตามงาน
+            </div>
+
+            <div className="text-sm text-gray-300">
+              ตรวจสอบสถานะงานซ่อม
+            </div>
+
           </button>
+
 
         </div>
 
 
-        <button className="mt-5 bg-white/10 px-8 py-3 rounded-xl">
+
+
+        <button
+          className="
+          mt-6
+          px-8 py-3
+          rounded-xl
+          bg-white/10
+          border border-white/20
+          "
+        >
+
           👤 สมัครสมาชิก
+
         </button>
 
 
       </section>
 
 
-      {/* Social */}
-      <div className="fixed right-4 top-1/2 flex flex-col gap-3">
-
-        <button>🔵</button>
-        <button>🟢</button>
-        <button>🔴</button>
-        <button>🎵</button>
-
-      </div>
 
 
-      {/* AI BOT Floating */}
-      <button
+
+      {/* Works & Review */}
+
+      <section
         className="
-        fixed
-        right-6
-        bottom-6
-        w-20
-        h-20
-        rounded-full
-        bg-emerald-400
-        text-black
-        font-bold
-        shadow-xl
-        flex
-        flex-col
-        items-center
-        justify-center
+        px-6
+        py-16
         "
       >
-        🤖
-        <span className="text-xs">
-          AI BOT
-        </span>
 
-      </button>
-
-
-      {/* Content */}
-      <section className="px-6 py-16 text-center">
-
-        <h2 className="text-3xl font-bold mb-8">
-          สินค้า พร้อมจำหน่าย
-        </h2>
-
-
-        <div className="grid md:grid-cols-3 gap-5">
-
-          <div className="bg-white/10 rounded-xl p-6">
-            📦 สินค้า
-          </div>
-
-          <div className="bg-white/10 rounded-xl p-6">
-            🛠 บริการ
-          </div>
-
-          <div className="bg-white/10 rounded-xl p-6">
-            ⭐ รีวิวลูกค้า
-          </div>
-
-        </div>
-
-      </section>
-
-
-      {/* Footer */}
-      <footer className="text-center border-t border-white/10 p-6 text-sm text-gray-400">
-
-        © LUNGCHAI CHAIYO ECO Platform
-
-        <br />
-
-        ลิขสิทธิ์ | พ.ร.บ.คอมพิวเตอร์ | PDPA
-
-      </footer>
-
-
-    </main>
-  );
-}
+        <h2
+          className="
+          text-3xl
+          font-bold
+          text-center
+         
