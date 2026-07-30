@@ -262,4 +262,6 @@ export default function Home() {
           text-3xl
           font-bold
           text-center
+"
+>
          
