@@ -5,7 +5,7 @@ import { supabase } from "../../../lib/supabase";
 
 type LandingSettings = {
   logo_url: string;
-  youtube_playlist_id: string;
+  youtube_url: string;
   chatbot_heading: string;
   chatbot_subtext: string;
   register_link: string;
@@ -40,12 +40,12 @@ export default function AdminLandingPage() {
       .update({ ...settings, updated_at: new Date().toISOString() })
       .eq("id", 1);
     setSaving(false);
-    setMessage(error ? "บันทึกไม่สำเร็จ: " + error.message : "บันทึกสำเร็จแล้ว ✓");
+    setMessage(error ? "บันทึกไม่สำเร็จ: " + error.message : "บันทึกสำเร็จแล้ว ✓ กลับไปหน้าแรกแล้วรีเฟรชดูได้เลย");
   }
 
   if (loading) {
     return (
-      <main className="min-h-screen flex items-center justify-center text-on-surface-variant">
+      <main className="min-h-screen flex items-center justify-center text-gray-400 bg-black">
         กำลังโหลด...
       </main>
     );
@@ -53,30 +53,30 @@ export default function AdminLandingPage() {
 
   if (!settings) {
     return (
-      <main className="min-h-screen flex items-center justify-center text-on-surface-variant">
+      <main className="min-h-screen flex items-center justify-center text-gray-400 bg-black">
         ไม่พบข้อมูลการตั้งค่า
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen px-6 py-12 flex justify-center">
-      <div className="glass-panel w-full max-w-xl p-8 rounded-3xl space-y-6">
-        <h1 className="font-headline-lg text-xl text-white font-bold flex items-center gap-2">
-          <span className="material-symbols-outlined text-primary">edit_note</span>
+    <main className="min-h-screen px-6 py-12 flex justify-center bg-black">
+      <div className="w-full max-w-xl bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-3xl space-y-6">
+        <h1 className="text-xl text-white font-bold flex items-center gap-2">
+          <span className="material-symbols-outlined text-lime-400">edit_note</span>
           จัดการเนื้อหาหน้าแรก (Landing Page CMS)
         </h1>
 
         <form onSubmit={handleSave} className="space-y-4">
           <Field
-            label="โลโก้ (URL หรือ path เช่น /images/logo-all.jpg)"
+            label="โลโก้ (URL รูปภาพ)"
             value={settings.logo_url}
             onChange={(v) => setSettings({ ...settings, logo_url: v })}
           />
           <Field
-            label="YouTube Playlist ID"
-            value={settings.youtube_playlist_id}
-            onChange={(v) => setSettings({ ...settings, youtube_playlist_id: v })}
+            label="ลิงก์วิดีโอ YouTube (วางลิงก์เต็มจากช่องได้เลย เช่น https://youtube.com/watch?v=xxxx)"
+            value={settings.youtube_url}
+            onChange={(v) => setSettings({ ...settings, youtube_url: v })}
           />
           <Field
             label="หัวข้อกล่องแชทบอท"
@@ -100,19 +100,19 @@ export default function AdminLandingPage() {
             onChange={(v) => setSettings({ ...settings, login_link: v })}
           />
 
-          {message && <p className="text-primary text-sm">{message}</p>}
+          {message && <p className="text-lime-400 text-sm">{message}</p>}
 
           <button
             type="submit"
             disabled={saving}
-            className="btn-glossy w-full py-3 rounded-xl font-bold sun-flare-hover disabled:opacity-50"
+            className="w-full bg-lime-400 text-black font-bold rounded-xl py-3 hover:bg-lime-300 transition-colors disabled:opacity-50"
           >
             {saving ? "กำลังบันทึก..." : "บันทึกการเปลี่ยนแปลง"}
           </button>
         </form>
 
         <p className="text-center">
-          <a href="/" className="text-on-surface-variant text-sm hover:underline">
+          <a href="/" className="text-gray-400 text-sm hover:underline">
             ← กลับหน้าแรก (เปิดดูผลลัพธ์)
           </a>
         </p>
@@ -134,20 +134,20 @@ function Field({
 }) {
   return (
     <div className="space-y-1">
-      <label className="text-on-surface-variant text-sm">{label}</label>
+      <label className="text-gray-400 text-sm">{label}</label>
       {textarea ? (
         <textarea
           value={value}
           onChange={(e) => onChange(e.target.value)}
           rows={3}
-          className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-primary focus:ring-0 transition-all"
+          className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-lime-400 focus:outline-none transition-colors"
         />
       ) : (
         <input
           type="text"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-primary focus:ring-0 transition-all"
+          className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-lime-400 focus:outline-none transition-colors"
         />
       )}
     </div>
