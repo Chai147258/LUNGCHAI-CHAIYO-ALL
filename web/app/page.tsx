@@ -148,7 +148,15 @@ export default function Home() {
             {settings.chatbot_heading}
           </h2>
           <p className="text-gray-400 text-sm">{settings.chatbot_subtext}</p>
-          <div id="chatbot-container" className="min-h-[80px] flex items-center justify-center" />
+          <div id="chatbot-container" className="min-h-[80px] flex items-center justify-center">
+            <button
+              onClick={() => document.getElementById("lcai-launch-btn")?.click()}
+              className="bg-lime-400 text-black font-bold rounded-xl px-8 py-3 hover:bg-lime-300 transition-colors flex items-center gap-2"
+            >
+              <span className="material-symbols-outlined">chat</span>
+              เริ่มแชท
+            </button>
+          </div>
         </div>
       </main>
 
@@ -219,7 +227,6 @@ export default function Home() {
       `}</Script>
 
       <Script src="/assets/lungchai-launcher.js" strategy="afterInteractive" />
-      <Script src="/chatbot.js" strategy="afterInteractive" />
     </>
   );
 }
