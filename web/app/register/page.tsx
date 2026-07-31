@@ -29,59 +29,63 @@ export default function RegisterPage() {
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center px-6 py-12">
-      <div className="glass-panel w-full max-w-md p-8 rounded-3xl space-y-6">
+    <main className="min-h-screen flex items-center justify-center px-6 py-12 bg-black">
+      <div className="w-full max-w-md bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-3xl space-y-6">
         <div className="flex flex-col items-center gap-3">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/images/logo-all.jpg"
+            src="https://raw.githubusercontent.com/Chai147258/LUNGCHAI-CHAIYO-ALL/main/images/logo-all.jpg"
             alt="Lungchai Chaiyo All"
-            className="w-16 h-16 rounded-full object-cover border-2 border-primary/40"
+            className="w-16 h-16 rounded-full object-cover border-2 border-lime-400/60"
           />
-          <h1 className="font-headline-lg text-xl text-white font-bold">สมัครสมาชิก</h1>
+          <h1 className="text-xl text-white font-bold">สมัครสมาชิก</h1>
         </div>
 
         {success ? (
           <div className="text-center space-y-4">
-            <p className="text-primary text-sm">
+            <p className="text-lime-400 text-sm">
               สมัครสำเร็จ! กรุณาตรวจสอบอีเมลเพื่อยืนยันบัญชีของคุณ
             </p>
-            <a href="/login" className="btn-glossy inline-block px-8 py-3 rounded-xl font-bold sun-flare-hover">
+            <a
+              href="/login"
+              className="inline-block bg-lime-400 text-black font-bold rounded-xl px-8 py-3 hover:bg-lime-300 transition-colors"
+            >
               ไปหน้าเข้าสู่ระบบ
             </a>
           </div>
         ) : (
           <form onSubmit={handleRegister} className="space-y-4">
             <div className="space-y-1">
-              <label className="text-on-surface-variant text-sm">ชื่อ-นามสกุล</label>
+              <label className="text-gray-400 text-sm">ชื่อ-นามสกุล</label>
               <input
                 type="text"
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-primary focus:ring-0 transition-all"
+                className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-lime-400 focus:outline-none transition-colors"
                 placeholder="ชื่อของคุณ"
               />
             </div>
             <div className="space-y-1">
-              <label className="text-on-surface-variant text-sm">อีเมล</label>
+              <label className="text-gray-400 text-sm">อีเมล</label>
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-primary focus:ring-0 transition-all"
+                className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-lime-400 focus:outline-none transition-colors"
                 placeholder="you@example.com"
               />
             </div>
             <div className="space-y-1">
-              <label className="text-on-surface-variant text-sm">รหัสผ่าน</label>
+              <label className="text-gray-400 text-sm">รหัสผ่าน</label>
               <input
                 type="password"
                 required
                 minLength={6}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-primary focus:ring-0 transition-all"
+                className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-lime-400 focus:outline-none transition-colors"
                 placeholder="อย่างน้อย 6 ตัวอักษร"
               />
             </div>
@@ -91,21 +95,21 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className="btn-glossy w-full py-3 rounded-xl font-bold sun-flare-hover disabled:opacity-50"
+              className="w-full bg-lime-400 text-black font-bold rounded-xl py-3 hover:bg-lime-300 transition-colors disabled:opacity-50"
             >
               {loading ? "กำลังสมัคร..." : "สมัครสมาชิก"}
             </button>
           </form>
         )}
 
-        <p className="text-center text-on-surface-variant text-sm">
+        <p className="text-center text-gray-400 text-sm">
           มีบัญชีอยู่แล้ว?{" "}
-          <a href="/login" className="text-primary-container hover:underline font-bold">
+          <a href="/login" className="text-lime-400 hover:underline font-bold">
             เข้าสู่ระบบ
           </a>
         </p>
         <p className="text-center">
-          <a href="/" className="text-on-surface-variant text-sm hover:underline">
+          <a href="/" className="text-gray-400 text-sm hover:underline">
             ← กลับหน้าแรก
           </a>
         </p>
