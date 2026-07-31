@@ -6,7 +6,7 @@ import { supabase } from "../lib/supabase";
 
 type LandingSettings = {
   logo_url: string;
-  youtube_playlist_id: string;
+  youtube_url: string;
   chatbot_heading: string;
   chatbot_subtext: string;
   register_link: string;
@@ -14,13 +14,34 @@ type LandingSettings = {
 };
 
 const DEFAULT_SETTINGS: LandingSettings = {
-  logo_url: "/images/logo-all.jpg",
-  youtube_playlist_id: "UUMgf0_HZwMM4ySb_OuPHAkQ",
+  logo_url: "https://raw.githubusercontent.com/Chai147258/LUNGCHAI-CHAIYO-ALL/main/images/logo-all.jpg",
+  youtube_url: "",
   chatbot_heading: "แชทกับผู้ช่วย ลุงชัย",
   chatbot_subtext: "สอบถามสินค้า บริการ หรือแจ้งซ่อมได้ทันทีผ่านแชทบอทมุมขวาล่าง",
   register_link: "/register",
   login_link: "/login",
 };
+
+// Accepts a full YouTube URL (watch, youtu.be, shorts, or embed) OR a bare video ID
+// and returns a valid /embed/VIDEO_ID URL, or null if it can't figure it out.
+function toEmbedUrl(input: string): string | null {
+  if (!input) return null;
+  const trimmed = input.trim();
+  const patterns = [
+    /youtu\.be\/([a-zA-Z0-9_-]{11})/,
+    /youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/,
+    /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/,
+    /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
+  ];
+  for (const re of patterns) {
+    const m = trimmed.match(re);
+    if (m) return `https://www.youtube.com/embed/${m[1]}`;
+  }
+  if (/^[a-zA-Z0-9_-]{11}$/.test(trimmed)) {
+    return `https://www.youtube.com/embed/${trimmed}`;
+  }
+  return null;
+}
 
 export default function Home() {
   const [settings, setSettings] = useState<LandingSettings>(DEFAULT_SETTINGS);
@@ -35,12 +56,12 @@ export default function Home() {
       .then(({ data }) => {
         if (active && data) {
           setSettings({
-            logo_url: data.logo_url ?? DEFAULT_SETTINGS.logo_url,
-            youtube_playlist_id: data.youtube_playlist_id ?? DEFAULT_SETTINGS.youtube_playlist_id,
-            chatbot_heading: data.chatbot_heading ?? DEFAULT_SETTINGS.chatbot_heading,
-            chatbot_subtext: data.chatbot_subtext ?? DEFAULT_SETTINGS.chatbot_subtext,
-            register_link: data.register_link ?? DEFAULT_SETTINGS.register_link,
-            login_link: data.login_link ?? DEFAULT_SETTINGS.login_link,
+            logo_url: data.logo_url || DEFAULT_SETTINGS.logo_url,
+            youtube_url: data.youtube_url ?? "",
+            chatbot_heading: data.chatbot_heading || DEFAULT_SETTINGS.chatbot_heading,
+            chatbot_subtext: data.chatbot_subtext || DEFAULT_SETTINGS.chatbot_subtext,
+            register_link: data.register_link || DEFAULT_SETTINGS.register_link,
+            login_link: data.login_link || DEFAULT_SETTINGS.login_link,
           });
         }
       });
@@ -49,9 +70,10 @@ export default function Home() {
     };
   }, []);
 
+  const embedUrl = toEmbedUrl(settings.youtube_url);
+
   return (
     <>
-      {/* STARFIELD / NEBULA BACKGROUND */}
       <canvas
         id="galaxy"
         style={{ position: "fixed", inset: 0, zIndex: -1, pointerEvents: "none", display: "block" }}
@@ -60,14 +82,11 @@ export default function Home() {
       <main className="min-h-screen flex flex-col items-center px-6 py-12 gap-10">
         {/* LOGO */}
         <div className="flex flex-col items-center gap-4 pt-6">
-          <div className="glass-panel w-28 h-28 sm:w-32 sm:h-32 rounded-full flex items-center justify-center overflow-hidden border-2 border-primary/40 shadow-[0_0_60px_rgba(184,252,75,0.25)]">
-            <img
-              src={settings.logo_url}
-              alt="Lungchai Chaiyo All"
-              className="w-full h-full object-cover"
-            />
+          <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden border-2 border-lime-400/60 shadow-[0_0_60px_rgba(163,230,53,0.25)] bg-white/5">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={settings.logo_url} alt="Lungchai Chaiyo All" className="w-full h-full object-cover" />
           </div>
-          <h1 className="font-headline-lg text-2xl sm:text-3xl text-primary font-bold drop-shadow-[0_0_8px_rgba(152,203,255,0.5)] text-center">
+          <h1 className="text-2xl sm:text-3xl text-white font-bold text-center tracking-wide">
             LUNGCHAI CHAIYO ALL
           </h1>
         </div>
@@ -76,14 +95,14 @@ export default function Home() {
         <div className="flex flex-wrap justify-center gap-4">
           <a
             href={settings.register_link}
-            className="btn-glossy px-8 py-3 rounded-xl font-bold sun-flare-hover flex items-center gap-2"
+            className="bg-lime-400 text-black font-bold rounded-xl px-8 py-3 hover:bg-lime-300 transition-colors flex items-center gap-2"
           >
             <span className="material-symbols-outlined">person_add</span>
             สมัครสมาชิก
           </a>
           <a
             href={settings.login_link}
-            className="btn-glossy-outline px-8 py-3 rounded-xl font-bold sun-flare-hover flex items-center gap-2"
+            className="border border-white/25 text-white font-bold rounded-xl px-8 py-3 hover:bg-white/10 transition-colors flex items-center gap-2"
           >
             <span className="material-symbols-outlined">login</span>
             เข้าสู่ระบบ
@@ -91,37 +110,48 @@ export default function Home() {
         </div>
 
         {/* YOUTUBE VIDEO — CENTER */}
-        <div className="w-full max-w-3xl glass-panel p-3 sm:p-4 rounded-3xl">
-          <div
-            className="relative w-full rounded-2xl overflow-hidden"
-            style={{ paddingTop: "56.25%" }}
-          >
-            <iframe
-              className="absolute inset-0 w-full h-full rounded-2xl"
-              src={`https://www.youtube.com/embed/videoseries?list=${settings.youtube_playlist_id}`}
-              title="ลุงชัย ไชโย — YouTube"
-              loading="lazy"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
-            />
-          </div>
+        <div className="w-full max-w-3xl bg-white/5 backdrop-blur-md border border-white/10 p-3 sm:p-4 rounded-3xl">
+          {embedUrl ? (
+            <div className="relative w-full rounded-2xl overflow-hidden" style={{ paddingTop: "56.25%" }}>
+              <iframe
+                className="absolute inset-0 w-full h-full rounded-2xl"
+                src={embedUrl}
+                title="วิดีโอ ลุงชัย ไชโย"
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              />
+            </div>
+          ) : (
+            <div className="w-full rounded-2xl bg-black/40 flex flex-col items-center justify-center gap-3 py-16 text-center px-4">
+              <span className="material-symbols-outlined text-5xl text-gray-500">smart_display</span>
+              <p className="text-gray-400 text-sm">
+                ยังไม่ได้ใส่วิดีโอ — เพิ่มลิงก์ YouTube ได้ที่หน้า Admin
+              </p>
+              <a
+                href="https://youtube.com/@chai147258"
+                target="_blank"
+                rel="noopener"
+                className="text-lime-400 text-sm hover:underline"
+              >
+                ไปที่ช่อง YouTube ของลุงชัย →
+              </a>
+            </div>
+          )}
         </div>
 
         {/* CHATBOT SECTION */}
-        <div className="w-full max-w-3xl glass-panel p-6 rounded-3xl text-center space-y-3">
-          <h2 className="font-headline-lg text-lg text-white font-bold flex items-center justify-center gap-2">
-            <span className="material-symbols-outlined text-primary">smart_toy</span>
+        <div className="w-full max-w-3xl bg-white/5 backdrop-blur-md border border-white/10 p-6 rounded-3xl text-center space-y-3">
+          <h2 className="text-lg text-white font-bold flex items-center justify-center gap-2">
+            <span className="material-symbols-outlined text-lime-400">smart_toy</span>
             {settings.chatbot_heading}
           </h2>
-          <p className="text-on-surface-variant text-sm">{settings.chatbot_subtext}</p>
-          <div id="chatbot-container" className="min-h-[80px] flex items-center justify-center">
-            {/* chatbot widget mounts here via chatbot.js / lungchai-launcher.js */}
-          </div>
+          <p className="text-gray-400 text-sm">{settings.chatbot_subtext}</p>
+          <div id="chatbot-container" className="min-h-[80px] flex items-center justify-center" />
         </div>
       </main>
 
-      {/* Galaxy canvas background animation */}
       <Script id="galaxy-canvas" strategy="afterInteractive">{`
         (function(){
           const C = document.getElementById('galaxy');
