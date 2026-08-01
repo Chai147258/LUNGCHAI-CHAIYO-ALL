@@ -71,7 +71,11 @@
       <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-white/40">search</span>
       <input id="searchInput" type="text" class="w-full rounded-xl pl-12 pr-4 py-3 text-sm" placeholder="ค้นหาชื่อช่าง หรือทักษะ เช่น เครื่องพิมพ์, กล้องวงจรปิด...">
     </div>
-    <div id="skillChips" class="flex flex-wrap gap-2"></div>
+    <div id="skillChips" class="flex flex-wrap gap-2 mb-3"></div>
+    <div class="flex items-center gap-2 pt-3 border-t border-white/10">
+      <span class="material-symbols-outlined text-white/40 text-lg">location_on</span>
+      <div id="areaChips" class="flex flex-wrap gap-2"></div>
+    </div>
   </div>
 
   <div id="techGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
@@ -93,6 +97,7 @@ const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJ
 
 let TECHS = [];
 let activeSkill = 'all';
+let activeArea = 'all';
 
 async function sbFetch(path){
   const res = await fetch(`${SB_URL}/rest/v1/${path}`, { headers:{ 'apikey':SB_KEY, 'Authorization':`Bearer ${SB_KEY}` } });
@@ -120,6 +125,23 @@ function renderChips(){
   });
 }
 
+function renderAreaChips(){
+  const el = document.getElementById('areaChips');
+  const areas = [...new Set(TECHS.map(t => t.area).filter(Boolean))].sort();
+  const hasUnassigned = TECHS.some(t => !t.area);
+  const options = [{ key:'all', label:'ทุกพื้นที่' }, ...areas.map(a=>({ key:a, label:a }))];
+  if(hasUnassigned) options.push({ key:'__none', label:'ไม่ระบุพื้นที่' });
+
+  el.innerHTML = options.map(o => `
+    <button class="chip ${o.key===activeArea?'active':''} px-3 py-1.5 rounded-full text-[11px] font-bold border border-white/15 text-white/60" data-area="${o.key}">
+      ${o.label}
+    </button>
+  `).join('');
+  el.querySelectorAll('.chip').forEach(btn=>{
+    btn.addEventListener('click', ()=>{ activeArea = btn.dataset.area; renderAreaChips(); renderGrid(); });
+  });
+}
+
 function matchesSkillGroup(techSkill, key){
   if(key === 'all') return true;
   const group = SKILL_GROUPS.find(g=>g.key===key);
@@ -132,7 +154,8 @@ function renderGrid(){
   const filtered = TECHS.filter(t => {
     const matchesSearch = !q || t.full_name.toLowerCase().includes(q) || (t.skill||'').toLowerCase().includes(q);
     const matchesSkill = matchesSkillGroup(t.skill, activeSkill);
-    return matchesSearch && matchesSkill;
+    const matchesArea = activeArea === 'all' || (activeArea === '__none' ? !t.area : t.area === activeArea);
+    return matchesSearch && matchesSkill && matchesArea;
   });
 
   const grid = document.getElementById('techGrid');
@@ -152,6 +175,7 @@ function renderGrid(){
           <span class="inline-flex items-center gap-1 text-[11px] text-[#b8fc4b] mt-1">
             <span class="w-1.5 h-1.5 rounded-full bg-[#b8fc4b]"></span> พร้อมรับงาน
           </span>
+          ${t.area ? `<span class="flex items-center gap-0.5 text-[10px] text-white/40 mt-0.5"><span class="material-symbols-outlined text-[13px]">location_on</span>${t.area}</span>` : ''}
         </div>
       </div>
       <div class="flex flex-wrap gap-1.5 mb-5 min-h-[26px]">
@@ -171,11 +195,12 @@ document.getElementById('searchInput').addEventListener('input', renderGrid);
 (async function init(){
   renderChips();
   try{
-    TECHS = await sbFetch('technicians?select=id,full_name,phone,line_id,skill,photo_url&active=eq.true&order=full_name.asc');
+    TECHS = await sbFetch('technicians?select=id,full_name,phone,line_id,skill,photo_url,area&active=eq.true&order=full_name.asc');
   }catch(e){
     console.error(e);
     TECHS = [];
   }
+  renderAreaChips();
   renderGrid();
 })();
 </script>
