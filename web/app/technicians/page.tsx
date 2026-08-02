@@ -6,11 +6,10 @@ import { supabase } from "../../lib/supabase";
 type Technician = {
   id: number;
   full_name: string;
-  phone: string | null;
-  line_id: string | null;
   skill: string | null;
   photo_url: string | null;
   area: string | null;
+  is_online: boolean;
 };
 
 type SkillGroup = {
@@ -49,7 +48,7 @@ export default function TechniciansPage() {
     let active = true;
     supabase
       .from("technicians")
-      .select("id, full_name, phone, line_id, skill, photo_url, area")
+      .select("id, full_name, skill, photo_url, area, is_online")
       .eq("active", true)
       .order("full_name", { ascending: true })
       .then(({ data, error }) => {
@@ -112,8 +111,17 @@ export default function TechniciansPage() {
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">ช่างซ่อมใกล้ฉัน</h1>
           <p className="text-white/50 text-sm max-w-lg mx-auto">
-            เลือกช่างผู้เชี่ยวชาญตามงานที่ต้องการ ติดต่อได้โดยตรง หรือส่งคำขอผ่านระบบแจ้งซ่อม
+            เลือกช่างผู้เชี่ยวชาญตามงานที่ต้องการ ทีมงานส่วนกลางจะติดต่อประสานงานให้
           </p>
+          <a
+            href="https://line.me/R/ti/p/@971yzyyd"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 mt-3 text-xs text-[#06C755] hover:underline"
+          >
+            <span className="material-symbols-outlined text-base">chat</span>
+            คุยกับเจ้าหน้าที่ก่อนตัดสินใจ (LINE @971yzyyd)
+          </a>
         </div>
 
         {/* Search + filter */}
@@ -196,8 +204,17 @@ export default function TechniciansPage() {
                     </div>
                     <div>
                       <h3 className="font-bold text-white text-base leading-tight">{t.full_name}</h3>
-                      <span className="inline-flex items-center gap-1 text-[11px] text-lime-400 mt-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-lime-400"></span> พร้อมรับงาน
+                      <span
+                        className={`inline-flex items-center gap-1 text-[11px] mt-1 ${
+                          t.is_online ? "text-lime-400" : "text-white/30"
+                        }`}
+                      >
+                        <span
+                          className={`w-1.5 h-1.5 rounded-full ${
+                            t.is_online ? "bg-lime-400" : "bg-white/30"
+                          }`}
+                        ></span>
+                        {t.is_online ? "ออนไลน์ พร้อมรับงาน" : "ออฟไลน์"}
                       </span>
                       {t.area && (
                         <span className="flex items-center gap-0.5 text-[10px] text-white/40 mt-0.5">
@@ -219,29 +236,9 @@ export default function TechniciansPage() {
                     ))}
                   </div>
 
-                  <div className="flex gap-2">
-                    {t.phone && (
-                      <a
-                        href={`tel:${t.phone.replace(/-/g, "")}`}
-                        className="flex-1 text-center bg-white/10 hover:bg-white/15 transition-colors text-white text-xs font-bold py-2.5 rounded-xl flex items-center justify-center gap-1.5"
-                      >
-                        <span className="material-symbols-outlined text-base">call</span> โทร
-                      </a>
-                    )}
-                    {t.line_id && (
-                      <a
-                        href={`https://line.me/ti/p/~${t.line_id.replace("@", "")}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-1 text-center bg-[#06C755]/20 hover:bg-[#06C755]/30 transition-colors text-[#06C755] text-xs font-bold py-2.5 rounded-xl flex items-center justify-center gap-1.5"
-                      >
-                        <span className="material-symbols-outlined text-base">chat</span> LINE
-                      </a>
-                    )}
-                  </div>
                   <a
                     href="/"
-                    className="mt-2 block text-center bg-yellow-400 text-black text-xs font-bold py-2.5 rounded-xl hover:brightness-95 transition-all"
+                    className="block text-center bg-yellow-400 text-black text-xs font-bold py-2.5 rounded-xl hover:brightness-95 transition-all"
                   >
                     แจ้งซ่อมผ่านแชท AI
                   </a>
