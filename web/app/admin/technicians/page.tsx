@@ -13,7 +13,6 @@ type Technician = {
   skill: string | null;
   active: boolean;
   is_online: boolean;
-  pin_code?: string | null;
 };
 
 export default function AdminTechniciansPage() {
@@ -29,16 +28,11 @@ export default function AdminTechniciansPage() {
       .select("id, full_name, business_name, area, phone, login_phone, skill, active, is_online")
       .order("id", { ascending: true });
 
-    const { data: credData } = await supabase
-      .from("technician_credentials")
-      .select("technician_id, pin_code");
-
     if (techErr) {
       console.error(techErr);
       setTechs([]);
     } else {
-      const credMap = new Map((credData || []).map((c) => [c.technician_id, c.pin_code]));
-      setTechs((techData || []).map((t) => ({ ...t, pin_code: credMap.get(t.id) || "" })));
+      setTechs(techData || []);
     }
     setLoading(false);
   }
@@ -68,19 +62,27 @@ export default function AdminTechniciansPage() {
       })
       .eq("id", t.id);
 
-    let pinError = null;
-    if (t.pin_code) {
-      const res = await supabase
-        .from("technician_credentials")
-        .upsert({ technician_id: t.id, pin_code: t.pin_code }, { onConflict: "technician_id" });
-      pinError = res.error;
-    }
-
     setSavingId(null);
-    if (techError || pinError) {
-      setMessage(`บันทึกไม่สำเร็จ (${t.full_name}): ${techError?.message || pinError?.message}`);
+    if (techError) {
+      setMessage(`บันทึกไม่สำเร็จ (${t.full_name}): ${techError.message}`);
     } else {
       setMessage(`บันทึก ${t.full_name} เรียบร้อย`);
+    }
+  }
+
+  async function resetPin(t: Technician) {
+    const newPin = prompt(`ตั้ง PIN ใหม่ให้ ${t.full_name} (อย่างน้อย 4 หลัก)`);
+    if (!newPin) return;
+
+    const { error } = await supabase.rpc("admin_set_technician_pin", {
+      p_technician_id: t.id,
+      p_new_pin: newPin,
+    });
+
+    if (error) {
+      setMessage(`ตั้ง PIN ไม่สำเร็จ (${t.full_name}): ${error.message}`);
+    } else {
+      setMessage(`ตั้ง PIN ใหม่ให้ ${t.full_name} แล้ว — PIN: ${newPin} (บันทึกไว้ก่อนปิดหน้านี้ ดูซ้ำไม่ได้อีก)`);
     }
   }
 
@@ -145,12 +147,15 @@ export default function AdminTechniciansPage() {
                   onChange={(v) => updateField(t.id, "login_phone", v)}
                   danger
                 />
-                <Field
-                  label="PIN (ห้ามโชว์)"
-                  value={t.pin_code || ""}
-                  onChange={(v) => updateField(t.id, "pin_code", v)}
-                  danger
-                />
+                <div>
+                  <label className="text-[11px] block mb-1 text-orange-400">PIN (เข้ารหัสแล้ว ดูค่าเดิมไม่ได้)</label>
+                  <button
+                    onClick={() => resetPin(t)}
+                    className="w-full bg-orange-500/20 text-orange-300 text-xs font-bold py-2 rounded-lg border border-orange-400/30 hover:bg-orange-500/30"
+                  >
+                    รีเซ็ต PIN ใหม่
+                  </button>
+                </div>
 
                 <div className="flex flex-col gap-2 justify-center">
                   <label className="flex items-center gap-2 text-xs text-white/60">
