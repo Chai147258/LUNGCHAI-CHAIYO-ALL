@@ -175,12 +175,16 @@ export default function TechnicianPortalPage() {
               {isOnline ? "ออนไลน์ (แตะเพื่อปิด)" : "ออฟไลน์ (แตะเพื่อเปิด)"}
             </button>
           </div>
-          <button onClick={logout} className="text-blue-200/50 text-xs hover:text-white">
-            ออกจากระบบ
-          </button>
+          <div className="flex items-center gap-3">
+            <a href="/technician/settings" className="text-blue-200/50 text-xs hover:text-white">
+              ตั้งค่า
+            </a>
+            <button onClick={logout} className="text-blue-200/50 text-xs hover:text-white">
+              ออกจากระบบ
+            </button>
+          </div>
         </div>
       </div>
-
       <div className="max-w-2xl mx-auto px-5 pt-5 space-y-8">
         {message && (
           <div className="bg-blue-400/10 border border-blue-400/20 text-blue-200 text-sm rounded-xl px-4 py-2.5">
